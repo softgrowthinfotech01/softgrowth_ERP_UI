@@ -97,7 +97,7 @@ input[type="file"]{
 </head>
 
 <body class="text-white bg-fixed bg-no-repeat bg-cover bg-center"
-      style="background-image: url('images/bg1.jpeg');">
+      style="background-image: url('images/bg8.jpeg');">
       
 <?php include 'header.php' ?>
 <?php include 'sidebar.php' ?>
@@ -116,14 +116,14 @@ input[type="file"]{
 </div>
 
 <!-- ================= STEP 1 ================= -->
-<div class="step-box active bg-white/50 rounded-xl p-6" id="step1">
-<h2 class="text-xl text-black  font-bold mb-4">Personal + Academic Details</h2>
+<div class="step-box active bg-gray-800 rounded-xl p-6" id="step1">
+<h2 class="text-xl text-white  font-bold mb-4">Personal + Academic Details</h2>
 
 <div class="grid md:grid-cols-2 gap-4">
 
 <!-- Student Batch -->
 <div>
-<label class="text-md text-black font-bold mb-1 block">Student Batch</label>
+<label class="text-md text-white font-bold mb-1 block">Student Batch</label>
 <select class="input">
 <option>Select Batch</option>
 <option>2024-25</option>
@@ -133,7 +133,7 @@ input[type="file"]{
 
 <!-- Student Year -->
 <div>
-<label class="text-md text-black font-bold mb-1 block">Student Year</label>
+<label class="text-md text-white font-bold mb-1 block">Student Year</label>
 <select class="input">
 <option>Select Year</option>
 <option>1st Year</option>
@@ -144,7 +144,7 @@ input[type="file"]{
 
 <!-- Course -->
 <div>
-<label class="text-md text-black font-bold mb-1 block">Course</label>
+<label class="text-md text-white font-bold mb-1 block">Course</label>
 <select class="input">
 <option>Select Course</option>
 <option>BCA</option>
@@ -154,49 +154,49 @@ input[type="file"]{
 
 <!-- Student Name -->
 <div>
-<label class="text-md text-black font-bold mb-1 block">Student Name</label>
+<label class="text-md text-white font-bold mb-1 block">Student Name</label>
 <input class="input" placeholder="Enter student name">
 </div>
 
 <!-- Caste -->
 <div>
-<label class="text-md text-black font-bold mb-1 block">Caste</label>
+<label class="text-md text-white font-bold mb-1 block">Caste</label>
 <input class="input" placeholder="Enter caste">
 </div>
 
 <!-- Admission Date -->
 <div>
-<label class="text-md text-black font-bold mb-1 block">Admission Date</label>
+<label class="text-md text-white font-bold mb-1 block">Admission Date</label>
 <input class="input" type="date">
 </div>
 
 <!-- Aadhaar -->
 <div>
-<label class="text-md text-black font-bold mb-1 block">Aadhaar Number</label>
+<label class="text-md text-white font-bold mb-1 block">Aadhaar Number</label>
 <input class="input" placeholder="XXXX-XXXX-XXXX">
 </div>
 
 <!-- ABC ID -->
 <div>
-<label class="text-md text-black font-bold mb-1 block">ABC ID</label>
+<label class="text-md text-white font-bold mb-1 block">ABC ID</label>
 <input class="input" placeholder="Enter ABC ID">
 </div>
 
 <!-- DOB -->
 <div>
-<label class="text-md text-black font-bold mb-1 block">Date of Birth</label>
+<label class="text-md text-white font-bold mb-1 block">Date of Birth</label>
 <input class="input" type="date">
 </div>
 
 <!-- Place of Birth -->
 <div>
-<label class="text-md text-black font-bold mb-1 block">Place of Birth</label>
+<label class="text-md text-white font-bold mb-1 block">Place of Birth</label>
 <input class="input" placeholder="Enter place of birth">
 </div>
 
 <!-- PHOTO -->
 <div class="md:col-span-2">
-<label class="text-md text-black font-bold mb-1 block">Passport Photo</label>
+<label class="text-md text-white font-bold mb-1 block">Passport Photo</label>
 <input type="file" class="input file:bg-red-500 file:text-white file:px-4 file:py-2 file:rounded-lg file:border-0 hover:file:bg-red-600 cursor-pointer">
 </div>
 
@@ -204,56 +204,56 @@ input[type="file"]{
 </div>
 
 <!-- ================= STEP 2 ================= -->
-<div class="step-box bg-white/50 rounded-xl p-6" id="step2">
-<h2 class="text-xl text-black font-bold mb-1 block">Documents Upload</h2>
+<div class="step-box bg-gray-800 rounded-xl p-6" id="step2">
+<h2 class="text-xl text-white font-bold mb-1 block">Documents Upload</h2>
 
 <div class="grid md:grid-cols-2 gap-4">
 
 <!-- TC Certificate -->
 <div>
-<label class="text-md text-black font-bold mb-1 block">TC Certificate</label>
+<label class="text-md text-white font-bold mb-1 block">TC Certificate</label>
 <input type="file" class="input file:bg-cyan-500 file:text-white file:px-4 file:py-2 file:rounded-lg file:border-0 hover:file:bg-cyan-600 cursor-pointer">
 </div>
 
 <!-- 10th Marksheet -->
 <div>
-<label class="text-md text-black font-bold mb-1 block">10th Marksheet</label>
+<label class="text-md text-white font-bold mb-1 block">10th Marksheet</label>
 <input type="file" class="input file:bg-indigo-500 file:text-white file:px-4 file:py-2 file:rounded-lg file:border-0 hover:file:bg-indigo-600 cursor-pointer">
 </div>
 
 <!-- 12th Marksheet -->
 <div>
-<label class="text-md text-black font-bold mb-1 block">12th Marksheet</label>
+<label class="text-md text-white font-bold mb-1 block">12th Marksheet</label>
 <input type="file" class="input file:bg-purple-500 file:text-white file:px-4 file:py-2 file:rounded-lg file:border-0 hover:file:bg-purple-600 cursor-pointer">
 </div>
 
 <!-- Other Academic Docs -->
 <div>
-<label class="text-md text-black font-bold mb-1 block">Other Academic Documents</label>
+<label class="text-md text-white font-bold mb-1 block">Other Academic Documents</label>
 <input type="file" class="input file:bg-sky-500 file:text-white file:px-4 file:py-2 file:rounded-lg file:border-0 hover:file:bg-sky-600 cursor-pointer">
 </div>
 
 <!-- Caste Certificate -->
 <div>
-<label class="text-md text-black font-bold mb-1 block">Caste Certificate</label>
+<label class="text-md text-white font-bold mb-1 block">Caste Certificate</label>
 <input type="file" class="input file:bg-emerald-500 file:text-white file:px-4 file:py-2 file:rounded-lg file:border-0 hover:file:bg-emerald-600 cursor-pointer">
 </div>
 
 <!-- Domicile Certificate -->
 <div>
-<label class="text-md text-black font-bold mb-1 block">Domicile Certificate</label>
+<label class="text-md text-white font-bold mb-1 block">Domicile Certificate</label>
 <input type="file" class="input file:bg-pink-500 file:text-white file:px-4 file:py-2 file:rounded-lg file:border-0 hover:file:bg-pink-600 cursor-pointer">
 </div>
 
 <!-- Non Creamy Layer -->
 <div>
-<label class="text-md text-black font-bold mb-1 block">Non-Creamy Layer Certificate</label>
+<label class="text-md text-white font-bold mb-1 block">Non-Creamy Layer Certificate</label>
 <input type="file" class="input file:bg-amber-500 file:text-white file:px-4 file:py-2 file:rounded-lg file:border-0 hover:file:bg-amber-600 cursor-pointer">
 </div>
 
 <!-- Other Documents -->
 <div>
-<label class="text-md text-black font-bold mb-1 block">Other Documents</label>
+<label class="text-md text-white font-bold mb-1 block">Other Documents</label>
 <input type="file" class="input file:bg-red-500 file:text-white file:px-4 file:py-2 file:rounded-lg file:border-0 hover:file:bg-red-600 cursor-pointer">
 </div>
 
@@ -261,39 +261,39 @@ input[type="file"]{
 </div>
 
 <!-- ================= STEP 3 ================= -->
-<div class="step-box bg-white/50 rounded-xl  p-6" id="step3">
+<div class="step-box bg-gray-800 rounded-xl  p-6" id="step3">
 
-<h2 class="text-xl text-black font-bold mb-4 block">Fees + Contact Details</h2>
+<h2 class="text-xl text-white font-bold mb-4 block">Fees + Contact Details</h2>
 
 <div class="grid md:grid-cols-2 gap-4">
 
 <!-- Full Fees -->
 <div>
-<label class="text-md text-black font-bold mb-1 block">Full Fees</label>
+<label class="text-md text-white font-bold mb-1 block">Full Fees</label>
 <input class="input" placeholder="Enter full fees">
 </div>
 
 <!-- Admission Fees -->
 <div>
-<label class="text-md text-black font-bold mb-1 block">Admission Fees</label>
+<label class="text-md text-white font-bold mb-1 block">Admission Fees</label>
 <input class="input" placeholder="Enter admission fees">
 </div>
 
 <!-- Student Phone -->
 <div>
-<label class="text-md text-black font-bold mb-1 block">Student Phone</label>
+<label class="text-md text-white font-bold mb-1 block">Student Phone</label>
 <input class="input" placeholder="Enter student phone">
 </div>
 
 <!-- Parent Phone -->
 <div>
-<label class="text-md text-black font-bold mb-1 block">Parent Phone</label>
+<label class="text-md text-white font-bold mb-1 block">Parent Phone</label>
 <input class="input" placeholder="Enter parent phone">
 </div>
 
 <!-- Blood Group -->
 <div>
-<label class="text-md text-black font-bold mb-1 block">Blood Group</label>
+<label class="text-md text-white font-bold mb-1 block">Blood Group</label>
 <select class="input">
 <option>Select Blood Group</option>
 <option>A+</option><option>A-</option>
@@ -304,19 +304,19 @@ input[type="file"]{
 
 <!-- Tahsil -->
 <div>
-<label class="text-md text-black font-bold mb-1 block">Tahsil</label>
+<label class="text-md text-white font-bold mb-1 block">Tahsil</label>
 <input class="input" placeholder="Enter tahsil">
 </div>
 
 <!-- District -->
 <div>
-<label class="text-md text-black font-bold mb-1 block">District</label>
+<label class="text-md text-white font-bold mb-1 block">District</label>
 <input class="input" placeholder="Enter district">
 </div>
 
 <!-- Address -->
 <div class="md:col-span-2">
-<label class="text-md text-black font-bold mb-1 block">Full Address</label>
+<label class="text-md text-white font-bold mb-1 block">Full Address</label>
 <textarea class="input" rows="4" placeholder="Enter full address"></textarea>
 </div>
 
@@ -325,7 +325,7 @@ input[type="file"]{
 <!-- ================= SEMESTER PATTERN ================= -->
 <div class="mt-8">
 
-<h3 class="text-md text-black font-bold mb-1 block">
+<h3 class="text-md text-white font-bold mb-1 block">
 Semester Pattern
 </h3>
 
@@ -333,7 +333,7 @@ Semester Pattern
 
 <!-- First Year -->
 <div class="p-4 rounded-xl bg-gradient-to-br from-green-400 via-black/50 to-green-300 border border-slate-700">
-<p class="font-semibold text-black mb-3">First Year</p>
+<p class="font-semibold text-white mb-3">First Year</p>
 
 <label class="flex items-center gap-3 p-3 rounded-lg bg-white cursor-pointer  transition">
 <input type="radio" name="sem1" class="w-4 h-4 border border-slate-400 bg-white accent-cyan-500"><span class="text-gray-600 ">Semester 1</span>
@@ -346,7 +346,7 @@ Semester Pattern
 
 <!-- Second Year -->
 <div class="p-4 rounded-xl bg-gradient-to-br from-violet-400 via-black/50 to-violet-300 border border-slate-700">
-<p class="font-semibold text-black mb-3">Second Year</p>
+<p class="font-semibold text-white mb-3">Second Year</p>
 
 <label class="flex items-center gap-3 p-3 rounded-lg bg-white cursor-pointer  transition">
 <input type="radio" name="sem1" class="w-4 h-4 border border-slate-400 bg-white accent-cyan-500"><span class="text-gray-600">Semester 1</span>
@@ -359,7 +359,7 @@ Semester Pattern
 
 <!-- Third Year -->
 <div class="p-4 rounded-xl bg-gradient-to-br from-pink-400 via-black/50 to-pink-300 border border-slate-700">
-<p class="font-semibold text-black mb-3">Third Year</p>
+<p class="font-semibold text-white mb-3">Third Year</p>
 
 <label class="flex items-center gap-3 p-3 rounded-lg bg-white cursor-pointer  transition">
 <input type="radio" name="sem1" class="w-4 h-4 border border-slate-400 bg-white accent-cyan-500"><span class="text-gray-600">Semester 1</span>
