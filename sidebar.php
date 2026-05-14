@@ -88,28 +88,32 @@ transition-all duration-300 ease-in-out overflow-y-auto shadow-2xl">
         <div id="recordMenu"
         class="dropdown-menu max-h-0 overflow-hidden transition-all duration-500 ease-in-out ml-6 mt-2 space-y-2">
 
-            <div class="px-4 py-2 rounded-md text-slate-400 hover:bg-slate-800 hover:text-cyan-400">
-                👨‍🎓 Student Record
-            </div>
+          <a href="student_record.php"
+   class="block px-4 py-2 rounded-md text-slate-400 hover:bg-slate-800 hover:text-cyan-400">
+    👨‍🎓 Student Record
+</a>
 
-            <div class="px-4 py-2 rounded-md text-slate-400 hover:bg-slate-800 hover:text-cyan-400">
-                💰 Payment Record
-            </div>
+<a href="payment_record.php"
+   class="block px-4 py-2 rounded-md text-slate-400 hover:bg-slate-800 hover:text-cyan-400">
+    💰 Payment Record
+</a>
 
-            <div class="px-4 py-2 rounded-md text-slate-400 hover:bg-slate-800 hover:text-cyan-400">
-                ⚖️ Balance Payments
-            </div>
+<a href="balance_payment.php"
+   class="block px-4 py-2 rounded-md text-slate-400 hover:bg-slate-800 hover:text-cyan-400">
+    ⚖️ Balance Payments
+</a>
 
-            <div class="px-4 py-2 rounded-md text-slate-400 hover:bg-slate-800 hover:text-cyan-400">
-                📒 Ledger
-            </div>
+<a href="Leager_form.php"
+   class="block px-4 py-2 rounded-md text-slate-400 hover:bg-slate-800 hover:text-cyan-400">
+    📒 Ledger
+</a>
 
         </div>
 
     </div>
 
     <!-- SIMPLE ITEMS -->
-    <a href="#"
+    <a href="Bonafide.php"
     class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-300
     hover:bg-cyan-500 hover:text-white transition-all duration-300">
         📄 Bonafide
