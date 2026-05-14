@@ -11,7 +11,6 @@
 
 /* ===== BACKGROUND ===== */
 body{
-    background: #0f172a;
     overflow-x:hidden;
 }
 
@@ -86,18 +85,18 @@ body{
 </style>
 </head>
 
-<body class="text-white">
+<body class="text-white bg-fixed bg-no-repeat bg-cover bg-center" style="background-image: url('images/bg8.jpeg');">
 <?php include 'header.php' ?>
 <?php include 'sidebar.php' ?>
 
 <div class="lg:ml-64 max-w-7xl mx-auto mt-10 p-4 md:p-12"> 
 <!-- HEADER -->
 <div class="flex justify-between items-center mb-6">
-<h1 class="text-xl font-bold">💳 Student Payment Form</h1>
+<!-- <h1 class="text-xl font-bold">💳 Student Payment Form</h1> -->
 
-<button class="text-red-500 border border-red-500 px-3 py-1 rounded hover:bg-red-500 hover:text-white">
+<!-- <button class="text-red-500 border border-red-500 px-3 py-1 rounded hover:bg-red-500 hover:text-white">
 Clear Filter
-</button>
+</button> -->
 </div>
 
 <!-- STEP INDICATOR -->
@@ -110,7 +109,7 @@ Clear Filter
 </div>
 
 <!-- ================= STEP 1 ================= -->
-<div class="step-box active card p-5" id="step1">
+<div class="step-box active bg-gray-900 rounded-xl p-5" id="step1">
 
     <h2 class="font-bold mb-4">Student Details</h2>
 
@@ -151,7 +150,7 @@ Clear Filter
 </div>
 
 <!-- ================= STEP 2 ================= -->
-<div class="step-box card p-5" id="step2">
+<div class="step-box bg-gray-900 rounded-xl p-5" id="step2">
 
     <h2 class="font-bold mb-4">Fee Structure</h2>
 
@@ -290,7 +289,7 @@ Clear Filter
     </div>
 </div>
 <!-- ================= STEP 3 ================= -->
-<div class="step-box card p-5" id="step3">
+<div class="step-box bg-gray-900 rounded-xl p-5" id="step3">
 
     <h2 class="font-bold mb-4">Payment Details</h2>
 
