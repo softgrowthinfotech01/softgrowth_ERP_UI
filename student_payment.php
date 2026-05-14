@@ -112,60 +112,183 @@ Clear Filter
 <!-- ================= STEP 1 ================= -->
 <div class="step-box active card p-5" id="step1">
 
-<h2 class="font-bold mb-4">Student Details</h2>
+    <h2 class="font-bold mb-4">Student Details</h2>
 
-<div class="grid md:grid-cols-3 gap-4">
+    <div class="grid md:grid-cols-3 gap-4">
 
-<input class="input" placeholder="Class">
-<input class="input" placeholder="Student Name">
-<input class="input" placeholder="Student ID">
+        <!-- Class -->
+        <div>
+            <label class="text-md text-white font-bold mb-1 block">Class</label>
+            <input class="input" placeholder="Enter Class">
+        </div>
 
-<input class="input" placeholder="Total Amount" readonly>
-<input class="input" placeholder="Balance Amount" readonly>
+        <!-- Student Name -->
+        <div>
+            <label class="text-md text-white font-bold mb-1 block">Student Name</label>
+            <input class="input" placeholder="Enter Student Name">
+        </div>
 
-</div>
+        <!-- Student ID -->
+        <div>
+            <label class="text-md text-white font-bold mb-1 block">Student ID</label>
+            <input class="input" placeholder="Enter Student ID">
+        </div>
+
+        <!-- Total Amount -->
+        <div>
+            <label class="text-md text-white font-bold mb-1 block">Total Amount</label>
+            <input class="input" placeholder="Auto Calculated" readonly>
+        </div>
+
+        <!-- Balance Amount -->
+        <div>
+            <label class="text-md text-white font-bold mb-1 block">Balance Amount</label>
+            <input class="input" placeholder="Auto Calculated" readonly>
+        </div>
+
+    </div>
+
 </div>
 
 <!-- ================= STEP 2 ================= -->
 <div class="step-box card p-5" id="step2">
 
-<h2 class="font-bold mb-4">Fee Structure</h2>
+    <h2 class="font-bold mb-4">Fee Structure</h2>
 
-<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
 
-<!-- LEFT FEES -->
-<input class="input" placeholder="Admission Fee">
-<input class="input" placeholder="Integration Fee">
-<input class="input" placeholder="Exam Fee">
-<input class="input" placeholder="Practical Exam Fee">
-<input class="input" placeholder="University Development Fee">
-<input class="input" placeholder="Avishkar / Indra Fee">
-<input class="input" placeholder="E-Suvidha Fee">
-<input class="input" placeholder="ID Card Fee">
-<input class="input" placeholder="Computer Lab Fee">
-<input class="input" placeholder="Course Fee">
-<input class="input" placeholder="Youth Festival Fee">
-<input class="input" placeholder="Alumni Union Fee">
-<input class="input" placeholder="College Magazine Fee">
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">Admission Fee</label>
+            <input class="input" placeholder="Enter Admission Fee">
+        </div>
 
-<!-- RIGHT FEES -->
-<input class="input" placeholder="Tuition Fee">
-<input class="input" placeholder="Enrollment Fee">
-<input class="input" placeholder="Eligibility Fee">
-<input class="input" placeholder="Laboratory Fee">
-<input class="input" placeholder="Library Fee">
-<input class="input" placeholder="Disaster Management Fee">
-<input class="input" placeholder="Exam Form Process Fee">
-<input class="input" placeholder="Convocation Fee">
-<input class="input" placeholder="College Exam Fee">
-<input class="input" placeholder="University Fee">
-<input class="input" placeholder="Maintenance Fee">
-<input class="input" placeholder="Student Insurance Fee">
-<input class="input" placeholder="Other Fee">
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">Integration Fee</label>
+            <input class="input" placeholder="Enter Integration Fee">
+        </div>
 
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">Exam Fee</label>
+            <input class="input" placeholder="Enter Exam Fee">
+        </div>
+
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">Practical Exam Fee</label>
+            <input class="input" placeholder="Enter Practical Exam Fee">
+        </div>
+
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">University Development Fee</label>
+            <input class="input" placeholder="Enter Fee">
+        </div>
+
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">Avishkar / Indra Fee</label>
+            <input class="input" placeholder="Enter Fee">
+        </div>
+
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">E-Suvidha Fee</label>
+            <input class="input" placeholder="Enter Fee">
+        </div>
+
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">ID Card Fee</label>
+            <input class="input" placeholder="Enter Fee">
+        </div>
+
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">Computer Lab Fee</label>
+            <input class="input" placeholder="Enter Fee">
+        </div>
+
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">Course Fee</label>
+            <input class="input" placeholder="Enter Fee">
+        </div>
+
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">Youth Festival Fee</label>
+            <input class="input" placeholder="Enter Fee">
+        </div>
+
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">Alumni Union Fee</label>
+            <input class="input" placeholder="Enter Fee">
+        </div>
+
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">College Magazine Fee</label>
+            <input class="input" placeholder="Enter Fee">
+        </div>
+
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">Tuition Fee</label>
+            <input class="input" placeholder="Enter Tuition Fee">
+        </div>
+
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">Enrollment Fee</label>
+            <input class="input" placeholder="Enter Enrollment Fee">
+        </div>
+
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">Eligibility Fee</label>
+            <input class="input" placeholder="Enter Eligibility Fee">
+        </div>
+
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">Laboratory Fee</label>
+            <input class="input" placeholder="Enter Laboratory Fee">
+        </div>
+
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">Library Fee</label>
+            <input class="input" placeholder="Enter Library Fee">
+        </div>
+
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">Disaster Management Fee</label>
+            <input class="input" placeholder="Enter Fee">
+        </div>
+
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">Exam Form Process Fee</label>
+            <input class="input" placeholder="Enter Fee">
+        </div>
+
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">Convocation Fee</label>
+            <input class="input" placeholder="Enter Fee">
+        </div>
+
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">College Exam Fee</label>
+            <input class="input" placeholder="Enter Fee">
+        </div>
+
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">University Fee</label>
+            <input class="input" placeholder="Enter Fee">
+        </div>
+
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">Maintenance Fee</label>
+            <input class="input" placeholder="Enter Fee">
+        </div>
+
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">Student Insurance Fee</label>
+            <input class="input" placeholder="Enter Fee">
+        </div>
+
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">Other Fee</label>
+            <input class="input" placeholder="Enter Fee">
+        </div>
+
+    </div>
 </div>
-</div>
-
 <!-- ================= STEP 3 ================= -->
 <div class="step-box card p-5" id="step3">
 
