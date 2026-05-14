@@ -118,11 +118,23 @@ transition-all duration-300 ease-in-out overflow-y-auto shadow-2xl">
     hover:bg-cyan-500 hover:text-white transition-all duration-300">
         📄 Bonafide
     </a>
+    
+    <a href="cash_memo.php"
+    class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-300
+    hover:bg-cyan-500 hover:text-white transition-all duration-300">
+       💵  Cash Memo
+    </a>
 
-    <a href="#"
+    <a href="i_card.php"
     class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-300
     hover:bg-cyan-500 hover:text-white transition-all duration-300">
         🆔 I Card
+    </a>
+
+    <a href="update_password.php"
+    class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-300
+    hover:bg-cyan-500 hover:text-white transition-all duration-300">
+        🔑 Update password
     </a>
 
     <!-- LOGOUT -->
