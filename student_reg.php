@@ -102,7 +102,7 @@ input[type="file"]{
 <?php include 'header.php' ?>
 <?php include 'sidebar.php' ?>
 
-<div id="main" class="lg:ml-72 transition-all duration-300 mt-5 p-[70px] max-w-6xl mx-auto">
+<div id="main" class="lg:ml-72 transition-all main duration-300  mt-14 mb-20 md:mb-5 md:mt-5 p-4 md:p-[70px] max-w-6xl mx-auto">
 
 
 

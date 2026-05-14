@@ -10,15 +10,15 @@
         <!-- CENTER -->
         <div class="flex items-center gap-5 text-sm">
 
-            <a href="#" class="hover:text-cyan-400 transition">
+            <a href="privacy_policy.php" class="hover:text-cyan-400 transition">
                 Privacy
             </a>
 
-            <a href="#" class="hover:text-cyan-400 transition">
+            <a href="terms_conditions.php" class="hover:text-cyan-400 transition">
                 Terms
             </a>
 
-            <a href="#" class="hover:text-cyan-400 transition">
+            <a href="support.php" class="hover:text-cyan-400 transition">
                 Support
             </a>
 

@@ -76,7 +76,7 @@ style="background-image:url('images/bg8.jpeg');">
 <?php include 'header.php' ?>
 <?php include 'sidebar.php' ?>
 
-<div class="p-12 mt-10 lg:ml-64">
+<div class="p-8 md:p-[70px] mt-10 mb-20 md:mb-10 lg:ml-64">
 
     <!-- PAGE HEADER -->
     <!-- <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">

@@ -56,7 +56,7 @@ style="background-image: url('images/bg8.jpeg');">
 <?php include 'sidebar.php' ?>
 
 <!-- HEADER -->
-<div class="p-12 mt-10 lg:ml-64">
+<div class=" p-8 md:p-14 mb-20 md:mb-1 mt-10 lg:ml-64">
 
     <!-- <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-black">Balance Payment</h1>
