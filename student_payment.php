@@ -292,36 +292,46 @@ Clear Filter
 <!-- ================= STEP 3 ================= -->
 <div class="step-box card p-5" id="step3">
 
-<h2 class="font-bold mb-4">Payment Details</h2>
+    <h2 class="font-bold mb-4">Payment Details</h2>
 
-<div class="grid md:grid-cols-2 gap-4">
+    <div class="grid md:grid-cols-2 gap-4">
 
-<select class="input">
-<option>Select Installment</option>
-<option>1st Installment</option>
-<option>2nd Installment</option>
-<option>Full Payment</option>
-</select>
+        <!-- Installment -->
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">Select Installment</label>
+            <select class="input">
+                <option>Select Installment</option>
+                <option>1st Installment</option>
+                <option>2nd Installment</option>
+                <option>Full Payment</option>
+            </select>
+        </div>
 
-<input class="input" placeholder="Amount Entered">
+        <!-- Amount -->
+        <div>
+            <label class="text-white text-md font-bold mb-1 block">Amount Entered</label>
+            <input class="input" placeholder="Enter Amount">
+        </div>
 
-<textarea class="input md:col-span-2" rows="4" placeholder="Enter Remark"></textarea>
+        <!-- Remark -->
+        <div class="md:col-span-2">
+            <label class="text-white text-md font-bold mb-1 block">Remark</label>
+            <textarea class="input" rows="4" placeholder="Enter Remark"></textarea>
+        </div>
+
+    </div>
 
 </div>
-
-<div class="flex justify-center mt-6">
-<button class="bg-blue-600 px-6 py-2 rounded hover:bg-blue-700">
-Submit
-</button>
-</div>
-
-</div>
-
 <!-- BUTTONS -->
 <div class="flex justify-between mt-6">
 <button id="prev" class="px-4 py-2 bg-slate-700 rounded hidden">Previous</button>
 <button id="next" class="px-4 py-2 bg-cyan-500 rounded ml-auto">Next</button>
 </div>
+
+
+
+</div>
+
 
 </div>
 <?php include 'footer.php' ?>
