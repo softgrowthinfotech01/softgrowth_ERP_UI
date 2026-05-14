@@ -89,7 +89,7 @@ style="background-image:url('images/bg8.jpeg');">
 <?php include 'header.php' ?>
 <?php include 'sidebar.php' ?>
 
-<div class="p-16 mt-10 md:ml-64">
+<div class="p-16 md:ml-[500px] mt-5 md:ml-64">
 
     <!-- PAGE HEADER -->
     <!-- <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
@@ -109,7 +109,7 @@ style="background-image:url('images/bg8.jpeg');">
     </div> -->
 
     <!-- CARD -->
-    <div class="bg-gray-800 rounded-xl p-6 max-w-2xl">
+    <div class="bg-gray-800 rounded-xl  p-6 max-w-2xl">
 
         <!-- TITLE -->
         <div class="mb-6">

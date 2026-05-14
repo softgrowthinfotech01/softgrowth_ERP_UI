@@ -1,4 +1,4 @@
-<footer class="lg:ml-72 bg-slate-900 border-t border-slate-800 text-slate-400 py-5 px-4">
+<footer class="fixed bottom-0 left-0 w-full lg:ml-72 bg-slate-900 border-t border-slate-800 text-slate-400 py-5 px-4 z-50">
 
     <div class="flex flex-col md:flex-row items-center justify-between gap-4">
 
@@ -10,24 +10,19 @@
         <!-- CENTER -->
         <div class="flex items-center gap-5 text-sm">
 
-            <a href="#"
-            class="hover:text-cyan-400 transition">
+            <a href="#" class="hover:text-cyan-400 transition">
                 Privacy
             </a>
 
-            <a href="#"
-            class="hover:text-cyan-400 transition">
+            <a href="#" class="hover:text-cyan-400 transition">
                 Terms
             </a>
 
-            <a href="#"
-            class="hover:text-cyan-400 transition">
+            <a href="#" class="hover:text-cyan-400 transition">
                 Support
             </a>
 
         </div>
-
-    
 
     </div>
 

@@ -124,7 +124,7 @@ style="background-image: url('images/bg8.jpeg');">
 <div class="p-12 mt-10 lg:ml-64">
 
     <!-- PAGE TITLE -->
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+    <!-- <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
 
         <div>
             <h1 class="text-2xl font-bold text-black">
@@ -138,7 +138,7 @@ style="background-image: url('images/bg8.jpeg');">
             <span>Ledger Form</span>
         </div>
 
-    </div>
+    </div> -->
 
     <!-- CARD -->
     <div class="bg-gray-800 rounded-xl p-5">

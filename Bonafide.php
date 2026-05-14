@@ -39,7 +39,9 @@ body{
     border-color:#06b6d4;
     box-shadow:0 0 0 3px rgba(6,182,212,0.2);
 }
-
+.input::placeholder{
+    color:#64748b;
+}
 /* LABEL */
 .label{
     display:block;
@@ -73,10 +75,10 @@ style="background-image:url('images/bg8.jpeg');">
 <?php include 'header.php' ?>
 <?php include 'sidebar.php' ?>
 
-<div class="p-10 mt-10 lg:ml-64">
+<div class="p-[70px] mt-5 mb-10 lg:ml-64">
 
     <!-- PAGE HEADER -->
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+    <!-- <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
 
         <div>
             <h1 class="text-2xl font-bold text-black">
@@ -90,7 +92,7 @@ style="background-image:url('images/bg8.jpeg');">
             <span>Bonafide</span>
         </div>
 
-    </div>
+    </div> -->
 
     <!-- CARD -->
     <div class="bg-gray-800 rounded-xl p-6">
@@ -111,20 +113,20 @@ style="background-image:url('images/bg8.jpeg');">
 
                 <!-- STUDENT NAME -->
                 <div>
-                    <label class="label">STUDENT Name</label>
-                    <input type="text" class="input">
+                    <label class="label">Student Name</label>
+                    <input type="text" class="input" placeholder="Enter student name">
                 </div>
 
                 <!-- PARENT NAME -->
                 <div>
                     <label class="label">Parents Name</label>
-                    <input type="text" class="input">
+                    <input type="text" class="input" placeholder="Enter parents name ">
                 </div>
 
                 <!-- CLASS -->
                 <div>
                     <label class="label">Class Name</label>
-                    <input type="text" class="input">
+                    <input type="text" class="input" placeholder="Enter class name ">
                 </div>
 
                 <!-- ACADEMIC YEAR -->
@@ -152,37 +154,37 @@ style="background-image:url('images/bg8.jpeg');">
                 <!-- DOB WORDS -->
                 <div>
                     <label class="label">Date Of Birth (In Words)</label>
-                    <input type="text" class="input">
+                    <input type="text" class="input" placeholder="Enter date of birth ">
                 </div>
 
                 <!-- CASTE -->
                 <div>
                     <label class="label">Caste</label>
-                    <input type="text" class="input">
+                    <input type="text" class="input" placeholder="Enter caste">
                 </div>
 
                 <!-- SUB CASTE -->
                 <div>
                     <label class="label">Sub-Caste</label>
-                    <input type="text" class="input">
+                    <input type="text" class="input" placeholder="Enter sub-caste ">
                 </div>
 
                 <!-- ADDRESS -->
                 <div>
                     <label class="label">Address</label>
-                    <input type="text" class="input">
+                    <input type="text" class="input" placeholder="Enter address ">
                 </div>
 
                 <!-- TAHSIL -->
                 <div>
                     <label class="label">Tahsil</label>
-                    <input type="text" class="input">
+                    <input type="text" class="input" placeholder="Enter tahsil ">
                 </div>
 
                 <!-- DISTRICT -->
                 <div>
                     <label class="label">District</label>
-                    <input type="text" class="input">
+                    <input type="text" class="input" placeholder="Enter district ">
                 </div>
 
             </div>

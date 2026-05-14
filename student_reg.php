@@ -102,7 +102,7 @@ input[type="file"]{
 <?php include 'header.php' ?>
 <?php include 'sidebar.php' ?>
 
-<div id="main" class="lg:ml-72 transition-all duration-300 mt-20 p-4 max-w-6xl mx-auto">
+<div id="main" class="lg:ml-72 transition-all duration-300 mt-5 p-[70px] max-w-6xl mx-auto">
 
 
 
@@ -378,11 +378,11 @@ Semester Pattern
 <!-- BUTTONS -->
 <div class="flex justify-between mt-6">
 
-<button id="prev" class="px-5 py-2 bg-slate-700 rounded-lg hidden">
+<button id="prev" class="px-5 py-2 bg-blue-700 rounded-lg hidden">
 Previous
 </button>
 
-<button id="next" class="px-5 py-2 bg-cyan-500 rounded-lg ml-auto">
+<button id="next" class="px-5 py-2 bg-green-500 rounded-lg ml-auto">
 Next
 </button>
 

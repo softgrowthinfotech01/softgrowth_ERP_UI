@@ -44,11 +44,11 @@ body{
 .textarea{
     width:100%;
     min-height:120px;
-    background:#1e293b;
+    background:white;
     border:1px solid #334155;
     border-radius:10px;
     padding:14px;
-    color:white;
+    color:black;
     outline:none;
     resize:none;
     transition:0.3s;
@@ -71,10 +71,10 @@ body{
 .file-input{
     width:100%;
     padding:12px;
-    background:#1e293b;
+    background:white;
     border:1px solid #334155;
     border-radius:10px;
-    color:#cbd5e1;
+    color:gray;
 }
 
 /* BUTTON */
@@ -92,7 +92,9 @@ body{
     background:#0891b2;
     transform:translateY(-2px);
 }
-
+.input::placeholder{
+    color:#64748b;
+}
 </style>
 </head>
 
@@ -102,10 +104,10 @@ style="background-image:url('images/bg8.jpeg');">
 <?php include 'header.php' ?>
 <?php include 'sidebar.php' ?>
 
-<div class="p-12 mt-10 lg:ml-64">
+<div class="p-[70px] mt-5 mb-10 lg:ml-64">
 
     <!-- PAGE HEADER -->
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+    <!-- <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
 
         <div>
             <h1 class="text-2xl font-bold text-black">
@@ -119,7 +121,7 @@ style="background-image:url('images/bg8.jpeg');">
             <span>ID Card</span>
         </div>
 
-    </div>
+    </div> -->
 
     <!-- CARD -->
     <div class="bg-gray-800 rounded-xl p-6">
@@ -141,7 +143,7 @@ style="background-image:url('images/bg8.jpeg');">
                 <!-- FULL NAME -->
                 <div>
                     <label class="label">Full Name</label>
-                    <input type="text" class="input">
+                    <input type="text" class="input" placeholder="Enter stundent name">
                 </div>
 
                 <!-- SELECT -->
@@ -165,13 +167,13 @@ style="background-image:url('images/bg8.jpeg');">
                 <!-- PHONE -->
                 <div>
                     <label class="label">Phone Number</label>
-                    <input type="number" class="input">
+                    <input type="number" class="input" placeholder="Enter phone number">
                 </div>
 
                 <!-- CLASS -->
                 <div>
                     <label class="label">Class</label>
-                    <input type="text" class="input">
+                    <input type="text" class="input" placeholder="Enter class name">
                 </div>
 
                 <!-- BLOOD GROUP -->
@@ -194,7 +196,7 @@ style="background-image:url('images/bg8.jpeg');">
                 <!-- ADDRESS -->
                 <div class="md:col-span-2">
                     <label class="label">Address</label>
-                    <textarea class="textarea"></textarea>
+                    <textarea class="textarea" placeholder="Enter address"></textarea>
                 </div>
 
                 <!-- PHOTO -->

@@ -58,7 +58,7 @@ style="background-image: url('images/bg8.jpeg');">
 <!-- HEADER -->
 <div class="p-12 mt-10 lg:ml-64">
 
-    <div class="flex justify-between items-center mb-6">
+    <!-- <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-black">Balance Payment</h1>
 
         <div class="flex items-center gap-2 text-md font-semibold text-black">
@@ -66,7 +66,7 @@ style="background-image: url('images/bg8.jpeg');">
             <span>/</span>
             <span>Balance</span>
         </div>
-    </div>
+    </div> -->
 
     <!-- TABLE CARD -->
     <div class="bg-gray-800 rounded-xl p-5">

@@ -63,6 +63,9 @@ body{
     background:#0891b2;
     transform:translateY(-2px);
 }
+.input::placeholder{
+    color:#64748b;
+}
 
 </style>
 </head>
@@ -76,7 +79,7 @@ style="background-image:url('images/bg8.jpeg');">
 <div class="p-12 mt-10 lg:ml-64">
 
     <!-- PAGE HEADER -->
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+    <!-- <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
 
         <div>
             <h1 class="text-2xl font-bold text-black">
@@ -90,7 +93,7 @@ style="background-image:url('images/bg8.jpeg');">
             <span>Cash Memo</span>
         </div>
 
-    </div>
+    </div> -->
 
     <!-- CARD -->
     <div class="bg-gray-800 rounded-xl p-6">
@@ -112,25 +115,25 @@ style="background-image:url('images/bg8.jpeg');">
                 <!-- CASH MEMO -->
                 <div>
                     <label class="label">Cash MEMO</label>
-                    <input type="text" class="input">
+                    <input type="text" class="input" placeholder="Enter Cash Memo No">
                 </div>
 
                 <!-- AMOUNT -->
                 <div>
                     <label class="label">Amount</label>
-                    <input type="number" class="input">
+                    <input type="number" class="input" placeholder="Enter amount">
                 </div>
 
                 <!-- RECEIPT NUMBER -->
                 <div>
                     <label class="label">Receipt Number</label>
-                    <input type="text" class="input">
+                    <input type="text" class="input" placeholder="Enter receipt number">
                 </div>
 
                 <!-- DATE -->
                 <div>
                     <label class="label">Date</label>
-                    <input type="date" class="input">
+                    <input type="date" class="input" >
                 </div>
 
             </div>

@@ -89,15 +89,15 @@ body{
 <?php include 'header.php' ?>
 <?php include 'sidebar.php' ?>
 
-<div class="lg:ml-64 max-w-7xl mx-auto mt-10 p-4 md:p-12"> 
+<div class="lg:ml-64 max-w-7xl mx-auto mt-10 p-[80px] mb-10 md:p-12"> 
 <!-- HEADER -->
-<div class="flex justify-between items-center mb-6">
-<!-- <h1 class="text-xl font-bold">💳 Student Payment Form</h1> -->
+<!-- <div class="flex justify-between items-center mb-6">
+ <h1 class="text-xl font-bold">💳 Student Payment Form</h1> -->
 
 <!-- <button class="text-red-500 border border-red-500 px-3 py-1 rounded hover:bg-red-500 hover:text-white">
 Clear Filter
-</button> -->
-</div>
+</button> 
+</div> -->
 
 <!-- STEP INDICATOR -->
 <div class="flex items-center mb-6">
@@ -323,8 +323,8 @@ Clear Filter
 </div>
 <!-- BUTTONS -->
 <div class="flex justify-between mt-6">
-<button id="prev" class="px-4 py-2 bg-slate-700 rounded hidden">Previous</button>
-<button id="next" class="px-4 py-2 bg-cyan-500 rounded ml-auto">Next</button>
+<button id="prev" class="px-4 py-2 bg-blue-700 rounded hidden">Previous</button>
+<button id="next" class="px-4 py-2 bg-green-500 rounded ml-auto">Next</button>
 </div>
 
 
