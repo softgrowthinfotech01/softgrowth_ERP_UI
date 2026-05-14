@@ -26,11 +26,11 @@ body{
 .input{
     width:100%;
     height:50px;
-    background:#1e293b;
+    background:white;
     border:1px solid #334155;
     border-radius:10px;
     padding:0 14px;
-    color:white;
+    color:black;
     outline:none;
     transition:0.3s;
 }
