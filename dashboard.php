@@ -77,7 +77,7 @@ body {
 <?php include 'sidebar.php' ?>
 
 <!-- MAIN -->
-<main class="pt-24 lg:ml-72 px-6 pb-10">
+<main class="pt-24 lg:ml-72 px-6 pb-10 mb-20">
 
     <!-- CARDS -->
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
@@ -198,39 +198,269 @@ bar3d.setOption({
 
 
 // ================= 3D PIE (SPHERE STYLE) =================
+// ================= ULTRA ANIMATED ERP DONUT =================
 const pie3d = echarts.init(document.getElementById('pie3d'));
 
-pie3d.setOption({
-    backgroundColor: 'transparent',
+let rotation = 0;
+let isPaused = false;
 
-    tooltip: {
-        trigger: 'item'
-    },
+// OPTION FUNCTION
+function getOption(rotation = 0){
 
-    series: [{
-        type: 'pie',
-        radius: ['30%', '70%'],
-        roseType: 'area',
+    return {
 
-        itemStyle: {
-            borderRadius: 10,
-            borderColor: '#020617',
-            borderWidth: 2
+        backgroundColor: 'transparent',
+
+        tooltip: {
+            trigger: 'item',
+            backgroundColor: 'rgba(15,23,42,0.96)',
+            borderColor: '#334155',
+            textStyle: {
+                color: '#fff'
+            }
         },
 
-        label: {
-            color: '#ffffff'
+        legend: {
+            bottom: 0,
+            textStyle: {
+                color: '#cbd5e1',
+                fontWeight: 'bold'
+            }
         },
 
-        data: [
-            { value: 60, name: 'Students' },
-            { value: 10, name: 'Teachers' },
-            { value: 20, name: 'Courses' },
-            { value: 10, name: 'Revenue' }
+        graphic: [
+
+            // GLOW RING
+            {
+                type: 'circle',
+                left: 'center',
+                top: 'middle',
+
+                shape: {
+                    r: 90
+                },
+
+                style: {
+                    stroke: 'rgba(56,189,248,0.25)',
+                    lineWidth: 6,
+                    shadowBlur: 30,
+                    shadowColor: '#06b6d4',
+                    fill: 'transparent'
+                }
+            },
+
+            // INNER GLOW
+            {
+                type: 'circle',
+                left: 'center',
+                top: 'middle',
+
+                shape: {
+                    r: 62
+                },
+
+                style: {
+                    fill: 'rgba(255,255,255,0.04)',
+                    shadowBlur: 45,
+                    shadowColor: '#38bdf8'
+                }
+            },
+
+            // VALUE
+            {
+                type: 'text',
+                left: 'center',
+                top: '40%',
+
+                style: {
+                    text: '12K',
+                    fill: '#fff',
+                    fontSize: 36,
+                    fontWeight: 'bold'
+                }
+            },
+
+            // TITLE
+            {
+                type: 'text',
+                left: 'center',
+                top: '52%',
+
+                style: {
+                    text: 'ERP ANALYTICS',
+                    fill: '#94a3b8',
+                    fontSize: 13,
+                    fontWeight: 700
+                }
+            }
+        ],
+
+        series: [
+
+            // MAIN DONUT
+            {
+                type: 'pie',
+
+                radius: ['42%', '74%'],
+
+                center: ['50%', '45%'],
+
+                startAngle: rotation,
+
+                animation: false,
+
+                itemStyle: {
+                    borderRadius: 20,
+                    borderColor: '#020617',
+                    borderWidth: 5,
+
+                    shadowBlur: 25,
+                    shadowColor: 'rgba(0,0,0,0.45)'
+                },
+
+                label: {
+                    color: '#fff',
+                    formatter: '{b}\n{d}%',
+                    fontWeight: 'bold'
+                },
+
+                emphasis: {
+                    scale: true,
+                    scaleSize: 16
+                },
+
+                data: [
+
+                    {
+                        value: 60,
+                        name: 'Students',
+
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0,0,1,1,[
+                                { offset:0,color:'#06b6d4' },
+                                { offset:1,color:'#3b82f6' }
+                            ])
+                        }
+                    },
+
+                    {
+                        value: 10,
+                        name: 'Teachers',
+
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0,0,1,1,[
+                                { offset:0,color:'#8b5cf6' },
+                                { offset:1,color:'#ec4899' }
+                            ])
+                        }
+                    },
+
+                    {
+                        value: 20,
+                        name: 'Courses',
+
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0,0,1,1,[
+                                { offset:0,color:'#22c55e' },
+                                { offset:1,color:'#84cc16' }
+                            ])
+                        }
+                    },
+
+                    {
+                        value: 10,
+                        name: 'Revenue',
+
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0,0,1,1,[
+                                { offset:0,color:'#f59e0b' },
+                                { offset:1,color:'#ef4444' }
+                            ])
+                        }
+                    }
+                ]
+            },
+
+            // OUTER ROTATING RING
+            {
+                type: 'pie',
+
+                silent: true,
+
+                radius: ['80%', '82%'],
+
+                center: ['50%', '45%'],
+
+                startAngle: -rotation,
+
+                label: {
+                    show: false
+                },
+
+                data: [
+
+                    {
+                        value: 20,
+
+                        itemStyle: {
+                            color: '#38bdf8',
+                            shadowBlur: 25,
+                            shadowColor: '#06b6d4'
+                        }
+                    },
+
+                    {
+                        value: 80,
+
+                        itemStyle: {
+                            color: 'rgba(255,255,255,0.03)'
+                        }
+                    }
+                ]
+            }
         ]
-    }]
+    };
+}
+
+// INITIAL
+pie3d.setOption(getOption(rotation));
+
+// CONTINUOUS ROTATION
+const animationLoop = setInterval(() => {
+
+    if(!isPaused){
+
+        rotation += 2;
+
+        pie3d.setOption(getOption(rotation));
+    }
+
+}, 40);
+
+// ================= STOP ON HOVER =================
+
+// DESKTOP
+document.getElementById('pie3d').addEventListener('mouseenter', () => {
+    isPaused = true;
 });
 
+document.getElementById('pie3d').addEventListener('mouseleave', () => {
+    isPaused = false;
+});
+
+// MOBILE TOUCH
+document.getElementById('pie3d').addEventListener('touchstart', () => {
+    isPaused = true;
+});
+
+document.getElementById('pie3d').addEventListener('touchend', () => {
+    isPaused = false;
+});
+
+// RESPONSIVE
+window.addEventListener('resize', () => {
+    pie3d.resize();
+});
 </script>
 </body>
 </html>

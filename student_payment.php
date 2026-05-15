@@ -12,6 +12,20 @@
 /* ===== BACKGROUND ===== */
 body{
     overflow-x:hidden;
+        background-size: 400% 400%;
+    animation: gradientMove 15s ease infinite;
+}
+/* smooth motion */
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 /* ===== GLASS CARD ===== */
@@ -89,7 +103,7 @@ body{
 <?php include 'header.php' ?>
 <?php include 'sidebar.php' ?>
 
-<div class="lg:ml-64 max-w-7xl mx-auto mt-14 mb-20 md:mb-1 md:mt-10 p-4 md:p-[80px] mb-10 md:p-12"> 
+<div class="md:ml-[300px] max-w-7xl mx-auto mt-14 mb-20 md:mb-1 md:mt-10 p-4 md:p-[80px] mb-10 md:p-12"> 
 <!-- HEADER -->
 <!-- <div class="flex justify-between items-center mb-6">
  <h1 class="text-xl font-bold">💳 Student Payment Form</h1> -->

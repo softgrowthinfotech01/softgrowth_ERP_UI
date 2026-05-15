@@ -10,7 +10,21 @@
 <style>
 
 body{
-    background:#0f172a;
+    overflow-x:hidden;
+        background-size: 400% 400%;
+    animation: gradientMove 15s ease infinite;
+}
+/* smooth motion */
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 /* CARD */
@@ -89,7 +103,7 @@ style="background-image:url('images/bg8.jpeg');">
 <?php include 'header.php' ?>
 <?php include 'sidebar.php' ?>
 
-<div class="p-16 md:ml-[500px] mt-5 md:ml-64">
+<div class="p-16 md:ml-[500px] mt-5 md:ml-[300px]">
 
     <!-- PAGE HEADER -->
     <!-- <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
@@ -121,64 +135,76 @@ style="background-image:url('images/bg8.jpeg');">
         <hr class="border-slate-700 mb-8">
 
         <!-- FORM -->
-        <form class="space-y-6">
+       <form class="space-y-6">
 
-            <!-- CURRENT PASSWORD -->
-            <div>
-                <label class="label">
-                    Current Password
-                </label>
+    <!-- CURRENT PASSWORD -->
+    <div>
+        <label class="label">
+            Current Password
+        </label>
 
-                <div class="input-box">
-                    <input type="password" id="currentPassword" class="input">
+        <div class="input-box">
+            <input 
+            type="password" 
+            id="currentPassword" 
+            class="input"
+            placeholder="Enter current password">
 
-                    <span class="eye-btn"
-                    onclick="togglePassword('currentPassword', this)">
-                        👁
-                    </span>
-                </div>
-            </div>
+            <span class="eye-btn"
+            onclick="togglePassword('currentPassword', this)">
+                👁
+            </span>
+        </div>
+    </div>
 
-            <!-- NEW PASSWORD -->
-            <div>
-                <label class="label">
-                    New Password
-                </label>
+    <!-- NEW PASSWORD -->
+    <div>
+        <label class="label">
+            New Password
+        </label>
 
-                <div class="input-box">
-                    <input type="password" id="newPassword" class="input">
+        <div class="input-box">
+            <input 
+            type="password" 
+            id="newPassword" 
+            class="input"
+            placeholder="Enter new password">
 
-                    <span class="eye-btn"
-                    onclick="togglePassword('newPassword', this)">
-                        👁
-                    </span>
-                </div>
-            </div>
+            <span class="eye-btn"
+            onclick="togglePassword('newPassword', this)">
+                👁
+            </span>
+        </div>
+    </div>
 
-            <!-- CONFIRM PASSWORD -->
-            <div>
-                <label class="label">
-                    Confirm New Password
-                </label>
+    <!-- CONFIRM PASSWORD -->
+    <div>
+        <label class="label">
+            Confirm New Password
+        </label>
 
-                <div class="input-box">
-                    <input type="password" id="confirmPassword" class="input">
+        <div class="input-box">
+            <input 
+            type="password" 
+            id="confirmPassword" 
+            class="input"
+            placeholder="Confirm new password">
 
-                    <span class="eye-btn"
-                    onclick="togglePassword('confirmPassword', this)">
-                        👁
-                    </span>
-                </div>
-            </div>
+            <span class="eye-btn"
+            onclick="togglePassword('confirmPassword', this)">
+                👁
+            </span>
+        </div>
+    </div>
 
-            <!-- BUTTON -->
-            <div class="pt-4">
-                <button type="submit" class="submit-btn">
-                    Update Password
-                </button>
-            </div>
+    <!-- BUTTON -->
+    <div class="pt-4">
+        <button type="submit" class="submit-btn">
+            Update Password
+        </button>
+    </div>
 
-        </form>
+</form>
 
     </div>
 

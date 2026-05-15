@@ -9,7 +9,21 @@
 
 <style>
 body{
-    background:#0f172a;
+    overflow-x:hidden;
+        background-size: 400% 400%;
+    animation: gradientMove 15s ease infinite;
+}
+/* smooth motion */
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 /* Card */
@@ -63,7 +77,7 @@ td{
 <?php include 'sidebar.php' ?>
 
 <!-- HEADER -->
-<div class=" p-8 md:p-14 mb-20 md:mb-1 mt-10 lg:ml-64">
+<div class=" p-8 md:p-14 mb-20 md:mb-1 mt-10 md:ml-[300px]">
     <!-- <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-black">Student Payment</h1>
 

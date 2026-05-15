@@ -11,6 +11,20 @@
 <style>
 body{
     overflow-x:hidden;
+        background-size: 400% 400%;
+    animation: gradientMove 15s ease infinite;
+}
+/* smooth motion */
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 /* GLASS CARD */
@@ -102,7 +116,7 @@ input[type="file"]{
 <?php include 'header.php' ?>
 <?php include 'sidebar.php' ?>
 
-<div id="main" class="lg:ml-72 transition-all main duration-300  mt-14 mb-20 md:mb-5 md:mt-5 p-4 md:p-[70px] max-w-6xl mx-auto">
+<div id="main" class="md:ml-[300px] transition-all main duration-300  mt-14 mb-20 md:mb-5 md:mt-5 p-4 md:p-[70px] max-w-6xl mx-auto">
 
 
 

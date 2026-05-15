@@ -10,7 +10,21 @@
 <style>
 
 body{
-    background:#0f172a;
+    overflow-x:hidden;
+        background-size: 400% 400%;
+    animation: gradientMove 15s ease infinite;
+}
+/* smooth motion */
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 /* CARD */
@@ -104,7 +118,7 @@ style="background-image:url('images/bg8.jpeg');">
 <?php include 'header.php' ?>
 <?php include 'sidebar.php' ?>
 
-<div class="p-[70px] mt-5 mb-10 lg:ml-64">
+<div class="p-[70px] mt-5 mb-10 md:ml-[300px]">
 
     <!-- PAGE HEADER -->
     <!-- <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
@@ -196,7 +210,7 @@ style="background-image:url('images/bg8.jpeg');">
                 <!-- ADDRESS -->
                 <div class="md:col-span-2">
                     <label class="label">Address</label>
-                    <textarea class="textarea" placeholder="Enter address"></textarea>
+                    <textarea class="textarea input" placeholder="Enter address"></textarea>
                 </div>
 
                 <!-- PHOTO -->
@@ -204,7 +218,7 @@ style="background-image:url('images/bg8.jpeg');">
     <label class="label">Photo</label>
 
     <input type="file"
-    class="file-input w-full text-slate-300
+    class="file-input w-full text-gray-800
     file:bg-violet-500
     file:text-white
     file:border-0
