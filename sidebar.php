@@ -108,6 +108,11 @@ transition-all duration-300 ease-in-out overflow-y-auto shadow-2xl">
     📒 Ledger
 </a>
 
+<a href="student_reg_update.php"
+   class="block px-4 py-2 rounded-md text-slate-400 hover:bg-slate-800 hover:text-cyan-400">
+    Update Student
+</a>
+
         </div>
 
     </div>
