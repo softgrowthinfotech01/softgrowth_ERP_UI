@@ -207,6 +207,17 @@ style="background-image:url('images/bg8.jpeg');">
                     </select>
                 </div>
 
+
+                <div>
+<label class="text-md text-white font-bold mb-1 block">Gender</label>
+<select class="input">
+<option>Select Gender</option>
+<option>Male</option>
+<option>Female</option>
+<option>Other</option>
+</select>
+</div>
+
                 <!-- ADDRESS -->
                 <div class="md:col-span-2">
                     <label class="label">Address</label>

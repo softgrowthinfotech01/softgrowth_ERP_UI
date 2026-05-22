@@ -207,7 +207,15 @@ input[type="file"]{
 <label class="text-md text-white font-bold mb-1 block">Place of Birth</label>
 <input class="input" id="birth_place" placeholder="Enter place of birth">
 </div>
-
+<div>
+<label class="text-md text-white font-bold mb-1 block">Gender</label>
+<select class="input">
+<option>Select Gender</option>
+<option>Male</option>
+<option>Female</option>
+<option>Other</option>
+</select>
+</div>
 <!-- PHOTO -->
 <div class="md:col-span-2">
 <label class="text-md text-white font-bold mb-1 block">Passport Photo</label>

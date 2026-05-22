@@ -61,7 +61,7 @@
                 <button onclick="toggleProfile()"
                     class="flex items-center gap-2 bg-slate-800 px-3 py-2 rounded-xl">
 
-                    <img src="https://i.pravatar.cc/100"
+                    <img src=""
                         class="w-8 h-8 rounded-full border border-cyan-400">
 
                     <span class="hidden md:block text-white text-sm">Admin</span>
