@@ -172,10 +172,21 @@ input[type="file"]{
 <input class="input" type="text" id="student_name" placeholder="Enter student name">
 </div>
 
+<!-- Parent Name -->
+<div>
+<label class="text-md text-white font-bold mb-1 block">Parent Name</label>
+<input class="input" type="text" id="parent_name" placeholder="Enter parent name">
+</div>
+
 <!-- Caste -->
 <div>
 <label class="text-md text-white font-bold mb-1 block">Caste</label>
 <input class="input" type="text" id="caste" placeholder="Enter caste">
+</div>
+<!--sub Caste -->
+<div>
+<label class="text-md text-white font-bold mb-1 block">Sub Caste</label>
+<input class="input" type="text" id="sub_caste" placeholder="Enter sub caste">
 </div>
 
 <!-- Admission Date -->
@@ -209,11 +220,11 @@ input[type="file"]{
 </div>
 <div>
 <label class="text-md text-white font-bold mb-1 block">Gender</label>
-<select class="input">
-<option>Select Gender</option>
-<option>Male</option>
-<option>Female</option>
-<option>Other</option>
+<select class="input" id="gender">
+<option value="">Select Gender</option>
+<option value="male">Male</option>
+<option value="female">Female</option>
+<option value="other">Other</option>
 </select>
 </div>
 <!-- PHOTO -->
@@ -317,7 +328,7 @@ input[type="file"]{
 <div>
 <label class="text-md text-white font-bold mb-1 block">Blood Group</label>
 <select class="input" id="blood_group">
-<option>Select Blood Group</option>
+<option value="">Select Blood Group</option>
 <option value="A+">A+</option>
 <option value="A-">A-</option>
 <option value="B+">B+</option>
@@ -492,6 +503,8 @@ Next
 </div>
 
 <?php include 'footer.php' ?>
+<script src="url.js"></script>
+
 <script>
 
 let currentStep = 1;
@@ -617,8 +630,101 @@ if(!token){
 
 }
 
-</script>
-<script>
+function showValidationErrors(errors){
+
+    let messages = [];
+
+
+
+    // PASSPORT PHOTO
+
+    if(errors.passport_photo){
+
+        messages.push(
+            "Passport Photo must be JPG, JPEG or PNG"
+        );
+
+    }
+
+
+
+    // TC CERTIFICATE
+
+    if(errors.tc_certificate){
+
+        messages.push(
+            "TC Certificate must be PDF or Image"
+        );
+
+    }
+
+
+
+    // 10TH MARKSHEET
+
+    if(errors.marksheet_10){
+
+        messages.push(
+            "10th Marksheet must be PDF or Image"
+        );
+
+    }
+
+
+
+    // 12TH MARKSHEET
+
+    if(errors.marksheet_12){
+
+        messages.push(
+            "12th Marksheet must be PDF or Image"
+        );
+
+    }
+
+
+
+    // AADHAAR
+
+    if(errors.aadhaar_number){
+
+        messages.push(
+            "Aadhaar Number must be 12 digits"
+        );
+
+    }
+
+
+
+    // STUDENT PHONE
+
+    if(errors.student_phone){
+
+        messages.push(
+            "Student Phone must be 10 digits"
+        );
+
+    }
+
+
+
+    // PARENT PHONE
+
+    if(errors.parent_phone){
+
+        messages.push(
+            "Parent Phone must be 10 digits"
+        );
+
+    }
+
+
+
+    // SHOW ALERT
+
+    alert(messages.join("\n"));
+
+}
 
 async function saveStudent(){
 
@@ -629,151 +735,6 @@ async function saveStudent(){
         // ==========================
 
         const token = localStorage.getItem("token");
-
-
-
-        // ==========================
-        // FORM DATA
-        // ==========================
-
-        const formData = new FormData();
-
-
-
-        // STEP 1
-
-        formData.append(
-            "student_batch",
-            document.getElementById("student_batch").value
-        );
-
-        formData.append(
-            "student_year",
-            document.getElementById("student_year").value
-        );
-
-        formData.append(
-            "course",
-            document.getElementById("course").value
-        );
-
-        formData.append(
-            "student_name",
-            document.getElementById("student_name").value
-        );
-
-        formData.append(
-            "caste",
-            document.getElementById("caste").value
-        );
-
-        formData.append(
-            "admission_date",
-            document.getElementById("admission_date").value
-        );
-
-        formData.append("aadhaar_number",
-            document.getElementById("aadhaar").value
-        );
-
-        formData.append(
-            "abc_id",
-            document.getElementById("abc_id").value
-        );
-
-        formData.append("date_of_birth",
-            document.getElementById("dob").value
-        );
-
-        formData.append("place_of_birth",
-            document.getElementById("birth_place").value
-        );
-
-
-
-        // FILES
-
-        if(document.getElementById("photo").files[0]){
-
-            formData.append(
-                "photo",
-                document.getElementById("photo").files[0]
-            );
-
-        }
-
-
-
-        if(document.getElementById("tc_certificate").files[0]){
-
-            formData.append(
-                "tc_certificate",
-                document.getElementById("tc_certificate").files[0]
-            );
-
-        }
-
-
-
-        if(document.getElementById("marksheet_10").files[0]){
-
-            formData.append(
-                "10_marksheet",
-                document.getElementById("marksheet_10").files[0]
-            );
-
-        }
-
-
-
-        if(document.getElementById("marksheet_12").files[0]){
-
-            formData.append(
-                "12_marksheet",
-                document.getElementById("marksheet_12").files[0]
-            );
-
-        }
-
-
-
-        // STEP 3
-
-        formData.append("full_fees",
-    parseFloat(document.getElementById("full_fees").value) || 0
-);
-
-        formData.append("admission_fees",
-    parseFloat(document.getElementById("admission_fees").value) || 0
-);
-
-       formData.append("student_phone",
-    document.getElementById("student_phone").value.trim()
-);
-
-       formData.append("parent_phone",
-    document.getElementById("parent_phone").value.trim()
-);
-
-        formData.append(
-            "blood_group",
-            document.getElementById("blood_group").value
-        );
-
-        formData.append(
-            "tahsil",
-            document.getElementById("tahsil").value
-        );
-
-        formData.append(
-            "district",
-            document.getElementById("district").value
-        );
-
-        formData.append(
-            "full_address",
-            document.getElementById("full_address").value
-        );
 
 // ==========================
 // VALIDATIONS
@@ -903,6 +864,220 @@ if(!/^\d+$/.test(admissionFees)){
     return;
 }
 
+const semester =
+document.querySelector(
+    'input[name="semester"]:checked'
+);
+
+if(!semester){
+
+    alert("Please Select Semester");
+
+    return;
+}
+        // ==========================
+        // FORM DATA
+        // ==========================
+
+        const formData = new FormData();
+
+
+
+        // STEP 1
+
+        formData.append(
+            "student_batch",
+            document.getElementById("student_batch").value
+        );
+
+        formData.append(
+            "student_year",
+            document.getElementById("student_year").value
+        );
+
+        formData.append(
+            "course",
+            document.getElementById("course").value
+        );
+
+        formData.append(
+            "student_name",
+            document.getElementById("student_name").value
+        );
+        formData.append(
+            "parent_name",
+            document.getElementById("parent_name").value
+        );
+
+        formData.append(
+            "caste",
+            document.getElementById("caste").value
+        );
+        formData.append(
+            "sub_caste",
+            document.getElementById("sub_caste").value
+        );
+
+        formData.append(
+            "admission_date",
+            document.getElementById("admission_date").value
+        );
+
+        formData.append("aadhaar_number",
+            document.getElementById("aadhaar").value
+        );
+
+        formData.append(
+    "abc_id",
+    document.getElementById("abc_id").value
+);
+
+        formData.append("date_of_birth",
+            document.getElementById("dob").value
+        );
+
+        formData.append("place_of_birth",
+            document.getElementById("birth_place").value
+        );
+        formData.append(
+    "gender",
+    document.getElementById("gender").value
+);
+
+
+
+        // FILES
+
+        if(document.getElementById("photo").files[0]){
+
+            formData.append(
+    "passport_photo",
+                document.getElementById("photo").files[0]
+            );
+
+        }
+
+
+
+        if(document.getElementById("tc_certificate").files[0]){
+
+            formData.append(
+                "tc_certificate",
+                document.getElementById("tc_certificate").files[0]
+            );
+
+        }
+
+
+
+        if(document.getElementById("marksheet_10").files[0]){
+
+            formData.append(
+    "marksheet_10",
+                document.getElementById("marksheet_10").files[0]
+            );
+
+        }
+
+
+
+        if(document.getElementById("marksheet_12").files[0]){
+
+            formData.append(
+    "marksheet_12",
+                document.getElementById("marksheet_12").files[0]
+            );
+
+        }
+
+        if(document.getElementById("other_doc").files[0]){
+
+            formData.append(
+    "other_academic_documents",
+                document.getElementById("other_doc").files[0]
+            );
+
+        }
+
+        if(document.getElementById("caste_certificate").files[0]){
+
+            formData.append(
+                "caste_certificate",
+                document.getElementById("caste_certificate").files[0]
+            );
+
+        }
+
+        if(document.getElementById("domicile_certificate").files[0]){
+
+            formData.append(
+                "domicile_certificate",
+                document.getElementById("domicile_certificate").files[0]
+            );
+
+        }
+
+        if(document.getElementById("non_creamy_layer").files[0]){
+
+            formData.append(
+    "non_creamy_layer_certificate",
+                document.getElementById("non_creamy_layer").files[0]
+            );
+
+        }
+        if(document.getElementById("other_documents").files[0]){
+
+            formData.append(
+                "other_documents",
+                document.getElementById("other_documents").files[0]
+            );
+
+        }
+
+
+
+        // STEP 3
+
+        formData.append("full_fees",
+    parseFloat(document.getElementById("full_fees").value) || 0
+);
+
+        formData.append("admission_fees",
+    parseFloat(document.getElementById("admission_fees").value) || 0
+);
+
+       formData.append("student_phone",
+    document.getElementById("student_phone").value.trim()
+);
+
+       formData.append("parent_phone",
+    document.getElementById("parent_phone").value.trim()
+);
+
+        formData.append(
+            "blood_group",
+            document.getElementById("blood_group").value
+        );
+
+        formData.append(
+            "tahsil",
+            document.getElementById("tahsil").value
+        );
+
+        formData.append(
+            "district",
+            document.getElementById("district").value
+        );
+
+        formData.append(
+            "full_address",
+            document.getElementById("full_address").value
+        );
+formData.append(
+    "semester_pattern",
+    semester.value
+);
+
         // ==========================
         // API CALL
         // ==========================
@@ -913,23 +1088,23 @@ if(!/^\d+$/.test(admissionFees)){
 
 
 
-        const response = await fetch(
-            "http://127.0.0.1:8000/api/students",
-            {
+      const response = await fetch(
+    url + "students",
+    {
 
-                method: "POST",
+        method: "POST",
 
-                headers: {
+        headers: {
 
-                    "Authorization": `Bearer ${token}`,
-                    "Accept": "application/json"
+            "Authorization": `Bearer ${token}`,
+            "Accept": "application/json"
 
-                },
+        },
 
-                body: formData
+        body: formData
 
-            }
-        );
+    }
+);
 
 
 
@@ -951,11 +1126,9 @@ if(!/^\d+$/.test(admissionFees)){
 
         }else{
 
-            console.log(result);
+          console.log(result);
 
-console.log(result);
-
-alert(JSON.stringify(result.errors));
+showValidationErrors(result.errors);
         }
 
 
@@ -970,7 +1143,10 @@ alert(JSON.stringify(result.errors));
 
         nextBtn.disabled = false;
 
-        nextBtn.innerText = "Submit";
+        nextBtn.innerText =
+currentStep === totalSteps
+? "Submit"
+: "Next";
 
     }
 

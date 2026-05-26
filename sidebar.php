@@ -28,7 +28,7 @@ transition-all duration-300 ease-in-out overflow-y-auto shadow-2xl">
     <div class="p-4 space-y-2">
 
     <!-- DASHBOARD -->
-    <a href="dashboard.php"
+    <a href="dashboard"
     class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-300
     hover:bg-cyan-500 hover:text-white transition-all duration-300">
         🏠 Dashboard
@@ -54,12 +54,12 @@ transition-all duration-300 ease-in-out overflow-y-auto shadow-2xl">
         <div id="studentMenu"
         class="dropdown-menu max-h-0 overflow-hidden transition-all duration-500 ease-in-out ml-6 mt-2 space-y-2">
 
-            <a href="student_reg.php"
+            <a href="student_reg"
             class="block px-4 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-cyan-400 transition">
                 ➕ Student Registration
             </a>
 
-            <a href="student_payment.php"
+            <a href="student_payment"
             class="block px-4 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-cyan-400 transition">
                 💳 Student Payment
             </a>
@@ -88,22 +88,22 @@ transition-all duration-300 ease-in-out overflow-y-auto shadow-2xl">
         <div id="recordMenu"
         class="dropdown-menu max-h-0 overflow-hidden transition-all duration-500 ease-in-out ml-6 mt-2 space-y-2">
 
-          <a href="student_record.php"
+          <a href="student_record"
    class="block px-4 py-2 rounded-md text-slate-400 hover:bg-slate-800 hover:text-cyan-400">
     👨‍🎓 Student Record
 </a>
 
-<a href="payment_record.php"
+<a href="payment_record"
    class="block px-4 py-2 rounded-md text-slate-400 hover:bg-slate-800 hover:text-cyan-400">
     💰 Payment Record
 </a>
 
-<a href="balance_payment.php"
+<a href="balance_payment"
    class="block px-4 py-2 rounded-md text-slate-400 hover:bg-slate-800 hover:text-cyan-400">
     ⚖️ Balance Payments
 </a>
 
-<a href="Leager_form.php"
+<a href="Leager_form"
    class="block px-4 py-2 rounded-md text-slate-400 hover:bg-slate-800 hover:text-cyan-400">
     📒 Ledger
 </a>
@@ -112,25 +112,25 @@ transition-all duration-300 ease-in-out overflow-y-auto shadow-2xl">
     </div>
 
     <!-- SIMPLE ITEMS -->
-    <a href="Bonafide.php"
+    <a href="Bonafide"
     class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-300
     hover:bg-cyan-500 hover:text-white transition-all duration-300">
         📄 Bonafide
     </a>
     
-    <a href="cash_memo.php"
+    <a href="cash_memo"
     class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-300
     hover:bg-cyan-500 hover:text-white transition-all duration-300">
        💵  Cash Memo
     </a>
 
-    <a href="i_card.php"
+    <a href="i_card"
     class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-300
     hover:bg-cyan-500 hover:text-white transition-all duration-300">
         🆔 I Card
     </a>
 
-    <a href="update_password.php"
+    <a href="update_password"
     class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-300
     hover:bg-cyan-500 hover:text-white transition-all duration-300">
         🔑 Update password

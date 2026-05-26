@@ -9,6 +9,7 @@
 </head>
 
 <body class="min-h-screen overflow-hidden flex items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-black px-4">
+    
 
     <div class="w-[92%] max-w-[420px] p-6 sm:p-8 mt-14 rounded-3xl border border-white/10 bg-white/10 backdrop-blur-2xl shadow-2xl">
 
@@ -26,15 +27,17 @@
 
         <input 
             type="text"
+             id="username"
             placeholder="Enter Username"
             class="w-full mb-4 p-4 rounded-2xl bg-white/10 border border-white/10 text-white placeholder:text-slate-400 outline-none focus:border-cyan-400 focus:ring-4 focus:ring-cyan-400/20 transition-all duration-300">
 
         <input 
             type="password"
+                id="password"
             placeholder="Enter Password"
             class="w-full mb-4 p-4 rounded-2xl bg-white/10 border border-white/10 text-white placeholder:text-slate-400 outline-none focus:border-cyan-400 focus:ring-4 focus:ring-cyan-400/20 transition-all duration-300">
 
-        <div class="flex items-center justify-between mb-6">
+<div class="flex items-center justify-between mb-6">
             <label class="flex items-center gap-2 text-sm text-slate-300 cursor-pointer">
                 <input type="checkbox" class="accent-cyan-400">
                 Remember me
@@ -45,18 +48,137 @@
             </a>
         </div>
 
-        <button class="w-full py-4 rounded-2xl bg-cyan-400 text-black text-lg font-bold transition-all duration-300 hover:bg-cyan-300 hover:scale-[1.02]">
+        <button  onclick="login()" class="w-full py-4 rounded-2xl bg-cyan-400 text-black text-lg font-bold transition-all duration-300 hover:bg-cyan-300 hover:scale-[1.02]">
             Login
         </button>
 
-        <p class="mt-6 text-center text-sm text-slate-400">
+        <!-- <p class="mt-6 text-center text-sm text-slate-400">
             Don’t have an account?
-            <a href="#" class="font-semibold text-cyan-300 hover:text-cyan-200 transition">
+            <a href="registration_form.php" class="font-semibold text-cyan-300 hover:text-cyan-200 transition">
                 Register
             </a>
-        </p>
+        </p> -->
 
     </div>
+<div 
+    id="customAlert"
+    class="fixed top-5 left-1/2 -translate-x-1/2
+    bg-green-500 text-white
+    px-6 py-3 rounded-lg shadow-lg
+    hidden z-50">
 
+    Login Successful ✅
+
+</div>
+<script src="url.js"></script>
+    <script>
+
+async function login(){
+
+    try{
+
+        // ======================
+        // GET INPUT VALUES
+        // ======================
+
+        const data = {
+
+            username: document.getElementById("username").value,
+
+            password: document.getElementById("password").value
+
+        };
+
+
+
+        console.log(data);
+
+
+
+        // ======================
+        // API CALL
+        // ======================
+
+        const response = await fetch(
+            url + "login",
+            {
+
+                method: "POST",
+
+                headers: {
+
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+
+                },
+
+                body: JSON.stringify(data)
+
+            }
+        );
+
+
+
+        const result = await response.json();
+
+        console.log(result);
+
+
+
+        // ======================
+        // SUCCESS
+        // ======================
+
+        if(response.ok){
+
+            // SAVE TOKEN
+
+            localStorage.setItem("token", result.token);
+
+            // SAVE USER
+
+            localStorage.setItem(
+                "user",
+                JSON.stringify(result.user)
+            );
+
+const customAlert =
+document.getElementById("customAlert");
+
+
+
+// SHOW ALERT
+
+customAlert.classList.remove("hidden");
+
+
+
+// AUTO HIDE + REDIRECT
+
+setTimeout(() => {
+
+    customAlert.classList.add("hidden");
+
+    window.location.href = "dashboard";
+
+}, 1500);
+
+        }else{
+
+            alert(result.message);
+
+        }
+
+    }catch(error){
+
+        console.log(error);
+
+        alert("Login Error");
+
+    }
+
+}
+
+</script>
 </body>
 </html>
