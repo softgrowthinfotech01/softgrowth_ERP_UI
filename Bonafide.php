@@ -128,77 +128,87 @@ style="background-image:url('images/bg8.jpeg');">
                 <!-- STUDENT NAME -->
                 <div>
                     <label class="label">Student Name</label>
-                    <input type="text" class="input" placeholder="Enter student name">
+                   <select
+id="student_select"
+class="input"
+onchange="getStudentDetails(this.value)">
+
+<option value="">
+Select Student
+</option>
+
+</select>
                 </div>
 
                 <!-- PARENT NAME -->
                 <div>
                     <label class="label">Parents Name</label>
-                    <input type="text" class="input" placeholder="Enter parents name ">
+                    <input type="text" id="parent_name" class="input" placeholder="Enter parents name ">
                 </div>
 
+                <!-- Course -->
+<div>
+<label class="text-md text-white font-bold mb-1 block">Course</label>
+<input class="input" id="course" placeholder="course">
+</div>
                 <!-- CLASS -->
                 <div>
                     <label class="label">Class Name</label>
-                    <input type="text" class="input" placeholder="Enter class name ">
+                    <input type="text" id="student_year" class="input" placeholder="Enter class name ">
                 </div>
 
-                <!-- ACADEMIC YEAR -->
-                <div>
-                    <label class="label">Academic Year</label>
-
-                    <div class="flex gap-2">
-                        <input type="text" placeholder="YYYY" class="input">
-                        <input type="text" placeholder="YYYY" class="input">
-                    </div>
-                </div>
 
                 <!-- ADMISSION DATE -->
                 <div>
                     <label class="label">Date of Admission</label>
-                    <input type="date" class="input">
+                    <input type="date" id="admission_date" class="input">
                 </div>
 
                 <!-- DOB -->
                 <div>
                     <label class="label">Date Of Birth</label>
-                    <input type="date" class="input">
+                    <input type="date" id="date_of_birth" class="input">
                 </div>
 
                 <!-- DOB WORDS -->
                 <div>
                     <label class="label">Date Of Birth (In Words)</label>
-                    <input type="text" class="input" placeholder="Enter date of birth ">
+                    <input
+type="text"
+id="date_of_birth_words"
+class="input mt-3"
+readonly
+placeholder="Date in words">
                 </div>
 
                 <!-- CASTE -->
                 <div>
                     <label class="label">Caste</label>
-                    <input type="text" class="input" placeholder="Enter caste">
+                    <input type="text" id="caste" class="input" placeholder="Enter caste">
                 </div>
 
                 <!-- SUB CASTE -->
                 <div>
                     <label class="label">Sub-Caste</label>
-                    <input type="text" class="input" placeholder="Enter sub-caste ">
+                    <input type="text" id="sub_caste" class="input" placeholder="Enter sub-caste ">
                 </div>
 
                 <!-- ADDRESS -->
                 <div>
                     <label class="label">Address</label>
-                    <input type="text" class="input" placeholder="Enter address ">
+                    <input type="text" id="full_address" class="input" placeholder="Enter address ">
                 </div>
 
                 <!-- TAHSIL -->
                 <div>
                     <label class="label">Tahsil</label>
-                    <input type="text" class="input" placeholder="Enter tahsil ">
+                    <input type="text" id="tahsil" class="input" placeholder="Enter tahsil ">
                 </div>
 
                 <!-- DISTRICT -->
                 <div>
                     <label class="label">District</label>
-                    <input type="text" class="input" placeholder="Enter district ">
+                    <input type="text" id="district" class="input" placeholder="Enter district ">
                 </div>
 
             </div>
@@ -218,5 +228,311 @@ style="background-image:url('images/bg8.jpeg');">
 
 <?php include 'footer.php' ?>
 
+<script src="url.js"></script>
+
+<script>
+
+// =========================
+// PAGE LOAD
+// =========================
+
+window.onload = function(){
+
+    getStudents();
+
+}
+
+
+function formatDateInWords(dateString){
+
+    const date = new Date(dateString);
+
+
+
+    const options = {
+
+        day: 'numeric',
+
+        month: 'long',
+
+        year: 'numeric'
+
+    };
+
+
+
+    return date.toLocaleDateString(
+        'en-IN',
+        options
+    );
+
+}
+// =========================
+// FETCH ALL STUDENTS
+// =========================
+
+async function getStudents(){
+
+    try{
+
+        const response = await fetch(
+
+            url + "students",
+
+            {
+
+                headers:{
+
+                    "Authorization":
+                    "Bearer " + localStorage.getItem("token"),
+
+                    "Accept":"application/json"
+
+                }
+
+            }
+
+        );
+
+
+
+        const result = await response.json();
+
+        console.log(result);
+
+
+
+        const students =
+        result.data.data;
+
+
+
+        const select =
+        document.getElementById("student_select");
+
+
+
+        // RESET
+
+        select.innerHTML = `
+
+            <option value="">
+                Select Student
+            </option>
+
+        `;
+
+
+
+        students.forEach(student => {
+
+            select.innerHTML += `
+
+                <option value="${student.id}">
+
+                    ${student.student_name}
+
+                </option>
+
+            `;
+
+        });
+
+
+
+    }catch(error){
+
+        console.log(error);
+
+        alert("Failed to load students");
+
+    }
+
+}
+
+
+function convertDateToWords(dateString){
+
+    const months = [
+
+        "January", "February", "March",
+        "April", "May", "June",
+        "July", "August", "September",
+        "October", "November", "December"
+
+    ];
+
+
+
+    const numbers = [
+
+        "Zero","One","Two","Three","Four",
+        "Five","Six","Seven","Eight","Nine",
+        "Ten","Eleven","Twelve","Thirteen",
+        "Fourteen","Fifteen","Sixteen",
+        "Seventeen","Eighteen","Nineteen",
+        "Twenty","Twenty One","Twenty Two",
+        "Twenty Three","Twenty Four",
+        "Twenty Five","Twenty Six",
+        "Twenty Seven","Twenty Eight",
+        "Twenty Nine","Thirty","Thirty One"
+
+    ];
+
+
+
+    const date = new Date(dateString);
+
+
+
+    const day =
+    numbers[date.getDate()];
+
+
+
+    const month =
+    months[date.getMonth()];
+
+
+
+    const year =
+    date.getFullYear()
+    .toString()
+    .split("")
+    .map(num => numbers[num])
+    .join(" ");
+
+
+
+
+    return `${day} ${month} ${year}`;
+
+}
+// =========================
+// FETCH SINGLE STUDENT
+// =========================
+
+async function getStudentDetails(id){
+
+    if(!id){
+
+        return;
+
+    }
+
+
+
+    try{
+
+        const response = await fetch(
+
+            url + "students/" + id + "/bonafide",
+
+            {
+
+                headers:{
+
+                    "Authorization":
+                    "Bearer " + localStorage.getItem("token"),
+
+                    "Accept":"application/json"
+
+                }
+
+            }
+
+        );
+
+
+
+        const result = await response.json();
+
+        console.log(result);
+
+
+
+        const student =
+        result.data;
+
+
+
+        // =========================
+        // PREFILL DATA
+        // =========================
+document.getElementById("student_select").value =
+id;
+
+
+        document.getElementById("parent_name").value =
+        student.parent_name || "";
+
+
+        document.getElementById("course").value =
+        student.course || "";
+
+        document.getElementById("student_year").value =
+        student.student_year || "";
+
+        document.getElementById("caste").value =
+        student.caste || "";
+
+        document.getElementById("sub_caste").value =
+        student.sub_caste || "";
+
+        document.getElementById("full_address").value =
+        student.full_address || "";
+
+        document.getElementById("tahsil").value =
+        student.tahsil || "";
+
+        document.getElementById("district").value =
+        student.district || "";
+
+        document.getElementById("date_of_birth").value =
+        student.date_of_birth || "";
+
+       document.getElementById(
+    "date_of_birth_words"
+).value =
+
+convertDateToWords(
+    student.date_of_birth
+);
+
+         document.getElementById("admission_date").value =
+        student.admission_date || "";
+
+
+
+
+       
+
+
+
+        // =========================
+        // DATES
+        // =========================
+
+        document.getElementById("admission_date").value =
+        student.admission_date || "";
+
+
+
+        document.getElementById("date_of_birth").value =
+        student.date_of_birth || "";
+
+
+
+    }catch(error){
+
+        console.log(error);
+
+        alert("Failed to fetch student details");
+
+    }
+
+}
+
+</script>
 </body>
 </html>
