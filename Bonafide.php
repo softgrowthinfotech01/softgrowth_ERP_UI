@@ -209,7 +209,7 @@ style="background-image:url('images/bg8.jpeg');">
         <hr class="border-slate-700 mb-8">
 
         <!-- FORM -->
-        <form>
+      <form id="bonafideForm">
 
             <div class="grid md:grid-cols-3 gap-6">
 
@@ -231,31 +231,31 @@ Select Student
                 <!-- PARENT NAME -->
                 <div>
                     <label class="label">Parents Name</label>
-                    <input type="text" id="parent_name" class="input" placeholder="Enter parents name ">
+                    <input type="text" id="parent_name" class="input" placeholder="parents name " readonly>
                 </div>
 
                 <!-- Course -->
 <div>
 <label class="text-md text-white font-bold mb-1 block">Course</label>
-<input class="input" id="course" placeholder="course">
+<input class="input" id="course" placeholder="course" readonly>
 </div>
                 <!-- CLASS -->
                 <div>
                     <label class="label">Class Name</label>
-                    <input type="text" id="student_year" class="input" placeholder="Enter class name ">
+                    <input type="text" id="student_year" class="input" placeholder="class name " readonly>
                 </div>
 
 
                 <!-- ADMISSION DATE -->
                 <div>
                     <label class="label">Date of Admission</label>
-                    <input type="date" id="admission_date" class="input">
+                    <input type="date" id="admission_date" class="input" readonly>
                 </div>
 
                 <!-- DOB -->
                 <div>
                     <label class="label">Date Of Birth</label>
-                    <input type="date" id="date_of_birth" class="input">
+                    <input type="date" id="date_of_birth" class="input" readonly>
                 </div>
 
                 <!-- DOB WORDS -->
@@ -266,37 +266,37 @@ type="text"
 id="date_of_birth_words"
 class="input mt-3"
 readonly
-placeholder="Date in words">
+placeholder="Date in words" readonly>
                 </div>
 
                 <!-- CASTE -->
                 <div>
                     <label class="label">Caste</label>
-                    <input type="text" id="caste" class="input" placeholder="Enter caste">
+                    <input type="text" id="caste" class="input" placeholder=" caste" readonly>
                 </div>
 
                 <!-- SUB CASTE -->
                 <div>
                     <label class="label">Sub-Caste</label>
-                    <input type="text" id="sub_caste" class="input" placeholder="Enter sub-caste ">
+                    <input type="text" id="sub_caste" class="input" placeholder="Sub-caste " readonly>
                 </div>
 
                 <!-- ADDRESS -->
                 <div>
                     <label class="label">Address</label>
-                    <input type="text" id="full_address" class="input" placeholder="Enter address ">
+                    <input type="text" id="full_address" class="input" placeholder="address " readonly>
                 </div>
 
                 <!-- TAHSIL -->
                 <div>
                     <label class="label">Tahsil</label>
-                    <input type="text" id="tahsil" class="input" placeholder="Enter tahsil ">
+                    <input type="text" id="tahsil" class="input" placeholder="tahsil " readonly>
                 </div>
 
                 <!-- DISTRICT -->
                 <div>
                     <label class="label">District</label>
-                    <input type="text" id="district" class="input" placeholder="Enter district ">
+                    <input type="text" id="district" class="input" placeholder="district " readonly>
                 </div>
 
             </div>
@@ -456,6 +456,17 @@ async function getStudents(){
         alert("Failed to load students");
 
     }
+
+
+
+    finally{
+
+        document.getElementById(
+            "student_select"
+        ).disabled = false;
+
+    }
+
 
 }
 
