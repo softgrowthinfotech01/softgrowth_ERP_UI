@@ -1,288 +1,265 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Student Record - ERP</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Record - ERP</title>
 
-<link rel="stylesheet" href="dist/output.css">
+    <link rel="stylesheet" href="dist/output.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
 
-<style>
-body{
-    overflow-x:hidden;
-        background-size: 400% 400%;
-    animation: gradientMove 15s ease infinite;
-}
-/* smooth motion */
-@keyframes gradientMove {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
 
-/* Card */
-.card{
-    background: rgba(255,255,255,0.06);
-    backdrop-filter: blur(18px);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 16px;
-}
+    <style>
+        body {
+            overflow-x: hidden;
+            background-size: 400% 400%;
+            animation: gradientMove 15s ease infinite;
+        }
 
-/* Table */
-table{
-    width:100%;
-    border-collapse:collapse;
-}
+        /* smooth motion */
+        @keyframes gradientMove {
+            0% {
+                background-position: 0% 50%;
+            }
 
-th{
-    text-align:left;
-    font-size:13px;
-    color:#cbd5e1;
-    padding:12px;
-    border-bottom:1px solid rgba(255,255,255,0.1);
-}
+            50% {
+                background-position: 100% 50%;
+            }
 
-td{
-    padding:12px;
-    font-size:14px;
-    color:#e2e8f0;
-    border-bottom:1px solid rgba(255,255,255,0.05);
-}
+            100% {
+                background-position: 0% 50%;
+            }
+        }
 
-.badge{
-    background:#334155;
-    padding:4px 10px;
-    border-radius:8px;
-    font-size:12px;
-}
+        /* Card */
+        .card {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+        }
 
-.btn{
-    padding:6px 10px;
-    border-radius:6px;
-    font-size:12px;
-    border:1px solid #475569;
-    color:white;
-    background:#1e293b;
-}
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-.btn:hover{
-    background:#334155;
-}
-</style>
+        th {
+            text-align: left;
+            font-size: 13px;
+            color: #cbd5e1;
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        td {
+            padding: 12px;
+            font-size: 14px;
+            color: #e2e8f0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .btn {
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            border: 1px solid #475569;
+            color: white;
+            background: #1e293b;
+        }
+
+        .btn:hover {
+            background: #334155;
+        }
+    </style>
 
 </head>
 
 <body class="text-white bg-fixed bg-no-repeat bg-cover bg-center" style="background-image: url('images/bg8.jpeg');">
-<?php include 'header.php' ?>
-<?php include 'sidebar.php' ?>
-<!-- HEADER -->
-<div class=" p-8 md:p-14 mb-20 md:mb-1 mt-10 md:ml-[300px]">
-    <!-- <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-black">Student Record</h1>
+    <?php include 'header.php' ?>
+    <?php include 'sidebar.php' ?>
+    <!-- HEADER -->
+    <div class=" p-8 md:p-14 mb-20 md:mb-1 mt-10 md:ml-[300px]">
 
-        <div class="flex items-center gap-2 text-md font-semibold text-black">
-            <span>🏠</span>
-            <span>/</span>
-            <span>Students</span>
-        </div>
-    </div> -->
 
-    <!-- TABLE CARD -->
-    <div class="bg-gray-800 rounded-xl p-5">
+        <!-- TABLE CARD -->
+        <div class="bg-gray-800 rounded-xl p-5">
 
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="text-lg font-semibold">Basic</h2>
-        </div>
-
-        <!-- TOOLBAR -->
-        <div class="flex flex-col md:flex-row md:justify-between gap-3 mb-4">
-
-            <div class="flex gap-2 flex-wrap">
-
-    <button class="btn bg-slate-700 hover:bg-slate-600 text-white px-3 py-1 rounded">
-        Copy
-    </button>
-
-    <button class="btn bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded">
-        CSV
-    </button>
-
-    <button class="btn bg-green-600 hover:bg-green-500 text-white px-3 py-1 rounded">
-        Excel
-    </button>
-
-    <button class="btn bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded">
-        PDF
-    </button>
-
-    <button class="btn bg-purple-600 hover:bg-purple-500 text-white px-3 py-1 rounded">
-        Print
-    </button>
-
-</div>
-
-            <input type="text"
-                placeholder="Search..."
-                class="px-3 py-2 rounded bg-slate-800 border border-slate-600 text-white w-full md:w-64">
-        </div>
-
-        <!-- TABLE -->
-        <div class="overflow-x-auto">
-        <table>
-
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <!-- <th>Student ID</th> -->
-                    <th>Student Name</th>
-                    <th>Batch</th>
-                    <th>Year</th>
-                    <th>Student Phone</th>
-                    <th>Father Phone</th>
-                    <th>Branch</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-
-          <tbody id="studentTableBody">
-
-<tr>
-    <td colspan="8" class="text-center text-slate-400 py-8">
-        Loading...
-    </td>
-</tr>
-
-</tbody>
-
-        </table>
-        </div>
-
-        <!-- FOOTER -->
-        <div class="flex justify-between items-center mt-4 text-sm text-slate-400">
-            <div>Showing 0 to 0 of 0 entries</div>
-
-            <div class="flex gap-2">
-                <button class="btn bg-blue-500">Previous</button>
-                <button class="btn bg-green-500">Next</button>
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-semibold">Basic</h2>
             </div>
+
+
+            <!-- TABLE -->
+            <div class="overflow-x-auto">
+                <table id="studentTable">
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <!-- <th>Student ID</th> -->
+                            <th>Student Name</th>
+                            <th>Batch</th>
+                            <th>Year</th>
+                            <th>Student Phone</th>
+                            <th>Father Phone</th>
+                            <th>Branch</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="studentTableBody">
+
+                        <tr>
+                            <td colspan="8" class="text-center text-slate-400 py-8">
+                                Loading...
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <!-- DETAILS MODAL -->
+
+    <div id="detailsModal" class="fixed inset-0 bg-black/60
+hidden justify-center items-center z-50 p-4">
+
+        <div class="bg-slate-900 rounded-2xl
+    w-full max-w-2xl p-6 relative">
+
+            <!-- CLOSE -->
+
+            <button onclick="closeDetailsModal()" class="absolute top-4 right-4
+        text-white text-xl">
+
+                ✕
+
+            </button>
+
+
+
+            <h2 class="text-xl font-bold mb-6 text-white">
+
+                Student Details
+
+            </h2>
+
+
+
+            <div id="detailsContent" class="grid md:grid-cols-2 gap-4 text-white">
+
+            </div>
+
         </div>
 
     </div>
-</div>
-<?php include 'footer.php' ?>
 
+    <!-- DOCUMENT MODAL -->
 
-<script src="url.js"></script>
+    <div id="documentsModal" class="fixed inset-0 bg-black/60
+hidden justify-center items-center z-50 p-4">
 
-<script>
+        <div class="bg-slate-900 rounded-2xl
+    w-full max-w-2xl p-6 relative">
 
-const token = localStorage.getItem("token");
+            <!-- CLOSE -->
 
+            <button onclick="closeDocumentsModal()" class="absolute top-4 right-4
+        text-white text-xl">
 
+                ✕
 
-// ==============================
-// AUTH CHECK
-// ==============================
-
-if(!token){
-
-    window.location.href = "login";
-
-}
-
-function docItem(file, label){
-
-    if(!file){
-
-        return '';
-    }
-
-    return `
-
-        <a
-            href="${baseUrl}storage/${file}"
-            target="_blank"
-            class="group relative block w-full overflow-hidden rounded-xl">
-
-            <img
-                src="${baseUrl}storage/${file}"
-                class="w-full aspect-square object-cover rounded-lg
-                border border-slate-700
-                hover:scale-105 transition duration-300">
+            </button>
 
 
 
-            <div
-                class="absolute inset-0
-                bg-black/60
-                opacity-0 group-hover:opacity-100
-                transition duration-300
-                flex items-center justify-center">
+            <h2 class="text-xl font-bold mb-6 text-white">
 
-                <span
-                    class="text-white text-xs font-medium">
+                Student Documents
 
-                    ${label}
+            </h2>
 
-                </span>
+
+
+            <div id="documentsContent" class="grid grid-cols-2 md:grid-cols-3 gap-4">
 
             </div>
 
-        </a>
+        </div>
 
-    `;
-}
+    </div>
+    <?php include 'footer.php' ?>
 
-// ==============================
-// FETCH STUDENTS
-// ==============================
 
-async function fetchStudents(){
+    <script src="url.js"></script>
 
-    try{
+    <script>
 
-        const response = await fetch(
-            url + "students",
-            {
-
-                method: "GET",
-
-                headers: {
-
-                    "Authorization": `Bearer ${token}`,
-                    "Accept": "application/json"
-
-                }
-
-            }
-        );
+        const token = localStorage.getItem("token");
 
 
 
-        const result = await response.json();
+        // ==============================
+        // AUTH CHECK
+        // ==============================
 
-        console.log(result);
-console.log(result.data.data);
+        if (!token) {
 
+            window.location.href = "login";
 
-        const tbody =
-        document.getElementById("studentTableBody");
-
-
-
-        tbody.innerHTML = "";
+        }
 
 
 
-      if(result.data.data.length === 0){
+        // ==============================
+        // FETCH STUDENTS
+        // ==============================
 
-            tbody.innerHTML = `
+        async function fetchStudents() {
+
+            try {
+
+                const response = await fetch(
+                    url + "students",
+                    {
+
+                        method: "GET",
+
+                        headers: {
+
+                            "Authorization": `Bearer ${token}`,
+                            "Accept": "application/json"
+
+                        }
+
+                    }
+                );
+
+
+                const result = await response.json();
+
+                const tbody =
+                    document.getElementById("studentTableBody");
+
+
+
+                tbody.innerHTML = "";
+
+
+
+                if (result.data.data.length === 0) {
+
+                    tbody.innerHTML = `
                 <tr>
                     <td colspan="8"
                         class="text-center text-slate-400 py-8">
@@ -293,14 +270,14 @@ console.log(result.data.data);
                 </tr>
             `;
 
-            return;
-        }
+                    return;
+                }
 
 
 
-        result.data.data.forEach((student,index)=>{
+                result.data.data.forEach((student, index) => {
 
-            tbody.innerHTML += `
+                    tbody.innerHTML += `
 
             <!-- MAIN ROW -->
 
@@ -325,17 +302,35 @@ console.log(result.data.data);
 
                     <div class="flex gap-2">
 
-                        <button
-                            onclick="toggleDetails(${student.id})"
-                            class="px-3 py-1 rounded bg-cyan-500 text-white text-xs">
+                        <!-- DETAILS -->
 
-                            View
+        <button
 
-                        </button>
+        onclick='openDetailsModal(${JSON.stringify(student)})'
+
+        class="px-3 py-1 rounded-lg
+        bg-cyan-500 text-white text-xs">
+
+            Details
+
+        </button>
+
+                         <!-- DOCUMENTS -->
+
+        <button
+
+        onclick='openDocumentsModal(${JSON.stringify(student)})'
+
+        class="px-3 py-1 rounded-lg
+        bg-green-500 text-white text-xs">
+
+            Documents
+
+        </button>
 
                         <button
                            onclick="window.location.href='student_reg_update.php?id=${student.id}'"
-                            class="px-3 py-1 rounded bg-green-500 text-white text-xs">
+                            class="px-3 py-1 rounded bg-blue-500 text-white text-xs">
 
                             Edit
 
@@ -357,396 +352,447 @@ console.log(result.data.data);
 
 
 
-            <!-- DETAILS ROW -->
+            
+            `;
 
-            <tr
-                id="details-${student.id}"
-                class="hidden bg-slate-900/60">
+                });
 
-                <td colspan="8">
+                // DESTROY OLD TABLE
 
-                    <div class="grid md:grid-cols-3 gap-6 p-5 items-start">
+                if ($.fn.DataTable.isDataTable('#studentTable')) {
 
-                        <!-- BASIC -->
+                    $('#studentTable')
+                        .DataTable()
+                        .destroy();
 
-                        <div class="card p-4">
-
-                            <h3 class="font-bold mb-3 text-cyan-400">
-                                Personal Details
-                            </h3>
-
-                            <div class="space-y-2 text-sm">
-                              <p>
-                                    <span class="text-slate-400">
-                                        Parent Name:
-                                    </span>
-
-                                    ${student.parent_name ?? '-'}
-                                </p>
-
-                                <p>
-                                    <span class="text-slate-400">
-                                        Aadhaar:
-                                    </span>
-
-                                    ${student.aadhaar_number ?? '-'}
-                                </p>
-
-                                <p>
-                                    <span class="text-slate-400">
-                                        DOB:
-                                    </span>
-
-                                    ${student.date_of_birth ?? '-'}
-                                </p>
-
-                                <p>
-                                    <span class="text-slate-400">
-                                        Birth Place:
-                                    </span>
-
-                                    ${student.place_of_birth ?? '-'}
-                                </p>
-
-                                <p>
-                                    <span class="text-slate-400">
-                                        Gender:
-                                    </span>
-
-                                    ${student.gender ?? '-'}
-                                </p>
-
-                                  <p>
-                                    <span class="text-slate-400">
-                                        Blood Group:
-                                    </span>
-
-                                    ${student.blood_group ?? '-'}
-                                </p>
-                                <p>
-                                    <span class="text-slate-400">
-                                        Caste:
-                                    </span>
-
-                                    ${student.caste ?? '-'}
-                                </p>
-                                  <p>
-                                    <span class="text-slate-400">
-                                        Sub Caste:
-                                    </span>
-
-                                    ${student.sub_caste ?? '-'}
-                                </p>
-
-                              
-
-                            </div>
-
-                        </div>
+                }
 
 
 
-                        <!-- FEES -->
+                // INIT DATATABLE
 
-                        <div class="card p-4">
+                $('#studentTable').DataTable({
 
-                            <h3 class="font-bold mb-3 text-green-400">
-                                Other Details
-                            </h3>
+                    destroy: true,
 
-                            <div class="space-y-2 text-sm">
+                    responsive: true,
 
-                              <p>
-                                    <span class="text-slate-400">
-                                        Semester:
-                                    </span>
+                    pageLength: 10,
 
-                                    ${student.semester_pattern ?? '-'}
-                                </p>
-                            <p>
-                                    <span class="text-slate-400">
-                                        Admission Date:
-                                    </span>
+                    dom: 'Bfrtip',
 
-                                    ${student.admission_date ?? '-'}
-                                </p>
+                    buttons: [
 
-                                <p>
-                                    <span class="text-slate-400">
-                                        ABC ID:
-                                    </span>
+                        'copy',
 
-                                    ${student.abc_id ?? '-'}
-                                </p>
-                                
+                        'csv',
 
-                                <p>
-                                    <span class="text-slate-400">
-                                        Full Fees:
-                                    </span>
+                        'excel',
 
-                                    ₹ ${student.full_fees ?? '-'}
-                                </p>
+                        'pdf',
 
-                                <p>
-                                    <span class="text-slate-400">
-                                        Admission Fees:
-                                    </span>
+                        'print'
 
-                                    ₹ ${student.admission_fees ?? '-'}
-                                </p>
+                    ]
 
-                              
+                });
 
-                                  <p>
-                                    <span class="text-slate-400">
-                                        Tahsil:
-                                    </span>
+            } catch (error) {
 
-                                    ${student.tahsil ?? '-'}
-                                </p>
-                                  <p>
-                                    <span class="text-slate-400">
-                                        District:
-                                    </span>
+                console.log(error);
 
-                                    ${student.district ?? '-'}
-                                </p>
-                                <p>
-                                    <span class="text-slate-400">
-                                        Address:
-                                    </span>
+            }
 
-                                    ${student.full_address ?? '-'}
-                                </p>
-
-                            </div>
-
-                        </div>
+        }
 
 
 
-                   <!-- DOCUMENTS -->
+        // ==============================
+        // INITIAL LOAD
+        // ==============================
 
-<div class="card p-4">
+        fetchStudents();
 
-    <h3 class="font-bold mb-4 text-pink-400">
-        Documents
-    </h3>
 
-    <div class="grid grid-cols-2 gap-2 w-full">
 
-        ${docItem(student.passport_photo, 'Photo')}
+        //delete code
+        async function deleteStudent(id) {
 
-        ${docItem(student.tc_certificate, 'TC')}
+            const confirmDelete = confirm(
+                "Are you sure you want to delete this student?"
+            );
 
-        ${docItem(student.marksheet_10, '10th')}
 
-        ${docItem(student.marksheet_12, '12th')}
 
-        ${docItem(student.other_academic_documents, 'Academic')}
+            if (!confirmDelete) {
 
-        ${docItem(student.caste_certificate, 'Caste')}
+                return;
 
-        ${docItem(student.domicile_certificate, 'Domicile')}
+            }
 
-        ${docItem(student.non_creamy_layer_certificate, 'NCL')}
 
-        ${docItem(student.other_documents, 'Other')}
+
+            try {
+
+                const response = await fetch(
+
+                    url + "students/" + id,
+
+                    {
+
+                        method: "DELETE",
+
+                        headers: {
+
+                            "Authorization":
+                                "Bearer " + localStorage.getItem("token"),
+
+                            "Accept": "application/json"
+
+                        }
+
+                    }
+
+                );
+
+
+
+                // SUCCESS
+
+                if (response.ok) {
+
+                    alert("Student Deleted Successfully ✅");
+
+
+
+                    // AUTO REFRESH
+
+                    window.location.reload();
+
+                }
+
+
+
+                // ERROR
+
+                else {
+
+                    const result =
+                        await response.json();
+
+
+
+                    alert(
+                        result.message || "Delete Failed"
+                    );
+
+                }
+
+
+
+            } catch (error) {
+
+                console.log(error);
+
+                alert("Server Error ❌");
+
+            }
+
+        }
+
+
+        // =========================
+        // DETAILS MODAL
+        // =========================
+
+        function openDetailsModal(student) {
+
+            document.getElementById(
+                "detailsModal"
+            ).classList.remove("hidden");
+
+
+
+            document.getElementById(
+                "detailsModal"
+            ).classList.add("flex");
+
+
+
+            document.getElementById(
+                "detailsContent"
+            ).innerHTML = `
+
+        <div>
+            <strong>Parent:</strong>
+            ${student.parent_name || "-"}
+        </div>
+
+          <div>
+            <strong>Semester:</strong>
+            ${student.semester_pattern || "-"}
+        </div>
+
+
+        <div>
+            <strong>Aadhaar:</strong>
+            ${student.aadhaar_number || "-"}
+        </div>
+
+         <div>
+            <strong>Admission Date:</strong>
+            ${student.admission_date || "-"}
+        </div>
+
+         <div>
+            <strong>Gender:</strong>
+            ${student.gender || "-"}
+        </div>
+
+        <div>
+
+            <strong>ABC ID:</strong>
+            ${student.abc_id || "-"}
+        </div>
+
+
+        <div>
+            <strong>DOB:</strong>
+            ${student.date_of_birth || "-"}
+        </div>
+
+         
+        <div>
+            <strong>Full Fees:</strong>
+            ₹ ${student.full_fees || "-"}
+        </div>
+
+        <div>
+            <strong>Birth Place:</strong>
+            ${student.place_of_birth || "-"}    
+        </div>
+
+       <div>
+            <strong>Admission Fees:</strong>
+            ₹ ${student.admission_fees || "-"}
+        </div>
+
+        <div>
+        <strong> Blood Group:</strong>
+        ${student.blood_group || "-"}
+        </div>
+
+          <div>
+                <strong>Tahsil:</strong>
+                ${student.tahsil || "-"}
+            </div>
+
+        <div>
+            <strong>Caste:</strong>
+            ${student.caste || "-"} 
+        </div>
+
+              <div>
+                <strong>District:</strong>
+                ${student.district || "-"}
+            </div>
+
+        <div>
+            <strong>Sub Caste:</strong>
+            ${student.sub_caste || "-"}
+        </div>
+  <div>
+            <strong>Address:</strong>
+            ${student.full_address || "-"}
+        </div>
+   
+    `;
+
+        }
+
+
+
+        // CLOSE
+
+        function closeDetailsModal() {
+
+            document.getElementById(
+                "detailsModal"
+            ).classList.add("hidden");
+
+        }
+
+        function openDocumentsModal(student) {
+
+            document.getElementById(
+                "documentsModal"
+            ).classList.remove("hidden");
+
+
+
+            document.getElementById(
+                "documentsModal"
+            ).classList.add("flex");
+
+
+
+            const docs = [
+
+                {
+                    name: "Passport Photo",
+                    file: student.passport_photo
+                },
+
+                {
+                    name: "10th Marksheet",
+                    file: student.marksheet_10
+                },
+
+                {
+                    name: "12th Marksheet",
+                    file: student.marksheet_12
+                },
+
+                {
+                    name: "TC Certificate",
+                    file: student.tc_certificate
+                },
+
+                {
+                    name: "Caste Certificate",
+                    file: student.caste_certificate
+                },
+
+                {
+                    name: "Domicile Certificate",
+                    file: student.domicile_certificate
+                },
+
+                {
+                    name: "NCL Certificate",
+                    file: student.non_creamy_layer_certificate
+                },
+
+                {
+                    name: "Other Academic Documents",
+                    file: student.other_academic_documents
+                },
+
+                {
+                    name: "Other Documents",
+                    file: student.other_documents
+                }
+
+            ];
+
+
+
+            let html = "";
+
+
+
+            docs.forEach(doc => {
+
+                if (doc.file) {
+
+                    html += `
+
+<div class="relative group">
+
+    <!-- CARD -->
+
+    <div
+
+    class="bg-slate-800 rounded-xl p-4
+    text-center hover:bg-slate-700
+    transition">
+
+        <div class="text-4xl mb-2">
+            📄
+        </div>
+
+        <div class="text-white text-sm">
+
+            ${doc.name}
+
+        </div>
+
+    </div>
+
+
+
+    <!-- HOVER DOWNLOAD BUTTON -->
+
+    <div
+
+    class="absolute inset-0
+    flex items-center justify-center
+    bg-black/60 rounded-xl
+    opacity-0 group-hover:opacity-100
+    transition-all duration-300">
+
+     <a
+
+href="${baseUrl}storage/${doc.file}"
+
+download
+
+target="_self"
+
+class="px-4 py-2 rounded-lg
+bg-cyan-500 hover:bg-cyan-600
+text-white text-sm">
+
+    Download
+
+</a>
 
     </div>
 
 </div>
-                    </div>
 
-                </td>
-
-            </tr>
-
-            `;
-
-        });
-
-    }catch(error){
-
-        console.log(error);
-
-    }
-
-}
-
-
-
-// ==============================
-// TOGGLE DETAILS
-// ==============================
-
-function toggleDetails(id){
-
-    const row =
-    document.getElementById(`details-${id}`);
-
-    row.classList.toggle("hidden");
-
-}
-
-
-
-// ==============================
-// DELETE STUDENT
-// ==============================
-
-async function deleteStudent(id){
-
-    const confirmDelete =
-    confirm("Delete this student?");
-
-    if(!confirmDelete){
-
-        return;
-    }
-
-    try{
-
-        const response = await fetch(
-            url + "students/" + id,
-            {
-
-                method: "DELETE",
-
-                headers: {
-
-                    "Authorization": `Bearer ${token}`,
-                    "Accept": "application/json"
-
+`;
                 }
 
-            }
-        );
+            });
 
 
 
-        if(response.ok){
-
-            fetchStudents();
-
-        }
-
-    }catch(error){
-
-        console.log(error);
-
-    }
-
-}
-
-
-
-// ==============================
-// EDIT STUDENT
-// ==============================
-
-function editStudent(id){
-
-    window.location.href =
-    "edit_student?id=" + id;
-
-}
-
-
-
-// ==============================
-// INITIAL LOAD
-// ==============================
-
-fetchStudents();
-
-
-
-//delete code
-async function deleteStudent(id){
-
-    const confirmDelete = confirm(
-        "Are you sure you want to delete this student?"
-    );
-
-
-
-    if(!confirmDelete){
-
-        return;
-
-    }
-
-
-
-    try{
-
-        const response = await fetch(
-
-            url + "students/" + id,
-
-            {
-
-                method:"DELETE",
-
-                headers:{
-
-                    "Authorization":
-                    "Bearer " + localStorage.getItem("token"),
-
-                    "Accept":"application/json"
-
-                }
-
-            }
-
-        );
-
-
-
-        // SUCCESS
-
-        if(response.ok){
-
-            alert("Student Deleted Successfully ✅");
-
-
-
-            // AUTO REFRESH
-
-            window.location.reload();
+            document.getElementById(
+                "documentsContent"
+            ).innerHTML = html;
 
         }
 
 
 
-        // ERROR
+        // CLOSE
 
-        else{
+        function closeDocumentsModal() {
 
-            const result =
-            await response.json();
-
-
-
-            alert(
-                result.message || "Delete Failed"
-            );
+            document.getElementById(
+                "documentsModal"
+            ).classList.add("hidden");
 
         }
 
+    </script>
 
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-    }catch(error){
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
 
-        console.log(error);
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
 
-        alert("Server Error ❌");
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
 
-    }
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
 
-}
-</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
 </body>
+
 </html>

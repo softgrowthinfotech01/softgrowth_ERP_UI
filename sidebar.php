@@ -107,12 +107,17 @@ transition-all duration-300 ease-in-out overflow-y-auto shadow-2xl">
    class="block px-4 py-2 rounded-md text-slate-400 hover:bg-slate-800 hover:text-cyan-400">
     📒 Ledger
 </a>
+
+<a href="cash_memo_records"
+   class="block px-4 py-2 rounded-md text-slate-400 hover:bg-slate-800 hover:text-cyan-400">
+    💵 Cash Memo Records
+</a>
         </div>
 
     </div>
 
     <!-- SIMPLE ITEMS -->
-    <a href="Bonafide"
+    <a href="bonafide"
     class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-300
     hover:bg-cyan-500 hover:text-white transition-all duration-300">
         📄 Bonafide

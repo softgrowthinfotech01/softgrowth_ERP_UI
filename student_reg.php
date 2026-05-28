@@ -149,10 +149,23 @@ input[type="file"]{
 <div>
 <label class="text-md text-white font-bold mb-1 block">Student Year</label>
 <select class="input" id="student_year">
-<option value="">Select Year</option>
-<option value="1st Year">1st Year</option>
-<option value="2nd Year">2nd Year</option>
-<option value="3rd Year">3rd Year</option>
+
+    <option value="">
+        Select Year
+    </option>
+
+    <option value="First Year">
+        1st Year
+    </option>
+
+    <option value="Second Year">
+        2nd Year
+    </option>
+
+    <option value="Third Year">
+        3rd Year
+    </option>
+
 </select>
 </div>
 
@@ -891,9 +904,9 @@ if(!semester){
         );
 
         formData.append(
-            "student_year",
-            document.getElementById("student_year").value
-        );
+    "student_year",
+    document.getElementById("student_year").value
+);
 
         formData.append(
             "course",

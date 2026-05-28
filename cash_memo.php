@@ -122,41 +122,46 @@ style="background-image:url('images/bg8.jpeg');">
         <hr class="border-slate-700 mb-8">
 
         <!-- FORM -->
-        <form>
+        <form id="cashMemoForm">
 
             <div class="grid md:grid-cols-3 gap-6">
 
                 <!-- CASH MEMO -->
                 <div>
                     <label class="label">Cash MEMO</label>
-                    <input type="text" class="input" placeholder="Enter Cash Memo No">
+                    <input type="text" id="cash_memo_no" class="input" placeholder="Enter Cash Memo No">
                 </div>
 
                 <!-- AMOUNT -->
                 <div>
                     <label class="label">Amount</label>
-                    <input type="number" class="input" placeholder="Enter amount">
+                    <input type="number" id="amount" class="input" placeholder="Enter amount">
                 </div>
 
                 <!-- RECEIPT NUMBER -->
                 <div>
                     <label class="label">Receipt Number</label>
-                    <input type="text" class="input" placeholder="Enter receipt number">
+                    <input type="text"  id="receipt_number" class="input" placeholder="Enter receipt number">
                 </div>
 
                 <!-- DATE -->
                 <div>
                     <label class="label">Date</label>
-                    <input type="date" class="input" >
+                    <input type="date"  id="date" class="input" >
                 </div>
 
             </div>
 
             <!-- BUTTON -->
             <div class="flex justify-center mt-10">
-                <button type="submit" class="submit-btn">
-                    Submit
-                </button>
+              <button
+type="button"
+class="submit-btn"
+onclick="saveCashMemo(event)">
+
+    Submit
+
+</button>
             </div>
 
         </form>
@@ -164,8 +169,149 @@ style="background-image:url('images/bg8.jpeg');">
     </div>
 
 </div>
+<!-- TOAST MESSAGE -->
+
+<div
+
+id="toast"
+
+class="fixed top-5 right-5
+translate-x-[120%]
+transition-all duration-500
+z-50">
+
+    <div
+
+    id="toastBox"
+
+    class="px-5 py-4 rounded-xl
+    shadow-2xl text-white
+    font-semibold">
+
+        Message
+
+    </div>
+
+</div>
+
 
 <?php include 'footer.php' ?>
 
+<script src="url.js"></script>
+
+<script>
+
+function showToast(message){
+
+    alert(message);
+
+}
+
+
+
+async function saveCashMemo(event){
+
+    event.preventDefault();
+
+
+
+    try{
+
+        const data = {
+
+            cash_memo_no:
+            document.getElementById("cash_memo_no").value,
+
+            amount:
+            document.getElementById("amount").value,
+
+            receipt_number:
+            document.getElementById("receipt_number").value,
+
+            date:
+            document.getElementById("date").value
+
+        };
+
+
+
+        console.log(data);
+
+
+
+        const response = await fetch(
+
+            url + "cash-memos/store",
+
+            {
+
+                method:"POST",
+
+                headers:{
+
+                    "Content-Type":"application/json",
+
+                    "Accept":"application/json",
+
+                    "Authorization":
+                    "Bearer " +
+                    localStorage.getItem("token")
+
+                },
+
+                body:JSON.stringify(data)
+
+            }
+
+        );
+
+
+
+        const result =
+        await response.json();
+
+
+
+        console.log(result);
+
+
+
+        if(response.ok){
+
+            showToast(
+                result.message ||
+                "Cash Memo Added Successfully ✅"
+            );
+
+
+
+            document.getElementById(
+                "cashMemoForm"
+            ).reset();
+
+        }
+
+        else{
+
+            showToast(
+                result.message ||
+                "API Error ❌"
+            );
+
+        }
+
+
+
+    }catch(error){
+
+        console.log(error);
+
+        showToast("Server Error ❌");
+
+    }
+
+}
+
+</script>
 </body>
 </html>

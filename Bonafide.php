@@ -6,6 +6,7 @@
 <title>Bonafide Certificate - ERP</title>
 
 <link rel="stylesheet" href="dist/output.css">
+<link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
 
 <style>
 
@@ -80,6 +81,93 @@ body{
     transform:translateY(-2px);
 }
 
+
+.ts-wrapper{
+
+    width:100%;
+
+}
+
+
+
+.ts-control{
+
+    width:100% !important;
+
+    padding:10px !important;
+
+    border-radius:10px !important;
+
+    background:#ffffff !important;
+
+    border:1px solid #cbd5e1 !important;
+
+    min-height:50px !important;
+
+    box-shadow:none !important;
+
+    font-weight:500 !important;
+
+    color:#0f172a !important;
+
+    transition:.2s !important;
+
+}
+
+
+
+.ts-control:focus-within{
+
+    border-color:#06b6d4 !important;
+
+    box-shadow:0 0 0 4px rgba(6,182,212,0.15) !important;
+
+}
+
+
+
+.ts-control input{
+
+    color:#0f172a !important;
+
+    font-size:15px !important;
+
+}
+
+
+
+.ts-dropdown{
+
+    border-radius:14px !important;
+
+    border:1px solid #cbd5e1 !important;
+
+    overflow:hidden;
+
+    margin-top:6px !important;
+
+}
+
+
+
+.ts-dropdown .option{
+
+    padding:12px !important;
+
+    font-weight:500;
+
+}
+
+
+
+.ts-dropdown .active{
+
+    background:#06b6d4 !important;
+
+    color:white !important;
+
+}
+
 </style>
 </head>
 
@@ -130,7 +218,7 @@ style="background-image:url('images/bg8.jpeg');">
                     <label class="label">Student Name</label>
                    <select
 id="student_select"
-class="input"
+class=""
 onchange="getStudentDetails(this.value)">
 
 <option value="">
@@ -215,9 +303,17 @@ placeholder="Date in words">
 
             <!-- BUTTON -->
             <div class="flex justify-center mt-10">
-                <button type="submit" class="submit-btn">
-                    Submit
-                </button>
+                <button
+
+type="button"
+
+class="submit-btn"
+
+onclick="generateBonafide()">
+
+Generate Bonafide Certificate
+
+</button>
             </div>
 
         </form>
@@ -337,6 +433,19 @@ async function getStudents(){
             `;
 
         });
+
+        new TomSelect("#student_select",{
+
+    create:false,
+
+    sortField:{
+        field:"text",
+        direction:"asc"
+    },
+
+    placeholder:"Search Student..."
+
+});
 
 
 
@@ -532,7 +641,37 @@ convertDateToWords(
     }
 
 }
+// generate bonafide certificate
+
+function generateBonafide(){
+
+    const studentId =
+
+    document.getElementById(
+        "student_select"
+    ).value;
+
+
+
+    if(!studentId){
+
+        alert("Please Select Student");
+
+        return;
+
+    }
+
+
+
+    // REDIRECT TO PREVIEW PAGE
+
+    window.location.href =
+
+    "bonafide_print.php?id=" + studentId;
+
+}
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
 </body>
 </html>
