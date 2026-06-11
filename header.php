@@ -49,7 +49,7 @@
 
                     <span>Admin</span>
 
-                    <small>⌄</small>
+                    <!-- <small>⌄</small> -->
 
                 </button>
 
