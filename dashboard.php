@@ -180,7 +180,7 @@ body{
 
 .erp-trend{
      margin-top:5px;
-    font-size:15px;
+    font-size:17px;
 }
 
 .erp-trend.emerald{color:#0F766E}
