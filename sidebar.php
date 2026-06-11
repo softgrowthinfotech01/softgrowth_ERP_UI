@@ -93,7 +93,7 @@ overflow-y-auto shadow-2xl erp-side">
 
 <!-- TOGGLE BUTTON -->
 <button onclick="toggleSidebar()"
-class="fixed top-3 left-3 z-50 lg:hidden erp-menu-btn">
+class="fixed top-3 left-5 z-50 lg:hidden erp-menu-btn">
     ☰
 </button>
 
@@ -290,7 +290,7 @@ border-radius: 0px;
 .erp-menu-btn{
     width:44px;
     height:44px;
-
+    margin-left: 15px;
     border-radius:16px;
 
     color:#fff;

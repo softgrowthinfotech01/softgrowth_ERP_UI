@@ -54,7 +54,8 @@ body{
     overflow:hidden;
     border-radius:34px;
     padding:1px;
-       margin-bottom:10px;
+       margin-bottom:2px;
+       margin-top: -10px;
  
 }
 
@@ -222,7 +223,7 @@ body{
     }
 
     .erp-pro-hero{
-        padding:22px;
+        /* padding:22px; */
         border-radius:26px;
     }
 
@@ -260,7 +261,7 @@ body{
 <main class="pt-24 lg:ml-72 px-6 pb-10 mb-20">
 
     <!-- HERO -->
-    <section class="erp-pro-hero mb-4">
+    <section class="erp-pro-hero ">
         <!-- <span class="erp-kicker">✦ ELITE ERP COMMAND CENTER</span> -->
 
         <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3">
