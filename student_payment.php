@@ -10,96 +10,371 @@
 <style>
 
 /* ===== BACKGROUND ===== */
-body{
-    overflow-x:hidden;
-        background-size: 400% 400%;
-    animation: gradientMove 15s ease infinite;
-}
-/* smooth motion */
-@keyframes gradientMove {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
+ body {
+            overflow-x: hidden;
+            min-height: 100vh;
 
-/* ===== GLASS CARD ===== */
-.card{
-    background: rgba(255,255,255,0.06);
-    backdrop-filter: blur(18px);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 18px;
-}
+            background:
+                linear-gradient(rgba(0, 0, 0, 0.45),
+                    rgba(0, 0, 0, .45)),
+                url('images/d_bg.png');
+
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+
 
 /* ===== STEP ===== */
-.step{
-    width:40px;
-    height:40px;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:#334155;
-    color:white;
-    font-weight:bold;
-    transition:.3s;
-}
 
-.step.active{
-    background:linear-gradient(135deg,#06b6d4,#6366f1);
-    transform:scale(1.1);
-}
+        /* STEP */
+        .step {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
 
-.line{
-    flex:1;
-    height:3px;
-    background:#334155;
-    transition:.3s;
-}
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-.line.active{
-    background:linear-gradient(90deg,#06b6d4,#6366f1);
-}
+            font-weight: 900;
+            color: #D1FAE5;
 
-/* ===== STEP BOX ===== */
+            background: rgba(15, 23, 42, .72);
+            border: 1px solid rgba(16, 185, 129, .28);
+
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, .10),
+                0 8px 20px rgba(0, 0, 0, .22);
+
+            transition: .3s ease;
+        }
+
+        .step.active {
+            color: #06281f;
+
+            background:
+                linear-gradient(135deg,
+                    #34D399,
+                    #FBBF24);
+
+            transform: scale(1.1);
+
+            box-shadow:
+                0 0 0 5px rgba(52, 211, 153, .12),
+                0 12px 28px rgba(251, 191, 36, .25);
+        }
+
+        /* LINE */
+        .line {
+            height: 3px;
+            flex: 1;
+            border-radius: 50px;
+
+            background: rgba(148, 163, 184, .28);
+            transition: .3s ease;
+        }
+
+        .line.active {
+            background:
+                linear-gradient(90deg,
+                    #34D399,
+                    #FBBF24);
+
+            box-shadow: 0 0 18px rgba(52, 211, 153, .30);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .step-box{
     display:none;
     opacity:0;
-    transform:translateY(15px);
-    transition:.4s;
+    transform:translateY(18px) scale(.98);
+    transition:.45s ease;
+
+    position:relative;
+    overflow:hidden;
+
+    padding:32px;
+    border-radius:34px;
+
+    background:
+        linear-gradient(135deg,
+            rgba(255,255,255,.92),
+            rgba(245,243,255,.88),
+            rgba(236,254,255,.84)
+        );
+
+    border:1px solid rgba(255,255,255,.75);
+
+    backdrop-filter:blur(35px);
+    -webkit-backdrop-filter:blur(35px);
+
+    box-shadow:
+        0 35px 90px rgba(15,23,42,.22),
+        inset 0 1px 0 rgba(255,255,255,1);
+}
+
+/* ANIMATED BORDER */
+.step-box::before{
+    content:"";
+    position:absolute;
+    inset:-2px;
+    z-index:0;
+
+    background:
+        conic-gradient(
+            from 180deg,
+            #7C3AED,
+            #06B6D4,
+            #22C55E,
+            #F59E0B,
+            #7C3AED
+        );
+
+    opacity:.35;
+    animation:spinGlow 7s linear infinite;
+}
+
+.step-box::after{
+    content:"";
+    position:absolute;
+    inset:2px;
+    z-index:0;
+
+    border-radius:32px;
+
+    background:
+        linear-gradient(135deg,
+            rgba(255,255,255,.95),
+            rgba(245,243,255,.90),
+            rgba(240,249,255,.88)
+        );
 }
 
 .step-box.active{
     display:block;
     opacity:1;
-    transform:translateY(0);
+    transform:translateY(0) scale(1);
 }
 
-/* ===== INPUT ===== */
+.step-box > *{
+    position:relative;
+    z-index:2;
+}
+
+/* HEADING */
+.step-box h2{
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+
+    color:#0F172A !important;
+    font-size:27px;
+    font-weight:950;
+    margin-bottom:28px;
+    letter-spacing:-.8px;
+}
+
+.step-box h2::before{
+    content:"✦";
+    width:42px;
+    height:42px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:15px;
+
+    color:#fff;
+    font-size:18px;
+
+    background:
+        linear-gradient(135deg,#7C3AED,#06B6D4);
+
+    box-shadow:
+        0 14px 32px rgba(124,58,237,.30);
+}
+
+.step-box h2::after{
+    content:"";
+    position:absolute;
+    left:55px;
+    bottom:-9px;
+
+    width:120px;
+    height:4px;
+    border-radius:999px;
+
+    background:
+        linear-gradient(90deg,#7C3AED,#06B6D4,#22C55E);
+}
+
+/* LABEL */
+.step-box label{
+    color:#1E293B !important;
+    font-size:13px !important;
+    font-weight:950 !important;
+    letter-spacing:.25px;
+    margin-bottom:8px !important;
+}
+
+/* INPUT */
 .input{
     width:100%;
-    padding:10px 12px;
-    border-radius:12px;
-    background:white;
-    border:1px solid #cbd5e1;
+    height:52px;
+
+    padding:0 16px;
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(180deg,#FFFFFF,#F8FAFC);
+
+    border:1px solid rgba(203,213,225,.88);
+
+    color:#0F172A;
+    font-size:14px;
+    font-weight:750;
+
     outline:none;
-    color:#0f172a;
+    transition:.28s ease;
+
+    box-shadow:
+        0 10px 24px rgba(15,23,42,.07),
+        inset 0 1px 0 rgba(255,255,255,1);
+}
+
+.input::placeholder{
+    color:#94A3B8;
+}
+
+.input:hover{
+    transform:translateY(-2px);
+    border-color:#67E8F9;
+    box-shadow:
+        0 14px 28px rgba(6,182,212,.12);
 }
 
 .input:focus{
-    border-color:#06b6d4;
-    box-shadow:0 0 0 3px rgba(6,182,212,0.2);
+    background:#fff;
+    border-color:#7C3AED;
+
+    box-shadow:
+        0 0 0 4px rgba(124,58,237,.14),
+        0 18px 35px rgba(6,182,212,.15);
+}
+
+/* SELECT */
+select.input{
+    cursor:pointer;
+}
+
+/* DATE */
+input[type="date"].input{
+    color:#334155;
+}
+
+/* FILE INPUT */
+input[type="file"].input{
+    height:auto;
+    padding:12px;
+
+    background:
+        linear-gradient(135deg,#FFFFFF,#F8FAFC);
+
+    border:1px dashed rgba(124,58,237,.48);
+}
+
+input[type="file"].input::file-selector-button{
+    border:0;
+
+    padding:11px 18px;
+    margin-right:14px;
+
+    border-radius:14px;
+
+    color:#fff;
+    font-weight:950;
+
+    background:
+        linear-gradient(135deg,#7C3AED,#06B6D4);
+
+    cursor:pointer;
+    transition:.25s ease;
+
+    box-shadow:
+        0 10px 24px rgba(124,58,237,.25);
+}
+
+input[type="file"].input::file-selector-button:hover{
+    transform:scale(1.05);
+}
+
+/* ANIMATION */
+@keyframes spinGlow{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+/* MOBILE */
+@media(max-width:768px){
+    .step-box{
+        padding:20px;
+        border-radius:24px;
+    }
+
+    .step-box::after{
+        border-radius:22px;
+    }
+
+    .step-box h2{
+        font-size:20px;
+        gap:9px;
+    }
+
+    .step-box h2::before{
+        width:34px;
+        height:34px;
+        border-radius:12px;
+        font-size:15px;
+    }
+
+    .step-box h2::after{
+        left:45px;
+        width:80px;
+    }
+
+    .input{
+        height:44px;
+        border-radius:14px;
+        font-size:13px;
+    }
 }
 
 </style>
 </head>
 
-<body class="text-white bg-fixed bg-no-repeat bg-cover bg-center" style="background-image: url('images/bg8.jpeg');">
+<body class="text-white ">
 <?php include 'header.php' ?>
 <?php include 'sidebar.php' ?>
 
@@ -123,7 +398,7 @@ Clear Filter
 </div>
 
 <!-- ================= STEP 1 ================= -->
-<div class="step-box active bg-gray-900 rounded-xl p-5" id="step1">
+<div class="step-box active " id="step1">
 
     <h2 class="font-bold mb-4">Student Details</h2>
 
@@ -164,7 +439,7 @@ Clear Filter
 </div>
 
 <!-- ================= STEP 2 ================= -->
-<div class="step-box bg-gray-900 rounded-xl p-5" id="step2">
+<div class="step-box " id="step2">
 
     <h2 class="font-bold mb-4">Fee Structure</h2>
 
@@ -303,7 +578,7 @@ Clear Filter
     </div>
 </div>
 <!-- ================= STEP 3 ================= -->
-<div class="step-box bg-gray-900 rounded-xl p-5" id="step3">
+<div class="step-box " id="step3">
 
     <h2 class="font-bold mb-4">Payment Details</h2>
 
