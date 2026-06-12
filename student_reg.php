@@ -99,7 +99,7 @@
     position:relative;
     overflow:hidden;
 
-    padding:32px;
+    padding:25px;
     border-radius:34px;
 
     background:
@@ -129,14 +129,14 @@
     background:
         conic-gradient(
             from 180deg,
-            #7C3AED,
+            #5b00f8,
             #06B6D4,
             #22C55E,
             #F59E0B,
             #7C3AED
         );
 
-    opacity:.35;
+    opacity:.95;
     animation:spinGlow 7s linear infinite;
 }
 
@@ -382,7 +382,7 @@ body{
 
     margin-left:300px !important;
 
-    padding-top:125px !important;
+    padding-top:95px !important;
     padding-left:25px !important;
     padding-right:25px !important;
     padding-bottom:25px !important;
@@ -649,7 +649,7 @@ footer,
     <?php include 'header.php' ?>
     <?php include 'sidebar.php' ?>
 
-    <div id="main" class="md:ml-[300px] transition-all main duration-300  mt-14 mb-20 md:mb-5 md:mt-5 p-4 md:p-[70px] max-w-6xl mx-auto">
+    <div id="main" class="md:ml-[300px] transition-all main duration-300   max-w-6xl mx-auto">
 
 
 

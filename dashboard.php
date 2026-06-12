@@ -265,7 +265,7 @@ main{
 
     margin-left:288px !important;
 
-    padding-top:110px !important;
+    padding-top:84px !important;
     padding-left:24px !important;
     padding-right:24px !important;
     padding-bottom:25px !important;

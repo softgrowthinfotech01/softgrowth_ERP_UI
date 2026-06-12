@@ -72,13 +72,13 @@
 <style>
 /* PREMIUM HEADER */
 .erp-header{
-    padding:10px 18px;
+    padding:0px;
     background:transparent;
-    margin-top: -8px;
+    margin-top: 1px;
 }
 
 .erp-header-inner{
-    height:80%;
+    height:85%;
 
     display:flex;
     align-items:center;
