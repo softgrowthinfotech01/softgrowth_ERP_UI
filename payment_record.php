@@ -8,9 +8,18 @@
 <link rel="stylesheet" href="dist/output.css">
 
 <style>
-            body{
+html, body{
+    margin:0;
+    padding:0;
+    min-height:100%;
+}
+
+body{
     overflow-x:hidden;
     min-height:100vh;
+    display:flex;
+    flex-direction:column;
+
     background:
         radial-gradient(circle at center,
             rgba(0,0,0,.35) 0%,
@@ -18,52 +27,48 @@
             rgba(0,0,0,.85) 100%
         ),
         url('images/d_bg.png');
+
     background-size:cover;
     background-position:center;
     background-repeat:no-repeat;
     background-attachment:fixed;
-    padding: 80px;
 }
+
+/* MAIN CONTENT */
+.payment-page-wrap{
+    flex:1;
+    margin-left:300px;
+    padding:115px 45px 24px;
+}
+
+/* CARD */
 .table-card{
     position:relative;
     overflow:hidden;
-
+    width:100%;
+    max-width:1280px;
+    margin:0 auto;
     padding:22px;
-    border-radius:28px;
+    border-radius:26px;
 
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,.92),
-            rgba(245,243,255,.88),
-            rgba(236,254,255,.84)
-        );
+    background:linear-gradient(135deg,
+        rgba(255,255,255,.92),
+        rgba(245,243,255,.88),
+        rgba(236,254,255,.84)
+    );
 
     border:1px solid rgba(255,255,255,.75);
-
     backdrop-filter:blur(35px);
-
-    box-shadow:
-        0 35px 90px rgba(15,23,42,.20);
+    -webkit-backdrop-filter:blur(35px);
+    box-shadow:0 35px 90px rgba(15,23,42,.22);
 }
 
 .table-card::before{
     content:"";
     position:absolute;
     inset:-2px;
-
-    background:
-        conic-gradient(
-            from 180deg,
-            #7C3AED,
-            #06B6D4,
-            #22C55E,
-            #F59E0B,
-            #7C3AED
-        );
-
+    background:conic-gradient(from 180deg,#7C3AED,#06B6D4,#22C55E,#F59E0B,#7C3AED);
     opacity:.35;
-
     animation:spinGlow 7s linear infinite;
 }
 
@@ -71,16 +76,12 @@
     content:"";
     position:absolute;
     inset:2px;
-
-    border-radius:26px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,.96),
-            rgba(245,243,255,.92),
-            rgba(240,249,255,.90)
-        );
+    border-radius:24px;
+    background:linear-gradient(135deg,
+        rgba(255,255,255,.96),
+        rgba(245,243,255,.92),
+        rgba(240,249,255,.90)
+    );
 }
 
 .table-card>*{
@@ -89,57 +90,46 @@
 }
 
 /* HEADER */
-
 .table-heading{
     display:flex;
     align-items:center;
     gap:14px;
-
     margin-bottom:20px;
     padding-bottom:16px;
-
     border-bottom:1px solid rgba(226,232,240,.85);
 }
 
 .table-icon{
-    width:50px;
-    height:50px;
-
+    width:48px;
+    height:48px;
+    min-width:48px;
     display:grid;
     place-items:center;
-
     border-radius:16px;
-
-    font-size:24px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #7C3AED,
-            #06B6D4
-        );
-
-    box-shadow:
-        0 16px 34px rgba(124,58,237,.28);
+    font-size:22px;
+    background:linear-gradient(135deg,#7C3AED,#06B6D4);
+    box-shadow:0 16px 34px rgba(124,58,237,.28);
 }
 
 .table-heading h2{
     color:#0F172A;
     font-size:22px;
     font-weight:950;
+    line-height:1.2;
 }
 
 .table-heading p{
     color:#64748B;
     font-size:13px;
     font-weight:700;
+    line-height:1.5;
 }
 
 /* TOOLBAR */
-
 .toolbar-wrap{
     display:flex;
     justify-content:space-between;
+    align-items:center;
     gap:15px;
     flex-wrap:wrap;
     margin-bottom:18px;
@@ -151,45 +141,24 @@
     flex-wrap:wrap;
 }
 
-/* COPY */
-.btn-copy{
-    background:#475569;
-    color:#fff;
-    padding: 12px;
-    border-radius: 8px;
-}
-
-/* CSV */
-.btn-csv{
-    background:#0EA5E9;
-    color:#fff;
-     padding: 12px;
-    border-radius: 8px;
-}
-
-/* EXCEL */
-.btn-excel{
-    background:#16A34A;
-    color:#fff;
-     padding: 12px;
-    border-radius: 8px;
-}
-
-/* PDF */
-.btn-pdf{
-    background:#DC2626;
-    color:#fff;
-     padding: 12px;
-    border-radius: 8px;
-}
-
-/* PRINT */
+.btn-copy,
+.btn-csv,
+.btn-excel,
+.btn-pdf,
 .btn-print{
-    background:#7C3AED;
     color:#fff;
-     padding: 12px;
-    border-radius: 8px;
+    padding:10px 15px;
+    border-radius:12px;
+    font-size:13px;
+    font-weight:900;
+    transition:.25s ease;
 }
+
+.btn-copy{background:#475569;}
+.btn-csv{background:#0EA5E9;}
+.btn-excel{background:#16A34A;}
+.btn-pdf{background:#DC2626;}
+.btn-print{background:#7C3AED;}
 
 .btn-copy:hover{background:#334155;}
 .btn-csv:hover{background:#0284C7;}
@@ -200,38 +169,28 @@
 .search-input{
     width:260px;
     max-width:100%;
-
     height:44px;
-
     padding:0 14px;
-
     border-radius:14px;
-
     background:#fff;
-
     border:1px solid #CBD5E1;
-
     color:#0F172A;
+    font-size:13px;
+    font-weight:700;
+    outline:none;
 }
 
 .search-input:focus{
-    outline:none;
-
     border-color:#7C3AED;
-
-    box-shadow:
-        0 0 0 4px rgba(124,58,237,.12);
+    box-shadow:0 0 0 4px rgba(124,58,237,.12);
 }
 
 /* TABLE */
-
 .table-wrap{
+    width:100%;
     overflow-x:auto;
-
     border-radius:18px;
-
     border:1px solid rgba(226,232,240,.85);
-
     background:#fff;
 }
 
@@ -242,31 +201,25 @@ table{
 }
 
 thead{
-    background:
-        linear-gradient(
-            135deg,
-            #7C3AED,
-            #06B6D4
-        );
+    background:linear-gradient(135deg,#7C3AED,#06B6D4);
 }
 
 th{
     padding:14px;
     text-align:left;
-
     color:#fff;
     font-size:13px;
     font-weight:900;
+    white-space:nowrap;
 }
 
 td{
     padding:14px;
-
     color:#334155;
     font-size:13px;
     font-weight:700;
-
     border-bottom:1px solid #E2E8F0;
+    white-space:nowrap;
 }
 
 tbody tr:hover{
@@ -279,15 +232,12 @@ tbody tr:hover{
     color:#64748B;
 }
 
-/* FOOTER */
-
+/* TABLE FOOTER */
 .table-footer{
     margin-top:18px;
-
     display:flex;
     justify-content:space-between;
     align-items:center;
-
     flex-wrap:wrap;
     gap:12px;
 }
@@ -305,24 +255,147 @@ tbody tr:hover{
 
 .page-btn{
     padding:10px 16px;
-
     border-radius:14px;
-
     color:#fff;
     font-size:13px;
-    font-weight:800;
+    font-weight:900;
+    background:linear-gradient(135deg,#7C3AED,#06B6D4);
+}
 
-    background:
-        linear-gradient(
-            135deg,
-            #7C3AED,
-            #06B6D4
-        );
+/* FOOTER PROPER SET */
+footer,
+.erp-footer{
+    position:relative !important;
+    left:auto !important;
+    right:auto !important;
+    bottom:auto !important;
+
+    margin-top:auto !important;
+    margin-left:290px !important;
+    width:calc(100% - 290px) !important;
+
+    padding:0 !important;
+    z-index:20 !important;
+}
+
+.erp-footer-wrap,
+.erp-footer-inner{
+    margin:0 !important;
+    border-radius:30px 30px 0 0 !important;
 }
 
 @keyframes spinGlow{
-    to{
-        transform:rotate(360deg);
+    to{transform:rotate(360deg);}
+}
+
+/* TABLET */
+@media(max-width:1024px){
+    .payment-page-wrap{
+        margin-left:0 !important;
+        padding:100px 16px 20px !important;
+    }
+
+    footer,
+    .erp-footer{
+        margin-left:0 !important;
+        width:100% !important;
+    }
+}
+
+/* MOBILE */
+@media(max-width:768px){
+    body{
+        background-attachment:scroll !important;
+    }
+
+    .payment-page-wrap{
+        margin-left:0 !important;
+        padding:95px 12px 16px !important;
+    }
+
+    .table-card{
+        width:100%;
+        max-width:100%;
+        padding:18px;
+        border-radius:24px;
+    }
+
+    .table-card::after{
+        border-radius:22px;
+    }
+
+    .table-heading{
+        align-items:flex-start;
+        gap:12px;
+        margin-bottom:18px;
+    }
+
+    .table-icon{
+        width:42px;
+        height:42px;
+        min-width:42px;
+        font-size:20px;
+        border-radius:14px;
+    }
+
+    .table-heading h2{
+        font-size:21px;
+    }
+
+    .table-heading p{
+        font-size:13px;
+    }
+
+    .toolbar-wrap{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .toolbar-buttons{
+        justify-content:center;
+    }
+
+    .btn-copy,
+    .btn-csv,
+    .btn-excel,
+    .btn-pdf,
+    .btn-print{
+        padding:9px 13px;
+        font-size:12px;
+    }
+
+    .search-input{
+        width:100%;
+    }
+
+    table{
+        min-width:900px;
+    }
+
+    th,
+    td{
+        padding:11px 12px;
+        font-size:12px;
+    }
+
+    .table-footer{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    footer,
+    .erp-footer{
+        margin-left:0 !important;
+        width:100% !important;
+        padding:0 !important;
+    }
+
+    .erp-footer-wrap,
+    .erp-footer-inner{
+        width:100% !important;
+        max-width:100% !important;
+        margin:0 !important;
+        border-radius:24px 24px 0 0 !important;
     }
 }
 </style>
@@ -334,36 +407,27 @@ tbody tr:hover{
 <?php include 'header.php' ?>
 <?php include 'sidebar.php' ?>
 
-<!-- HEADER -->
-<div class="p-4 md:p-8 mt-10 mb-24 md:mb-10 md:ml-[300px]">
+<div class="payment-page-wrap">
 
     <div class="table-card">
 
-        <!-- HEADER -->
         <div class="table-heading">
-
-            <div class="table-icon">
-                💳
-            </div>
+            <div class="table-icon">💳</div>
 
             <div>
                 <h2>Payment Records</h2>
                 <p>Manage and track all student payment transactions</p>
             </div>
-
         </div>
 
-        <!-- TOOLBAR -->
         <div class="toolbar-wrap">
 
             <div class="toolbar-buttons">
-
                 <button class="btn-copy">Copy</button>
                 <button class="btn-csv">CSV</button>
                 <button class="btn-excel">Excel</button>
                 <button class="btn-pdf">PDF</button>
                 <button class="btn-print">Print</button>
-
             </div>
 
             <input
@@ -373,11 +437,9 @@ tbody tr:hover{
 
         </div>
 
-        <!-- TABLE -->
         <div class="table-wrap">
 
             <table>
-
                 <thead>
                     <tr>
                         <th>#</th>
@@ -393,20 +455,16 @@ tbody tr:hover{
                 </thead>
 
                 <tbody>
-
                     <tr>
                         <td colspan="9" class="empty-row">
                             No data available in table
                         </td>
                     </tr>
-
                 </tbody>
-
             </table>
 
         </div>
 
-        <!-- FOOTER -->
         <div class="table-footer">
 
             <div class="table-info">
@@ -414,15 +472,8 @@ tbody tr:hover{
             </div>
 
             <div class="pagination">
-
-                <button class="page-btn">
-                    Previous
-                </button>
-
-                <button class="page-btn">
-                    Next
-                </button>
-
+                <button class="page-btn">Previous</button>
+                <button class="page-btn">Next</button>
             </div>
 
         </div>

@@ -31,6 +31,7 @@
 .erp-footer{
     padding:12px 18px;
     background:transparent;
+    margin-top: 20px;
 }
 
 .erp-footer-wrap{

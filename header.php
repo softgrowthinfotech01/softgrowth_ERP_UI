@@ -327,68 +327,105 @@
 
 /* MOBILE */
 /* MOBILE */
+/* MOBILE HEADER */
 @media(max-width:768px){
 
     .erp-header{
-        padding:6px 8px;
+        padding:0px;
         margin-top:0;
-        height: 25px;
+        height:80px;
+        width:100%;
     }
 
     .erp-header-inner{
-        height:46px;
-        padding:0 18px;
-        border-radius:0 0 16px 16px;
-        gap:8px;
+        width:100%;
+        height:60px;
+
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+
+        padding:0 16px;
+
+        border-radius:0 0 18px 18px;
+
+        gap:10px;
     }
 
+    /* LOGO */
     .erp-brand{
+        display:flex;
+        align-items:center;
         gap:8px;
-        margin-left: 120px;
-   
+
+        margin-left:130px; /* Adjust according to sidebar menu button */
     }
 
     .erp-brand-mark{
-        width:30px;
-        height:30px;
-        border-radius:10px;
-        font-size:14px;
+        width:34px;
+        height:34px;
+
+        border-radius:12px;
+
+        font-size:15px;
     }
 
     .erp-brand h1{
-        font-size:16px;
+        font-size:18px;
         white-space:nowrap;
     }
 
+    /* HIDE SEARCH */
     .erp-search{
         display:none !important;
     }
 
+    /* PROFILE BUTTON */
     .erp-profile-btn{
-        height:34px;
-        padding:3px 7px 3px 4px;
-        gap:5px;
+        width:40px;
+        height:40px;
+
+        padding:0;
+
+        display:flex;
+        align-items:center;
+        justify-content:center;
+
+        border-radius:50%;
     }
 
-    .erp-avatar{
-        width:26px;
-        height:26px;
-        font-size:11px;
-    }
-
+    /* HIDE ADMIN TEXT */
     .erp-profile-btn span{
-        display:none;
+        display:none !important;
     }
 
+    .erp-profile-btn small{
+        display:none !important;
+    }
+
+    /* ONLY A VISIBLE */
+    .erp-avatar{
+        width:30px;
+        height:30px;
+
+        margin:0;
+
+        font-size:12px;
+        font-weight:900;
+    }
+
+    /* PROFILE DROPDOWN */
     .erp-profile-box{
-        top:42px;
+        top:48px;
         right:0;
-        width:170px;
+
+        width:180px;
+
         border-radius:14px;
     }
 
     .erp-profile-box div{
-        padding:9px 10px;
+        padding:10px 12px;
         font-size:12px;
     }
 }

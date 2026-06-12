@@ -12,9 +12,18 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
 
     <style>
-        body{
+html, body{
+    margin:0;
+    padding:0;
+    min-height:100%;
+}
+
+body{
     overflow-x:hidden;
     min-height:100vh;
+    display:flex;
+    flex-direction:column;
+
     background:
         radial-gradient(circle at center,
             rgba(0,0,0,.35) 0%,
@@ -22,20 +31,37 @@
             rgba(0,0,0,.85) 100%
         ),
         url('images/d_bg.png');
+
     background-size:cover;
     background-position:center;
     background-repeat:no-repeat;
     background-attachment:fixed;
-    padding: 80px;
 }
-       .table-card{
+
+/* MAIN CONTENT */
+.student-page-wrap{
+    flex:1;
+    margin-left:300px;
+    padding:115px 45px 24px;
+}
+
+/* CARD */
+.table-card{
     position:relative;
     overflow:hidden;
+    width:100%;
+    max-width:1280px;
+    margin:0 auto;
     padding:22px;
     border-radius:26px;
-    background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(245,243,255,.88),rgba(236,254,255,.84));
+    background:linear-gradient(135deg,
+        rgba(255,255,255,.92),
+        rgba(245,243,255,.88),
+        rgba(236,254,255,.84)
+    );
     border:1px solid rgba(255,255,255,.75);
     backdrop-filter:blur(35px);
+    -webkit-backdrop-filter:blur(35px);
     box-shadow:0 35px 90px rgba(15,23,42,.22);
 }
 
@@ -53,7 +79,11 @@
     position:absolute;
     inset:2px;
     border-radius:24px;
-    background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(245,243,255,.92),rgba(240,249,255,.90));
+    background:linear-gradient(135deg,
+        rgba(255,255,255,.96),
+        rgba(245,243,255,.92),
+        rgba(240,249,255,.90)
+    );
 }
 
 .table-card > *{
@@ -61,6 +91,7 @@
     z-index:2;
 }
 
+/* HEADING */
 .table-heading{
     display:flex;
     align-items:center;
@@ -73,6 +104,7 @@
 .table-icon{
     width:48px;
     height:48px;
+    min-width:48px;
     display:grid;
     place-items:center;
     border-radius:16px;
@@ -85,15 +117,19 @@
     color:#0F172A;
     font-size:22px;
     font-weight:950;
+    line-height:1.2;
 }
 
 .table-heading p{
     color:#64748B;
     font-size:13px;
     font-weight:700;
+    line-height:1.5;
 }
 
+/* TABLE */
 .table-wrap{
+    width:100%;
     overflow-x:auto;
     border-radius:18px;
     border:1px solid rgba(226,232,240,.9);
@@ -102,9 +138,9 @@
 
 #studentTable{
     width:100%;
+    min-width:950px;
     border-collapse:separate;
     border-spacing:0;
-    min-width:900px;
 }
 
 #studentTable thead{
@@ -129,42 +165,96 @@
     white-space:nowrap;
 }
 
-#studentTable tbody tr{
-    transition:.25s ease;
-}
-
 #studentTable tbody tr:hover{
     background:rgba(124,58,237,.08);
 }
 
-#studentTable tbody tr:last-child td{
-    border-bottom:0;
+/* FOOTER PROPER SET */
+footer,
+.erp-footer{
+    position:relative !important;
+    left:auto !important;
+    right:auto !important;
+    bottom:auto !important;
+
+    margin-top:auto !important;
+    margin-left:290px !important;
+    width:calc(100% - 290px) !important;
+
+    padding:0 !important;
+    z-index:20 !important;
 }
 
+.erp-footer-wrap,
+.erp-footer-inner{
+    margin:0 !important;
+border-radius:30px 30px 0 0 !important;}
+
+/* ANIMATION */
 @keyframes spinGlow{
-    to{
-        transform:rotate(360deg);
+    to{ transform:rotate(360deg); }
+}
+
+/* TABLET */
+@media(max-width:1024px){
+    .student-page-wrap{
+        margin-left:0 !important;
+        padding:100px 16px 20px !important;
+    }
+
+    footer,
+    .erp-footer{
+        margin-left:0 !important;
+        width:100% !important;
     }
 }
 
+/* MOBILE */
 @media(max-width:768px){
+    body{
+        background-attachment:scroll !important;
+    }
+
+    .student-page-wrap{
+        margin-left:0 !important;
+        padding:95px 12px 16px !important;
+    }
+
     .table-card{
+        width:100%;
+        max-width:100%;
         padding:18px;
-        border-radius:22px;
+        border-radius:24px;
     }
 
     .table-card::after{
-        border-radius:20px;
+        border-radius:22px;
+    }
+
+    .table-heading{
+        align-items:flex-start;
+        gap:12px;
+        margin-bottom:18px;
     }
 
     .table-icon{
         width:42px;
         height:42px;
+        min-width:42px;
         font-size:20px;
+        border-radius:14px;
     }
 
     .table-heading h2{
-        font-size:19px;
+        font-size:21px;
+    }
+
+    .table-heading p{
+        font-size:13px;
+    }
+
+    #studentTable{
+        min-width:650px;
     }
 
     #studentTable th,
@@ -172,6 +262,20 @@
         padding:11px 12px;
         font-size:12px;
     }
+
+    footer,
+    .erp-footer{
+        margin-left:0 !important;
+        width:100% !important;
+        padding:0 !important;
+    }
+
+    .erp-footer-wrap,
+    .erp-footer-inner{
+        width:100% !important;
+        max-width:100% !important;
+        margin:0 !important;
+  border-radius:24px 24px 0 0 !important;    }
 }
     </style>
 
@@ -181,9 +285,8 @@
     <?php include 'header.php' ?>
     <?php include 'sidebar.php' ?>
     <!-- HEADER -->
-    <div class="p-4 md:p-8 mt-10 mb-24 md:mb-10 md:ml-[300px]">
-
-    <div class="table-card">
+<div class="student-page-wrap"> 
+       <div class="table-card">
 
         <div class="table-heading">
             <div class="table-icon">👨‍🎓</div>
