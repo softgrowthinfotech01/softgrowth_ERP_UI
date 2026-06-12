@@ -1,232 +1,410 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Update Password - ERP</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Password - ERP</title>
 
-<link rel="stylesheet" href="dist/output.css">
+    <link rel="stylesheet" href="dist/output.css">
 
-<style>
+    <style>
 
-body{
-    overflow-x:hidden;
-        background-size: 400% 400%;
-    animation: gradientMove 15s ease infinite;
+        
+         body {
+            overflow-x: hidden;
+            min-height: 100vh;
+
+            background:
+                linear-gradient(rgba(0, 0, 0, 0.45),
+                    rgba(0, 0, 0, .45)),
+                url('images/d_bg.png');
+
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            padding: 70px;
+        }
+.password-card{
+    position:relative;
+    overflow:hidden;
+    margin-left: 150px;
+    max-width:700px;
+
+    padding:24px;
+    border-radius:28px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.92),
+            rgba(245,243,255,.88),
+            rgba(236,254,255,.84)
+        );
+
+    border:1px solid rgba(255,255,255,.75);
+
+    backdrop-filter:blur(35px);
+
+    box-shadow:
+        0 35px 90px rgba(15,23,42,.20),
+        inset 0 1px 0 rgba(255,255,255,1);
 }
-/* smooth motion */
-@keyframes gradientMove {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
+
+.password-card::before{
+    content:"";
+    position:absolute;
+    inset:-2px;
+
+    background:
+        conic-gradient(
+            from 180deg,
+            #7C3AED,
+            #06B6D4,
+            #22C55E,
+            #F59E0B,
+            #7C3AED
+        );
+
+    opacity:.35;
+    animation:spinGlow 7s linear infinite;
 }
 
-/* CARD */
-.card{
-    background: rgba(255,255,255,0.06);
-    backdrop-filter: blur(18px);
-    border:1px solid rgba(255,255,255,0.1);
+.password-card::after{
+    content:"";
+    position:absolute;
+    inset:2px;
+    border-radius:26px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.95),
+            rgba(245,243,255,.90),
+            rgba(240,249,255,.88)
+        );
+}
+
+.password-card>*{
+    position:relative;
+    z-index:2;
+}
+
+/* HEADING */
+
+.password-heading{
+    display:flex;
+    align-items:center;
+    gap:14px;
+
+    margin-bottom:20px;
+    padding-bottom:16px;
+
+    border-bottom:1px solid rgba(226,232,240,.85);
+}
+
+.password-icon{
+    width:52px;
+    height:52px;
+
+    display:grid;
+    place-items:center;
+
     border-radius:16px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+
+    font-size:24px;
+
+    color:white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7C3AED,
+            #06B6D4
+        );
+
+    box-shadow:
+        0 16px 34px rgba(124,58,237,.25);
+}
+
+.password-heading h2{
+    color:#0F172A;
+    font-size:22px;
+    font-weight:950;
+}
+
+.password-heading p{
+    color:#64748B;
+    font-size:13px;
+    font-weight:700;
+}
+
+/* LABEL */
+
+.label{
+    display:block;
+
+    color:#1E293B;
+    font-size:13px;
+    font-weight:900;
+
+    margin-bottom:8px;
 }
 
 /* INPUT BOX */
+
 .input-box{
     position:relative;
 }
 
-/* INPUT */
-.input{
-    width:100%;
-    height:52px;
-    background:white;
-    border:1px solid #334155;
-    border-radius:10px;
-    padding:0 50px 0 14px;
-    color:black;
-    outline:none;
-    transition:0.3s;
-}
-
-.input:focus{
-    border-color:#06b6d4;
-    box-shadow:0 0 0 3px rgba(6,182,212,0.2);
-}
-
-/* LABEL */
-.label{
-    display:block;
-    margin-bottom:8px;
-    color:#cbd5e1;
-    font-size:14px;
+.input-box .input{
+    padding-right:50px;
 }
 
 /* EYE BUTTON */
+
 .eye-btn{
     position:absolute;
-    right:14px;
+
+    right:15px;
     top:50%;
+
     transform:translateY(-50%);
+
     cursor:pointer;
-    color:#94a3b8;
+
     font-size:18px;
+
+    color:#64748B;
+
+    transition:.25s;
+}
+
+.eye-btn:hover{
+    color:#7C3AED;
+    transform:translateY(-50%) scale(1.1);
+}
+
+/* INPUT */
+
+.input{
+    width:100%;
+    height:46px;
+
+    padding:0 14px;
+
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #FFFFFF,
+            #F8FAFC
+        );
+
+    border:1px solid rgba(203,213,225,.85);
+
+    color:#0F172A;
+
+    font-size:13px;
+    font-weight:700;
+
+    transition:.28s ease;
+}
+
+.input:focus{
+    border-color:#7C3AED;
+
+    box-shadow:
+        0 0 0 4px rgba(124,58,237,.12),
+        0 16px 30px rgba(6,182,212,.15);
+
+    outline:none;
 }
 
 /* BUTTON */
+
 .submit-btn{
-    background:#06b6d4;
-    color:white;
-    height:50px;
-    padding:0 40px;
-    border-radius:10px;
-    font-weight:600;
-    transition:0.3s;
+    padding:12px 28px;
+    margin-top: 15px;
+    border-radius:16px;
+
+    color:#fff;
+    font-size:13px;
+    font-weight:900;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7C3AED,
+            #06B6D4
+        );
+
+    box-shadow:
+        0 18px 40px rgba(124,58,237,.25);
+
+    transition:.3s ease;
 }
 
 .submit-btn:hover{
-    background:#0891b2;
-    transform:translateY(-2px);
+    transform:translateY(-3px);
 }
 
-</style>
+@keyframes spinGlow{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+@media(max-width:768px){
+
+    .password-card{
+        padding:18px;
+        border-radius:22px;
+    }
+
+    .password-heading h2{
+        font-size:18px;
+    }
+
+    .password-icon{
+        width:44px;
+        height:44px;
+        font-size:20px;
+    }
+
+    .submit-btn{
+        width:100%;
+    }
+
+}
+    </style>
 </head>
 
-<body class="text-white bg-fixed bg-no-repeat bg-cover bg-center"
-style="background-image:url('images/bg8.jpeg');">
+<body class="text-white">
 
-<?php include 'header.php' ?>
-<?php include 'sidebar.php' ?>
+    <?php include 'header.php' ?>
+    <?php include 'sidebar.php' ?>
 
-<div class="p-16 md:ml-[500px] mt-5 md:ml-[300px]">
+   <div class="p-4 md:p-8 mt-10 mb-24 md:mb-10 md:ml-[300px]">
 
-    <!-- PAGE HEADER -->
-    <!-- <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+    <div class="password-card">
 
-        <div>
-            <h1 class="text-2xl font-bold text-black">
-                Update Password
-            </h1>
+        <div class="password-heading">
+
+            <div class="password-icon">
+                🔐
+            </div>
+
+            <div>
+                <h2>Update Admin Password</h2>
+                <p>Secure your ERP account with a strong password</p>
+            </div>
+
         </div>
 
-        <div class="flex items-center gap-2 text-md font-semibold text-black">
-            <span>🏠</span>
-            <span>/</span>
-            <span>Update Password</span>
-        </div>
+        <form class="space-y-5">
 
-    </div> -->
+            <!-- CURRENT PASSWORD -->
+            <div>
+                <label class="label">
+                    Current Password
+                </label>
 
-    <!-- CARD -->
-    <div class="bg-gray-800 rounded-xl  p-6 max-w-2xl">
+                <div class="input-box">
 
-        <!-- TITLE -->
-        <div class="mb-6">
-            <h2 class="text-xl font-semibold">
-                Update Admin Password
-            </h2>
-        </div>
+                    <input
+                        type="password"
+                        id="currentPassword"
+                        class="input"
+                        placeholder="Enter current password">
 
-        <hr class="border-slate-700 mb-8">
+                    <span
+                        class="eye-btn"
+                        onclick="togglePassword('currentPassword', this)">
+                        👁
+                    </span>
 
-        <!-- FORM -->
-       <form class="space-y-6">
+                </div>
+            </div>
 
-    <!-- CURRENT PASSWORD -->
-    <div>
-        <label class="label">
-            Current Password
-        </label>
+            <!-- NEW PASSWORD -->
+            <div>
+                <label class="label">
+                    New Password
+                </label>
 
-        <div class="input-box">
-            <input 
-            type="password" 
-            id="currentPassword" 
-            class="input"
-            placeholder="Enter current password">
+                <div class="input-box">
 
-            <span class="eye-btn"
-            onclick="togglePassword('currentPassword', this)">
-                👁
-            </span>
-        </div>
-    </div>
+                    <input
+                        type="password"
+                        id="newPassword"
+                        class="input"
+                        placeholder="Enter new password">
 
-    <!-- NEW PASSWORD -->
-    <div>
-        <label class="label">
-            New Password
-        </label>
+                    <span
+                        class="eye-btn"
+                        onclick="togglePassword('newPassword', this)">
+                        👁
+                    </span>
 
-        <div class="input-box">
-            <input 
-            type="password" 
-            id="newPassword" 
-            class="input"
-            placeholder="Enter new password">
+                </div>
+            </div>
 
-            <span class="eye-btn"
-            onclick="togglePassword('newPassword', this)">
-                👁
-            </span>
-        </div>
-    </div>
+            <!-- CONFIRM PASSWORD -->
+            <div>
+                <label class="label">
+                    Confirm Password
+                </label>
 
-    <!-- CONFIRM PASSWORD -->
-    <div>
-        <label class="label">
-            Confirm New Password
-        </label>
+                <div class="input-box">
 
-        <div class="input-box">
-            <input 
-            type="password" 
-            id="confirmPassword" 
-            class="input"
-            placeholder="Confirm new password">
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        class="input"
+                        placeholder="Confirm password">
 
-            <span class="eye-btn"
-            onclick="togglePassword('confirmPassword', this)">
-                👁
-            </span>
-        </div>
-    </div>
+                    <span
+                        class="eye-btn"
+                        onclick="togglePassword('confirmPassword', this)">
+                        👁
+                    </span>
 
-    <!-- BUTTON -->
-    <div class="pt-4">
-        <button type="submit" class="submit-btn">
-            Update Password
-        </button>
-    </div>
+                </div>
+            </div>
 
-</form>
+            <div class="pt-3">
+
+                <button type="submit" class="submit-btn">
+                    Update Password
+                </button>
+
+            </div>
+
+        </form>
 
     </div>
 
 </div>
 
-<?php include 'footer.php' ?>
+    <?php include 'footer.php' ?>
 
-<script>
+    <script>
+        function togglePassword(id, icon) {
 
-function togglePassword(id, icon){
+            const input = document.getElementById(id);
 
-    const input = document.getElementById(id);
+            if (input.type === "password") {
+                input.type = "text";
+            } else {
+                input.type = "password";
+            }
 
-    if(input.type === "password"){
-        input.type = "text";
-    }else{
-        input.type = "password";
-    }
-
-}
-
-</script>
+        }
+    </script>
 
 </body>
+
 </html>

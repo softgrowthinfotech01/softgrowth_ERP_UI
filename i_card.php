@@ -1,273 +1,383 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ID Card - ERP</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ID Card - ERP</title>
 
-<link rel="stylesheet" href="dist/output.css">
-<link
-href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css"
-rel="stylesheet">
+    <link rel="stylesheet" href="dist/output.css">
+    <link
+        href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css"
+        rel="stylesheet">
 
-<script
-src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js">
-</script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js">
+    </script>
 
-<style>
+    <style>
 
-body{
-    overflow-x:hidden;
-        background-size: 400% 400%;
-    animation: gradientMove 15s ease infinite;
+         body {
+            overflow-x: hidden;
+            min-height: 100vh;
+
+            background:
+                linear-gradient(rgba(0, 0, 0, 0.45),
+                    rgba(0, 0, 0, .45)),
+                url('images/d_bg.png');
+
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            padding: 70px;
+        }
+        .idcard-form-card{
+    position:relative;
+    overflow:hidden;
+
+    padding:22px;
+    border-radius:26px;
+
+    background:
+        linear-gradient(135deg,
+            rgba(255,255,255,.92),
+            rgba(245,243,255,.88),
+            rgba(236,254,255,.84)
+        );
+
+    border:1px solid rgba(255,255,255,.75);
+
+    backdrop-filter:blur(35px);
+    -webkit-backdrop-filter:blur(35px);
+
+    box-shadow:
+        0 35px 90px rgba(15,23,42,.22),
+        inset 0 1px 0 rgba(255,255,255,1);
 }
-/* smooth motion */
-@keyframes gradientMove {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
+
+.idcard-form-card::before{
+    content:"";
+    position:absolute;
+    inset:-2px;
+    z-index:0;
+
+    background:
+        conic-gradient(
+            from 180deg,
+            #7C3AED,
+            #06B6D4,
+            #22C55E,
+            #F59E0B,
+            #7C3AED
+        );
+
+    opacity:.35;
+    animation:spinGlow 7s linear infinite;
 }
 
-/* CARD */
-.card{
-    background: rgba(255,255,255,0.06);
-    backdrop-filter: blur(18px);
-    border:1px solid rgba(255,255,255,0.1);
+.idcard-form-card::after{
+    content:"";
+    position:absolute;
+    inset:2px;
+    z-index:0;
+
+    border-radius:24px;
+
+    background:
+        linear-gradient(135deg,
+            rgba(255,255,255,.95),
+            rgba(245,243,255,.90),
+            rgba(240,249,255,.88)
+        );
+}
+
+.idcard-form-card > *{
+    position:relative;
+    z-index:2;
+}
+
+.idcard-heading{
+    display:flex;
+    align-items:center;
+    gap:14px;
+
+    margin-bottom:22px;
+    padding-bottom:16px;
+
+    border-bottom:1px solid rgba(226,232,240,.85);
+}
+
+.idcard-icon{
+    width:48px;
+    height:48px;
+
+    display:grid;
+    place-items:center;
+
     border-radius:16px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+
+    font-size:22px;
+
+    background:linear-gradient(135deg,#7C3AED,#06B6D4);
+    box-shadow:0 16px 34px rgba(124,58,237,.28);
 }
 
-/* INPUT */
+.idcard-heading h2{
+    color:#0F172A;
+    font-size:22px;
+    font-weight:950;
+    letter-spacing:-.6px;
+}
+
+.idcard-heading p{
+    color:#64748B;
+    font-size:13px;
+    font-weight:700;
+    margin-top:3px;
+}
+
+.label{
+    display:block;
+    color:#1E293B !important;
+    font-size:13px;
+    font-weight:950;
+    margin-bottom:7px;
+}
+
 .input{
     width:100%;
-    height:50px;
-    background:white;
-    border:1px solid #334155;
-    border-radius:10px;
+    height:44px;
+
     padding:0 14px;
-    color:black;
+
+    border-radius:14px;
+
+    background:linear-gradient(180deg,#FFFFFF,#F8FAFC);
+    border:1px solid rgba(203,213,225,.88);
+
+    color:#0F172A;
+    font-size:13px;
+    font-weight:750;
+
     outline:none;
-    transition:0.3s;
+    transition:.28s ease;
+
+    box-shadow:
+        0 8px 20px rgba(15,23,42,.06),
+        inset 0 1px 0 rgba(255,255,255,1);
+}
+
+.textarea.input{
+    height:90px;
+    padding:13px 14px;
+    resize:none;
+}
+
+.input::placeholder{
+    color:#94A3B8;
+}
+
+.input:hover{
+    transform:translateY(-1px);
+    border-color:#67E8F9;
+    box-shadow:0 12px 25px rgba(6,182,212,.12);
 }
 
 .input:focus{
-    border-color:#06b6d4;
-    box-shadow:0 0 0 3px rgba(6,182,212,0.2);
+    background:#fff;
+    border-color:#7C3AED;
+
+    box-shadow:
+        0 0 0 4px rgba(124,58,237,.14),
+        0 16px 30px rgba(6,182,212,.15);
 }
 
-/* TEXTAREA */
-.textarea{
+/* PHOTO */
+.photo-box{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.photo-preview-wrap{
+    width:120px;
+    height:120px;
+
+    padding:5px;
+
+    border-radius:24px;
+
+    background:
+        linear-gradient(135deg,#7C3AED,#06B6D4,#22C55E);
+
+    box-shadow:
+        0 18px 35px rgba(124,58,237,.22);
+}
+
+.photo-preview{
     width:100%;
-    min-height:120px;
-    background:white;
-    border:1px solid #334155;
-    border-radius:10px;
-    padding:14px;
-    color:black;
-    outline:none;
-    resize:none;
-    transition:0.3s;
-}
+    height:100%;
 
-.textarea:focus{
-    border-color:#06b6d4;
-    box-shadow:0 0 0 3px rgba(6,182,212,0.2);
-}
+    object-fit:cover;
+    border-radius:20px;
 
-/* LABEL */
-.label{
-    display:block;
-    margin-bottom:8px;
-    color:#cbd5e1;
-    font-size:14px;
-}
-
-/* FILE INPUT */
-.file-input{
-    width:100%;
-    padding:12px;
-    background:white;
-    border:1px solid #334155;
-    border-radius:10px;
-    color:gray;
+    background:#fff;
+    border:3px solid #fff;
 }
 
 /* BUTTON */
 .submit-btn{
-    background:#06b6d4;
-    color:white;
-    height:50px;
-    padding:0 40px;
-    border-radius:10px;
-    font-weight:600;
-    transition:0.3s;
+    position:relative;
+    overflow:hidden;
+
+    padding:12px 26px;
+
+    border-radius:16px;
+
+    color:#fff;
+    font-size:13px;
+    font-weight:950;
+
+    background:linear-gradient(135deg,#7C3AED,#06B6D4);
+
+    box-shadow:0 18px 40px rgba(124,58,237,.28);
+
+    transition:.3s ease;
+}
+
+.submit-btn::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-100%;
+
+    width:100%;
+    height:100%;
+
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
+    transition:.5s ease;
 }
 
 .submit-btn:hover{
-    background:#0891b2;
-    transform:translateY(-2px);
-}
-.input::placeholder{
-    color:#64748b;
+    transform:translateY(-3px) scale(1.02);
+    box-shadow:0 24px 50px rgba(6,182,212,.30);
 }
 
-/* =========================
-TOM SELECT FIX
-========================= */
-
-.ts-wrapper{
-
-    width:100%;
-
+.submit-btn:hover::before{
+    left:100%;
 }
 
-
-
-.ts-control{
-
-    min-height:50px !important;
-
-    border-radius:10px !important;
-
-    border:1px solid #334155 !important;
-
-    background:white !important;
-
-    padding:10px 14px !important;
-
-    box-shadow:none !important;
-
+@keyframes spinGlow{
+    to{
+        transform:rotate(360deg);
+    }
 }
 
+@media(max-width:768px){
+    .idcard-form-card{
+        padding:18px;
+        border-radius:22px;
+    }
 
+    .idcard-form-card::after{
+        border-radius:20px;
+    }
 
-.ts-control input{
+    .idcard-heading{
+        gap:12px;
+        margin-bottom:18px;
+    }
 
-    font-size:14px !important;
+    .idcard-icon{
+        width:42px;
+        height:42px;
+        border-radius:14px;
+        font-size:20px;
+    }
 
-    color:black !important;
+    .idcard-heading h2{
+        font-size:19px;
+    }
 
+    .input{
+        height:42px;
+        border-radius:13px;
+    }
+
+    .textarea.input{
+        height:80px;
+    }
+
+    .photo-preview-wrap{
+        width:100px;
+        height:100px;
+        border-radius:20px;
+    }
+
+    .photo-preview{
+        border-radius:16px;
+    }
+
+    .submit-btn{
+        width:100%;
+        padding:12px 18px;
+    }
 }
-
-
-
-.ts-dropdown{
-
-    border-radius:10px !important;
-
-    border:1px solid #334155 !important;
-
-    overflow:hidden;
-
-}
-
-
-
-.ts-dropdown .option{
-
-    padding:12px !important;
-
-    font-size:14px !important;
-
-}
-
-
-
-.ts-dropdown .active{
-
-    background:#06b6d4 !important;
-
-    color:white !important;
-
-}
-</style>
+    </style>
 </head>
 
-<body class="text-white bg-fixed bg-no-repeat bg-cover bg-center"
-style="background-image:url('images/bg8.jpeg');">
+<body class="text-white ">
 
-<?php include 'header.php' ?>
-<?php include 'sidebar.php' ?>
+    <?php include 'header.php' ?>
+    <?php include 'sidebar.php' ?>
 
-<div class="p-[70px] mt-5 mb-10 md:ml-[300px]">
+    <div class="p-4 md:p-8 mt-10 mb-24 md:mb-10 md:ml-[300px]">
 
+    <div class="idcard-form-card">
 
-    <!-- CARD -->
-    <div class="bg-gray-800 rounded-xl p-6">
+        <div class="idcard-heading">
+            <div class="idcard-icon">🆔</div>
 
-        <!-- TITLE -->
-        <div class="mb-6">
-            <h2 class="text-xl font-semibold">
-                Student ID Card Form
-            </h2>
+            <div>
+                <h2>Student ID Card Form</h2>
+                <p>Generate student identity card details</p>
+            </div>
         </div>
 
-        <hr class="border-slate-700 mb-8">
-
-        <!-- FORM -->
         <form>
 
-            <div class="grid md:grid-cols-2 gap-6">
+            <div class="grid md:grid-cols-2 gap-4">
 
-              <!-- SELECT STUDENT -->
+                <div>
+                    <label class="label">Select Student</label>
+                    <select id="student_select" class="input">
+                        <option value="">Search Student</option>
+                    </select>
+                </div>
 
-<div>
-
-    <label class="label">
-
-        Select Student
-
-    </label>
-
- <select
-id="student_select"
->
-        <option value="">
-
-            Search Student
-
-        </option>
-
-    </select>
-
-</div>
-
-                <!-- course -->
-                  <div>
+                <div>
                     <label class="label">Course</label>
                     <input type="text" id="course" class="input" placeholder="Enter course name">
                 </div>
 
-                
-                <!-- CLASS -->
                 <div>
                     <label class="label">Class</label>
                     <input type="text" id="student_year" class="input" placeholder="Enter class name">
                 </div>
 
-                <!-- DOB -->
                 <div>
                     <label class="label">Date of Birth</label>
                     <input type="date" id="date_of_birth" class="input">
                 </div>
 
-                <!-- PHONE -->
                 <div>
                     <label class="label">Phone Number</label>
                     <input type="number" id="student_phone" class="input" placeholder="Enter phone number">
                 </div>
 
-
-                <!-- BLOOD GROUP -->
                 <div>
                     <label class="label">Blood Group</label>
-
                     <select class="input" id="blood_group">
                         <option value="">-- Select Blood Group --</option>
                         <option value="A+">A+</option>
@@ -281,36 +391,26 @@ id="student_select"
                     </select>
                 </div>
 
-                <!-- ADDRESS -->
                 <div class="md:col-span-2">
                     <label class="label">Address</label>
                     <textarea class="textarea input" id="full_address" placeholder="Enter address"></textarea>
                 </div>
 
-                <!-- PHOTO -->
-              <div>
+                <div class="photo-box">
+                    <label class="label">Photo</label>
 
-    <label class="label">
+                    <div class="photo-preview-wrap">
+                        <img
+                        id="photoPreview"
+                        src="images/default-user.png"
+                        class="photo-preview">
+                    </div>
+                </div>
 
-        Photo
-
-    </label>
-
-    <img
-
-    id="photoPreview"
-
-    src="images/default-user.png"
-
-    class="w-32 h-32 rounded-xl
-    object-cover border border-slate-700">
-
-</div>
             </div>
 
-            <!-- BUTTON -->
-            <div class="flex justify-center mt-10">
-               <button type="button" class="submit-btn">
+            <div class="flex justify-center mt-8">
+                <button type="button" class="submit-btn">
                     Generate ID Card
                 </button>
             </div>
@@ -321,80 +421,77 @@ id="student_select"
 
 </div>
 
-<?php include 'footer.php' ?>
+    <?php include 'footer.php' ?>
 
 
-<script src="url.js"></script>
+    <script src="url.js"></script>
 
-<script>
-
-let tomSelectInstance;
-
-
-
-window.onload = function(){
-
-    getStudents();
-
-}
+    <script>
+        let tomSelectInstance;
 
 
 
-// =========================
-// FETCH STUDENTS
-// =========================
+        window.onload = function() {
 
-async function getStudents(){
+            getStudents();
 
-    try{
-
-        const response = await fetch(
-
-            url + "students",
-
-            {
-
-                headers:{
-
-                    "Authorization":
-                    "Bearer " +
-                    localStorage.getItem("token"),
-
-                    "Accept":
-                    "application/json"
-
-                }
-
-            }
-
-        );
+        }
 
 
 
-        const result =
-        await response.json();
+        // =========================
+        // FETCH STUDENTS
+        // =========================
+
+        async function getStudents() {
+
+            try {
+
+                const response = await fetch(
+
+                    url + "students",
+
+                    {
+
+                        headers: {
+
+                            "Authorization": "Bearer " +
+                                localStorage.getItem("token"),
+
+                            "Accept": "application/json"
+
+                        }
+
+                    }
+
+                );
 
 
 
-        console.log(result);
+                const result =
+                    await response.json();
 
 
 
-        const students =
-        result.data.data;
+                console.log(result);
 
 
 
-        const select =
-        document.getElementById(
-            "student_select"
-        );
+                const students =
+                    result.data.data;
 
 
 
-        students.forEach(student => {
+                const select =
+                    document.getElementById(
+                        "student_select"
+                    );
 
-            select.innerHTML += `
+
+
+                students.forEach(student => {
+
+                    select.innerHTML += `
 
                 <option value="${student.id}">
 
@@ -404,173 +501,171 @@ async function getStudents(){
 
             `;
 
-        });
+                });
 
 
 
-        // TOM SELECT
+                // TOM SELECT
 
-        tomSelectInstance =
-        new TomSelect(
+                tomSelectInstance =
+                    new TomSelect(
 
-            "#student_select",
+                        "#student_select",
 
-            {
+                        {
 
-                create:false,
+                            create: false,
 
-                sortField:{
-                    field:"text",
-                    direction:"asc"
-                }
+                            sortField: {
+                                field: "text",
+                                direction: "asc"
+                            }
 
-            }
+                        }
 
-        );
-
-
-
-        // CHANGE EVENT
-
-       tomSelectInstance.on(
-
-    "change",
-
-    function(value){
-
-        getStudentData(value);
-
-    }
-
-);
+                    );
 
 
 
-    }catch(error){
+                // CHANGE EVENT
 
-        console.log(error);
+                tomSelectInstance.on(
 
-    }
+                    "change",
 
-}
+                    function(value) {
+
+                        getStudentData(value);
+
+                    }
+
+                );
 
 
 
-// =========================
-// FETCH SINGLE STUDENT
-// =========================
+            } catch (error) {
 
-async function getStudentData(id){
-
-    try{
-
-        const response = await fetch(
-
-            url + "students/" + id,
-
-            {
-
-                headers:{
-
-                    "Authorization":
-                    "Bearer " +
-                    localStorage.getItem("token"),
-
-                    "Accept":
-                    "application/json"
-
-                }
+                console.log(error);
 
             }
-
-        );
-
-
-
-        const result =
-        await response.json();
-
-
-
-        console.log(result);
-
-
-
-        const student =
-        result.data;
-
-
-
-        // FILL DATA
-
-      
-
-
-        document.getElementById(
-            "course"
-        ).value =
-        student.course || "";
-
-
-
-        document.getElementById(
-            "student_year"
-        ).value =
-        student.student_year || "";
-
-
-
-        document.getElementById(
-            "date_of_birth"
-        ).value =
-        student.date_of_birth || "";
-
-
-
-        document.getElementById(
-            "student_phone"
-        ).value =
-        student.student_phone || "";
-
-
-
-        document.getElementById(
-            "blood_group"
-        ).value =
-        student.blood_group || "";
-
-        document.getElementById(
-    "full_address"
-).value =
-student.full_address || "";
-
-
-
-        // PHOTO PREVIEW
-
-        if(student.passport_photo){
-
-            document.getElementById(
-                "photoPreview"
-            ).src =
-
-            baseUrl +
-            "storage/" +
-            student.passport_photo;
 
         }
 
 
 
-    }catch(error){
+        // =========================
+        // FETCH SINGLE STUDENT
+        // =========================
 
-        console.log(error);
+        async function getStudentData(id) {
 
-    }
+            try {
 
-}
+                const response = await fetch(
 
-</script>
+                    url + "students/" + id,
+
+                    {
+
+                        headers: {
+
+                            "Authorization": "Bearer " +
+                                localStorage.getItem("token"),
+
+                            "Accept": "application/json"
+
+                        }
+
+                    }
+
+                );
+
+
+
+                const result =
+                    await response.json();
+
+
+
+                console.log(result);
+
+
+
+                const student =
+                    result.data;
+
+
+
+                // FILL DATA
+
+
+
+
+                document.getElementById(
+                        "course"
+                    ).value =
+                    student.course || "";
+
+
+
+                document.getElementById(
+                        "student_year"
+                    ).value =
+                    student.student_year || "";
+
+
+
+                document.getElementById(
+                        "date_of_birth"
+                    ).value =
+                    student.date_of_birth || "";
+
+
+
+                document.getElementById(
+                        "student_phone"
+                    ).value =
+                    student.student_phone || "";
+
+
+
+                document.getElementById(
+                        "blood_group"
+                    ).value =
+                    student.blood_group || "";
+
+                document.getElementById(
+                        "full_address"
+                    ).value =
+                    student.full_address || "";
+
+
+
+                // PHOTO PREVIEW
+
+                if (student.passport_photo) {
+
+                    document.getElementById(
+                            "photoPreview"
+                        ).src =
+
+                        baseUrl +
+                        "storage/" +
+                        student.passport_photo;
+
+                }
+
+
+
+            } catch (error) {
+
+                console.log(error);
+
+            }
+
+        }
+    </script>
 
 </body>
+
 </html>
