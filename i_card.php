@@ -324,6 +324,162 @@
         padding:12px 18px;
     }
 }
+
+
+/* ===================================
+   ERP PAGE LAYOUT FIX
+=================================== */
+
+html,
+body{
+    margin:0;
+    padding:0;
+    min-height:100%;
+    overflow-x:hidden;
+}
+
+/* PAGE CONTENT */
+.p-4.md\:p-8.mt-10.mb-24.md\:mb-10.md\:ml-\[300px\]{
+
+    margin-left:300px !important;
+
+    margin-top:0 !important;
+    margin-bottom:0 !important;
+
+    padding-top:120px !important;
+    padding-left:35px !important;
+    padding-right:35px !important;
+    padding-bottom:25px !important;
+
+    min-height:calc(100vh - 180px);
+}
+
+/* CARD */
+.idcard-form-card{
+    width:100%;
+    max-width:1280px;
+    margin:0 auto;
+}
+
+/* HEADER */
+.erp-header{
+    z-index:9999 !important;
+}
+
+/* SIDEBAR */
+.erp-side{
+    z-index:9998 !important;
+}
+
+/* FOOTER */
+footer,
+.erp-footer{
+    position:relative !important;
+
+    left:auto !important;
+    right:auto !important;
+    bottom:auto !important;
+
+    margin-left:290px !important;
+    width:calc(100% - 290px) !important;
+
+    padding:0 !important;
+    margin-top:0 !important;
+}
+
+.erp-footer-wrap,
+.erp-footer-inner{
+    margin:0 !important;
+    border-radius:30px 30px 0 0 !important;
+}
+
+/* TABLET */
+@media(max-width:1024px){
+
+    .p-4.md\:p-8.mt-10.mb-24.md\:mb-10.md\:ml-\[300px\]{
+
+        margin-left:0 !important;
+
+        padding-top:105px !important;
+        padding-left:14px !important;
+        padding-right:14px !important;
+        padding-bottom:15px !important;
+
+        min-height:auto;
+    }
+
+    footer,
+    .erp-footer{
+        margin-left:0 !important;
+        width:100% !important;
+    }
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+    body{
+        background-attachment:scroll !important;
+    }
+
+    .p-4.md\:p-8.mt-10.mb-24.md\:mb-10.md\:ml-\[300px\]{
+
+        margin-left:0 !important;
+
+        padding-top:95px !important;
+        padding-left:10px !important;
+        padding-right:10px !important;
+        padding-bottom:12px !important;
+    }
+
+    .idcard-form-card{
+        width:100% !important;
+        max-width:100% !important;
+
+        padding:18px !important;
+        border-radius:22px !important;
+    }
+
+    .idcard-form-card::after{
+        border-radius:20px !important;
+    }
+
+    .idcard-heading{
+        gap:12px !important;
+        margin-bottom:18px !important;
+    }
+
+    .idcard-icon{
+        width:42px !important;
+        height:42px !important;
+        min-width:42px !important;
+        font-size:20px !important;
+    }
+
+    .photo-preview-wrap{
+        width:95px !important;
+        height:95px !important;
+    }
+
+    .submit-btn{
+        width:100% !important;
+    }
+
+    footer,
+    .erp-footer{
+        margin-left:0 !important;
+        width:100% !important;
+        padding:0 !important;
+    }
+
+    .erp-footer-wrap,
+    .erp-footer-inner{
+        width:100% !important;
+        max-width:100% !important;
+        margin:0 !important;
+        border-radius:24px 24px 0 0 !important;
+    }
+}
     </style>
 </head>
 

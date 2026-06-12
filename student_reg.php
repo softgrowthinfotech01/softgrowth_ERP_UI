@@ -358,9 +358,256 @@ input[type="file"].input::file-selector-button:hover{
 }
 
 
+/* =================================
+   STUDENT REGISTRATION PAGE SET FIX
+================================= */
 
+html,
+body{
+    margin:0;
+    padding:0;
+    min-height:100%;
+    overflow-x:hidden;
+}
 
+body{
+    display:flex;
+    flex-direction:column;
+    padding:0 !important;
+}
 
+/* MAIN WRAPPER */
+#main{
+    flex:1;
+
+    margin-left:300px !important;
+
+    padding-top:125px !important;
+    padding-left:25px !important;
+    padding-right:25px !important;
+    padding-bottom:25px !important;
+
+    max-width:none !important;
+    width:calc(100% - 300px) !important;
+}
+
+/* CENTER CONTENT */
+#main > .step-box,
+#main > .flex,
+#main > .step-box + .flex{
+    max-width:1250px;
+    width:80%;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+/* HEADER / SIDEBAR */
+.erp-header{
+    z-index:9999 !important;
+}
+
+.erp-side{
+    z-index:9998 !important;
+}
+
+/* FOOTER */
+footer,
+.erp-footer{
+    position:relative !important;
+    left:auto !important;
+    right:auto !important;
+    bottom:auto !important;
+
+    margin-left:290px !important;
+    width:calc(100% - 290px) !important;
+
+    margin-top:auto !important;
+    padding:0 !important;
+
+    z-index:20 !important;
+}
+
+.erp-footer-wrap,
+.erp-footer-inner{
+    margin:0 !important;
+    border-radius:30px 30px 0 0 !important;
+}
+
+/* TABLET */
+@media(max-width:1024px){
+
+    #main{
+        margin-left:0 !important;
+
+        padding-top:110px !important;
+        padding-left:14px !important;
+        padding-right:14px !important;
+        padding-bottom:15px !important;
+
+        width:100% !important;
+    }
+
+    footer,
+    .erp-footer{
+        margin-left:0 !important;
+        width:100% !important;
+    }
+}
+
+/* MOBILE */
+/* =========================
+   MOBILE VIEW
+========================= */
+
+@media(max-width:768px){
+
+    body{
+        background-attachment:scroll !important;
+        overflow-x:hidden !important;
+    }
+
+    /* MAIN CONTENT */
+    #main{
+        margin-left:20px !important;
+
+        width:90% !important;
+        max-width:100% !important;
+
+        padding-top:95px !important;
+        padding-left:6px !important;
+        padding-right:6px !important;
+        padding-bottom:12px !important;
+    }
+
+    /* STEP INDICATOR */
+    .step{
+        width:34px !important;
+        height:34px !important;
+        font-size:13px !important;
+    }
+
+    .line{
+        height:2px !important;
+    }
+
+    /* CARD */
+    .step-box{
+        width:100% !important;
+        max-width:100% !important;
+
+        padding:16px !important;
+
+        border-radius:20px !important;
+    }
+
+    .step-box::after{
+        border-radius:18px !important;
+    }
+
+    /* TITLE */
+    .step-box h2{
+        font-size:18px !important;
+        line-height:1.3 !important;
+        margin-bottom:18px !important;
+    }
+
+    /* FORM GRID */
+    .grid{
+        gap:12px !important;
+    }
+
+    /* LABEL */
+    label{
+        font-size:12px !important;
+        margin-bottom:5px !important;
+    }
+
+    /* INPUTS */
+    .input{
+        width:100% !important;
+        height:42px !important;
+
+        padding:0 12px !important;
+
+        font-size:13px !important;
+
+        border-radius:12px !important;
+    }
+
+    select.input{
+        height:42px !important;
+    }
+
+    textarea.input{
+        min-height:90px !important;
+        padding:10px 12px !important;
+    }
+
+    /* FILE INPUT */
+    input[type="file"].input{
+        height:auto !important;
+        padding:8px !important;
+    }
+
+    input[type="file"]::file-selector-button{
+        padding:8px 12px !important;
+        font-size:12px !important;
+        border-radius:8px !important;
+    }
+
+    /* BUTTONS */
+    #next,
+    #prev,
+    .submit-btn{
+        width:100% !important;
+
+        height:42px !important;
+
+        font-size:13px !important;
+        font-weight:700 !important;
+
+        border-radius:12px !important;
+    }
+
+    /* BUTTON WRAPPER */
+    .flex.justify-between{
+        gap:10px !important;
+        flex-direction:column !important;
+    }
+
+    /* PHOTO PREVIEW */
+    #photoPreview{
+        width:90px !important;
+        height:90px !important;
+    }
+
+    /* FOOTER */
+    .erp-footer{
+        margin-left:0 !important;
+        width:100% !important;
+        padding:0 !important;
+    }
+
+    .erp-footer-wrap,
+    .erp-footer-inner{
+        width:100% !important;
+        max-width:100% !important;
+
+        padding:8px !important;
+
+        border-radius:20px 20px 0 0 !important;
+    }
+
+    .erp-footer-left{
+        text-align:center !important;
+    }
+
+    .erp-footer-right{
+        justify-content:center !important;
+        flex-wrap:wrap !important;
+        gap:8px !important;
+    }
+}
 
 
 

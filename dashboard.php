@@ -241,6 +241,151 @@ body{
     .erp-chart{
   height:220px !important;    }
 }
+
+/* =====================================
+   DASHBOARD LAYOUT FIX
+===================================== */
+
+html,
+body{
+    margin:0;
+    padding:0;
+    min-height:100%;
+    overflow-x:hidden;
+}
+
+body{
+    display:flex;
+    flex-direction:column;
+}
+
+/* MAIN CONTENT */
+main{
+    flex:1;
+
+    margin-left:288px !important;
+
+    padding-top:110px !important;
+    padding-left:24px !important;
+    padding-right:24px !important;
+    padding-bottom:25px !important;
+
+    margin-bottom:0 !important;
+}
+
+/* HEADER */
+.erp-header{
+    z-index:9999 !important;
+}
+
+/* SIDEBAR */
+.erp-side{
+    z-index:9998 !important;
+}
+
+/* FOOTER */
+footer,
+.erp-footer{
+    position:relative !important;
+
+    left:auto !important;
+    right:auto !important;
+    bottom:auto !important;
+
+    margin-left:288px !important;
+    width:calc(100% - 288px) !important;
+
+    margin-top:auto !important;
+    padding:0 !important;
+}
+
+/* KEEP CURVE */
+.erp-footer-wrap,
+.erp-footer-inner{
+    margin:0 !important;
+    border-radius:30px 30px 0 0 !important;
+}
+
+/* DESKTOP */
+.erp-pro-hero{
+    margin-top:0 !important;
+}
+
+.grid{
+    position:relative;
+    z-index:1;
+}
+
+/* TABLET */
+@media(max-width:1024px){
+
+    main{
+        margin-left:0 !important;
+
+        padding-top:105px !important;
+        padding-left:14px !important;
+        padding-right:14px !important;
+        padding-bottom:15px !important;
+    }
+
+    footer,
+    .erp-footer{
+        margin-left:0 !important;
+        width:100% !important;
+    }
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+    body{
+        background-attachment:scroll !important;
+    }
+
+    main{
+        margin-left:0 !important;
+
+        padding-top:95px !important;
+        padding-left:10px !important;
+        padding-right:10px !important;
+        padding-bottom:12px !important;
+    }
+
+    .erp-pro-hero{
+        margin-top:0 !important;
+        margin-bottom:12px !important;
+    }
+
+    .erp-title{
+        font-size:24px !important;
+    }
+
+    .erp-card{
+        padding:12px !important;
+        border-radius:18px !important;
+    }
+
+    .erp-chart{
+        height:220px !important;
+    }
+
+    footer,
+    .erp-footer{
+        margin-left:0 !important;
+        width:100% !important;
+        padding:0 !important;
+    }
+
+    .erp-footer-wrap,
+    .erp-footer-inner{
+        width:100% !important;
+        max-width:100% !important;
+        margin:0 !important;
+        border-radius:24px 24px 0 0 !important;
+    }
+}
+
+
 </style>
 </head>
 

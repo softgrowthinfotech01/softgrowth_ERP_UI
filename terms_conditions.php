@@ -282,6 +282,207 @@ body{
     }
 }
 
+/* =================================
+   TERMS PAGE SET FIX
+================================= */
+
+html,
+body{
+    margin:0;
+    padding:0;
+    min-height:100%;
+    overflow-x:hidden;
+}
+
+body{
+    display:flex;
+    flex-direction:column;
+    padding:0 !important;
+}
+
+/* PAGE WRAPPER */
+.lg\:ml-72.mt-20.mb-24.p-4.md\:p-8{
+    flex:1;
+
+    margin-left:300px !important;
+    margin-top:0 !important;
+    margin-bottom:0 !important;
+
+    padding-top:125px !important;
+    padding-left:35px !important;
+    padding-right:35px !important;
+    padding-bottom:25px !important;
+
+    width:auto !important;
+    max-width:none !important;
+}
+
+/* CARD */
+.policy-card{
+    width:100%;
+    max-width:1280px;
+    margin:0 auto;
+}
+
+/* HEADER */
+.erp-header{
+    z-index:9999 !important;
+}
+
+/* SIDEBAR */
+.erp-side{
+    z-index:9998 !important;
+}
+
+/* FOOTER */
+footer,
+.erp-footer{
+    position:relative !important;
+
+    left:auto !important;
+    right:auto !important;
+    bottom:auto !important;
+
+    margin-left:290px !important;
+    width:calc(100% - 290px) !important;
+
+    margin-top:auto !important;
+    padding:0 !important;
+
+    z-index:20 !important;
+}
+
+.erp-footer-wrap,
+.erp-footer-inner{
+    margin:0 !important;
+    border-radius:30px 30px 0 0 !important;
+}
+
+/* TABLET */
+@media(max-width:1024px){
+
+    .lg\:ml-72.mt-20.mb-24.p-4.md\:p-8{
+        margin-left:0 !important;
+
+        padding-top:110px !important;
+        padding-left:14px !important;
+        padding-right:14px !important;
+        padding-bottom:15px !important;
+
+        width:100% !important;
+    }
+
+    footer,
+    .erp-footer{
+        margin-left:0 !important;
+        width:100% !important;
+    }
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+    body{
+        background-attachment:scroll !important;
+    }
+
+    .lg\:ml-72.mt-20.mb-24.p-4.md\:p-8{
+        margin-left:0 !important;
+
+        padding-top:100px !important;
+        padding-left:10px !important;
+        padding-right:10px !important;
+        padding-bottom:12px !important;
+
+        width:100% !important;
+        max-width:100% !important;
+    }
+
+    .policy-card{
+        width:100% !important;
+        max-width:100% !important;
+
+        padding:18px !important;
+        border-radius:22px !important;
+    }
+
+    .policy-card::after{
+        border-radius:20px !important;
+    }
+
+    .policy-heading{
+        gap:12px !important;
+        align-items:flex-start !important;
+        margin-bottom:18px !important;
+    }
+
+    .policy-icon{
+        width:42px !important;
+        height:42px !important;
+        min-width:42px !important;
+        font-size:20px !important;
+    }
+
+    .policy-heading h1{
+        font-size:20px !important;
+        line-height:1.2 !important;
+    }
+
+    .policy-heading p{
+        font-size:12px !important;
+        line-height:1.4 !important;
+    }
+
+    .policy-text{
+        font-size:13px !important;
+        line-height:1.7 !important;
+    }
+
+    .policy-list{
+        gap:10px !important;
+    }
+
+    .policy-list li{
+        padding:12px !important;
+        font-size:13px !important;
+        line-height:1.5 !important;
+        border-radius:14px !important;
+    }
+
+    .notice-box{
+        padding:14px !important;
+        border-radius:16px !important;
+    }
+
+    .notice-box h3{
+        font-size:14px !important;
+    }
+
+    .notice-box p{
+        font-size:13px !important;
+        line-height:1.6 !important;
+    }
+
+    .policy-updated{
+        font-size:12px !important;
+    }
+
+    footer,
+    .erp-footer{
+        margin-left:0 !important;
+        width:100% !important;
+        padding:0 !important;
+    }
+
+    .erp-footer-wrap,
+    .erp-footer-inner{
+        width:100% !important;
+        max-width:100% !important;
+        margin:0 !important;
+        border-radius:24px 24px 0 0 !important;
+    }
+}
+
 </style>
 
 </head>

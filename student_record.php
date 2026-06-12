@@ -277,6 +277,17 @@ border-radius:30px 30px 0 0 !important;}
         margin:0 !important;
   border-radius:24px 24px 0 0 !important;    }
 }
+
+/* MENU BUTTON VISIBILITY FIX */
+.erp-menu-btn{
+    display:none !important;
+}
+
+@media(max-width:1023px){
+    .erp-menu-btn{
+        display:flex !important;
+    }
+}
     </style>
 
 </head>

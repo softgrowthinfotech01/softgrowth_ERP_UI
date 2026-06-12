@@ -10,25 +10,54 @@
     <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
 
     <style>
- body {
-            overflow-x: hidden;
-            min-height: 100vh;
+html,
+body{
+    margin:0;
+    padding:0;
+    min-height:100%;
+    overflow-x:hidden;
+}
 
-            background:
-                linear-gradient(rgba(0, 0, 0, 0.45),
-                    rgba(0, 0, 0, .45)),
-                url('images/d_bg.png');
+body{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
 
-            background-size: cover;
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            padding: 70px;
-        }
+    background:
+        linear-gradient(
+            rgba(0,0,0,.45),
+            rgba(0,0,0,.45)
+        ),
+        url('images/d_bg.png');
 
+    background-size:cover;
+    background-position:center center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+}
+
+/* MAIN CONTENT */
+.p-4.md\:p-8.mt-10.mb-24.md\:mb-10.md\:ml-\[300px\]{
+    flex:1;
+
+    margin-left:300px !important;
+    margin-top:0 !important;
+    margin-bottom:0 !important;
+
+    padding-top:120px !important;
+    padding-left:35px !important;
+    padding-right:35px !important;
+    padding-bottom:28px !important;
+}
+
+/* BONAFIDE CARD */
 .bonafide-card{
     position:relative;
     overflow:hidden;
+
+    width:100%;
+    max-width:1280px;
+    margin:0 auto;
 
     padding:32px;
     border-radius:34px;
@@ -91,6 +120,7 @@
     z-index:2;
 }
 
+/* HEADING */
 .bonafide-heading{
     display:flex;
     align-items:center;
@@ -131,6 +161,7 @@
     margin-top:4px;
 }
 
+/* LABEL */
 .label{
     display:block;
     color:#1E293B !important;
@@ -139,6 +170,7 @@
     margin-bottom:8px !important;
 }
 
+/* INPUT */
 .input{
     width:100%;
     height:52px;
@@ -186,6 +218,33 @@
     color:#475569;
 }
 
+/* TOM SELECT FIX */
+.ts-wrapper.single .ts-control{
+    min-height:52px;
+    border-radius:18px;
+    border:1px solid rgba(203,213,225,.88);
+    background:linear-gradient(180deg,#FFFFFF,#F8FAFC);
+    padding:12px 16px;
+    color:#0F172A;
+    font-size:14px;
+    font-weight:750;
+}
+
+.ts-wrapper.focus .ts-control{
+    border-color:#7C3AED;
+    box-shadow:
+        0 0 0 4px rgba(124,58,237,.14),
+        0 18px 35px rgba(6,182,212,.15);
+}
+
+.ts-dropdown{
+    border-radius:16px;
+    border:1px solid rgba(203,213,225,.88);
+    overflow:hidden;
+    box-shadow:0 18px 40px rgba(15,23,42,.18);
+}
+
+/* BUTTON */
 .submit-btn{
     position:relative;
     overflow:hidden;
@@ -228,23 +287,93 @@
     left:100%;
 }
 
+/* HEADER / SIDEBAR ABOVE CONTENT */
+.erp-header{
+    z-index:9999 !important;
+}
+
+.erp-side{
+    z-index:9998 !important;
+}
+
+/* FOOTER */
+footer,
+.erp-footer{
+    position:relative !important;
+
+    left:auto !important;
+    right:auto !important;
+    bottom:auto !important;
+
+    margin-top:auto !important;
+    margin-left:290px !important;
+
+    width:calc(100% - 290px) !important;
+
+    padding:0 !important;
+    z-index:20 !important;
+}
+
+.erp-footer-wrap,
+.erp-footer-inner{
+    margin:0 !important;
+    border-radius:30px 30px 0 0 !important;
+}
+
+/* ANIMATION */
 @keyframes spinGlow{
     to{
         transform:rotate(360deg);
     }
 }
 
+/* TABLET */
+@media(max-width:1024px){
+
+    .p-4.md\:p-8.mt-10.mb-24.md\:mb-10.md\:ml-\[300px\]{
+        margin-left:0 !important;
+
+        padding-top:105px !important;
+        padding-left:14px !important;
+        padding-right:14px !important;
+        padding-bottom:18px !important;
+    }
+
+    footer,
+    .erp-footer{
+        margin-left:0 !important;
+        width:100% !important;
+    }
+}
+
+/* MOBILE */
 @media(max-width:768px){
+
+    body{
+        background-attachment:scroll !important;
+    }
+
+    .p-4.md\:p-8.mt-10.mb-24.md\:mb-10.md\:ml-\[300px\]{
+        margin-left:0 !important;
+
+        padding-top:95px !important;
+        padding-left:10px !important;
+        padding-right:10px !important;
+        padding-bottom:14px !important;
+    }
+
     .bonafide-card{
-        padding:20px;
-        border-radius:24px;
+        max-width:100%;
+        padding:18px !important;
+        border-radius:22px !important;
     }
 
     .bonafide-card::after{
-        border-radius:22px;
+        border-radius:20px;
     }
 
     .bonafide-heading{
+        align-items:flex-start;
         gap:12px;
         margin-bottom:20px;
     }
@@ -252,12 +381,19 @@
     .bonafide-icon{
         width:46px;
         height:46px;
+        min-width:46px;
         border-radius:16px;
         font-size:22px;
     }
 
     .bonafide-heading h2{
         font-size:20px;
+        line-height:1.2;
+    }
+
+    .bonafide-heading p{
+        font-size:12px;
+        line-height:1.4;
     }
 
     .input{
@@ -266,9 +402,31 @@
         font-size:13px;
     }
 
+    .ts-wrapper.single .ts-control{
+        min-height:44px;
+        border-radius:14px;
+        font-size:13px;
+        padding:9px 12px;
+    }
+
     .submit-btn{
         width:100%;
         padding:13px 18px;
+    }
+
+    footer,
+    .erp-footer{
+        margin-left:0 !important;
+        width:100% !important;
+        padding:0 !important;
+    }
+
+    .erp-footer-wrap,
+    .erp-footer-inner{
+        width:100% !important;
+        max-width:100% !important;
+        margin:0 !important;
+        border-radius:24px 24px 0 0 !important;
     }
 }
     </style>

@@ -473,6 +473,17 @@ footer,
         margin-left:0 !important;
     }
 }
+
+/* MENU BUTTON VISIBILITY FIX */
+.erp-menu-btn{
+    display:none !important;
+}
+
+@media(max-width:1023px){
+    .erp-menu-btn{
+        display:flex !important;
+    }
+}
 </style>
 </head>
 

@@ -191,6 +191,207 @@ body{
         font-size:20px;
     }
 }
+
+
+/* =================================
+   SUPPORT PAGE SET FIX
+================================= */
+
+html,
+body{
+    margin:0;
+    padding:0;
+    min-height:100%;
+    overflow-x:hidden;
+}
+
+body{
+    display:flex;
+    flex-direction:column;
+    padding:0 !important;
+}
+
+/* PAGE WRAPPER */
+.lg\:ml-72.mt-20.mb-24.p-4.md\:p-8{
+    flex:1;
+
+    margin-left:300px !important;
+    margin-top:0 !important;
+    margin-bottom:0 !important;
+
+    padding-top:125px !important;
+    padding-left:35px !important;
+    padding-right:35px !important;
+    padding-bottom:25px !important;
+
+    width:auto !important;
+    max-width:none !important;
+}
+
+/* GRID */
+.grid.md\:grid-cols-2{
+    max-width:1400px;
+    margin:0 auto;
+}
+
+/* HEADER */
+.erp-header{
+    z-index:9999 !important;
+}
+
+/* SIDEBAR */
+.erp-side{
+    z-index:9998 !important;
+}
+
+/* FOOTER */
+footer,
+.erp-footer{
+    position:relative !important;
+
+    left:auto !important;
+    right:auto !important;
+    bottom:auto !important;
+
+    margin-left:290px !important;
+    width:calc(100% - 290px) !important;
+
+    margin-top:25px !important;
+    padding:0 !important;
+
+    z-index:20 !important;
+}
+
+.erp-footer-wrap,
+.erp-footer-inner{
+    margin:0 !important;
+    border-radius:30px 30px 0 0 !important;
+}
+
+/* TABLET */
+@media(max-width:1024px){
+
+    .lg\:ml-72.mt-20.mb-24.p-4.md\:p-8{
+        margin-left:0 !important;
+
+        padding-top:110px !important;
+        padding-left:14px !important;
+        padding-right:14px !important;
+        padding-bottom:15px !important;
+
+        width:100% !important;
+    }
+
+    footer,
+    .erp-footer{
+        margin-left:0 !important;
+        width:100% !important;
+    }
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+    body{
+        background-attachment:scroll !important;
+    }
+
+    .lg\:ml-72.mt-20.mb-24.p-4.md\:p-8{
+        margin-left:0 !important;
+
+        padding-top:100px !important;
+        padding-left:10px !important;
+        padding-right:10px !important;
+        padding-bottom:12px !important;
+
+        width:100% !important;
+        max-width:100% !important;
+    }
+
+    .grid.md\:grid-cols-2{
+        display:grid !important;
+        grid-template-columns:1fr !important;
+        gap:14px !important;
+    }
+
+    .support-card{
+        width:100% !important;
+        max-width:100% !important;
+
+        padding:18px !important;
+        border-radius:22px !important;
+    }
+
+    .support-card::after{
+        border-radius:20px !important;
+    }
+
+    .support-heading{
+        gap:12px !important;
+        align-items:flex-start !important;
+        margin-bottom:18px !important;
+    }
+
+    .support-icon{
+        width:42px !important;
+        height:42px !important;
+        min-width:42px !important;
+        font-size:20px !important;
+    }
+
+    .support-heading h1,
+    .support-heading h2{
+        font-size:19px !important;
+        line-height:1.2 !important;
+    }
+
+    .support-heading p{
+        font-size:12px !important;
+    }
+
+    .support-text{
+        font-size:13px !important;
+        line-height:1.7 !important;
+    }
+
+    .support-info p{
+        padding:12px !important;
+        font-size:13px !important;
+        line-height:1.5 !important;
+    }
+
+    .support-input{
+        padding:12px !important;
+        font-size:13px !important;
+        border-radius:14px !important;
+    }
+
+    textarea.support-input{
+        min-height:120px !important;
+    }
+
+    .support-btn{
+        width:100% !important;
+        padding:12px !important;
+        font-size:13px !important;
+        border-radius:14px !important;
+    }
+
+    footer,
+    .erp-footer{
+        margin-left:0 !important;
+        width:100% !important;
+        padding:0 !important;
+    }
+
+    .erp-footer-wrap,
+    .erp-footer-inner{
+        width:100% !important;
+        max-width:100% !important;
+        margin:0 !important;
+        border-radius:24px 24px 0 0 !important;
+    }
+}
 </style>
 </head>
 
