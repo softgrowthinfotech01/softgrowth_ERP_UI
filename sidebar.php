@@ -291,9 +291,9 @@ border-radius: 0px;
     width:40px;
     height:40px;
 
-    margin-left:12px;
+    margin-left:6px;
     margin-bottom:10px;
-    margin-top: -5px;
+    margin-top: -11px;
     display:flex;
     align-items:center;
     justify-content:center;

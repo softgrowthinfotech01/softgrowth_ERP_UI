@@ -392,6 +392,38 @@ footer,
         border-radius:24px 24px 0 0 !important;
     }
 }
+
+
+/* MOBILE MENU BUTTON FIX */
+.erp-menu-btn{
+    display:none !important;
+}
+
+@media(max-width:1023px){
+    .erp-menu-btn{
+        display:flex !important;
+        align-items:center !important;
+        justify-content:center !important;
+
+        position:fixed !important;
+        top:18px !important;
+        left:14px !important;
+
+        width:46px !important;
+        height:46px !important;
+
+        z-index:100000 !important;
+
+        border-radius:14px !important;
+        background:#000 !important;
+        color:#fff !important;
+
+        font-size:24px !important;
+        font-weight:900 !important;
+
+        box-shadow:0 12px 30px rgba(0,0,0,.35) !important;
+    }
+}
 </style>
 </head>
 
