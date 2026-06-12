@@ -9,218 +9,474 @@
 
 <style>
 
-body{
+            body{
     overflow-x:hidden;
-        background-size: 400% 400%;
-    animation: gradientMove 15s ease infinite;
-}
-/* smooth motion */
-@keyframes gradientMove {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-/* CARD */
-.card{
-    background: rgba(255,255,255,0.06);
-    backdrop-filter: blur(18px);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 16px;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at center,
+            rgba(0,0,0,.35) 0%,
+            rgba(0,0,0,.65) 60%,
+            rgba(0,0,0,.85) 100%
+        ),
+        url('images/d_bg.png');
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    padding: 40px;
 }
 
-/* INPUT */
-.input{
+.ledger-card{
+    position:relative;
+    overflow:hidden;
+
+    padding:22px;
+    border-radius:28px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.92),
+            rgba(245,243,255,.88),
+            rgba(236,254,255,.84)
+        );
+
+    border:1px solid rgba(255,255,255,.75);
+
+    backdrop-filter:blur(35px);
+
+    box-shadow:
+        0 35px 90px rgba(15,23,42,.20);
+}
+
+.ledger-card::before{
+    content:"";
+    position:absolute;
+    inset:-2px;
+
+    background:
+        conic-gradient(
+            from 180deg,
+            #7C3AED,
+            #06B6D4,
+            #22C55E,
+            #F59E0B,
+            #7C3AED
+        );
+
+    opacity:.35;
+
+    animation:spinGlow 8s linear infinite;
+}
+
+.ledger-card::after{
+    content:"";
+    position:absolute;
+    inset:2px;
+
+    border-radius:26px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.96),
+            rgba(245,243,255,.92),
+            rgba(240,249,255,.90)
+        );
+}
+
+.ledger-card>*{
+    position:relative;
+    z-index:2;
+}
+
+/* HEADER */
+
+.ledger-heading{
+    display:flex;
+    align-items:center;
+    gap:14px;
+
+    margin-bottom:24px;
+    padding-bottom:18px;
+
+    border-bottom:1px solid rgba(226,232,240,.85);
+}
+
+.ledger-icon{
+    width:52px;
+    height:52px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:16px;
+
+    font-size:24px;
+
+    color:#fff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7C3AED,
+            #06B6D4
+        );
+
+    box-shadow:
+        0 16px 34px rgba(124,58,237,.25);
+}
+
+.ledger-heading h2{
+    color:#0F172A;
+    font-size:22px;
+    font-weight:950;
+}
+
+.ledger-heading p{
+    color:#64748B;
+    font-size:13px;
+    font-weight:700;
+}
+
+/* FILTER */
+
+.ledger-filter-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:15px;
+
+    margin-bottom:20px;
+}
+
+.ledger-label{
+    display:block;
+
+    margin-bottom:8px;
+
+    color:#334155;
+    font-size:13px;
+    font-weight:900;
+}
+
+.ledger-input{
     width:100%;
-    height:50px;
-    background:#1e293b;
-    border:1px solid #334155;
-    border-radius:10px;
+    height:46px;
+
     padding:0 14px;
-    color:white;
+
+    border-radius:14px;
+
+    background:#fff;
+
+    border:1px solid #CBD5E1;
+
+    color:#0F172A;
+}
+
+.ledger-input:focus{
     outline:none;
-    transition:0.3s;
+
+    border-color:#7C3AED;
+
+    box-shadow:
+        0 0 0 4px rgba(124,58,237,.12);
 }
 
-.input:focus{
-    border-color:#06b6d4;
-    box-shadow:0 0 0 3px rgba(6,182,212,0.2);
-}
-
-/* BUTTON */
-.btn{
-    padding:6px 10px;
-    border-radius:6px;
-    font-size:12px;
-    border:1px solid #475569;
-    color:white;
-    background:#1e293b;
-    transition:0.3s;
-}
-
-.btn:hover{
-    background:#334155;
-}
-
-/* FILTER BUTTON */
 .filter-btn{
-    background:#06b6d4;
-    color:white;
-    height:50px;
-    border-radius:10px;
-    font-weight:600;
-    transition:0.3s;
+    width:100%;
+    height:46px;
+
+    border-radius:14px;
+
+    color:#fff;
+    font-size:13px;
+    font-weight:900;
+
+    background:
+       
+        #7C3AED ;
 }
 
-.filter-btn:hover{
-    background:#0891b2;
+/* EXPORT BUTTONS */
+
+.toolbar-buttons{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+
+    margin-bottom:20px;
 }
+
+/* COPY */
+.btn-copy{
+    background:#475569;
+    color:#fff;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+/* CSV */
+.btn-csv{
+    background:#0EA5E9;
+    color:#fff;
+     padding: 12px;
+    border-radius: 8px;
+}
+
+/* EXCEL */
+.btn-excel{
+    background:#16A34A;
+    color:#fff;
+     padding: 12px;
+    border-radius: 8px;
+}
+
+/* PDF */
+.btn-pdf{
+    background:#DC2626;
+    color:#fff;
+     padding: 12px;
+    border-radius: 8px;
+}
+
+/* PRINT */
+.btn-print{
+    background:#7C3AED;
+    color:#fff;
+     padding: 12px;
+    border-radius: 8px;
+}
+
+.btn-copy:hover{background:#334155;}
+.btn-csv:hover{background:#0284C7;}
+.btn-excel:hover{background:#15803D;}
+.btn-pdf:hover{background:#B91C1C;}
+.btn-print:hover{background:#6D28D9;}
+
 
 /* TABLE */
+
+.table-wrap{
+    overflow-x:auto;
+
+    border-radius:18px;
+
+    border:1px solid rgba(226,232,240,.85);
+
+    background:#fff;
+}
+
 table{
     width:100%;
+    min-width:1200px;
     border-collapse:collapse;
 }
 
+thead{
+    background:
+        linear-gradient(
+            135deg,
+            #7C3AED,
+            #06B6D4
+        );
+}
+
 th{
+    padding:14px;
+
     text-align:left;
+
+    color:#fff;
     font-size:13px;
-    color:#cbd5e1;
-    padding:12px;
-    border-bottom:1px solid rgba(255,255,255,0.1);
+    font-weight:900;
 }
 
 td{
-    padding:14px 12px;
-    font-size:14px;
-    color:#e2e8f0;
-    border-bottom:1px solid rgba(255,255,255,0.05);
+    padding:14px;
+
+    color:#334155;
+    font-size:13px;
+    font-weight:700;
+
+    border-bottom:1px solid #E2E8F0;
 }
 
-/* TABLE ROW HOVER */
 tbody tr:hover{
-    background:rgba(255,255,255,0.03);
+    background:#F8FAFC;
 }
 
-/* PAGINATION */
-.page-btn{
-    width:38px;
-    height:38px;
-    border-radius:50%;
+.credit{
+    color:#16A34A;
+    font-weight:900;
+}
+
+.debit{
+    color:#DC2626;
+    font-weight:900;
+}
+
+/* FOOTER */
+
+.table-footer{
+    margin-top:18px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    flex-wrap:wrap;
+    gap:12px;
+}
+
+.table-info{
+    color:#64748B;
+    font-size:13px;
+    font-weight:700;
+}
+
+.pagination{
     display:flex;
     align-items:center;
-    justify-content:center;
-    background:#1e293b;
-    border:1px solid #334155;
-    color:white;
+    gap:10px;
 }
 
-.active-page{
-    background:#06b6d4;
-    border-color:#06b6d4;
+.page-btn{
+    padding:10px 16px;
+
+    border-radius:14px;
+
+    color:#fff;
+    font-size:13px;
+    font-weight:900;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7C3AED,
+            #06B6D4
+        );
 }
+
+.page-number{
+    width:40px;
+    height:40px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:12px;
+
+    color:#fff;
+    font-weight:900;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7C3AED,
+            #06B6D4
+        );
+}
+
+@keyframes spinGlow{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+@media(max-width:768px){
+
+    .ledger-card{
+        padding:18px;
+    }
+
+    .ledger-heading h2{
+        font-size:18px;
+    }
+
+    .ledger-icon{
+        width:44px;
+        height:44px;
+        font-size:20px;
+    }
+
+    .toolbar-buttons{
+        justify-content:center;
+    }
+
+    .table-footer{
+        flex-direction:column;
+        text-align:center;
+    }
+}
+
 
 </style>
 </head>
 
-<body class="text-white bg-fixed bg-no-repeat bg-cover bg-center"
-style="background-image: url('images/bg8.jpeg');">
+<body class="text-white ">
 
 <?php include 'header.php' ?>
 <?php include 'sidebar.php' ?>
 
-<div class=" p-8 md:p-14 mb-20 md:mb-1 mt-10 md:ml-[300px]">
+<div class="p-4 md:p-8 mt-10 mb-24 md:mb-10 md:ml-[300px]">
 
-    <!-- PAGE TITLE -->
-    <!-- <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+    <div class="ledger-card">
 
-        <div>
-            <h1 class="text-2xl font-bold text-black">
-                Ledger Form
-            </h1>
-        </div>
+        <!-- HEADER -->
+        <div class="ledger-heading">
 
-        <div class="flex items-center gap-2 text-md font-semibold text-black">
-            <span>🏠</span>
-            <span>/</span>
-            <span>Ledger Form</span>
-        </div>
+            <div class="ledger-icon">
+                📒
+            </div>
 
-    </div> -->
-
-    <!-- CARD -->
-    <div class="bg-gray-800 rounded-xl p-5">
-
-        <!-- HEADING -->
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="text-lg font-semibold">
-                Basic
-            </h2>
-        </div>
-
-        <!-- FILTER SECTION -->
-        <div class="grid md:grid-cols-4 gap-5 items-end mb-5">
-
-            <!-- FROM DATE -->
             <div>
-                <label class="block mb-2 text-slate-300 text-sm">
+                <h2>Ledger Report</h2>
+                <p>Track debit, credit and transaction history</p>
+            </div>
+
+        </div>
+
+        <!-- FILTERS -->
+        <div class="ledger-filter-grid">
+
+            <div>
+                <label class="ledger-label">
                     From Date
                 </label>
 
-                <input type="date" class="input">
+                <input type="date" class="ledger-input">
             </div>
 
-            <!-- TO DATE -->
             <div>
-                <label class="block mb-2 text-slate-300 text-sm">
+                <label class="ledger-label">
                     To Date
                 </label>
 
-                <input type="date" class="input">
+                <input type="date" class="ledger-input">
             </div>
 
-            <!-- FILTER BUTTON -->
-            <div>
-                <button class="filter-btn w-full">
-                    Filter
+            <div class="flex items-end">
+                <button class="filter-btn">
+                    Filter Report
                 </button>
             </div>
 
         </div>
 
-        <!-- EXPORT BUTTONS -->
-        <div class="flex gap-2 flex-wrap mb-5">
+        <!-- EXPORT -->
+        <div class="toolbar-buttons">
 
-            <button class="btn bg-slate-700 hover:bg-slate-600">
-                Copy
-            </button>
-
-            <button class="btn bg-blue-600 hover:bg-blue-500">
-                CSV
-            </button>
-
-            <button class="btn bg-green-600 hover:bg-green-500">
-                Excel
-            </button>
-
-            <button class="btn bg-red-600 hover:bg-red-500">
-                PDF
-            </button>
-
-            <button class="btn bg-purple-600 hover:bg-purple-500">
-                Print
-            </button>
+          <button class="btn-copy">Copy</button>
+                <button class="btn-csv">CSV</button>
+                <button class="btn-excel">Excel</button>
+                <button class="btn-pdf">PDF</button>
+                <button class="btn-print">Print</button>
 
         </div>
 
         <!-- TABLE -->
-        <div class="overflow-x-auto">
+        <div class="table-wrap">
 
             <table>
 
@@ -246,12 +502,8 @@ style="background-image: url('images/bg8.jpeg');">
                         <td>Snacks</td>
                         <td>BCA 2026</td>
                         <td>Nagpur</td>
-                        <td class="text-green-400 font-semibold">
-                            0.00
-                        </td>
-                        <td class="text-red-400 font-semibold">
-                            5,000.00
-                        </td>
+                        <td class="credit">0.00</td>
+                        <td class="debit">5,000.00</td>
                         <td>-5,000.00</td>
                         <td>12-09-2026 00:00:00</td>
                     </tr>
@@ -262,12 +514,8 @@ style="background-image: url('images/bg8.jpeg');">
                         <td>Books</td>
                         <td>BBA 2026</td>
                         <td>Pune</td>
-                        <td class="text-green-400 font-semibold">
-                            2,000.00
-                        </td>
-                        <td class="text-red-400 font-semibold">
-                            0.00
-                        </td>
+                        <td class="credit">2,000.00</td>
+                        <td class="debit">0.00</td>
                         <td>2,000.00</td>
                         <td>13-09-2026 10:30:00</td>
                     </tr>
@@ -279,23 +527,23 @@ style="background-image: url('images/bg8.jpeg');">
         </div>
 
         <!-- FOOTER -->
-        <div class="flex justify-between items-center mt-4 text-sm text-slate-400">
+        <div class="table-footer">
 
-            <div>
+            <div class="table-info">
                 Showing 1 to 2 of 2 entries
             </div>
 
-            <div class="flex items-center gap-2">
+            <div class="pagination">
 
-                <button class="btn bg-blue-500">
+                <button class="page-btn">
                     Previous
                 </button>
 
-                <div class="page-btn active-page">
+                <div class="page-number">
                     1
                 </div>
 
-                <button class="btn bg-green-500">
+                <button class="page-btn">
                     Next
                 </button>
 
@@ -306,7 +554,6 @@ style="background-image: url('images/bg8.jpeg');">
     </div>
 
 </div>
-
 <?php include 'footer.php' ?>
 
 </body>

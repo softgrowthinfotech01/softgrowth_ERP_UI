@@ -4,7 +4,7 @@
 
         <!-- LEFT -->
         <div class="erp-brand">
-            <div class="erp-brand-mark">E</div>
+            <!-- <div class="erp-brand-mark">E</div> -->
 
             <h1>
                 ERP <span>System</span>
@@ -122,7 +122,7 @@
     font-weight:950;
 
     background:
-     black;
+     #6F61F3;
 
     box-shadow:
         0 10px 24px rgba(99,102,241,.28);
@@ -326,41 +326,70 @@
 }
 
 /* MOBILE */
+/* MOBILE */
 @media(max-width:768px){
 
     .erp-header{
         padding:6px 8px;
+        margin-top:0;
+        height: 25px;
     }
 
     .erp-header-inner{
-        padding:0 12px;
-        border-radius:0 0 18px 18px;
+        height:46px;
+        padding:0 18px;
+        border-radius:0 0 16px 16px;
+        gap:8px;
+    }
+
+    .erp-brand{
+        gap:8px;
+        margin-left: 120px;
+   
     }
 
     .erp-brand-mark{
-        width:32px;
-        height:32px;
-        border-radius:12px;
-        font-size:15px;
+        width:30px;
+        height:30px;
+        border-radius:10px;
+        font-size:14px;
     }
 
     .erp-brand h1{
-        font-size:18px;
+        font-size:16px;
+        white-space:nowrap;
+    }
+
+    .erp-search{
+        display:none !important;
     }
 
     .erp-profile-btn{
-        height:36px;
-        padding:3px 8px 3px 4px;
+        height:34px;
+        padding:3px 7px 3px 4px;
+        gap:5px;
     }
 
     .erp-avatar{
-        width:28px;
-        height:28px;
-        font-size:12px;
+        width:26px;
+        height:26px;
+        font-size:11px;
     }
 
     .erp-profile-btn span{
         display:none;
+    }
+
+    .erp-profile-box{
+        top:42px;
+        right:0;
+        width:170px;
+        border-radius:14px;
+    }
+
+    .erp-profile-box div{
+        padding:9px 10px;
+        font-size:12px;
     }
 }
 </style>

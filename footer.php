@@ -1,4 +1,4 @@
-<footer class="erp-footer fixed bottom-0 right-0 left-0 lg:left-72 z-50">
+<footer class="erp-footer  bottom-0 right-0 left-0 lg:left-72 z-50">
 
     <div class="erp-footer-wrap">
 

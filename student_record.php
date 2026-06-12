@@ -12,130 +12,226 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
 
     <style>
-        body {
-            overflow-x: hidden;
-            background-size: 400% 400%;
-            animation: gradientMove 15s ease infinite;
-        }
+        body{
+    overflow-x:hidden;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at center,
+            rgba(0,0,0,.35) 0%,
+            rgba(0,0,0,.65) 60%,
+            rgba(0,0,0,.85) 100%
+        ),
+        url('images/d_bg.png');
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    padding: 80px;
+}
+       .table-card{
+    position:relative;
+    overflow:hidden;
+    padding:22px;
+    border-radius:26px;
+    background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(245,243,255,.88),rgba(236,254,255,.84));
+    border:1px solid rgba(255,255,255,.75);
+    backdrop-filter:blur(35px);
+    box-shadow:0 35px 90px rgba(15,23,42,.22);
+}
 
-        /* smooth motion */
-        @keyframes gradientMove {
-            0% {
-                background-position: 0% 50%;
-            }
+.table-card::before{
+    content:"";
+    position:absolute;
+    inset:-2px;
+    background:conic-gradient(from 180deg,#7C3AED,#06B6D4,#22C55E,#F59E0B,#7C3AED);
+    opacity:.35;
+    animation:spinGlow 7s linear infinite;
+}
 
-            50% {
-                background-position: 100% 50%;
-            }
+.table-card::after{
+    content:"";
+    position:absolute;
+    inset:2px;
+    border-radius:24px;
+    background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(245,243,255,.92),rgba(240,249,255,.90));
+}
 
-            100% {
-                background-position: 0% 50%;
-            }
-        }
+.table-card > *{
+    position:relative;
+    z-index:2;
+}
 
-        /* Card */
-        .card {
-            background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(18px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-        }
+.table-heading{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:20px;
+    padding-bottom:16px;
+    border-bottom:1px solid rgba(226,232,240,.85);
+}
 
-        /* Table */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+.table-icon{
+    width:48px;
+    height:48px;
+    display:grid;
+    place-items:center;
+    border-radius:16px;
+    font-size:22px;
+    background:linear-gradient(135deg,#7C3AED,#06B6D4);
+    box-shadow:0 16px 34px rgba(124,58,237,.28);
+}
 
-        th {
-            text-align: left;
-            font-size: 13px;
-            color: #cbd5e1;
-            padding: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
+.table-heading h2{
+    color:#0F172A;
+    font-size:22px;
+    font-weight:950;
+}
 
-        td {
-            padding: 12px;
-            font-size: 14px;
-            color: #e2e8f0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
+.table-heading p{
+    color:#64748B;
+    font-size:13px;
+    font-weight:700;
+}
 
-        .btn {
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            border: 1px solid #475569;
-            color: white;
-            background: #1e293b;
-        }
+.table-wrap{
+    overflow-x:auto;
+    border-radius:18px;
+    border:1px solid rgba(226,232,240,.9);
+    background:rgba(255,255,255,.70);
+}
 
-        .btn:hover {
-            background: #334155;
-        }
+#studentTable{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    min-width:900px;
+}
+
+#studentTable thead{
+    background:linear-gradient(135deg,#7C3AED,#06B6D4);
+}
+
+#studentTable th{
+    padding:14px 16px;
+    color:#fff;
+    font-size:13px;
+    font-weight:950;
+    text-align:left;
+    white-space:nowrap;
+}
+
+#studentTable td{
+    padding:13px 16px;
+    color:#1E293B;
+    font-size:13px;
+    font-weight:700;
+    border-bottom:1px solid rgba(226,232,240,.85);
+    white-space:nowrap;
+}
+
+#studentTable tbody tr{
+    transition:.25s ease;
+}
+
+#studentTable tbody tr:hover{
+    background:rgba(124,58,237,.08);
+}
+
+#studentTable tbody tr:last-child td{
+    border-bottom:0;
+}
+
+@keyframes spinGlow{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+@media(max-width:768px){
+    .table-card{
+        padding:18px;
+        border-radius:22px;
+    }
+
+    .table-card::after{
+        border-radius:20px;
+    }
+
+    .table-icon{
+        width:42px;
+        height:42px;
+        font-size:20px;
+    }
+
+    .table-heading h2{
+        font-size:19px;
+    }
+
+    #studentTable th,
+    #studentTable td{
+        padding:11px 12px;
+        font-size:12px;
+    }
+}
     </style>
 
 </head>
 
-<body class="text-white bg-fixed bg-no-repeat bg-cover bg-center" style="background-image: url('images/bg8.jpeg');">
+<body class="text-white ">
     <?php include 'header.php' ?>
     <?php include 'sidebar.php' ?>
     <!-- HEADER -->
-    <div class=" p-8 md:p-14 mb-20 md:mb-1 mt-10 md:ml-[300px]">
+    <div class="p-4 md:p-8 mt-10 mb-24 md:mb-10 md:ml-[300px]">
 
+    <div class="table-card">
 
-        <!-- TABLE CARD -->
-        <div class="bg-gray-800 rounded-xl p-5">
+        <div class="table-heading">
+            <div class="table-icon">👨‍🎓</div>
 
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-semibold">Basic</h2>
+            <div>
+                <h2>Student Records</h2>
+                <p>View and manage registered student details</p>
             </div>
-
-
-            <!-- TABLE -->
-            <div class="overflow-x-auto">
-                <table id="studentTable">
-
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <!-- <th>Student ID</th> -->
-                            <th>Student Name</th>
-                            <th>Batch</th>
-                            <th>Year</th>
-                            <th>Student Phone</th>
-                            <th>Father Phone</th>
-                            <th>Branch</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="studentTableBody">
-
-                        <tr>
-                            <td colspan="8" class="text-center text-slate-400 py-8">
-                                Loading...
-                            </td>
-                        </tr>
-
-                    </tbody>
-
-                </table>
-            </div>
-
-
         </div>
+
+        <div class="table-wrap">
+            <table id="studentTable">
+
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Student Name</th>
+                        <th>Batch</th>
+                        <th>Year</th>
+                        <th>Student Phone</th>
+                        <th>Father Phone</th>
+                        <th>Branch</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody id="studentTableBody">
+                    <tr>
+                        <td colspan="8" class="text-center py-8">
+                            Loading...
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+
     </div>
+</div>
 
 
     <!-- DETAILS MODAL -->
 
     <div id="detailsModal" class="fixed inset-0 bg-black/60
-hidden justify-center items-center z-50 p-4">
+        hidden justify-center items-center z-50 p-4">
 
         <div class="bg-slate-900 rounded-2xl
-    w-full max-w-2xl p-6 relative">
+        w-full max-w-2xl p-6 relative">
 
             <!-- CLOSE -->
 
@@ -167,10 +263,10 @@ hidden justify-center items-center z-50 p-4">
     <!-- DOCUMENT MODAL -->
 
     <div id="documentsModal" class="fixed inset-0 bg-black/60
-hidden justify-center items-center z-50 p-4">
+        hidden justify-center items-center z-50 p-4">
 
         <div class="bg-slate-900 rounded-2xl
-    w-full max-w-2xl p-6 relative">
+        w-full max-w-2xl p-6 relative">
 
             <!-- CLOSE -->
 
@@ -204,7 +300,6 @@ hidden justify-center items-center z-50 p-4">
     <script src="url.js"></script>
 
     <script>
-
         const token = localStorage.getItem("token");
 
 
@@ -230,8 +325,7 @@ hidden justify-center items-center z-50 p-4">
             try {
 
                 const response = await fetch(
-                    url + "students",
-                    {
+                    url + "students", {
 
                         method: "GET",
 
@@ -444,8 +538,7 @@ hidden justify-center items-center z-50 p-4">
 
                         headers: {
 
-                            "Authorization":
-                                "Bearer " + localStorage.getItem("token"),
+                            "Authorization": "Bearer " + localStorage.getItem("token"),
 
                             "Accept": "application/json"
 
@@ -474,7 +567,6 @@ hidden justify-center items-center z-50 p-4">
 
 
                 // ERROR
-
                 else {
 
                     const result =
@@ -775,7 +867,6 @@ text-white text-sm">
             ).classList.add("hidden");
 
         }
-
     </script>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>

@@ -288,27 +288,22 @@ border-radius: 0px;
 
 /* MOBILE BUTTON */
 .erp-menu-btn{
-    width:44px;
-    height:44px;
+    width:38px;
+    height:34px;
     margin-left: 15px;
-    border-radius:16px;
-
+    border-radius:10px;
+    margin-bottom: 2px;
     color:#fff;
     font-size:24px;
+    font-weight: 600;
+background-color: black;
 
-    background:
-        linear-gradient(
-            135deg,
-            rgba(168,85,247,.45),
-            rgba(59,130,246,.30)
-        );
+    /* border:1px solid rgba(255,255,255,.14); */
 
-    border:1px solid rgba(255,255,255,.14);
+    /* backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px); */
 
-    backdrop-filter:blur(20px);
-    -webkit-backdrop-filter:blur(20px);
-
-    box-shadow:0 14px 35px rgba(0,0,0,.28);
+    /* box-shadow:0 14px 35px rgba(0,0,0,.28); */
 
     transition:.28s ease;
 }

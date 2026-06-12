@@ -1,356 +1,391 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cash Memo Records - ERP</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cash Memo Records - ERP</title>
 
-<link rel="stylesheet" href="dist/output.css">
-<link rel="stylesheet"
-href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="dist/output.css">
+    <link rel="stylesheet"
+        href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
 
-<link rel="stylesheet"
-href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+    <link rel="stylesheet"
+        href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
 
-<style>
-
-body{
+    <style>
+                    body{
     overflow-x:hidden;
-        background-size: 400% 400%;
-    animation: gradientMove 15s ease infinite;
-}
-/* smooth motion */
-@keyframes gradientMove {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-/* CARD */
-.card{
-    background: rgba(255,255,255,0.06);
-    backdrop-filter: blur(18px);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 16px;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at center,
+            rgba(0,0,0,.35) 0%,
+            rgba(0,0,0,.65) 60%,
+            rgba(0,0,0,.85) 100%
+        ),
+        url('images/d_bg.png');
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    padding: 100px;
 }
 
-/* INPUT */
-.input{
+.memo-record-card{
+    position:relative;
+    overflow:hidden;
+    padding:22px;
+    border-radius:28px;
+    background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(245,243,255,.88),rgba(236,254,255,.84));
+    border:1px solid rgba(255,255,255,.75);
+    backdrop-filter:blur(35px);
+    -webkit-backdrop-filter:blur(35px);
+    box-shadow:0 35px 90px rgba(15,23,42,.20);
+}
+
+.memo-record-card::before{
+    content:"";
+    position:absolute;
+    inset:-2px;
+    background:conic-gradient(from 180deg,#7C3AED,#06B6D4,#22C55E,#F59E0B,#7C3AED);
+    opacity:.35;
+    animation:spinGlow 8s linear infinite;
+}
+
+.memo-record-card::after{
+    content:"";
+    position:absolute;
+    inset:2px;
+    border-radius:26px;
+    background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(245,243,255,.92),rgba(240,249,255,.90));
+}
+
+.memo-record-card>*{
+    position:relative;
+    z-index:2;
+}
+
+.memo-heading{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:22px;
+    padding-bottom:16px;
+    border-bottom:1px solid rgba(226,232,240,.85);
+}
+
+.memo-icon{
+    width:52px;
+    height:52px;
+    display:grid;
+    place-items:center;
+    border-radius:16px;
+    font-size:24px;
+    background:linear-gradient(135deg,#7C3AED,#06B6D4);
+    box-shadow:0 16px 34px rgba(124,58,237,.25);
+}
+
+.memo-heading h2{
+    color:#0F172A;
+    font-size:22px;
+    font-weight:950;
+}
+
+.memo-heading p{
+    color:#64748B;
+    font-size:13px;
+    font-weight:700;
+}
+
+.memo-filter-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:15px;
+    align-items:end;
+    margin-bottom:20px;
+}
+
+.memo-label{
+    display:block;
+    margin-bottom:8px;
+    color:#334155;
+    font-size:13px;
+    font-weight:900;
+}
+
+.memo-input{
     width:100%;
-    height:50px;
-    background:#1e293b;
-    border:1px solid #334155;
-    border-radius:10px;
+    height:46px;
     padding:0 14px;
-    color:white;
+    border-radius:14px;
+    background:#fff;
+    border:1px solid #CBD5E1;
+    color:#0F172A;
     outline:none;
-    transition:0.3s;
 }
 
-.input:focus{
-    border-color:#06b6d4;
-    box-shadow:0 0 0 3px rgba(6,182,212,0.2);
+.memo-input:focus{
+    border-color:#7C3AED;
+    box-shadow:0 0 0 4px rgba(124,58,237,.12);
 }
 
-/* BUTTON */
-.btn{
-    padding:6px 10px;
-    border-radius:6px;
-    font-size:12px;
-    border:1px solid #475569;
-    color:white;
-    background:#1e293b;
-    transition:0.3s;
+.memo-actions{
+    display:flex;
+    gap:10px;
 }
 
-.btn:hover{
-    background:#334155;
+.memo-btn{
+    height:46px;
+    padding:0 22px;
+    border-radius:14px;
+    color:#fff;
+    font-size:13px;
+    font-weight:900;
+    transition:.3s ease;
 }
 
-/* FILTER BUTTON */
-.filter-btn{
-    background:#06b6d4;
-    color:white;
-    height:50px;
-    border-radius:10px;
-    font-weight:600;
-    transition:0.3s;
+.memo-btn:hover{
+    transform:translateY(-3px);
 }
 
-.filter-btn:hover{
-    background:#0891b2;
+.memo-btn.filter{
+    background:linear-gradient(135deg,#7C3AED,#06B6D4);
+}
+
+.memo-btn.reset{
+    background:linear-gradient(135deg,#EF4444,#F97316);
 }
 
 /* TABLE */
-table{
+.memo-table-wrap{
+    overflow-x:auto;
+    border-radius:18px;
+    border:1px solid rgba(226,232,240,.85);
+    background:#fff;
+}
+
+#cashMemoTable{
     width:100%;
+    min-width:800px;
     border-collapse:collapse;
 }
 
-th{
+#cashMemoTable thead{
+    background:linear-gradient(135deg,#7C3AED,#06B6D4);
+}
+
+#cashMemoTable th{
+    padding:14px;
     text-align:left;
+    color:#fff;
     font-size:13px;
-    color:#cbd5e1;
-    padding:12px;
-    border-bottom:1px solid rgba(255,255,255,0.1);
+    font-weight:900;
+    white-space:nowrap;
 }
 
-td{
-    padding:14px 12px;
-    font-size:14px;
-    color:#e2e8f0;
-    border-bottom:1px solid rgba(255,255,255,0.05);
+#cashMemoTable td{
+    padding:14px;
+    color:#334155;
+    font-size:13px;
+    font-weight:700;
+    border-bottom:1px solid #E2E8F0;
+    white-space:nowrap;
 }
 
-/* TABLE ROW HOVER */
-tbody tr:hover{
-    background:rgba(255,255,255,0.03);
+#cashMemoTable tbody tr:hover{
+    background:#F8FAFC;
 }
 
-/* PAGINATION */
-.page-btn{
-    width:38px;
-    height:38px;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:#1e293b;
-    border:1px solid #334155;
-    color:white;
+@keyframes spinGlow{
+    to{
+        transform:rotate(360deg);
+    }
 }
 
-.active-page{
-    background:#06b6d4;
-    border-color:#06b6d4;
+@media(max-width:768px){
+    .memo-record-card{
+        padding:18px;
+        border-radius:22px;
+    }
+
+    .memo-record-card::after{
+        border-radius:20px;
+    }
+
+    .memo-icon{
+        width:44px;
+        height:44px;
+        font-size:20px;
+    }
+
+    .memo-heading h2{
+        font-size:18px;
+    }
+
+    .memo-actions{
+        flex-direction:column;
+    }
+
+    .memo-btn{
+        width:100%;
+    }
+
+    #cashMemoTable th,
+    #cashMemoTable td{
+        padding:12px;
+        font-size:12px;
+    }
 }
 
-</style>
+    </style>
 </head>
 
-<body class="text-white bg-fixed bg-no-repeat bg-cover bg-center"
-style="background-image: url('images/bg8.jpeg');">
+<body class="text-white ">
 
-<?php include 'header.php' ?>
-<?php include 'sidebar.php' ?>
+    <?php include 'header.php' ?>
+    <?php include 'sidebar.php' ?>
 
-<div class=" p-8 md:p-14 mb-20 md:mb-1 mt-10 md:ml-[300px]">
+    <div class="p-4 md:p-8 mt-10 mb-24 md:mb-10 md:ml-[300px]">
 
-  
+    <div class="memo-record-card">
 
-    <!-- CARD -->
-    <div class="bg-gray-800 rounded-xl p-5">
+        <div class="memo-heading">
+            <div class="memo-icon">💵</div>
 
-        <!-- HEADING -->
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="text-lg font-semibold">
-               Cash Memo Records
-            </h2>
+            <div>
+                <h2>Cash Memo Records</h2>
+                <p>Filter and view all cash memo records</p>
+            </div>
         </div>
 
-       <div class="flex flex-col md:flex-row gap-4 mb-6">
+        <div class="memo-filter-grid">
 
-    <!-- FROM DATE -->
+            <div>
+                <label class="memo-label">From Date</label>
+                <input type="date" id="fromDate" class="memo-input">
+            </div>
 
-    <div>
+            <div>
+                <label class="memo-label">To Date</label>
+                <input type="date" id="toDate" class="memo-input">
+            </div>
 
-        <label class="label">
-            From Date
-        </label>
+            <div class="memo-actions">
+                <button onclick="filterByDate()" class="memo-btn filter">
+                    Filter
+                </button>
 
-        <input
-        type="date"
-        id="fromDate"
-        class="input">
+                <button onclick="resetFilter()" class="memo-btn reset">
+                    Reset
+                </button>
+            </div>
 
-    </div>
+        </div>
 
+        <div class="memo-table-wrap">
 
+            <table id="cashMemoTable">
 
-    <!-- TO DATE -->
+                <thead>
+                    <tr>
+                        <th>Sr No</th>
+                        <th>Cash Memo No</th>
+                        <th>Amount</th>
+                        <th>Receipt Number</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
 
-    <div>
+                <tbody id="cashMemoTableBody">
+                </tbody>
 
-        <label class="label">
-            To Date
-        </label>
-
-        <input
-        type="date"
-        id="toDate"
-        class="input">
-
-    </div>
-
-
-
-    <!-- BUTTONS -->
-
-    <div class="flex items-end gap-3">
-
-        <button
-
-        onclick="filterByDate()"
-
-        class="px-5 py-3 h-[50px]
-        rounded-xl bg-cyan-500 text-white">
-
-            Filter
-
-        </button>
-
-
-
-        <button
-
-        onclick="resetFilter()"
-
-        class="px-5 py-3 h-[50px]
-        rounded-xl bg-red-500 text-white">
-
-            Reset
-
-        </button>
-
-    </div>
-
-</div>
-       
-
-        <!-- TABLE -->
-        <div class="overflow-x-auto">
-
-          <table
-id="cashMemoTable"
-class="w-full text-sm text-left">
-
-               <thead>
-
-<tr>
-
-    <th>
-        Sr No
-    </th>
-
-    <th>
-        Cash Memo No
-    </th>
-
-    <th>
-        Amount
-    </th>
-
-    <th>
-        Receipt Number
-    </th>
-
-    <th>
-        Date
-    </th>
-
-
-</tr>
-
-</thead>
-               <tbody id="cashMemoTableBody">
-</tbody>
             </table>
 
         </div>
 
-      
-
     </div>
 
 </div>
 
-<?php include 'footer.php' ?>
-<script src="url.js"></script>
+    <?php include 'footer.php' ?>
+    <script src="url.js"></script>
 
-<script>
+    <script>
+        // =========================
+        // LOAD DATA
+        // =========================
 
-// =========================
-// LOAD DATA
-// =========================
+        window.onload = function() {
 
-window.onload = function(){
+            getCashMemos();
 
-    getCashMemos();
-
-}
-
-
-
-// =========================
-// GET CASH MEMOS
-// =========================
-
-async function getCashMemos(){
-
-    try{
-
-        const response = await fetch(
-
-            url + "cash-memos/",
-
-            {
-
-                method:"GET",
-
-                headers:{
-
-                    "Accept":"application/json",
-
-                    "Authorization":
-                    "Bearer " +
-                    localStorage.getItem("token")
-
-                }
-
-            }
-
-        );
-
-
-
-        const result =
-        await response.json();
-
-
-
-        console.log(result);
-
-
-
-        const cashMemos =
-        result.data;
-
-
-
-        const tableBody =
-        document.getElementById(
-    "cashMemoTableBody"
-);
-
-
-
-        tableBody.innerHTML = "";
+        }
 
 
 
         // =========================
-        // EMPTY DATA
+        // GET CASH MEMOS
         // =========================
 
-        if(cashMemos.length === 0){
+        async function getCashMemos() {
 
-            tableBody.innerHTML = `
+            try {
+
+                const response = await fetch(
+
+                    url + "cash-memos/",
+
+                    {
+
+                        method: "GET",
+
+                        headers: {
+
+                            "Accept": "application/json",
+
+                            "Authorization": "Bearer " +
+                                localStorage.getItem("token")
+
+                        }
+
+                    }
+
+                );
+
+
+
+                const result =
+                    await response.json();
+
+
+
+                console.log(result);
+
+
+
+                const cashMemos =
+                    result.data;
+
+
+
+                const tableBody =
+                    document.getElementById(
+                        "cashMemoTableBody"
+                    );
+
+
+
+                tableBody.innerHTML = "";
+
+
+
+                // =========================
+                // EMPTY DATA
+                // =========================
+
+                if (cashMemos.length === 0) {
+
+                    tableBody.innerHTML = `
 
                 <tr>
 
@@ -365,19 +400,19 @@ async function getCashMemos(){
 
             `;
 
-            return;
+                    return;
 
-        }
+                }
 
 
 
-        // =========================
-        // LOOP DATA
-        // =========================
+                // =========================
+                // LOOP DATA
+                // =========================
 
-        cashMemos.forEach((item,index) => {
+                cashMemos.forEach((item, index) => {
 
-            tableBody.innerHTML += `
+                    tableBody.innerHTML += `
 
                 <tr>
 
@@ -417,167 +452,167 @@ async function getCashMemos(){
 
             `;
 
-        });
+                });
 
-$('#cashMemoTable').DataTable({
+                $('#cashMemoTable').DataTable({
 
-    destroy:true,
+                    destroy: true,
 
-    dom:'Bfrtip',
+                    dom: 'Bfrtip',
 
-    buttons:[
+                    buttons: [
 
-        'copy',
+                        'copy',
 
-        'csv',
+                        'csv',
 
-        'excel',
+                        'excel',
 
-        'pdf',
+                        'pdf',
 
-        'print'
+                        'print'
 
-    ],
+                    ],
 
-    pageLength:10
+                    pageLength: 10
 
-});
+                });
 
-    }catch(error){
+            } catch (error) {
 
-        console.log(error);
+                console.log(error);
 
-        alert("Failed To Fetch Data");
-
-    }
-
-}
-
-// =========================
-// FILTER DATE
-// =========================
-
-function filterByDate(){
-
-    const fromDate =
-    document.getElementById(
-        "fromDate"
-    ).value;
-
-
-
-    const toDate =
-    document.getElementById(
-        "toDate"
-    ).value;
-
-
-
-    const table =
-    $('#cashMemoTable')
-    .DataTable();
-
-
-
-    $.fn.dataTable.ext.search.push(
-
-        function(settings,data){
-
-            const rowDate =
-            data[4];
-
-
-
-            if(
-
-                (!fromDate && !toDate)
-
-            ){
-
-                return true;
+                alert("Failed To Fetch Data");
 
             }
-
-
-
-            if(
-
-                fromDate &&
-                rowDate < fromDate
-
-            ){
-
-                return false;
-
-            }
-
-
-
-            if(
-
-                toDate &&
-                rowDate > toDate
-
-            ){
-
-                return false;
-
-            }
-
-
-
-            return true;
 
         }
 
-    );
+        // =========================
+        // FILTER DATE
+        // =========================
+
+        function filterByDate() {
+
+            const fromDate =
+                document.getElementById(
+                    "fromDate"
+                ).value;
 
 
 
-    table.draw();
-
-}
-
-function resetFilter(){
-
-    document.getElementById(
-        "fromDate"
-    ).value = "";
+            const toDate =
+                document.getElementById(
+                    "toDate"
+                ).value;
 
 
 
-    document.getElementById(
-        "toDate"
-    ).value = "";
+            const table =
+                $('#cashMemoTable')
+                .DataTable();
 
 
 
-    $.fn.dataTable.ext.search = [];
+            $.fn.dataTable.ext.search.push(
+
+                function(settings, data) {
+
+                    const rowDate =
+                        data[4];
 
 
 
-    $('#cashMemoTable')
-    .DataTable()
-    .draw();
+                    if (
 
-}
+                        (!fromDate && !toDate)
 
-</script>
+                    ) {
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+                        return true;
 
-<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+                    }
 
-<script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
 
-<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
 
-<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+                    if (
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+                        fromDate &&
+                        rowDate < fromDate
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+                    ) {
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+                        return false;
+
+                    }
+
+
+
+                    if (
+
+                        toDate &&
+                        rowDate > toDate
+
+                    ) {
+
+                        return false;
+
+                    }
+
+
+
+                    return true;
+
+                }
+
+            );
+
+
+
+            table.draw();
+
+        }
+
+        function resetFilter() {
+
+            document.getElementById(
+                "fromDate"
+            ).value = "";
+
+
+
+            document.getElementById(
+                "toDate"
+            ).value = "";
+
+
+
+            $.fn.dataTable.ext.search = [];
+
+
+
+            $('#cashMemoTable')
+                .DataTable()
+                .draw();
+
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 </body>
+
 </html>
