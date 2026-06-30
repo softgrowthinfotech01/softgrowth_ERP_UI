@@ -399,6 +399,138 @@ footer,
 
         box-shadow:0 12px 30px rgba(0,0,0,.35) !important;
     }
+
+    /* ===========================
+   DATATABLES THEME
+=========================== */
+
+.dataTables_wrapper{
+    padding:15px 0;
+}
+
+/* Export Buttons */
+
+.dt-buttons{
+    margin-bottom:15px;
+}
+
+.dt-button{
+    background:#7C3AED !important;
+    color:#fff !important;
+    border:none !important;
+    border-radius:10px !important;
+    padding:8px 16px !important;
+    margin-right:8px !important;
+    font-weight:700 !important;
+    transition:.3s;
+}
+
+.dt-button:hover{
+    background:#5B21B6 !important;
+    color:#fff !important;
+}
+
+/* Search */
+
+.dataTables_filter label{
+
+    color:#111827 !important;
+
+    font-weight:700;
+
+}
+
+.dataTables_filter input{
+
+    border:1px solid #CBD5E1 !important;
+
+    border-radius:10px !important;
+
+    padding:8px 12px !important;
+
+    background:#fff !important;
+
+    color:#111827 !important;
+
+    margin-left:8px;
+
+}
+
+/* Show Entries */
+
+.dataTables_length label{
+
+    color:#111827 !important;
+
+    font-weight:700;
+
+}
+
+.dataTables_length select{
+
+    border:1px solid #CBD5E1 !important;
+
+    border-radius:10px !important;
+
+    padding:6px 10px !important;
+
+    background:#fff !important;
+
+    color:#111827 !important;
+
+}
+
+/* Info */
+
+.dataTables_info{
+
+    color:#374151 !important;
+
+    font-weight:600;
+
+    margin-top:12px;
+
+}
+
+/* Pagination */
+
+.dataTables_paginate{
+
+    margin-top:12px !important;
+
+}
+
+.dataTables_paginate .paginate_button{
+
+    border:none !important;
+
+    background:#E2E8F0 !important;
+
+    color:#111827 !important;
+
+    border-radius:10px !important;
+
+    padding:6px 14px !important;
+
+    margin:0 4px !important;
+
+}
+
+.dataTables_paginate .paginate_button.current{
+
+    background:#7C3AED !important;
+
+    color:#fff !important;
+
+}
+
+.dataTables_paginate .paginate_button:hover{
+
+    background:#5B21B6 !important;
+
+    color:#fff !important;
+
+}
 }
     </style>
 </head>
@@ -616,29 +748,27 @@ footer,
 
                 });
 
-                $('#cashMemoTable').DataTable({
+              $('#cashMemoTable').DataTable({
 
-                    destroy: true,
+    destroy: true,
 
-                    dom: 'Bfrtip',
+    responsive: true,
 
-                    buttons: [
+    pageLength: 10,
 
-                        'copy',
+    lengthMenu: [[10,25,50,100],[10,25,50,100]],
 
-                        'csv',
+    dom:'Bfrtip',
 
-                        'excel',
+    buttons:[
+        'copy',
+        'csv',
+        'excel',
+        'pdf',
+        'print'
+    ]
 
-                        'pdf',
-
-                        'print'
-
-                    ],
-
-                    pageLength: 10
-
-                });
+});
 
             } catch (error) {
 
