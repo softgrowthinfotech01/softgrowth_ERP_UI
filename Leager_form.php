@@ -523,43 +523,80 @@ footer,
         </div>
 
         <!-- FILTERS -->
-        <div class="ledger-filter-grid">
+        <div class="grid md:grid-cols-4 gap-4 mb-6">
 
-            <div>
-                <label class="ledger-label">
-                    From Date
-                </label>
+    <div>
+        <label class="text-black block text-sm font-medium mb-2">
+            From Date
+        </label>
 
-                <input type="date" class="ledger-input">
-            </div>
+        <input
+            type="date"
+            id="fromDate"
+            class="ledger-input">
+    </div>
 
-            <div>
-                <label class="ledger-label">
-                    To Date
-                </label>
+    <div>
+        <label class="text-black block text-sm font-medium mb-2">
+            To Date
+        </label>
 
-                <input type="date" class="ledger-input">
-            </div>
+        <input
+            type="date"
+            id="toDate"
+            class="ledger-input">
+    </div>
 
-            <div class="flex items-end">
-                <button class="filter-btn">
-                    Filter Report
-                </button>
-            </div>
+    <div>
+        <label class="text-black block text-sm font-medium mb-2">
+            Receipt Number
+        </label>
 
-        </div>
+        <input
+            type="text"
+            id="receiptSearch"
+            class="ledger-input"
+            placeholder="Search Receipt No">
+    </div>
+
+    <div class="flex items-end">
+
+        <button
+            onclick="loadLedger()"
+            class="filter-btn w-full">
+
+            Filter Report
+
+        </button>
+
+    </div>
+
+</div>
 
         <!-- EXPORT -->
-        <div class="toolbar-buttons">
+     <div class="toolbar-buttons">
 
-          <button class="btn-copy">Copy</button>
-                <button class="btn-csv">CSV</button>
-                <button class="btn-excel">Excel</button>
-                <button class="btn-pdf">PDF</button>
-                <button class="btn-print">Print</button>
+    <button class="btn-copy" onclick="exportLedger('copy')">
+        Copy
+    </button>
 
-        </div>
+    <button class="btn-csv" onclick="exportLedger('csv')">
+        CSV
+    </button>
 
+    <button class="btn-excel" onclick="exportLedger('excel')">
+        Excel
+    </button>
+
+    <button class="btn-pdf" onclick="exportLedger('pdf')">
+        PDF
+    </button>
+
+    <button class="btn-print" onclick="exportLedger('print')">
+        Print
+    </button>
+
+</div>
         <!-- TABLE -->
         <div class="table-wrap">
 
@@ -579,46 +616,26 @@ footer,
                     </tr>
                 </thead>
 
-                <tbody>
+               <tbody id="ledgerTableBody">
 
-                    <tr>
-                        <td>1</td>
-                        <td>123</td>
-                        <td>Snacks</td>
-                        <td>BCA 2026</td>
-                        <td>Nagpur</td>
-                        <td class="credit">0.00</td>
-                        <td class="debit">5,000.00</td>
-                        <td>-5,000.00</td>
-                        <td>12-09-2026 00:00:00</td>
-                    </tr>
-
-                    <tr>
-                        <td>2</td>
-                        <td>124</td>
-                        <td>Books</td>
-                        <td>BBA 2026</td>
-                        <td>Pune</td>
-                        <td class="credit">2,000.00</td>
-                        <td class="debit">0.00</td>
-                        <td>2,000.00</td>
-                        <td>13-09-2026 10:30:00</td>
-                    </tr>
-
-                </tbody>
-
+</tbody>
             </table>
 
         </div>
 
         <!-- FOOTER -->
         <div class="table-footer">
+<div
+id="tableInfo"
+class="table-info">
 
-            <div class="table-info">
-                Showing 1 to 2 of 2 entries
-            </div>
+Loading...
 
-            <div class="pagination">
+</div>
+
+          <div
+id="pagination"
+class="pagination">
 
                 <button class="page-btn">
                     Previous
@@ -640,6 +657,335 @@ footer,
 
 </div>
 <?php include 'footer.php' ?>
+<script src="url.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+<script>
+
+    let allLedger = [];
+
+window.onload = function () {
+
+    loadLedger();
+
+};
+
+async function loadLedger(page = 1) {
+
+    try {
+
+        const fromDate = document.getElementById("fromDate").value;
+        const toDate = document.getElementById("toDate").value;
+
+       const receipt = document.getElementById("receiptSearch").value;
+
+const response = await fetch(
+
+    url +
+
+    "ledger?page=" + page +
+
+    "&receipt_number=" + encodeURIComponent(receipt) +
+
+    "&from_date=" + fromDate +
+
+    "&to_date=" + toDate,
+
+    {
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+            Accept: "application/json"
+        }
+    }
+
+);
+
+        const result = await response.json();
+
+        console.log(result);
+
+        fillLedger(result.data);
+
+    }
+
+    catch (error) {
+
+        console.log(error);
+
+        alert("Unable to fetch ledger.");
+
+    }
+
+}
+
+function fillLedger(data) {
+
+    allLedger = data.data;
+
+    const tbody =
+        document.getElementById("ledgerTableBody");
+
+    tbody.innerHTML = "";
+
+    if (data.data.length == 0) {
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td colspan="9" class="text-center py-8">
+
+                    No Ledger Records Found
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+    data.data.forEach((ledger, index) => {
+
+        tbody.innerHTML += `
+
+            <tr>
+
+                <td>${index + 1}</td>
+
+                <td>${ledger.receipt_number}</td>
+
+                <td>${ledger.memo_details}</td>
+
+                <td>${ledger.student_batch ?? "-"}</td>
+
+                <td>${ledger.branch ?? "-"}</td>
+
+                <td class="credit">
+
+                    ₹ ${Number(ledger.credit).toLocaleString()}
+
+                </td>
+
+                <td class="debit">
+
+                    ₹ ${Number(ledger.debit).toLocaleString()}
+
+                </td>
+
+                <td>
+
+                    ₹ ${Number(ledger.running_balance).toLocaleString()}
+
+                </td>
+
+                <td>
+
+                    ${ledger.transaction_date.split(" ")[0]}
+
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+    document.getElementById("tableInfo").innerHTML =
+        `Showing ${data.from} to ${data.to} of ${data.total} Entries`;
+
+    renderPagination(data);
+
+}
+
+function renderPagination(data) {
+
+    const div = document.getElementById("pagination");
+
+    div.innerHTML = "";
+
+    if (data.current_page > 1) {
+
+        div.innerHTML += `
+            <button class="page-btn"
+                onclick="loadLedger(${data.current_page - 1})">
+                Previous
+            </button>
+        `;
+
+    }
+
+    for (let i = 1; i <= data.last_page; i++) {
+
+        div.innerHTML += `
+            <button
+                class="page-btn ${i == data.current_page ? 'bg-blue-700' : ''}"
+                onclick="loadLedger(${i})">
+                ${i}
+            </button>
+        `;
+
+    }
+
+    if (data.current_page < data.last_page) {
+
+        div.innerHTML += `
+            <button class="page-btn"
+                onclick="loadLedger(${data.current_page + 1})">
+                Next
+            </button>
+        `;
+
+    }
+
+}
+
+
+function exportLedger(type){
+
+    let rows = [];
+
+    rows.push([
+        "Receipt Number",
+        "Memo Details",
+        "Student Batch",
+        "Branch",
+        "Credit",
+        "Debit",
+        "Running Balance",
+        "Date"
+    ]);
+
+    allLedger.forEach(item => {
+
+        rows.push([
+            item.receipt_number,
+            item.memo_details,
+            item.student_batch ?? "-",
+            item.branch ?? "-",
+            item.credit,
+            item.debit,
+            item.running_balance,
+            item.transaction_date.split(" ")[0]
+        ]);
+
+    });
+
+    // COPY
+    if(type=="copy"){
+
+        let text = rows.map(r=>r.join("\t")).join("\n");
+
+        navigator.clipboard.writeText(text);
+
+        alert("Copied Successfully");
+
+    }
+
+    // CSV
+    else if(type=="csv"){
+
+        let csv = rows.map(r=>r.join(",")).join("\n");
+
+        let blob = new Blob([csv],{type:"text/csv"});
+
+        let a=document.createElement("a");
+
+        a.href=URL.createObjectURL(blob);
+
+        a.download="Ledger_Report.csv";
+
+        a.click();
+
+    }
+
+    // Excel
+    else if(type=="excel"){
+
+        let ws=XLSX.utils.aoa_to_sheet(rows);
+
+        let wb=XLSX.utils.book_new();
+
+        XLSX.utils.book_append_sheet(wb,ws,"Ledger");
+
+        XLSX.writeFile(wb,"Ledger_Report.xlsx");
+
+    }
+
+    // PDF
+    else if(type=="pdf"){
+
+        const {jsPDF}=window.jspdf;
+
+        let pdf=new jsPDF("l","mm","a4");
+
+        pdf.autoTable({
+
+            head:[rows[0]],
+
+            body:rows.slice(1)
+
+        });
+
+        pdf.save("Ledger_Report.pdf");
+
+    }
+
+    // Print
+    else if(type=="print"){
+
+        let html="<h2>Ledger Report</h2><table border='1' cellspacing='0' cellpadding='6'>";
+
+        rows.forEach(r=>{
+
+            html+="<tr>";
+
+            r.forEach(c=>{
+
+                html+="<td>"+c+"</td>";
+
+            });
+
+            html+="</tr>";
+
+        });
+
+        html+="</table>";
+
+        let win=window.open("");
+
+        win.document.write(html);
+
+        win.print();
+
+    }
+
+}
+
+document.getElementById("receiptSearch").addEventListener("keyup", function () {
+
+    loadLedger();
+
+});
+
+document.getElementById("fromDate").addEventListener("change", function () {
+
+    loadLedger();
+
+});
+
+document.getElementById("toDate").addEventListener("change", function () {
+
+    loadLedger();
+
+});
+</script>
 </body>
 </html>
