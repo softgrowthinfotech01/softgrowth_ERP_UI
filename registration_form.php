@@ -6,99 +6,10 @@
 
 <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> -->
 <link rel="stylesheet" href="./dist/output.css?v=999">
+<link rel="stylesheet" href="dist/style.css">
+
 <style>
 
-/* ===== BACKGROUND ORBS ===== */
-.orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.4;
-  animation: float 8s infinite ease-in-out;
-}
-
-.orb1 {
-  width: 300px;
-  height: 300px;
-  background: #22d3ee;
-  top: 10%;
-  left: 15%;
-}
-
-.orb2 {
-  width: 250px;
-  height: 250px;
-  background: #3b82f6;
-  bottom: 10%;
-  right: 10%;
-  animation-delay: 2s;
-}
-
-@keyframes float {
-  0%,100% { transform: translateY(0px); }
-  50% { transform: translateY(-25px); }
-}
-
-/* ===== CARD ANIMATION ===== */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(30px) scale(0.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-@keyframes popIn {
-  from { opacity: 0; transform: scale(0.7) rotateX(10deg); }
-  to { opacity: 1; transform: scale(1) rotateX(0); }
-}
-
-.animate-fadeUp { animation: fadeUp 0.7s ease; }
-.animate-pop { animation: popIn 0.35s ease; }
-
-/* ===== GLASS CARD ===== */
-.glass {
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(18px);
-  border: 1px solid rgba(255,255,255,0.15);
-  box-shadow: 0 25px 60px rgba(0,0,0,0.5);
-}
-
-/* ===== INPUTS ===== */
-.input {
-  transition: 0.3s;
-}
-
-.input:hover {
-  transform: translateY(-2px);
-}
-
-.input:focus {
-  transform: translateY(-3px);
-  box-shadow: 0 0 0 2px #22d3ee;
-}
-
-/* ===== BUTTON SHINE ===== */
-.btn {
-  position: relative;
-  overflow: hidden;
-}
-
-.btn::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
-  transition: 0.5s;
-}
-
-.btn:hover::after {
-  left: 100%;
-}
-
-.btn:hover {
-  transform: translateY(-2px) scale(1.02);
-}
 
 </style>
 </head>
