@@ -119,26 +119,6 @@
         inset 0 1px 0 rgba(255,255,255,1);
 }
 
-/* ANIMATED BORDER */
-.step-box::before{
-    content:"";
-    position:absolute;
-    inset:-2px;
-    z-index:0;
-
-    background:
-        conic-gradient(
-            from 180deg,
-            #5b00f8,
-            #06B6D4,
-            #22C55E,
-            #F59E0B,
-            #7C3AED
-        );
-
-    opacity:.95;
-    animation:spinGlow 7s linear infinite;
-}
 
 .step-box::after{
     content:"";

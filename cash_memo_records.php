@@ -75,14 +75,7 @@ body{
     box-shadow:0 35px 90px rgba(15,23,42,.22);
 }
 
-.memo-record-card::before{
-    content:"";
-    position:absolute;
-    inset:-2px;
-    background:conic-gradient(from 180deg,#7C3AED,#06B6D4,#22C55E,#F59E0B,#7C3AED);
-    opacity:.35;
-    animation:spinGlow 8s linear infinite;
-}
+
 
 .memo-record-card::after{
     content:"";

@@ -56,25 +56,6 @@
         inset 0 1px 0 rgba(255,255,255,1);
 }
 
-.idcard-form-card::before{
-    content:"";
-    position:absolute;
-    inset:-2px;
-    z-index:0;
-
-    background:
-        conic-gradient(
-            from 180deg,
-            #7C3AED,
-            #06B6D4,
-            #22C55E,
-            #F59E0B,
-            #7C3AED
-        );
-
-    opacity:.35;
-    animation:spinGlow 7s linear infinite;
-}
 
 .idcard-form-card::after{
     content:"";

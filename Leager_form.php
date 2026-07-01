@@ -49,25 +49,6 @@ margin-top: 20px;
         0 35px 90px rgba(15,23,42,.20);
 }
 
-.ledger-card::before{
-    content:"";
-    position:absolute;
-    inset:-2px;
-
-    background:
-        conic-gradient(
-            from 180deg,
-            #7C3AED,
-            #06B6D4,
-            #22C55E,
-            #F59E0B,
-            #7C3AED
-        );
-
-    opacity:.35;
-
-    animation:spinGlow 8s linear infinite;
-}
 
 .ledger-card::after{
     content:"";
