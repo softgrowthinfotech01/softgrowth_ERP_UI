@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
     <style>
- /* Minimal custom styles – everything else is Tailwind */
+        /* Minimal custom styles – everything else is Tailwind */
         .table-row-hover:hover {
             background-color: #f8fafc;
         }
@@ -42,22 +42,37 @@
                 padding: 0.5rem 0.25rem;
             }
         }
+        /* Toast notification */
+        .export-toast {
+            animation: slideDown 0.4s ease;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translate(-50%, -20px) scale(0.95); }
+            to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+        }
+        /* Print styles */
+        @media print {
+            body * { visibility: hidden; }
+            #printArea, #printArea * { visibility: visible; }
+            #printArea { position: absolute; left: 0; top: 0; width: 100%; padding: 20px; }
+            .no-print { display: none !important; }
+        }
     </style>
 
 </head>
 
 <body class="bg-gray-300 text-gray-800 antialiased">
 
-    <?php include 'header.php' ?>
-    <?php include 'sidebar.php' ?>
+    <?php include 'header.php'; ?>
+    <?php include 'sidebar.php'; ?>
 
-   <main class="md:ml-[300px] max-w-7xl mx-auto px-4 sm:px-6 py-28 pb-10 mb-10 transition-all duration-200">
+    <main class="md:ml-[300px] max-w-7xl mx-auto px-4 sm:px-6 py-28 pb-10 mb-10 transition-all duration-200">
 
         <!-- ===== BALANCE DETAILS CARD ===== -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden" id="printArea">
 
             <!-- Heading -->
-            <div class="flex items-center gap-4 p-6 border-b border-gray-100">
+            <div class="flex items-center gap-4 p-6 border-b border-gray-100 no-print">
                 <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-2xl">
                     <i class="fas fa-balance-scale"></i>
                 </div>
@@ -68,7 +83,7 @@
             </div>
 
             <!-- Toolbar -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 border-b border-gray-100">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 border-b border-gray-100 no-print">
                 <div class="flex flex-wrap items-center gap-2">
                     <button onclick="exportData('copy')" class="toolbar-btn px-4 py-2 bg-gray-600 text-white text-sm font-bold rounded-xl hover:bg-gray-700 focus:ring-2 focus:ring-gray-300">
                         <i class="fas fa-copy mr-1"></i> Copy
@@ -94,29 +109,29 @@
 
             <!-- Table -->
             <div class="table-wrap p-4 sm:p-6">
-                <table class="w-full text-sm text-left">
+                <table class="w-full text-sm text-left" id="balanceTable">
                     <thead>
                         <tr class="bg-teal-600 text-white text-xs font-semibold uppercase tracking-wider">
                             <th class="px-3 py-3 whitespace-nowrap">#</th>
                             <th class="px-3 py-3 whitespace-nowrap">Student Name</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Branch</th>
                             <th class="px-3 py-3 whitespace-nowrap">Batch</th>
+                            <th class="px-3 py-3 whitespace-nowrap">Total Fees</th>
+                            <th class="px-3 py-3 whitespace-nowrap">Paid Fees</th>
                             <th class="px-3 py-3 whitespace-nowrap">Balance Amount</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Payment Date</th>
-                            <th class="px-3 py-3 whitespace-nowrap text-center">Action</th>
+                            <th class="px-3 py-3 whitespace-nowrap">Status</th>
+                            <th class="px-3 py-3 whitespace-nowrap text-center no-print">Action</th>
                         </tr>
                     </thead>
                     <tbody id="balanceTableBody" class="divide-y divide-gray-100">
-                        <!-- rows injected by JS -->
                         <tr>
-                            <td colspan="7" class="text-center py-8 text-gray-400">Loading...</td>
+                            <td colspan="8" class="text-center py-8 text-gray-400">Loading...</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
             <!-- Table Footer -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 border-t border-gray-100">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 border-t border-gray-100 no-print">
                 <div class="text-sm text-gray-500 font-semibold">
                     Showing <span id="startEntry">0</span> to <span id="endEntry">0</span> of <span id="totalEntries">0</span> entries
                 </div>
@@ -134,510 +149,471 @@
 
     </main>
 
-    <?php include 'footer.php' ?>
+    <?php include 'footer.php'; ?>
+
+    <!-- Libraries for export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-    <script src="url.js"></script>
 
-
-
-
-
-
-    <!-- ============================================================
-    JAVASCRIPT – data, pagination, search, export
-    ============================================================ -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        // ============================================================
+        // API URL (adjust as needed)
+        // ============================================================
+        const API_URL = 'your-api-url-here'; // replace with actual URL
 
-            // ----- SAMPLE DATA -----
-            const balances = [
-                { id: 1, name: 'Rahul Sharma', branch: 'BCA', batch: '2024-25', balance: '₹8,500', date: '2025-01-15' },
-                { id: 2, name: 'Priya Patel', branch: 'BBA', batch: '2025-26', balance: '₹12,000', date: '2025-01-16' },
-                { id: 3, name: 'Amit Singh', branch: 'BCA', batch: '2024-25', balance: '₹3,200', date: '2025-01-17' },
-                { id: 4, name: 'Sneha Reddy', branch: 'B.Com', batch: '2023-24', balance: '₹15,500', date: '2025-01-18' },
-                { id: 5, name: 'Vikram Kumar', branch: 'BBA', batch: '2025-26', balance: '₹6,750', date: '2025-01-19' },
-                { id: 6, name: 'Neha Jain', branch: 'BCA', batch: '2024-25', balance: '₹9,300', date: '2025-01-20' },
-                { id: 7, name: 'Ravi Desai', branch: 'B.Com', batch: '2023-24', balance: '₹4,100', date: '2025-01-21' },
-                { id: 8, name: 'Meera Iyer', branch: 'BBA', batch: '2025-26', balance: '₹11,200', date: '2025-01-22' },
-                { id: 9, name: 'Arjun Nair', branch: 'BCA', batch: '2024-25', balance: '₹7,800', date: '2025-01-23' },
-                { id: 10, name: 'Kavya Menon', branch: 'B.Com', batch: '2023-24', balance: '₹5,400', date: '2025-01-24' },
-                { id: 11, name: 'Deepak Gupta', branch: 'BCA', batch: '2024-25', balance: '₹10,000', date: '2025-01-25' },
-                { id: 12, name: 'Pooja Reddy', branch: 'BBA', batch: '2025-26', balance: '₹14,600', date: '2025-01-26' }
+        // ============================================================
+        // DATA & STATE
+        // ============================================================
+        let allBalanceRecords = [];
+        let currentPage = 1;
+        const rowsPerPage = 5;
+        let filteredData = [];
+
+        // DOM refs
+        const tbody = document.getElementById('balanceTableBody');
+        const searchInput = document.getElementById('searchInput');
+
+        // ============================================================
+        // LOAD STUDENTS FROM API
+        // ============================================================
+        async function loadStudents(page = 1) {
+            try {
+                const search = document.getElementById('searchInput')?.value || '';
+                const response = await fetch(
+                    `${API_URL}?page=${page}&search=${encodeURIComponent(search)}`,
+                    {
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                            'Accept': 'application/json'
+                        }
+                    }
+                );
+
+                if (!response.ok) throw new Error('Network response was not ok');
+                const result = await response.json();
+                console.log('API Response:', result);
+
+                // Handle different response structures
+                const data = result.data || result;
+                allBalanceRecords = data.data || data || [];
+                renderTable(allBalanceRecords);
+                updatePaginationInfo(allBalanceRecords.length, page);
+
+            } catch (error) {
+                console.error('Error loading students:', error);
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="text-center py-8 text-red-500">
+                            <i class="fas fa-exclamation-circle mr-2"></i>
+                            Failed to load records. Please try again.
+                        </td>
+                    </tr>
+                `;
+                // Fallback to sample data if API fails
+                loadSampleData();
+            }
+        }
+
+        // ============================================================
+        // SAMPLE DATA (fallback)
+        // ============================================================
+        function loadSampleData() {
+            allBalanceRecords = [
+                { student_name: 'Rahul Sharma', student_batch: '2024-25', total_fees: 85000, paid_fees: 70000, balance_amount: 15000 },
+                { student_name: 'Priya Patel', student_batch: '2025-26', total_fees: 90000, paid_fees: 90000, balance_amount: 0 },
+                { student_name: 'Amit Singh', student_batch: '2024-25', total_fees: 82000, paid_fees: 50000, balance_amount: 32000 },
+                { student_name: 'Sneha Reddy', student_batch: '2023-24', total_fees: 78000, paid_fees: 60000, balance_amount: 18000 },
+                { student_name: 'Vikram Kumar', student_batch: '2025-26', total_fees: 88000, paid_fees: 88000, balance_amount: 0 },
             ];
+            renderTable(allBalanceRecords);
+            updatePaginationInfo(allBalanceRecords.length, 1);
+        }
 
-            const rowsPerPage = 5;
-            let currentPage = 1;
-            let filteredData = [...balances]; // for search
-            let totalPages = Math.ceil(filteredData.length / rowsPerPage);
+        // ============================================================
+        // RENDER TABLE
+        // ============================================================
+        function renderTable(data, page = 1) {
+            const start = (page - 1) * rowsPerPage;
+            const end = Math.min(start + rowsPerPage, data.length);
+            const pageItems = data.slice(start, end);
 
-            const tbody = document.getElementById('balanceTableBody');
-            const searchInput = document.getElementById('searchInput');
-
-            function renderTable(page) {
-                const start = (page - 1) * rowsPerPage;
-                const end = Math.min(start + rowsPerPage, filteredData.length);
-                const pageItems = filteredData.slice(start, end);
-
-                if (pageItems.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-gray-400">No records found</td></tr>`;
-                } else {
-                    let html = '';
-                    pageItems.forEach((item, index) => {
-                        const rowNum = start + index + 1;
-                        html += `
-                            <tr class="table-row-hover transition">
-                                <td class="px-3 py-3 whitespace-nowrap">${rowNum}</td>
-                                <td class="px-3 py-3 whitespace-nowrap font-medium text-gray-900">${item.name}</td>
-                                <td class="px-3 py-3 whitespace-nowrap">${item.branch}</td>
-                                <td class="px-3 py-3 whitespace-nowrap">${item.batch}</td>
-                                <td class="px-3 py-3 whitespace-nowrap font-semibold text-red-600">${item.balance}</td>
-                                <td class="px-3 py-3 whitespace-nowrap">${item.date}</td>
-                                <td class="px-3 py-3 whitespace-nowrap text-center">
-                                    <button class="text-teal-600 hover:text-teal-800 transition" title="View Details">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        `;
-                    });
-                    tbody.innerHTML = html;
-                }
-
-                // Update footer info
-                document.getElementById('startEntry').textContent = filteredData.length ? start + 1 : 0;
-                document.getElementById('endEntry').textContent = end;
-                document.getElementById('totalEntries').textContent = filteredData.length;
-
-                // Update pagination buttons
-                document.getElementById('prevPage').disabled = (page === 1);
-                document.getElementById('nextPage').disabled = (page === totalPages || filteredData.length === 0);
+            if (pageItems.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-gray-400">No records found</td></tr>`;
+                return;
             }
 
-            function updatePagination() {
-                totalPages = Math.ceil(filteredData.length / rowsPerPage);
-                if (currentPage > totalPages) currentPage = totalPages || 1;
-                renderTable(currentPage);
+            let html = '';
+            pageItems.forEach((student, index) => {
+                const rowNum = start + index + 1;
+                const balance = Number(student.balance_amount) || 0;
+                const status = balance <= 0 ? 
+                    '<span class="px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">✓ Paid</span>' :
+                    `<span class="px-2 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">● Pending (₹${balance.toLocaleString()})</span>`;
+
+                html += `
+                    <tr class="table-row-hover transition">
+                        <td class="px-3 py-3 whitespace-nowrap">${rowNum}</td>
+                        <td class="px-3 py-3 whitespace-nowrap font-medium text-gray-900">${student.student_name || 'N/A'}</td>
+                        <td class="px-3 py-3 whitespace-nowrap">${student.student_batch || 'N/A'}</td>
+                        <td class="px-3 py-3 whitespace-nowrap font-semibold">₹ ${Number(student.total_fees || 0).toLocaleString()}</td>
+                        <td class="px-3 py-3 whitespace-nowrap font-semibold text-teal-600">₹ ${Number(student.paid_fees || 0).toLocaleString()}</td>
+                        <td class="px-3 py-3 whitespace-nowrap font-semibold ${balance > 0 ? 'text-red-600' : 'text-green-600'}">
+                            ₹ ${balance.toLocaleString()}
+                        </td>
+                        <td class="px-3 py-3 whitespace-nowrap">${status}</td>
+                        <td class="px-3 py-3 whitespace-nowrap text-center no-print">
+                            <button class="text-teal-600 hover:text-teal-800 transition" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        // ============================================================
+        // UPDATE PAGINATION INFO
+        // ============================================================
+        function updatePaginationInfo(total, page) {
+            const totalPages = Math.ceil(total / rowsPerPage) || 1;
+            const start = (page - 1) * rowsPerPage + 1;
+            const end = Math.min(page * rowsPerPage, total);
+
+            document.getElementById('startEntry').textContent = total ? start : 0;
+            document.getElementById('endEntry').textContent = end;
+            document.getElementById('totalEntries').textContent = total;
+
+            document.getElementById('prevPage').disabled = (page <= 1);
+            document.getElementById('nextPage').disabled = (page >= totalPages);
+        }
+
+        // ============================================================
+        // PAGINATION EVENTS
+        // ============================================================
+        document.getElementById('prevPage').addEventListener('click', function() {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTable(allBalanceRecords, currentPage);
+                updatePaginationInfo(allBalanceRecords.length, currentPage);
             }
+        });
 
-            // Pagination event listeners
-            document.getElementById('prevPage').addEventListener('click', function() {
-                if (currentPage > 1) {
-                    currentPage--;
-                    renderTable(currentPage);
-                }
-            });
+        document.getElementById('nextPage').addEventListener('click', function() {
+            const totalPages = Math.ceil(allBalanceRecords.length / rowsPerPage) || 1;
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderTable(allBalanceRecords, currentPage);
+                updatePaginationInfo(allBalanceRecords.length, currentPage);
+            }
+        });
 
-            document.getElementById('nextPage').addEventListener('click', function() {
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    renderTable(currentPage);
-                }
-            });
-
-            // Search functionality
-            searchInput.addEventListener('input', function() {
-                const query = this.value.toLowerCase().trim();
-                if (query === '') {
-                    filteredData = [...balances];
-                } else {
-                    filteredData = balances.filter(item =>
-                        item.name.toLowerCase().includes(query) ||
-                        item.branch.toLowerCase().includes(query) ||
-                        item.batch.toLowerCase().includes(query) ||
-                        item.balance.toLowerCase().includes(query) ||
-                        item.date.includes(query)
-                    );
-                }
+        // ============================================================
+        // SEARCH
+        // ============================================================
+        searchInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase().trim();
+            if (query === '') {
+                loadStudents(1);
+            } else {
+                const filtered = allBalanceRecords.filter(item =>
+                    (item.student_name || '').toLowerCase().includes(query) ||
+                    (item.student_batch || '').toLowerCase().includes(query) ||
+                    String(item.total_fees).includes(query)
+                );
+                filteredData = filtered;
                 currentPage = 1;
-                updatePagination();
-            });
+                renderTable(filtered, 1);
+                updatePaginationInfo(filtered.length, 1);
+            }
+        });
 
-            // Initial render
-            updatePagination();
+        // ============================================================
+        // GET EXPORT DATA
+        // ============================================================
+        function getExportData() {
+            // Use filtered data if search is active, otherwise use all
+            const data = searchInput.value.trim() !== '' ? filteredData : allBalanceRecords;
+            if (data.length === 0) {
+                showToast('⚠️ No data to export');
+                return null;
+            }
+            return data;
+        }
 
-            // ----- EXPORT FUNCTIONS (demo) -----
-            window.exportData = function(type) {
-                alert(`Export ${type.toUpperCase()} clicked (demo)`);
-                // In a real app, you'd implement the actual export logic here.
+        // ============================================================
+        // TOAST NOTIFICATION
+        // ============================================================
+        function showToast(message, type = 'success') {
+            const existing = document.querySelector('.export-toast');
+            if (existing) existing.remove();
+
+            const colors = {
+                success: 'bg-teal-600',
+                error: 'bg-red-600',
+                warning: 'bg-amber-500',
+                info: 'bg-blue-500'
             };
 
+            const toast = document.createElement('div');
+            toast.className = `export-toast fixed top-20 left-1/2 -translate-x-1/2 ${colors[type] || colors.success} text-white px-6 py-3 rounded-xl shadow-lg z-50`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // ============================================================
+        // EXPORT FUNCTIONS
+        // ============================================================
+        window.exportData = function(type) {
+            const data = getExportData();
+            if (!data) return;
+
+            // Build rows: headers + data
+            const headers = ['Student Name', 'Batch', 'Total Fees', 'Paid Fees', 'Balance Amount', 'Status'];
+            const rows = [headers];
+
+            data.forEach(student => {
+                const balance = Number(student.balance_amount) || 0;
+                rows.push([
+                    student.student_name || 'N/A',
+                    student.student_batch || 'N/A',
+                    Number(student.total_fees || 0).toLocaleString(),
+                    Number(student.paid_fees || 0).toLocaleString(),
+                    balance.toLocaleString(),
+                    balance <= 0 ? 'Paid' : 'Pending'
+                ]);
+            });
+
+            switch (type) {
+                case 'copy':
+                    exportCopy(rows);
+                    break;
+                case 'csv':
+                    exportCSV(rows);
+                    break;
+                case 'excel':
+                    exportExcel(rows);
+                    break;
+                case 'pdf':
+                    exportPDF(rows);
+                    break;
+                case 'print':
+                    exportPrint(rows);
+                    break;
+                default:
+                    showToast('Unknown export type', 'error');
+            }
+        };
+
+        // ---------- COPY ----------
+        function exportCopy(rows) {
+            try {
+                let text = rows.map(r => r.join('\t')).join('\n');
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        showToast('✅ Copied to clipboard!');
+                    }).catch(() => {
+                        fallbackCopy(text);
+                    });
+                } else {
+                    fallbackCopy(text);
+                }
+            } catch (e) {
+                showToast('❌ Copy failed: ' + e.message, 'error');
+            }
+        }
+
+        function fallbackCopy(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast('✅ Copied to clipboard!');
+            } catch (e) {
+                showToast('❌ Copy failed. Please select and copy manually.', 'error');
+            }
+            document.body.removeChild(textarea);
+        }
+
+        // ---------- CSV ----------
+        function exportCSV(rows) {
+            try {
+                let csv = rows.map(row => 
+                    row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')
+                ).join('\n');
+                
+                const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' }); // BOM for Excel
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `Balance_Report_${new Date().toISOString().slice(0,10)}.csv`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(link.href);
+                showToast('✅ CSV downloaded!');
+            } catch (e) {
+                showToast('❌ CSV export failed: ' + e.message, 'error');
+            }
+        }
+
+        // ---------- EXCEL ----------
+        function exportExcel(rows) {
+            try {
+                if (typeof XLSX === 'undefined') {
+                    showToast('❌ Excel library not loaded. Please refresh and try again.', 'error');
+                    return;
+                }
+                const ws = XLSX.utils.aoa_to_sheet(rows);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'Balance Report');
+                XLSX.writeFile(wb, `Balance_Report_${new Date().toISOString().slice(0,10)}.xlsx`);
+                showToast('✅ Excel downloaded!');
+            } catch (e) {
+                showToast('❌ Excel export failed: ' + e.message, 'error');
+            }
+        }
+
+        // ---------- PDF ----------
+        function exportPDF(rows) {
+            try {
+                if (typeof window.jspdf === 'undefined' || typeof window.jspdfAutoTable === 'undefined') {
+                    showToast('⚠️ PDF library loading... Please try again in a moment.', 'warning');
+                    return;
+                }
+
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF('landscape', 'mm', 'a4');
+                
+                // Title
+                doc.setFontSize(16);
+                doc.text('Student Balance Report', 14, 15);
+                doc.setFontSize(10);
+                doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 22);
+                
+                // Table
+                doc.autoTable({
+                    head: [rows[0]],
+                    body: rows.slice(1),
+                    startY: 28,
+                    theme: 'striped',
+                    headStyles: { fillColor: [15, 118, 110], textColor: [255, 255, 255], fontSize: 9 },
+                    bodyStyles: { fontSize: 8 },
+                    columnStyles: {
+                        0: { cellWidth: 30 },
+                        1: { cellWidth: 25 },
+                        2: { cellWidth: 25 },
+                        3: { cellWidth: 25 },
+                        4: { cellWidth: 30 },
+                        5: { cellWidth: 25 }
+                    },
+                    didDrawPage: function(data) {
+                        // Footer
+                        doc.setFontSize(8);
+                        doc.text(`Page ${data.pageNumber}`, 14, doc.internal.pageSize.height - 10);
+                        doc.text(`Total Records: ${rows.length - 1}`, doc.internal.pageSize.width - 40, doc.internal.pageSize.height - 10);
+                    }
+                });
+
+                doc.save(`Balance_Report_${new Date().toISOString().slice(0,10)}.pdf`);
+                showToast('✅ PDF downloaded!');
+            } catch (e) {
+                console.error('PDF export error:', e);
+                showToast('❌ PDF export failed: ' + e.message, 'error');
+            }
+        }
+
+        // ---------- PRINT ----------
+        function exportPrint(rows) {
+            try {
+                const printWindow = window.open('', '_blank', 'width=900,height=600');
+                if (!printWindow) {
+                    showToast('⚠️ Please allow pop-ups for this site.', 'warning');
+                    return;
+                }
+
+                const tableHtml = rows.map(row => 
+                    `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`
+                ).join('');
+
+                printWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Balance Report</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; padding: 30px; }
+                            h2 { text-align: center; color: #0f766e; }
+                            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                            th { background: #0f766e; color: white; padding: 10px; text-align: left; font-size: 12px; }
+                            td { padding: 8px 10px; border: 1px solid #ddd; font-size: 12px; }
+                            tr:nth-child(even) { background: #f8fafc; }
+                            .footer { text-align: center; margin-top: 30px; font-size: 12px; color: #666; }
+                            .status-paid { color: #16a34a; font-weight: bold; }
+                            .status-pending { color: #dc2626; font-weight: bold; }
+                        </style>
+                    </head>
+                    <body>
+                        <h2>📊 Student Balance Report</h2>
+                        <p style="text-align:center;color:#666;font-size:14px;">
+                            Generated: ${new Date().toLocaleString()} &nbsp;|&nbsp; Total Records: ${rows.length - 1}
+                        </p>
+                        <table>
+                            <thead><tr>${rows[0].map(h => `<th>${h}</th>`).join('')}</tr></thead>
+                            <tbody>${tableHtml.slice(tableHtml.indexOf('<tr>', 1))}</tbody>
+                        </table>
+                        <div class="footer">
+                            This report is auto-generated from the ERP System.
+                        </div>
+                        <script>
+                            window.onload = function() { window.print(); }
+                        <\/script>
+                    </body>
+                    </html>
+                `);
+                printWindow.document.close();
+                showToast('🖨️ Print dialog opened');
+            } catch (e) {
+                showToast('❌ Print failed: ' + e.message, 'error');
+            }
+        }
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load data from API
+            loadStudents(1);
+
+            // Also try to load from PHP fallback if needed
+            // You can comment out the API call above and use sample data
+            // loadSampleData();
+        });
+
+        // ============================================================
+        // KEYBOARD SHORTCUT: Cmd/Ctrl + K to focus search
+        // ============================================================
+        document.addEventListener('keydown', function(e) {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                const input = document.getElementById('searchInput');
+                if (input) {
+                    input.focus();
+                    input.select();
+                }
+            }
         });
     </script>
 
-
-    
-    <script>
-
-
-
-        let allBalanceRecords = [];
-        window.onload = function() {
-
-            loadStudents();
-
-        }
-
-        //============================
-
-        async function loadStudents(page = 1) {
-
-            try {
-
-                const search =
-                    document.getElementById("search").value;
-
-                const response = await fetch(
-
-                    url +
-                    "student-balance-records?page=" +
-                    page +
-                    "&search=" +
-                    encodeURIComponent(search),
-
-                    {
-
-                        headers: {
-
-                            Authorization: "Bearer " +
-                                localStorage.getItem("token"),
-
-                            Accept: "application/json"
-
-                        }
-
-                    }
-
-                );
-
-                const result =
-                    await response.json();
-
-                console.log(result);
-
-                fillTable(result.data);
-
-            } catch (error) {
-
-                console.log(error);
-
-                alert("Unable to fetch records.");
-
-            }
-
-        }
-
-        //============================
-
-        function fillTable(data) {
-            allBalanceRecords = data.data;
-            const tbody =
-                document.getElementById("balanceTableBody");
-
-            tbody.innerHTML = "";
-
-            if (data.data.length == 0) {
-
-                tbody.innerHTML = `
-
-        <tr>
-
-        <td colspan="8"
-        class="empty-row">
-
-        No Records Found
-
-        </td>
-
-        </tr>
-
-        `;
-
-                return;
-
-            }
-
-            data.data.forEach((student, index) => {
-
-                let status = "";
-
-                if (Number(student.balance_amount) <= 0) {
-
-                    status = `
-        <span class="px-3 py-1 rounded-full bg-green-600 text-white">
-
- ✓ Paid
-
-</span>
-    `;
-
-                } else {
-
-                    status = `
-        <span class="px-3 py-1 rounded-full bg-red-600 text-white">
-
-● Pending
-
-</span>
-    `;
-
-                }
-
-                tbody.innerHTML += `
-
-        <tr>
-
-            <td>
-
-                ${index+1}
-
-            </td>
-
-            <td>
-
-                ${student.student_name}
-
-            </td>
-
-            <td>
-
-                ${student.student_batch}
-
-            </td>
-
-            <td>
-
-                ₹ ${Number(student.total_fees).toLocaleString()}
-
-            </td>
-
-            <td>
-
-                ₹ ${Number(student.paid_fees).toLocaleString()}
-
-            </td>
-
-            <td>
-
-                ₹ ${Number(student.balance_amount).toLocaleString()}
-
-            </td>
-
-            <td>
-
-                ${status}
-
-            </td>
-
-        </tr>
-
-        `;
-
-            });
-
-            document.getElementById("tableInfo").innerHTML =
-
-                `Showing ${data.from} to ${data.to} of ${data.total} Entries`;
-
-            pagination(data);
-
-        }
-
-        //============================
-
-        function pagination(data) {
-
-            const div =
-
-                document.getElementById("pagination");
-
-            div.innerHTML = "";
-
-            for (let i = 1; i <= data.last_page; i++) {
-
-                div.innerHTML += `
-
-        <button
-
-        class="page-btn"
-
-        onclick="loadStudents(${i})">
-
-        ${i}
-
-        </button>
-
-        `;
-
-            }
-
-        }
-
-        //============================
-
-        document
-
-            .getElementById("search")
-
-            .addEventListener(
-
-                "keyup",
-
-                function() {
-
-                    loadStudents();
-
-                }
-
-            );
-
-
-        // export
-        function exportData(type) {
-
-            let rows = [];
-
-            rows.push([
-                "Student Name",
-                "Batch",
-                "Total Fees",
-                "Paid Fees",
-                "Balance Fees",
-                "Status"
-            ]);
-
-            allBalanceRecords.forEach(student => {
-
-                rows.push([
-
-                    student.student_name,
-
-                    student.student_batch,
-
-                    student.total_fees,
-
-                    student.paid_fees,
-
-                    student.balance_amount,
-
-                    student.balance_amount == 0 ?
-                    "Paid" :
-                    "Pending"
-
-                ]);
-
-            });
-
-            //====================
-
-            if (type == "copy") {
-
-                let text = rows.map(r => r.join("\t")).join("\n");
-
-                navigator.clipboard.writeText(text);
-
-                alert("Copied Successfully");
-
-            }
-
-            //====================
-            else if (type == "csv") {
-
-                let csv = rows.map(r => r.join(",")).join("\n");
-
-                let blob = new Blob([csv], {
-                    type: "text/csv"
-                });
-
-                let a = document.createElement("a");
-
-                a.href = URL.createObjectURL(blob);
-
-                a.download = "Balance_Payment.csv";
-
-                a.click();
-
-            }
-
-            //====================
-            else if (type == "excel") {
-
-                let ws = XLSX.utils.aoa_to_sheet(rows);
-
-                let wb = XLSX.utils.book_new();
-
-                XLSX.utils.book_append_sheet(wb, ws, "Balance");
-
-                XLSX.writeFile(wb, "Balance_Payment.xlsx");
-
-            }
-
-            //====================
-            else if (type == "pdf") {
-
-                const {
-                    jsPDF
-                } = window.jspdf;
-
-                let pdf = new jsPDF();
-
-                pdf.autoTable({
-
-                    head: [rows[0]],
-
-                    body: rows.slice(1)
-
-                });
-
-                pdf.save("Balance_Payment.pdf");
-
-            }
-
-            //====================
-            else if (type == "print") {
-
-                let html = `
-        <h2 style="text-align:center">
-        Balance Payment Report
-        </h2>
-
-        <table border="1"
-        cellspacing="0"
-        cellpadding="6"
-        width="100%">
-
-        <tr>
-
-        ${rows[0].map(h=>`<th>${h}</th>`).join("")}
-
-        </tr>
-
-        ${rows.slice(1).map(r=>`
-
-        <tr>
-
-        ${r.map(c=>`<td>${c}</td>`).join("")}
-
-        </tr>
-
-        `).join("")}
-
-        </table>
-        `;
-
-                let win = window.open();
-
-                win.document.write(html);
-
-                win.print();
-
-            }
-
-        }
-    </script>
 </body>
-
 </html>

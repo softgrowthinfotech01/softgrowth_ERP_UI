@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-   <meta charset="UTF-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ledger Report - ERP</title>
     <!-- Tailwind via CDN -->
@@ -10,7 +10,7 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
- /* Minimal custom styles – everything else is Tailwind */
+        /* Minimal custom styles – everything else is Tailwind */
         .table-row-hover:hover {
             background-color: #f8fafc;
         }
@@ -27,7 +27,6 @@
             opacity: 0.5;
             cursor: not-allowed;
         }
-        /* responsive table wrapper */
         .table-wrap {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
@@ -49,21 +48,47 @@
             color: #dc2626;
             font-weight: 700;
         }
+        /* Toast notification */
+        .export-toast {
+            animation: slideDown 0.4s ease;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0f766e;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 9999;
+            font-weight: 600;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translate(-50%, -20px) scale(0.95); }
+            to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+        }
+        /* Print styles */
+        @media print {
+            body * { visibility: hidden; }
+            #printArea, #printArea * { visibility: visible; }
+            #printArea { position: absolute; left: 0; top: 0; width: 100%; padding: 20px; }
+            .no-print { display: none !important; }
+        }
     </style>
 </head>
 
 <body class="bg-gray-300 text-gray-800 antialiased">
 
-    <?php include 'header.php' ?>
-    <?php include 'sidebar.php' ?>
+    <?php include 'header.php'; ?>
+    <?php include 'sidebar.php'; ?>
 
-     <main class="md:ml-[300px] max-w-7xl mx-auto px-4 sm:px-6 py-28 pb-10 mb-10 transition-all duration-200">
+    <main class="md:ml-[300px] max-w-7xl mx-auto px-4 sm:px-6 py-28 pb-10 mb-10 transition-all duration-200">
 
         <!-- ===== LEDGER CARD ===== -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden" id="printArea">
 
             <!-- Header -->
-            <div class="flex items-center gap-4 p-6 border-b border-gray-100">
+            <div class="flex items-center gap-4 p-6 border-b border-gray-100 no-print">
                 <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-2xl">
                     <i class="fas fa-book"></i>
                 </div>
@@ -74,7 +99,7 @@
             </div>
 
             <!-- Filters -->
-            <div class="p-4 sm:p-6 border-b border-gray-100">
+            <div class="p-4 sm:p-6 border-b border-gray-100 no-print">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">From Date</label>
@@ -101,7 +126,7 @@
             </div>
 
             <!-- Export Buttons -->
-            <div class="flex flex-wrap items-center gap-2 p-4 sm:p-6 border-b border-gray-100">
+            <div class="flex flex-wrap items-center gap-2 p-4 sm:p-6 border-b border-gray-100 no-print">
                 <button onclick="exportLedger('copy')" class="toolbar-btn px-4 py-2 bg-gray-600 text-white text-sm font-bold rounded-xl hover:bg-gray-700">
                     <i class="fas fa-copy mr-1"></i> Copy
                 </button>
@@ -121,7 +146,7 @@
 
             <!-- Table -->
             <div class="table-wrap p-4 sm:p-6">
-                <table class="w-full text-sm text-left">
+                <table class="w-full text-sm text-left" id="ledgerTable">
                     <thead>
                         <tr class="bg-teal-600 text-white text-xs font-semibold uppercase tracking-wider">
                             <th class="px-3 py-3 whitespace-nowrap">SR.NO.</th>
@@ -136,7 +161,6 @@
                         </tr>
                     </thead>
                     <tbody id="ledgerTableBody" class="divide-y divide-gray-100">
-                        <!-- rows injected by JS -->
                         <tr>
                             <td colspan="9" class="text-center py-8 text-gray-400">Loading...</td>
                         </tr>
@@ -145,7 +169,7 @@
             </div>
 
             <!-- Footer / Pagination -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 border-t border-gray-100">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 border-t border-gray-100 no-print">
                 <div class="text-sm text-gray-500 font-semibold">
                     Showing <span id="startEntry">0</span> to <span id="endEntry">0</span> of <span id="totalEntries">0</span> entries
                 </div>
@@ -163,468 +187,441 @@
         </div>
 
     </main>
-    <?php include 'footer.php' ?>
-    <script src="url.js"></script>
 
+    <?php include 'footer.php'; ?>
+
+    <!-- Libraries for export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 
-
-
- <!-- ============================================================
-    JAVASCRIPT – data, pagination, filter, export
-    ============================================================ -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        // ============================================================
+        // API URL (adjust as needed)
+        // ============================================================
+        const API_URL = 'your-api-url-here'; // replace with actual URL
 
-            // ----- SAMPLE LEDGER DATA -----
-            const ledgerData = [
-                { sr: 1, receipt: 'RCP-001', memo: 'Admission Fee - Rahul Sharma', batch: '2024-25', branch: 'BCA', credit: '₹15,000', debit: '-', opening: '₹0', date: '2025-01-15' },
-                { sr: 2, receipt: 'RCP-002', memo: 'Tuition Fee - Priya Patel', batch: '2025-26', branch: 'BBA', credit: '₹25,000', debit: '-', opening: '₹0', date: '2025-01-16' },
-                { sr: 3, receipt: 'RCP-003', memo: 'Exam Fee - Amit Singh', batch: '2024-25', branch: 'BCA', credit: '-', debit: '₹5,000', opening: '₹15,000', date: '2025-01-17' },
-                { sr: 4, receipt: 'RCP-004', memo: 'Library Fee - Sneha Reddy', batch: '2023-24', branch: 'B.Com', credit: '-', debit: '₹2,000', opening: '₹10,000', date: '2025-01-18' },
-                { sr: 5, receipt: 'RCP-005', memo: 'Lab Fee - Vikram Kumar', batch: '2025-26', branch: 'BBA', credit: '-', debit: '₹3,500', opening: '₹8,000', date: '2025-01-19' },
-                { sr: 6, receipt: 'RCP-006', memo: 'Admission Fee - Neha Jain', batch: '2024-25', branch: 'BCA', credit: '₹15,000', debit: '-', opening: '₹4,500', date: '2025-01-20' },
-                { sr: 7, receipt: 'RCP-007', memo: 'Tuition Fee - Ravi Desai', batch: '2023-24', branch: 'B.Com', credit: '₹25,000', debit: '-', opening: '₹0', date: '2025-01-21' },
-                { sr: 8, receipt: 'RCP-008', memo: 'Exam Fee - Meera Iyer', batch: '2025-26', branch: 'BBA', credit: '-', debit: '₹5,000', opening: '₹25,000', date: '2025-01-22' },
-                { sr: 9, receipt: 'RCP-009', memo: 'Library Fee - Arjun Nair', batch: '2024-25', branch: 'BCA', credit: '-', debit: '₹2,000', opening: '₹20,000', date: '2025-01-23' },
-                { sr: 10, receipt: 'RCP-010', memo: 'Lab Fee - Kavya Menon', batch: '2023-24', branch: 'B.Com', credit: '-', debit: '₹3,500', opening: '₹18,000', date: '2025-01-24' },
-                { sr: 11, receipt: 'RCP-011', memo: 'Admission Fee - Deepak Gupta', batch: '2024-25', branch: 'BCA', credit: '₹15,000', debit: '-', opening: '₹14,500', date: '2025-01-25' },
-                { sr: 12, receipt: 'RCP-012', memo: 'Tuition Fee - Pooja Reddy', batch: '2025-26', branch: 'BBA', credit: '₹25,000', debit: '-', opening: '₹0', date: '2025-01-26' }
-            ];
+        // ============================================================
+        // DATA & STATE
+        // ============================================================
+        let allLedger = [];
+        let currentPage = 1;
+        const rowsPerPage = 5;
+        let filteredData = [];
 
-            const rowsPerPage = 5;
-            let currentPage = 1;
-            let filteredData = [...ledgerData];
-            let totalPages = Math.ceil(filteredData.length / rowsPerPage);
+        // DOM refs
+        const tbody = document.getElementById('ledgerTableBody');
+        const fromDate = document.getElementById('fromDate');
+        const toDate = document.getElementById('toDate');
+        const receiptSearch = document.getElementById('receiptSearch');
 
-            const tbody = document.getElementById('ledgerTableBody');
-
-            // References to filter inputs
-            const fromDate = document.getElementById('fromDate');
-            const toDate = document.getElementById('toDate');
-            const receiptSearch = document.getElementById('receiptSearch');
-
-            function renderTable(page) {
-                const start = (page - 1) * rowsPerPage;
-                const end = Math.min(start + rowsPerPage, filteredData.length);
-                const pageItems = filteredData.slice(start, end);
-
-                if (pageItems.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="9" class="text-center py-8 text-gray-400">No records found</td></tr>`;
-                } else {
-                    let html = '';
-                    pageItems.forEach((item) => {
-                        const creditClass = item.credit !== '-' ? 'credit' : '';
-                        const debitClass = item.debit !== '-' ? 'debit' : '';
-                        html += `
-                            <tr class="table-row-hover transition">
-                                <td class="px-3 py-3 whitespace-nowrap">${item.sr}</td>
-                                <td class="px-3 py-3 whitespace-nowrap font-medium text-gray-900">${item.receipt}</td>
-                                <td class="px-3 py-3 whitespace-nowrap">${item.memo}</td>
-                                <td class="px-3 py-3 whitespace-nowrap">${item.batch}</td>
-                                <td class="px-3 py-3 whitespace-nowrap">${item.branch}</td>
-                                <td class="px-3 py-3 whitespace-nowrap ${creditClass}">${item.credit}</td>
-                                <td class="px-3 py-3 whitespace-nowrap ${debitClass}">${item.debit}</td>
-                                <td class="px-3 py-3 whitespace-nowrap">${item.opening}</td>
-                                <td class="px-3 py-3 whitespace-nowrap">${item.date}</td>
-                            </tr>
-                        `;
-                    });
-                    tbody.innerHTML = html;
-                }
-
-                // Update footer info
-                document.getElementById('startEntry').textContent = filteredData.length ? start + 1 : 0;
-                document.getElementById('endEntry').textContent = end;
-                document.getElementById('totalEntries').textContent = filteredData.length;
-                document.getElementById('currentPageDisplay').textContent = page;
-
-                // Update pagination buttons
-                document.getElementById('prevPage').disabled = (page === 1);
-                document.getElementById('nextPage').disabled = (page === totalPages || filteredData.length === 0);
-            }
-
-            function updatePagination() {
-                totalPages = Math.ceil(filteredData.length / rowsPerPage);
-                if (currentPage > totalPages) currentPage = totalPages || 1;
-                renderTable(currentPage);
-            }
-
-            // Pagination event listeners
-            document.getElementById('prevPage').addEventListener('click', function() {
-                if (currentPage > 1) {
-                    currentPage--;
-                    renderTable(currentPage);
-                }
-            });
-
-            document.getElementById('nextPage').addEventListener('click', function() {
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    renderTable(currentPage);
-                }
-            });
-
-            // ----- FILTER FUNCTION (loadLedger) -----
-            window.loadLedger = function() {
+        // ============================================================
+        // LOAD LEDGER FROM API
+        // ============================================================
+        async function loadLedger(page = 1) {
+            try {
                 const from = fromDate.value;
                 const to = toDate.value;
-                const receipt = receiptSearch.value.trim().toLowerCase();
-
-                filteredData = ledgerData.filter(item => {
-                    let match = true;
-                    if (from && item.date < from) match = false;
-                    if (to && item.date > to) match = false;
-                    if (receipt && !item.receipt.toLowerCase().includes(receipt)) match = false;
-                    return match;
-                });
-
-                currentPage = 1;
-                updatePagination();
-            };
-
-            // ----- EXPORT FUNCTIONS (demo) -----
-            window.exportLedger = function(type) {
-                alert(`Export ${type.toUpperCase()} clicked (demo)`);
-                // In a real app, implement actual export logic here.
-            };
-
-            // Initial render
-            updatePagination();
-
-            // Optional: auto-filter on input change (if desired) – we keep manual button.
-        });
-    </script>
-
-
-
-    <script>
-        let allLedger = [];
-
-        window.onload = function() {
-
-            loadLedger();
-
-        };
-
-        async function loadLedger(page = 1) {
-
-            try {
-
-                const fromDate = document.getElementById("fromDate").value;
-                const toDate = document.getElementById("toDate").value;
-
-                const receipt = document.getElementById("receiptSearch").value;
+                const receipt = receiptSearch.value.trim();
 
                 const response = await fetch(
-
-                    url +
-
-                    "ledger?page=" + page +
-
-                    "&receipt_number=" + encodeURIComponent(receipt) +
-
-                    "&from_date=" + fromDate +
-
-                    "&to_date=" + toDate,
-
+                    `${API_URL}?page=${page}&receipt_number=${encodeURIComponent(receipt)}&from_date=${from}&to_date=${to}`,
                     {
                         headers: {
-                            Authorization: "Bearer " + localStorage.getItem("token"),
-                            Accept: "application/json"
+                            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                            'Accept': 'application/json'
                         }
                     }
-
                 );
 
+                if (!response.ok) throw new Error('Network response was not ok');
                 const result = await response.json();
+                console.log('API Response:', result);
 
-                console.log(result);
-
-                fillLedger(result.data);
+                const data = result.data || result;
+                allLedger = data.data || data || [];
+                renderTable(allLedger, page);
+                updatePaginationInfo(allLedger.length, page);
 
             } catch (error) {
-
-                console.log(error);
-
-                alert("Unable to fetch ledger.");
-
+                console.error('Error loading ledger:', error);
+                // Fallback to sample data
+                loadSampleData();
             }
-
         }
 
-        function fillLedger(data) {
+        // ============================================================
+        // SAMPLE DATA (fallback)
+        // ============================================================
+        function loadSampleData() {
+            allLedger = [
+                { receipt_number: 'RCP-001', memo_details: 'Admission Fee - Rahul Sharma', student_batch: '2024-25', branch: 'BCA', credit: 15000, debit: 0, running_balance: 15000, transaction_date: '2025-01-15 10:00:00' },
+                { receipt_number: 'RCP-002', memo_details: 'Tuition Fee - Priya Patel', student_batch: '2025-26', branch: 'BBA', credit: 25000, debit: 0, running_balance: 40000, transaction_date: '2025-01-16 11:00:00' },
+                { receipt_number: 'RCP-003', memo_details: 'Exam Fee - Amit Singh', student_batch: '2024-25', branch: 'BCA', credit: 0, debit: 5000, running_balance: 35000, transaction_date: '2025-01-17 09:00:00' },
+                { receipt_number: 'RCP-004', memo_details: 'Library Fee - Sneha Reddy', student_batch: '2023-24', branch: 'B.Com', credit: 0, debit: 2000, running_balance: 33000, transaction_date: '2025-01-18 14:00:00' },
+                { receipt_number: 'RCP-005', memo_details: 'Lab Fee - Vikram Kumar', student_batch: '2025-26', branch: 'BBA', credit: 0, debit: 3500, running_balance: 29500, transaction_date: '2025-01-19 16:00:00' },
+            ];
+            renderTable(allLedger, 1);
+            updatePaginationInfo(allLedger.length, 1);
+            showToast('⚠️ Using sample data (API unavailable)', 'warning');
+        }
 
-            allLedger = data.data;
+        // ============================================================
+        // RENDER TABLE
+        // ============================================================
+        function renderTable(data, page = 1) {
+            const start = (page - 1) * rowsPerPage;
+            const end = Math.min(start + rowsPerPage, data.length);
+            const pageItems = data.slice(start, end);
 
-            const tbody =
-                document.getElementById("ledgerTableBody");
-
-            tbody.innerHTML = "";
-
-            if (data.data.length == 0) {
-
-                tbody.innerHTML = `
-
-            <tr>
-
-                <td colspan="9" class="text-center py-8">
-
-                    No Ledger Records Found
-
-                </td>
-
-            </tr>
-
-        `;
-
+            if (pageItems.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="9" class="text-center py-8 text-gray-400">No records found</td></tr>`;
                 return;
-
             }
 
-            data.data.forEach((ledger, index) => {
+            let html = '';
+            pageItems.forEach((item, index) => {
+                const rowNum = start + index + 1;
+                const credit = Number(item.credit) || 0;
+                const debit = Number(item.debit) || 0;
+                const balance = Number(item.running_balance) || 0;
 
-                tbody.innerHTML += `
-
-            <tr>
-
-                <td>${index + 1}</td>
-
-                <td>${ledger.receipt_number}</td>
-
-                <td>${ledger.memo_details}</td>
-
-                <td>${ledger.student_batch ?? "-"}</td>
-
-                <td>${ledger.branch ?? "-"}</td>
-
-                <td class="credit">
-
-                    ₹ ${Number(ledger.credit).toLocaleString()}
-
-                </td>
-
-                <td class="debit">
-
-                    ₹ ${Number(ledger.debit).toLocaleString()}
-
-                </td>
-
-                <td>
-
-                    ₹ ${Number(ledger.running_balance).toLocaleString()}
-
-                </td>
-
-                <td>
-
-                    ${ledger.transaction_date.split(" ")[0]}
-
-                </td>
-
-            </tr>
-
-        `;
-
+                html += `
+                    <tr class="table-row-hover transition">
+                        <td class="px-3 py-3 whitespace-nowrap">${rowNum}</td>
+                        <td class="px-3 py-3 whitespace-nowrap font-medium text-gray-900">${item.receipt_number || 'N/A'}</td>
+                        <td class="px-3 py-3 whitespace-nowrap">${item.memo_details || 'N/A'}</td>
+                        <td class="px-3 py-3 whitespace-nowrap">${item.student_batch || '-'}</td>
+                        <td class="px-3 py-3 whitespace-nowrap">${item.branch || '-'}</td>
+                        <td class="px-3 py-3 whitespace-nowrap credit">${credit > 0 ? '₹ ' + credit.toLocaleString() : '-'}</td>
+                        <td class="px-3 py-3 whitespace-nowrap debit">${debit > 0 ? '₹ ' + debit.toLocaleString() : '-'}</td>
+                        <td class="px-3 py-3 whitespace-nowrap">₹ ${balance.toLocaleString()}</td>
+                        <td class="px-3 py-3 whitespace-nowrap">${item.transaction_date ? item.transaction_date.split(' ')[0] : 'N/A'}</td>
+                    </tr>
+                `;
             });
-
-            document.getElementById("tableInfo").innerHTML =
-                `Showing ${data.from} to ${data.to} of ${data.total} Entries`;
-
-            renderPagination(data);
-
+            tbody.innerHTML = html;
         }
 
-        function renderPagination(data) {
+        // ============================================================
+        // UPDATE PAGINATION INFO
+        // ============================================================
+        function updatePaginationInfo(total, page) {
+            const totalPages = Math.ceil(total / rowsPerPage) || 1;
+            const start = (page - 1) * rowsPerPage + 1;
+            const end = Math.min(page * rowsPerPage, total);
 
-            const div = document.getElementById("pagination");
+            document.getElementById('startEntry').textContent = total ? start : 0;
+            document.getElementById('endEntry').textContent = end;
+            document.getElementById('totalEntries').textContent = total;
+            document.getElementById('currentPageDisplay').textContent = page;
 
-            div.innerHTML = "";
-
-            if (data.current_page > 1) {
-
-                div.innerHTML += `
-            <button class="page-btn"
-                onclick="loadLedger(${data.current_page - 1})">
-                Previous
-            </button>
-        `;
-
-            }
-
-            for (let i = 1; i <= data.last_page; i++) {
-
-                div.innerHTML += `
-            <button
-                class="page-btn ${i == data.current_page ? 'bg-blue-700' : ''}"
-                onclick="loadLedger(${i})">
-                ${i}
-            </button>
-        `;
-
-            }
-
-            if (data.current_page < data.last_page) {
-
-                div.innerHTML += `
-            <button class="page-btn"
-                onclick="loadLedger(${data.current_page + 1})">
-                Next
-            </button>
-        `;
-
-            }
-
+            document.getElementById('prevPage').disabled = (page <= 1);
+            document.getElementById('nextPage').disabled = (page >= totalPages);
         }
 
+        // ============================================================
+        // PAGINATION EVENTS
+        // ============================================================
+        document.getElementById('prevPage').addEventListener('click', function() {
+            if (currentPage > 1) {
+                currentPage--;
+                loadLedger(currentPage);
+            }
+        });
 
-        function exportLedger(type) {
+        document.getElementById('nextPage').addEventListener('click', function() {
+            const totalPages = Math.ceil(allLedger.length / rowsPerPage) || 1;
+            if (currentPage < totalPages) {
+                currentPage++;
+                loadLedger(currentPage);
+            }
+        });
 
-            let rows = [];
+        // ============================================================
+        // FILTER EVENTS (auto-load on change)
+        // ============================================================
+        fromDate.addEventListener('change', () => { currentPage = 1; loadLedger(1); });
+        toDate.addEventListener('change', () => { currentPage = 1; loadLedger(1); });
+        receiptSearch.addEventListener('keyup', () => { currentPage = 1; loadLedger(1); });
 
-            rows.push([
-                "Receipt Number",
-                "Memo Details",
-                "Student Batch",
-                "Branch",
-                "Credit",
-                "Debit",
-                "Running Balance",
-                "Date"
-            ]);
+        // ============================================================
+        // TOAST NOTIFICATION
+        // ============================================================
+        function showToast(message, type = 'success') {
+            const existing = document.querySelector('.export-toast');
+            if (existing) existing.remove();
 
-            allLedger.forEach(item => {
+            const colors = {
+                success: '#0f766e',
+                error: '#dc2626',
+                warning: '#f59e0b',
+                info: '#3b82f6'
+            };
 
+            const toast = document.createElement('div');
+            toast.className = 'export-toast';
+            toast.style.background = colors[type] || colors.success;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // ============================================================
+        // GET EXPORT DATA
+        // ============================================================
+        function getExportData() {
+            if (allLedger.length === 0) {
+                showToast('⚠️ No data to export', 'warning');
+                return null;
+            }
+            return allLedger;
+        }
+
+        // ============================================================
+        // EXPORT FUNCTIONS
+        // ============================================================
+        window.exportLedger = function(type) {
+            const data = getExportData();
+            if (!data) return;
+
+            // Build rows: headers + data
+            const headers = ['Receipt Number', 'Memo Details', 'Student Batch', 'Branch', 'Credit', 'Debit', 'Running Balance', 'Date'];
+            const rows = [headers];
+
+            data.forEach(item => {
+                const credit = Number(item.credit) || 0;
+                const debit = Number(item.debit) || 0;
+                const balance = Number(item.running_balance) || 0;
                 rows.push([
-                    item.receipt_number,
-                    item.memo_details,
-                    item.student_batch ?? "-",
-                    item.branch ?? "-",
-                    item.credit,
-                    item.debit,
-                    item.running_balance,
-                    item.transaction_date.split(" ")[0]
+                    item.receipt_number || 'N/A',
+                    item.memo_details || 'N/A',
+                    item.student_batch || '-',
+                    item.branch || '-',
+                    credit > 0 ? '₹ ' + credit.toLocaleString() : '-',
+                    debit > 0 ? '₹ ' + debit.toLocaleString() : '-',
+                    '₹ ' + balance.toLocaleString(),
+                    item.transaction_date ? item.transaction_date.split(' ')[0] : 'N/A'
                 ]);
-
             });
 
-            // COPY
-            if (type == "copy") {
-
-                let text = rows.map(r => r.join("\t")).join("\n");
-
-                navigator.clipboard.writeText(text);
-
-                alert("Copied Successfully");
-
+            switch (type) {
+                case 'copy':
+                    exportCopy(rows);
+                    break;
+                case 'csv':
+                    exportCSV(rows);
+                    break;
+                case 'excel':
+                    exportExcel(rows);
+                    break;
+                case 'pdf':
+                    exportPDF(rows);
+                    break;
+                case 'print':
+                    exportPrint(rows);
+                    break;
+                default:
+                    showToast('Unknown export type', 'error');
             }
+        };
 
-            // CSV
-            else if (type == "csv") {
-
-                let csv = rows.map(r => r.join(",")).join("\n");
-
-                let blob = new Blob([csv], {
-                    type: "text/csv"
-                });
-
-                let a = document.createElement("a");
-
-                a.href = URL.createObjectURL(blob);
-
-                a.download = "Ledger_Report.csv";
-
-                a.click();
-
-            }
-
-            // Excel
-            else if (type == "excel") {
-
-                let ws = XLSX.utils.aoa_to_sheet(rows);
-
-                let wb = XLSX.utils.book_new();
-
-                XLSX.utils.book_append_sheet(wb, ws, "Ledger");
-
-                XLSX.writeFile(wb, "Ledger_Report.xlsx");
-
-            }
-
-            // PDF
-            else if (type == "pdf") {
-
-                const {
-                    jsPDF
-                } = window.jspdf;
-
-                let pdf = new jsPDF("l", "mm", "a4");
-
-                pdf.autoTable({
-
-                    head: [rows[0]],
-
-                    body: rows.slice(1)
-
-                });
-
-                pdf.save("Ledger_Report.pdf");
-
-            }
-
-            // Print
-            else if (type == "print") {
-
-                let html = "<h2>Ledger Report</h2><table border='1' cellspacing='0' cellpadding='6'>";
-
-                rows.forEach(r => {
-
-                    html += "<tr>";
-
-                    r.forEach(c => {
-
-                        html += "<td>" + c + "</td>";
-
+        // ---------- COPY ----------
+        function exportCopy(rows) {
+            try {
+                let text = rows.map(r => r.join('\t')).join('\n');
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        showToast('✅ Copied to clipboard!');
+                    }).catch(() => {
+                        fallbackCopy(text);
                     });
-
-                    html += "</tr>";
-
-                });
-
-                html += "</table>";
-
-                let win = window.open("");
-
-                win.document.write(html);
-
-                win.print();
-
+                } else {
+                    fallbackCopy(text);
+                }
+            } catch (e) {
+                showToast('❌ Copy failed: ' + e.message, 'error');
             }
-
         }
 
-        document.getElementById("receiptSearch").addEventListener("keyup", function() {
+        function fallbackCopy(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast('✅ Copied to clipboard!');
+            } catch (e) {
+                showToast('❌ Copy failed. Please select and copy manually.', 'error');
+            }
+            document.body.removeChild(textarea);
+        }
 
-            loadLedger();
+        // ---------- CSV ----------
+        function exportCSV(rows) {
+            try {
+                let csv = rows.map(row => 
+                    row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')
+                ).join('\n');
+                
+                const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `Ledger_Report_${new Date().toISOString().slice(0,10)}.csv`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(link.href);
+                showToast('✅ CSV downloaded!');
+            } catch (e) {
+                showToast('❌ CSV export failed: ' + e.message, 'error');
+            }
+        }
 
+        // ---------- EXCEL ----------
+        function exportExcel(rows) {
+            try {
+                if (typeof XLSX === 'undefined') {
+                    showToast('❌ Excel library not loaded', 'error');
+                    return;
+                }
+                const ws = XLSX.utils.aoa_to_sheet(rows);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'Ledger');
+                XLSX.writeFile(wb, `Ledger_Report_${new Date().toISOString().slice(0,10)}.xlsx`);
+                showToast('✅ Excel downloaded!');
+            } catch (e) {
+                showToast('❌ Excel export failed: ' + e.message, 'error');
+            }
+        }
+
+        // ---------- PDF ----------
+        function exportPDF(rows) {
+            try {
+                if (typeof window.jspdf === 'undefined' || typeof window.jspdfAutoTable === 'undefined') {
+                    showToast('⚠️ PDF library loading... Please try again.', 'warning');
+                    return;
+                }
+
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF('landscape', 'mm', 'a4');
+                
+                doc.setFontSize(16);
+                doc.text('Ledger Report', 14, 15);
+                doc.setFontSize(10);
+                doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 22);
+                
+                doc.autoTable({
+                    head: [rows[0]],
+                    body: rows.slice(1),
+                    startY: 28,
+                    theme: 'striped',
+                    headStyles: { fillColor: [15, 118, 110], textColor: [255, 255, 255], fontSize: 9 },
+                    bodyStyles: { fontSize: 8 },
+                    columnStyles: {
+                        0: { cellWidth: 25 },
+                        1: { cellWidth: 45 },
+                        2: { cellWidth: 25 },
+                        3: { cellWidth: 20 },
+                        4: { cellWidth: 20 },
+                        5: { cellWidth: 20 },
+                        6: { cellWidth: 25 },
+                        7: { cellWidth: 22 }
+                    },
+                    didDrawPage: function(data) {
+                        doc.setFontSize(8);
+                        doc.text(`Page ${data.pageNumber}`, 14, doc.internal.pageSize.height - 10);
+                        doc.text(`Total Records: ${rows.length - 1}`, doc.internal.pageSize.width - 40, doc.internal.pageSize.height - 10);
+                    }
+                });
+
+                doc.save(`Ledger_Report_${new Date().toISOString().slice(0,10)}.pdf`);
+                showToast('✅ PDF downloaded!');
+            } catch (e) {
+                console.error('PDF export error:', e);
+                showToast('❌ PDF export failed: ' + e.message, 'error');
+            }
+        }
+
+        // ---------- PRINT ----------
+        function exportPrint(rows) {
+            try {
+                const printWindow = window.open('', '_blank', 'width=1000,height=700');
+                if (!printWindow) {
+                    showToast('⚠️ Please allow pop-ups for this site.', 'warning');
+                    return;
+                }
+
+                const tableHtml = rows.map(row => 
+                    `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`
+                ).join('');
+
+                printWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Ledger Report</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; padding: 30px; }
+                            h2 { text-align: center; color: #0f766e; }
+                            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                            th { background: #0f766e; color: white; padding: 10px; text-align: left; font-size: 12px; }
+                            td { padding: 8px 10px; border: 1px solid #ddd; font-size: 12px; }
+                            tr:nth-child(even) { background: #f8fafc; }
+                            .footer { text-align: center; margin-top: 30px; font-size: 12px; color: #666; }
+                            .credit { color: #16a34a; font-weight: bold; }
+                            .debit { color: #dc2626; font-weight: bold; }
+                        </style>
+                    </head>
+                    <body>
+                        <h2>📊 Ledger Report</h2>
+                        <p style="text-align:center;color:#666;font-size:14px;">
+                            Generated: ${new Date().toLocaleString()} &nbsp;|&nbsp; Total Records: ${rows.length - 1}
+                        </p>
+                        <table>
+                            <thead><tr>${rows[0].map(h => `<th>${h}</th>`).join('')}</tr></thead>
+                            <tbody>${tableHtml.slice(tableHtml.indexOf('<tr>', 1))}</tbody>
+                        </table>
+                        <div class="footer">
+                            This report is auto-generated from the ERP System.
+                        </div>
+                        <script>
+                            window.onload = function() { window.print(); }
+                        <\/script>
+                    </body>
+                    </html>
+                `);
+                printWindow.document.close();
+                showToast('🖨️ Print dialog opened');
+            } catch (e) {
+                showToast('❌ Print failed: ' + e.message, 'error');
+            }
+        }
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            loadLedger(1);
         });
 
-        document.getElementById("fromDate").addEventListener("change", function() {
-
-            loadLedger();
-
-        });
-
-        document.getElementById("toDate").addEventListener("change", function() {
-
-            loadLedger();
-
+        // ============================================================
+        // KEYBOARD SHORTCUT: Cmd/Ctrl + Enter to filter
+        // ============================================================
+        document.addEventListener('keydown', function(e) {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+                e.preventDefault();
+                loadLedger(1);
+            }
         });
     </script>
 </body>
-
 </html>
