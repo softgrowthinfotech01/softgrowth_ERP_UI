@@ -1,1 +1,6 @@
 // at the last need the list of student who took discount 
+
+
+cash memo master 
+
+fees master 

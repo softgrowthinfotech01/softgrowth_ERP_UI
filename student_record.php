@@ -54,15 +54,147 @@
                 padding: 0.5rem 0.25rem;
             }
         }
+
+        .dt-buttons{
+
+display:flex;
+
+gap:10px;
+
+margin-bottom:20px;
+
+}
+
+.dt-button{
+
+border:none!important;
+
+padding:10px 22px!important;
+
+border-radius:14px!important;
+
+font-weight:600!important;
+
+color:white!important;
+
+box-shadow:0 5px 15px rgba(0,0,0,.12);
+
+}
+
+.btn-copy{
+
+background:#374151!important;
+
+}
+
+.btn-csv{
+
+background:#0ea5e9!important;
+
+}
+
+.btn-excel{
+
+background:#10b981!important;
+
+}
+
+.btn-pdf{
+
+background:#ef4444!important;
+
+}
+
+.btn-print{
+
+background:#8b5cf6!important;
+
+}
+
+.dataTables_filter{
+
+float:right;
+
+margin-bottom:20px;
+
+}
+
+.dataTables_filter input{
+
+height:46px;
+
+width:300px;
+
+padding:0 18px;
+
+border-radius:14px;
+
+border:1px solid #e5e7eb;
+
+outline:none;
+
+background:#f8fafc;
+
+}
+
+.dataTables_length{
+
+display:none;
+
+}
+
+.dataTables_info{
+
+margin-top:20px;
+
+font-weight:600;
+
+color:#64748b;
+
+}
+
+.dataTables_paginate{
+
+margin-top:20px!important;
+
+}
+
+.paginate_button{
+
+border-radius:12px!important;
+
+padding:8px 18px!important;
+
+margin:0 5px!important;
+
+border:none!important;
+
+}
+
+.current{
+
+background:#0f9d94!important;
+
+color:white!important;
+
+}
+
+.previous,.next{
+
+background:#14b8a6!important;
+
+color:white!important;
+
+}
     </style>
 
 </head>
 
-<body class="bg-gray-300 text-gray-800 antialiased">
+<body class="bg-gray-300 text-gray-800 antialiased ">
     <?php include 'header.php' ?>
     <?php include 'sidebar.php' ?>
     <!-- HEADER -->
-    <main class="md:ml-[300px] max-w-7xl mx-auto px-4 sm:px-6 py-28 pb-10 mb-4 transition-all duration-200">
+    <main class="md:ml-[300px] max-w-7xl mx-auto mb-8 px-4 sm:px-6 py-28 pb-10 transition-all duration-200">
 
         <!-- ===== STUDENT RECORDS CARD ===== -->
 <div class="bg-white rounded-3xl shadow-lg border border-gray-200 overflow-hidden">
@@ -96,20 +228,20 @@
             <!-- Table -->
             <div class="table-wrap p-4 sm:p-6">
              <table id="studentTable"
-class="min-w-full text-sm">
-                    <thead class="bg-teal-600 text-white uppercase text-xs tracking-wider">
-                        <tr class="border-b border-gray-200 text-xs font-semibold uppercase tracking-wider">
-                            <th class="px-3 py-3">#</th>
-                            <th class="px-3 py-3">Student Name</th>
-                            <th class="px-3 py-3">Batch</th>
-                            <th class="px-3 py-3">Year</th>
-                            <th class="px-3 py-3">Student Phone</th>
-                            <th class="px-3 py-3">Father Phone</th>
-                            <th class="px-3 py-3">Branch</th>
-                            <th class="px-3 py-3 text-center rounded-r-xl text-center">Action</th>
+class="w-full text-sm text-center text-gray-500">
+                    <thead>
+                        <tr class="bg-teal-600 text-white text-xs font-semibold uppercase tracking-wider">
+                            <th class="px-3 py-3 whitespace-nowrap">#</th>
+                            <th class="px-3 py-3 whitespace-nowrap ">Student Name</th>
+                            <th class="px-3 py-3 whitespace-nowrap">Batch</th>
+                            <th class="px-3 py-3 whitespace-nowrap">Year</th>
+                            <th class="px-3 py-3 whitespace-nowrap">Student Phone</th>
+                            <th class="px-3 py-3 whitespace-nowrap">Father Phone</th>
+                            <th class="px-3 py-3 whitespace-nowrap">Branch</th>
+                            <th class="px-3 py-3 whitespace-nowrap text-center rounded-r-xl text-center">Action</th>
                         </tr>
                     </thead>
-                    <tbody id="studentTableBody" class="divide-y divide-gray-100">
+                    <tbody id="studentTableBody" class="divide-y divide-gray-100 py-8">
                         <!-- Rows injected by JS -->
                         <tr>
                             <td colspan="8" class="text-center py-8 text-gray-400">Loading...</td>
@@ -122,7 +254,7 @@ class="min-w-full text-sm">
 
         <!-- ===== DETAILS MODAL ===== -->
         <div id="detailsModal" class="fixed inset-0 modal-overlay hidden justify-center items-center z-50 p-4">
-            <div class="modal-box bg-white rounded-2xl w-full max-w-2xl p-6 relative shadow-2xl">
+            <div class="modal-box bg-white rounded-2xl w-full max-w-4xl p-6 relative shadow-2xl">
                 <button onclick="closeDetailsModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-2xl transition">
                     <i class="fas fa-times"></i>
                 </button>
@@ -132,7 +264,8 @@ class="min-w-full text-sm">
                     </span>
                     Student Details
                 </h2>
-                <div id="detailsContent" class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700">
+                <div id="detailsContent"
+class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
                     <!-- populated by JS -->
                 </div>
                 <div class="mt-6 flex justify-end">
@@ -145,7 +278,7 @@ class="min-w-full text-sm">
 
         <!-- ===== DOCUMENTS MODAL ===== -->
         <div id="documentsModal" class="fixed inset-0 modal-overlay hidden justify-center items-center z-50 p-4">
-            <div class="modal-box bg-white rounded-2xl w-full max-w-2xl p-6 relative shadow-2xl">
+            <div class="modal-box bg-white rounded-2xl w-full max-w-4xl p-6 relative shadow-2xl">
                 <button onclick="closeDocumentsModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-2xl transition">
                     <i class="fas fa-times"></i>
                 </button>
@@ -166,19 +299,7 @@ class="min-w-full text-sm">
             </div>
             
         </div>
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 border-t border-gray-100">
-                    <div class="text-sm text-gray-500 font-semibold">
-                        Showing <span id="startEntry">0</span> to <span id="endEntry">0</span> of <span id="totalEntries">0</span> entries
-                    </div>
-                    <div class="flex gap-2">
-                        <button id="prevPage" class="page-btn px-5 py-2 bg-teal-600 text-white font-bold rounded-xl hover:bg-teal-700 focus:ring-2 focus:ring-teal-300 disabled:opacity-50 disabled:cursor-not-allowed">
-                            <i class="fas fa-chevron-left mr-1"></i> Previous
-                        </button>
-                        <button id="nextPage" class="page-btn px-5 py-2 bg-teal-600 text-white font-bold rounded-xl hover:bg-teal-700 focus:ring-2 focus:ring-teal-300 disabled:opacity-50 disabled:cursor-not-allowed">
-                            Next <i class="fas fa-chevron-right ml-1"></i>
-                        </button>
-                    </div>
-                </div>
+          
 
     </main>
     <?php include 'footer.php' ?>
@@ -262,7 +383,7 @@ class="min-w-full text-sm">
 
             <!-- MAIN ROW -->
 
-          <tr class="py-2 text-center bg-white rounded-xl shadow hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+          <tr class="table-row-hover transition">
 
                 <td>${index + 1}</td>
 
@@ -357,32 +478,38 @@ class="px-4 py-2 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-
 
 
                 // INIT DATATABLE
+$('#studentTable').DataTable({
 
-                $('#studentTable').DataTable({
+    responsive:true,
 
-                    destroy: true,
+    pageLength:5,
 
-                    responsive: true,
+    dom:'Bfrtip',
 
-                    pageLength: 10,
+    buttons:[
+        {
+            extend:'copy',
+            className:'btn-copy'
+        },
+        {
+            extend:'csv',
+            className:'btn-csv'
+        },
+        {
+            extend:'excel',
+            className:'btn-excel'
+        },
+        {
+            extend:'pdf',
+            className:'btn-pdf'
+        },
+        {
+            extend:'print',
+            className:'btn-print'
+        }
+    ]
 
-                    dom: 'Bfrtip',
-
-                    buttons: [
-
-                        'copy',
-
-                        'csv',
-
-                        'excel',
-
-                        'pdf',
-
-                        'print'
-
-                    ]
-
-                });
+});
 
             } catch (error) {
 
@@ -762,21 +889,24 @@ class="px-4 py-2 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-
         }
     </script>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
 
-    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
 
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
 
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 </body>
 
 </html>

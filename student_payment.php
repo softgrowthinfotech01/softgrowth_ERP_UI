@@ -91,30 +91,38 @@
                 Student Details
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                <!-- Class -->
+                <!-- Student ID -->
                 <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Class</label>
-                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Class" />
-                </div>
+    <label class="block text-sm font-bold text-gray-700 mb-1">Student ID</label>
+    <select id="studentId"
+        class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4">
+        <option value="">Select Student</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+</div>
                 <!-- Student Name -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Student Name</label>
-                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Student Name" />
+                    <input id="studentName" type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Student Name" />
                 </div>
-                <!-- Student ID -->
+                <!-- Class -->
                 <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Student ID</label>
-                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Student ID" />
+                    <label class="block text-sm font-bold text-gray-700 mb-1">Class</label>
+                    <input     id="studentClass" type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Class" />
                 </div>
                 <!-- Total Amount -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Net Payable Amount</label>
-                    <input type="text" class="w-full rounded-xl border-gray-300 shadow-sm bg-gray-50 text-gray-500 py-2.5 px-4" placeholder="Auto Calculated" readonly />
+                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm bg-gray-50 text-gray-500 py-2.5 px-4" placeholder="Auto Calculated" readonly />
                 </div>
                 <!-- Balance Amount -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Balance Amount</label>
-                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm bg-gray-50 text-gray-500 py-2.5 px-4" placeholder="Auto Calculated" readonly />
+                    <input id="balanceAmount" type="text" class="w-full rounded-xl border border-gray-300 shadow-sm bg-gray-50 text-gray-500 py-2.5 px-4" placeholder="Auto Calculated" readonly />
                 </div>
             </div>
         </div>
@@ -241,7 +249,62 @@
         }
 
         show(step);
+
     </script>
+
+
+<!-- Temporary JS For Student ID -->
+ <script>
+const students = {
+    1: {
+        name: "Rahul Sharma",
+        class: "BCA FY",
+        netPayable: "₹45,000",
+        balance: "₹20,000"
+    },
+    2: {
+        name: "Priya Patel",
+        class: "B.Com SY",
+        netPayable: "₹38,500",
+        balance: "₹8,500"
+    },
+    3: {
+        name: "Amit Verma",
+        class: "B.Sc TY",
+        netPayable: "₹52,000",
+        balance: "₹0"
+    },
+    4: {
+        name: "Sneha Joshi",
+        class: "MBA FY",
+        netPayable: "₹75,000",
+        balance: "₹30,000"
+    },
+    5: {
+        name: "Rohan Deshmukh",
+        class: "BBA SY",
+        netPayable: "₹48,000",
+        balance: "₹12,000"
+    }
+};
+
+document.getElementById("studentId").addEventListener("change", function () {
+
+    const student = students[this.value];
+
+    if (student) {
+        document.getElementById("studentName").value = student.name;
+        document.getElementById("studentClass").value = student.class;
+        document.getElementById("netPayable").value = student.netPayable;
+        document.getElementById("balanceAmount").value = student.balance;
+    } else {
+        document.getElementById("studentName").value = "";
+        document.getElementById("studentClass").value = "";
+        document.getElementById("netPayable").value = "";
+        document.getElementById("balanceAmount").value = "";
+    }
+});
+</script>
 
 </body>
 
