@@ -114,7 +114,7 @@
                 </div>
                 <div class="w-full sm:w-64">
                     <input id="searchInput" type="text" placeholder="Search payment records..." 
-                           class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4 text-sm" />
+                           class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4 text-sm" />
                 </div>
             </div>
 

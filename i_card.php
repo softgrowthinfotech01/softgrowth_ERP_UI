@@ -35,6 +35,14 @@
             transform: translateY(-2px);
             box-shadow: 0 12px 30px rgba(15, 118, 110, 0.25);
         }
+           .file-input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px dashed #d1d5db;
+            border-radius: 0.75rem;
+            background: #f9fafb;
+            transition: 0.2s;
+        }
         @media (max-width: 640px) {
             .photo-preview-wrap {
                 width: 95px;
@@ -140,7 +148,7 @@
                         </div>
                         <div class="mt-3">
                             <input type="file" id="photoInput" accept="image/*" 
-                                   class="text-sm text-gray-500  file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100" />
+                                   class="text-sm text-gray-500 file-input  file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100" />
                         </div>
                     </div>
 
