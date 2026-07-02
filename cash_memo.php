@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-       <meta charset="UTF-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cash Memo - ERP</title>
     <!-- Tailwind via CDN -->
@@ -10,14 +10,16 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
-  /* Minimal custom styles – everything else is Tailwind */
+        /* Minimal custom styles – everything else is Tailwind */
         .submit-btn {
             transition: all 0.2s ease;
         }
+
         .submit-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 12px 30px rgba(15, 118, 110, 0.25);
         }
+
         /* subtle focus ring for inputs (Tailwind's focus:ring already does this) */
     </style>
 </head>
@@ -48,32 +50,44 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
 
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Category</label>
+                        <select id="category"
+                            class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4">
+                            <option value="">Select Category</option>
+                            <option value="Salary">Salary</option>
+                            <option value="Expenses">Expenses</option>
+                            <option value="Electric">Electric Bill</option>
+                            <option value="Electric">Others</option>
+                        </select>
+                    </div>
+
                     <!-- Cash Memo No -->
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Cash Memo No</label>
-                        <input type="text" id="cash_memo_no" placeholder="Enter cash memo no" 
-                               class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
+                        <input type="text" id="cash_memo_no" placeholder="Enter cash memo no"
+                            class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
                     </div>
 
                     <!-- Amount -->
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Amount</label>
-                        <input type="number" id="amount" placeholder="Enter amount" 
-                               class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
+                        <input type="number" id="amount" placeholder="Enter amount"
+                            class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
                     </div>
 
                     <!-- Receipt Number -->
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Receipt Number</label>
-                        <input type="text" id="receipt_number" placeholder="Enter receipt number" 
-                               class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
+                        <input type="text" id="receipt_number" placeholder="Enter receipt number"
+                            class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
                     </div>
 
                     <!-- Date -->
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Date</label>
-                        <input type="date" id="date" 
-                               class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
+                        <input type="date" id="date"
+                            class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
                     </div>
 
                 </div>
