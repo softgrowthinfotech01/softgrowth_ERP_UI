@@ -389,7 +389,7 @@
                             <input type="radio" name="semester" value="FY Semester 1" class="w-4 h-4 text-teal-600 focus:ring-teal-500" />
                             <span class="text-gray-700">Semester 1</span>
                         </label>
-                        <label class="flex items-center gap-3 p-3 rounded-lg bg-white border border-gray-200 cursor-pointer hover:bg-gray-50 transition mt-2">
+                        <label class="flex items-center gap-3 p-3 rounded-lg bg-white border border-gray-300 cursor-pointer hover:bg-gray-50 transition mt-2">
                             <input type="radio" name="semester" value="FY Semester 2" class="w-4 h-4 text-teal-600 focus:ring-teal-500" />
                             <span class="text-gray-700">Semester 2</span>
                         </label>
@@ -402,7 +402,7 @@
                             <input type="radio" name="semester" value="SY Semester 3" class="w-4 h-4 text-teal-600 focus:ring-teal-500" />
                             <span class="text-gray-700">Semester 3</span>
                         </label>
-                        <label class="flex items-center gap-3 p-3 rounded-lg bg-white border border-gray-200 cursor-pointer hover:bg-gray-50 transition mt-2">
+                        <label class="flex items-center gap-3 p-3 rounded-lg bg-white border border-gray-300 cursor-pointer hover:bg-gray-50 transition mt-2">
                             <input type="radio" name="semester" value="SY Semester 4" class="w-4 h-4 text-teal-600 focus:ring-teal-500" />
                             <span class="text-gray-700">Semester 4</span>
                         </label>
@@ -415,7 +415,7 @@
                             <input type="radio" name="semester" value="TY Semester 5" class="w-4 h-4 text-teal-600 focus:ring-teal-500" />
                             <span class="text-gray-700">Semester 5</span>
                         </label>
-                        <label class="flex items-center gap-3 p-3 rounded-lg bg-white border border-gray-200 cursor-pointer hover:bg-gray-50 transition mt-2">
+                        <label class="flex items-center gap-3 p-3 rounded-lg bg-white border border-gray-300 cursor-pointer hover:bg-gray-50 transition mt-2">
                             <input type="radio" name="semester" value="TY Semester 6" class="w-4 h-4 text-teal-600 focus:ring-teal-500" />
                             <span class="text-gray-700">Semester 6</span>
                         </label>

@@ -17,14 +17,14 @@
     <!-- MENU -->
     <div class="p-4 space-y-1">
 
-        <a href="dashboard" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-200 text-gray-700 font-bold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
+        <a href="dashboard" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-bold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
             <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-teal-600 text-lg">🏠</span>
             <span>Dashboard</span>
         </a>
 
         <!-- Student Entry Dropdown -->
         <div class="dropdown">
-            <button onclick="toggleDropdown('studentMenu')" class="sidebar-dropdown-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl border-b border-gray-200 text-gray-700 font-bold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
+            <button onclick="toggleDropdown('studentMenu')" class="sidebar-dropdown-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-bold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
                 <span class="flex items-center gap-3">
                     <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-teal-600 text-lg">🎓</span>
                     <span>Student Entry</span>
@@ -43,7 +43,7 @@
 
         <!-- Records Dropdown -->
         <div class="dropdown">
-            <button onclick="toggleDropdown('recordMenu')" class="sidebar-dropdown-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl border-b border-gray-200 text-gray-700 font-bold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
+            <button onclick="toggleDropdown('recordMenu')" class="sidebar-dropdown-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-bold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
                 <span class="flex items-center gap-3">
                     <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-teal-600 text-lg">📊</span>
                     <span>Records</span>
@@ -62,27 +62,27 @@
             </div>
         </div>
 
-        <a href="bonafide" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-200 text-gray-700 font-bold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
+        <a href="bonafide" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-bold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
             <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-teal-600 text-lg">📄</span>
             <span>Bonafide</span>
         </a>
 
-        <a href="cash_memo" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-200 text-gray-700 font-bold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
+        <a href="cash_memo" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-bold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
             <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-teal-600 text-lg">💵</span>
             <span>Cash Memo</span>
         </a>
 
-        <a href="i_card" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-200 text-gray-700 font-bold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
+        <a href="i_card" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-bold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
             <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-teal-600 text-lg">🆔</span>
             <span>I Card</span>
         </a>
 
-        <a href="update_password" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-200 text-gray-700 font-bold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
+        <a href="update_password" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-bold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
             <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-teal-600 text-lg">🔑</span>
             <span>Update Password</span>
         </a>
 
-        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl  text-red-600 font-bold hover:bg-red-50 transition-all duration-200 mt-4 border-b border-gray-200 pt-4">
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl  text-red-600 font-bold hover:bg-red-50 transition-all duration-200 mt-4 border-b border-gray-300 pt-4">
             <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-50 text-red-500 text-lg">🚪</span>
             <span>Logout</span>
         </a>
