@@ -62,7 +62,7 @@
     <?php include 'header.php' ?>
     <?php include 'sidebar.php' ?>
     <!-- HEADER -->
-    <main class="md:ml-[300px] max-w-7xl mx-auto px-4 sm:px-6 py-28 pb-10 transition-all duration-200">
+    <main class="md:ml-[300px] max-w-7xl mx-auto px-4 sm:px-6 py-28 pb-10 mb-4 transition-all duration-200">
 
         <!-- ===== STUDENT RECORDS CARD ===== -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">

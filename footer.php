@@ -1,5 +1,5 @@
 <footer class="erp-footer fixed bottom-0 right-0 left-0 lg:left-72 z-50 bg-transparent">
-    <div class="erp-footer-wrap flex flex-col sm:flex-row items-center justify-between gap-3 px-4 sm:px-6 py-3 sm:py-4 bg-white border-t border-gray-200 rounded-t-2xl shadow-lg">
+    <div class="erp-footer-wrap flex flex-col sm:flex-row items-center justify-between gap-3 px-4 sm:px-6 py-3 sm:py-4 bg-white border-t border-gray-200  shadow-lg">
 
         <!-- LEFT -->
         <div class="erp-footer-left flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-full border border-gray-200">

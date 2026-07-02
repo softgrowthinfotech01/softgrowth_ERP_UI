@@ -27,7 +27,7 @@
     <?php include 'header.php' ?>
     <?php include 'sidebar.php' ?>
 
-    <main class="md:ml-[300px] max-w-7xl mx-auto px-4 sm:px-6 py-28 pb-10 transition-all duration-200">
+    <main class="md:ml-[300px] max-w-7xl mx-auto px-4 sm:px-6 py-28 pb-10 mb-8 transition-all duration-200">
 
         <!-- ===== CASH MEMO CARD ===== -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">

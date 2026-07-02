@@ -70,7 +70,7 @@
     <?php include 'sidebar.php'; ?>
 
     <!-- MAIN CONTENT -->
-    <main class="pt-28 px-4 sm:px-6 pb-10 lg:mb-10 transition-all duration-200">
+    <main class="pt-24 mb-8 px-4 sm:px-6 pb-10 lg:mb-10 transition-all duration-200">
 
         <!-- HERO -->
         <!-- <section class="mb-6">

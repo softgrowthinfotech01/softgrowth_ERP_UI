@@ -17,7 +17,8 @@
             height: 40px;
             border-radius: 50%;
             display: flex;
-            align-items: center;            justify-content: center;
+            align-items: center;         
+               justify-content: center;
             font-weight: 900;
             font-size: 15px;
             transition: all 0.3s ease;
