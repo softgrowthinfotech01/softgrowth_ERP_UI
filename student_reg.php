@@ -145,7 +145,7 @@
                     </select>
                 </div>
 
-                <!-- Student Year -->
+                <!-- Student Class -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Student Class</label>
                     <select class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="course">
@@ -213,10 +213,16 @@
                     <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="aadhaar" maxlength="12" placeholder="XXXX-XXXX-XXXX" />
                 </div>
 
-                <!-- ABC ID -->
+                <!-- Student ID -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Student ID</label>
-                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="abc_id" placeholder="Enter Student ID" />
+                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="abc_id" placeholder="Enter Studetnt ID" />
+                </div>
+
+                <!-- APAAR ID -->
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">APAAR ID</label>
+                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="abc_id" placeholder="Enter APAAR ID" />
                 </div>
 
                 <!-- DOB -->
