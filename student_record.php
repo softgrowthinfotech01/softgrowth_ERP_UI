@@ -2,139 +2,155 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Record - ERP</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Record</title>
+    <!-- Tailwind via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome (optional) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
-    <link rel="stylesheet" href="dist/output.css">
-    <link rel="stylesheet" href="dist/style.css">
-
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
-
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
 
     <style>
+        /* minimal custom styles – everything else is Tailwind */
+        .table-row-hover:hover {
+            background-color: #f8fafc;
+        }
 
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-box {
+            animation: fadeIn 0.25s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* responsive table wrapper */
+        .table-wrap {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        @media (max-width: 640px) {
+            .table-wrap table {
+                font-size: 0.85rem;
+            }
+
+            .table-wrap table th,
+            .table-wrap table td {
+                padding: 0.5rem 0.25rem;
+            }
+        }
     </style>
 
 </head>
 
-<body class="text-white ">
+<body class="bg-gray-50 text-gray-800 antialiased">
     <?php include 'header.php' ?>
     <?php include 'sidebar.php' ?>
     <!-- HEADER -->
-<div class="student-page-wrap"> 
-       <div class="table-card">
+    <main class="md:ml-[300px] max-w-7xl mx-auto px-4 sm:px-6 py-28 pb-10 transition-all duration-200">
 
-        <div class="table-heading">
-            <div class="table-icon">👨‍🎓</div>
+        <!-- ===== STUDENT RECORDS CARD ===== -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
 
-            <div>
-                <h2>Student Records</h2>
-                <p>View and manage registered student details</p>
+            <!-- Heading -->
+            <div class="flex items-center gap-4 p-6 border-b border-gray-100">
+                <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-2xl">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-extrabold text-gray-900">Student Records</h2>
+                    <p class="text-sm text-gray-500">View and manage registered student details</p>
+                </div>
             </div>
-        </div>
 
-        <div class="table-wrap">
-            <table id="studentTable">
-
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Student Name</th>
-                        <th>Batch</th>
-                        <th>Year</th>
-                        <th>Student Phone</th>
-                        <th>Father Phone</th>
-                        <th>Branch</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-
-                <tbody id="studentTableBody">
-                    <tr>
-                        <td colspan="8" class="text-center py-8">
-                            Loading...
-                        </td>
-                    </tr>
-                </tbody>
-
-            </table>
-        </div>
-
-    </div>
-</div>
-
-
-    <!-- DETAILS MODAL -->
-
-    <div id="detailsModal" class="fixed inset-0 bg-black/60
-        hidden justify-center items-center z-50 p-4">
-
-        <div class="bg-slate-900 rounded-2xl
-        w-full max-w-2xl p-6 relative">
-
-            <!-- CLOSE -->
-
-            <button onclick="closeDetailsModal()" class="absolute top-4 right-4
-        text-white text-xl">
-
-                ✕
-
-            </button>
-
-
-
-            <h2 class="text-xl font-bold mb-6 text-white">
-
-                Student Details
-
-            </h2>
-
-
-
-            <div id="detailsContent" class="grid md:grid-cols-2 gap-4 text-white">
-
+            <!-- Table -->
+            <div class="table-wrap p-4 sm:p-6">
+                <table id="studentTable" class="w-full text-sm text-left">
+                    <thead>
+                        <tr class="border-b border-gray-200 text-xs font-semibold uppercase tracking-wider text-gray-500">
+                            <th class="px-3 py-3 whitespace-nowrap">#</th>
+                            <th class="px-3 py-3 whitespace-nowrap">Student Name</th>
+                            <th class="px-3 py-3 whitespace-nowrap">Batch</th>
+                            <th class="px-3 py-3 whitespace-nowrap">Year</th>
+                            <th class="px-3 py-3 whitespace-nowrap">Student Phone</th>
+                            <th class="px-3 py-3 whitespace-nowrap">Father Phone</th>
+                            <th class="px-3 py-3 whitespace-nowrap">Branch</th>
+                            <th class="px-3 py-3 whitespace-nowrap text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentTableBody" class="divide-y divide-gray-100">
+                        <!-- Rows injected by JS -->
+                        <tr>
+                            <td colspan="8" class="text-center py-8 text-gray-400">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
         </div>
 
-    </div>
-
-    <!-- DOCUMENT MODAL -->
-
-    <div id="documentsModal" class="fixed inset-0 bg-black/60
-        hidden justify-center items-center z-50 p-4">
-
-        <div class="bg-slate-900 rounded-2xl
-        w-full max-w-2xl p-6 relative">
-
-            <!-- CLOSE -->
-
-            <button onclick="closeDocumentsModal()" class="absolute top-4 right-4
-        text-white text-xl">
-
-                ✕
-
-            </button>
-
-
-
-            <h2 class="text-xl font-bold mb-6 text-white">
-
-                Student Documents
-
-            </h2>
-
-
-
-            <div id="documentsContent" class="grid grid-cols-2 md:grid-cols-3 gap-4">
-
+        <!-- ===== DETAILS MODAL ===== -->
+        <div id="detailsModal" class="fixed inset-0 modal-overlay hidden justify-center items-center z-50 p-4">
+            <div class="modal-box bg-white rounded-2xl w-full max-w-2xl p-6 relative shadow-2xl">
+                <button onclick="closeDetailsModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-2xl transition">
+                    <i class="fas fa-times"></i>
+                </button>
+                <h2 class="text-xl font-extrabold text-gray-900 mb-6 flex items-center gap-3">
+                    <span class="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center text-sm">
+                        <i class="fas fa-user-circle"></i>
+                    </span>
+                    Student Details
+                </h2>
+                <div id="detailsContent" class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700">
+                    <!-- populated by JS -->
+                </div>
+                <div class="mt-6 flex justify-end">
+                    <button onclick="closeDetailsModal()" class="px-5 py-2 bg-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-300 transition">
+                        Close
+                    </button>
+                </div>
             </div>
-
         </div>
 
-    </div>
+        <!-- ===== DOCUMENTS MODAL ===== -->
+        <div id="documentsModal" class="fixed inset-0 modal-overlay hidden justify-center items-center z-50 p-4">
+            <div class="modal-box bg-white rounded-2xl w-full max-w-2xl p-6 relative shadow-2xl">
+                <button onclick="closeDocumentsModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-2xl transition">
+                    <i class="fas fa-times"></i>
+                </button>
+                <h2 class="text-xl font-extrabold text-gray-900 mb-6 flex items-center gap-3">
+                    <span class="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center text-sm">
+                        <i class="fas fa-file-alt"></i>
+                    </span>
+                    Student Documents
+                </h2>
+                <div id="documentsContent" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <!-- populated by JS -->
+                </div>
+                <div class="mt-6 flex justify-end">
+                    <button onclick="closeDocumentsModal()" class="px-5 py-2 bg-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-300 transition">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
     <?php include 'footer.php' ?>
 
 
@@ -630,61 +646,61 @@
 
                     html += `
 
-<div class="relative group">
+                        <div class="relative group">
 
-    <!-- CARD -->
+                            <!-- CARD -->
 
-    <div
+                            <div
 
-    class="bg-slate-800 rounded-xl p-4
-    text-center hover:bg-slate-700
-    transition">
+                            class="bg-slate-800 rounded-xl p-4
+                            text-center hover:bg-slate-700
+                            transition">
 
-        <div class="text-4xl mb-2">
-            📄
-        </div>
+                                <div class="text-4xl mb-2">
+                                    📄
+                                </div>
 
-        <div class="text-white text-sm">
+                                <div class="text-white text-sm">
 
-            ${doc.name}
+                                    ${doc.name}
 
-        </div>
+                                </div>
 
-    </div>
+                            </div>
 
 
 
-    <!-- HOVER DOWNLOAD BUTTON -->
+                            <!-- HOVER DOWNLOAD BUTTON -->
 
-    <div
+                            <div
 
-    class="absolute inset-0
-    flex items-center justify-center
-    bg-black/60 rounded-xl
-    opacity-0 group-hover:opacity-100
-    transition-all duration-300">
+                            class="absolute inset-0
+                            flex items-center justify-center
+                            bg-black/60 rounded-xl
+                            opacity-0 group-hover:opacity-100
+                            transition-all duration-300">
 
-     <a
+                            <a
 
-href="${baseUrl}storage/${doc.file}"
+                        href="${baseUrl}storage/${doc.file}"
 
-download
+                        download
 
-target="_self"
+                        target="_self"
 
-class="px-4 py-2 rounded-lg
-bg-cyan-500 hover:bg-cyan-600
-text-white text-sm">
+                        class="px-4 py-2 rounded-lg
+                        bg-cyan-500 hover:bg-cyan-600
+                        text-white text-sm">
 
-    Download
+                            Download
 
-</a>
+                        </a>
 
-    </div>
+                            </div>
 
-</div>
+                        </div>
 
-`;
+                        `;
                 }
 
             });

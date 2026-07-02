@@ -2,124 +2,199 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ID Card - ERP</title>
-
-    <link rel="stylesheet" href="dist/output.css">
-    <link rel="stylesheet" href="dist/style.css">
-
-    <link
-        href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css"
-        rel="stylesheet">
-
-    <script
-        src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js">
-    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student ID Card - ERP</title>
+    <!-- Tailwind via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
     <style>
-
+ /* Minimal custom styles – everything else is Tailwind */
+        .photo-preview-wrap {
+            width: 120px;
+            height: 120px;
+            padding: 4px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #0f766e, #14b8a6);
+            box-shadow: 0 8px 24px rgba(15, 118, 110, 0.2);
+        }
+        .photo-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 16px;
+            background: #fff;
+            border: 3px solid #fff;
+        }
+        .submit-btn {
+            transition: all 0.2s ease;
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(15, 118, 110, 0.25);
+        }
+        @media (max-width: 640px) {
+            .photo-preview-wrap {
+                width: 95px;
+                height: 95px;
+            }
+        }
     </style>
 </head>
 
-<body class="text-white ">
+<body class="bg-gray-50 text-gray-800 antialiased">
 
     <?php include 'header.php' ?>
     <?php include 'sidebar.php' ?>
 
-    <div class="p-4 md:p-8 mt-10 mb-24 md:mb-10 md:ml-[300px]">
+<main class="md:ml-[300px] max-w-7xl mx-auto px-4 sm:px-6 py-28 pb-10 transition-all duration-200">
 
-    <div class="idcard-form-card">
+        <!-- ===== ID CARD FORM CARD ===== -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
 
-        <div class="idcard-heading">
-            <div class="idcard-icon">🆔</div>
-
-            <div>
-                <h2>Student ID Card Form</h2>
-                <p>Generate student identity card details</p>
+            <!-- Heading -->
+            <div class="flex items-center gap-4 p-6 border-b border-gray-100">
+                <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-2xl">
+                    <i class="fas fa-id-card"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-extrabold text-gray-900">Student ID Card Form</h2>
+                    <p class="text-sm text-gray-500">Generate student identity card details</p>
+                </div>
             </div>
+
+            <!-- Form -->
+            <form class="p-6 space-y-6">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                    <!-- Select Student -->
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Select Student</label>
+                        <select id="student_select" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4">
+                            <option value="">Search Student</option>
+                            <option value="1">Rahul Sharma</option>
+                            <option value="2">Priya Patel</option>
+                            <option value="3">Amit Singh</option>
+                        </select>
+                    </div>
+
+                    <!-- Course -->
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Course</label>
+                        <input type="text" id="course" placeholder="Enter course name" 
+                               class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
+                    </div>
+
+                    <!-- Class -->
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Class</label>
+                        <input type="text" id="student_year" placeholder="Enter class name" 
+                               class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
+                    </div>
+
+                    <!-- Date of Birth -->
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Date of Birth</label>
+                        <input type="date" id="date_of_birth" 
+                               class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Phone Number</label>
+                        <input type="number" id="student_phone" placeholder="Enter phone number" 
+                               class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
+                    </div>
+
+                    <!-- Blood Group -->
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Blood Group</label>
+                        <select id="blood_group" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4">
+                            <option value="">-- Select Blood Group --</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+
+                    <!-- Address (full width) -->
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Address</label>
+                        <textarea id="full_address" rows="3" placeholder="Enter address" 
+                                  class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4"></textarea>
+                    </div>
+
+                    <!-- Photo -->
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold text-gray-700 mb-3">Photo</label>
+                        <div class="photo-preview-wrap">
+                            <img id="photoPreview" src="https://ui-avatars.com/api/?name=Student&background=0f766e&color=fff&size=120" alt="Preview" class="photo-preview" />
+                        </div>
+                        <div class="mt-3">
+                            <input type="file" id="photoInput" accept="image/*" 
+                                   class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100" />
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Generate Button -->
+                <div class="flex justify-center pt-4">
+                    <button type="button" class="submit-btn bg-teal-600 text-white font-bold py-3 px-8 rounded-xl shadow-md hover:bg-teal-700 focus:ring-2 focus:ring-teal-300">
+                        <i class="fas fa-id-card mr-2"></i> Generate ID Card
+                    </button>
+                </div>
+
+            </form>
+
         </div>
 
-        <form>
-
-            <div class="grid md:grid-cols-2 gap-4">
-
-                <div>
-                    <label class="label">Select Student</label>
-                    <select id="student_select" class="input">
-                        <option value="">Search Student</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="label">Course</label>
-                    <input type="text" id="course" class="input" placeholder="Enter course name">
-                </div>
-
-                <div>
-                    <label class="label">Class</label>
-                    <input type="text" id="student_year" class="input" placeholder="Enter class name">
-                </div>
-
-                <div>
-                    <label class="label">Date of Birth</label>
-                    <input type="date" id="date_of_birth" class="input">
-                </div>
-
-                <div>
-                    <label class="label">Phone Number</label>
-                    <input type="number" id="student_phone" class="input" placeholder="Enter phone number">
-                </div>
-
-                <div>
-                    <label class="label">Blood Group</label>
-                    <select class="input" id="blood_group">
-                        <option value="">-- Select Blood Group --</option>
-                        <option value="A+">A+</option>
-                        <option value="A-">A-</option>
-                        <option value="B+">B+</option>
-                        <option value="B-">B-</option>
-                        <option value="AB+">AB+</option>
-                        <option value="AB-">AB-</option>
-                        <option value="O+">O+</option>
-                        <option value="O-">O-</option>
-                    </select>
-                </div>
-
-                <div class="md:col-span-2">
-                    <label class="label">Address</label>
-                    <textarea class="textarea input" id="full_address" placeholder="Enter address"></textarea>
-                </div>
-
-                <div class="photo-box">
-                    <label class="label">Photo</label>
-
-                    <div class="photo-preview-wrap">
-                        <img
-                        id="photoPreview"
-                        src="images/default-user.png"
-                        class="photo-preview">
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="flex justify-center mt-8">
-                <button type="button" class="submit-btn">
-                    Generate ID Card
-                </button>
-            </div>
-
-        </form>
-
-    </div>
-
-</div>
+    </main>
 
     <?php include 'footer.php' ?>
 
 
     <script src="url.js"></script>
+
+
+    <!-- ============================================================
+    JAVASCRIPT – photo preview
+    ============================================================ -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Photo preview
+            const photoInput = document.getElementById('photoInput');
+            const photoPreview = document.getElementById('photoPreview');
+
+            if (photoInput) {
+                photoInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            photoPreview.src = event.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+
+            // Demo: Generate button click
+            document.querySelector('.submit-btn').addEventListener('click', function() {
+                alert('ID Card generated successfully! (demo)');
+            });
+        });
+    </script>
+
+
 
     <script>
         let tomSelectInstance;
