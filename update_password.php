@@ -35,7 +35,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 antialiased">
+<body class="bg-gray-300 text-gray-800 antialiased">
 
     <!-- PHP includes (header + sidebar) – keep your existing structure -->
     <?php include 'header.php'; ?>
@@ -66,7 +66,7 @@
                     <label class="block text-sm font-bold text-gray-700 mb-1">Current Password</label>
                     <div class="input-box">
                         <input type="password" id="currentPassword" placeholder="Enter current password" 
-                               class="input w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4 pr-12" />
+                               class="input w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4 pr-12" />
                         <span class="eye-btn" onclick="togglePassword('currentPassword', this)">
                             <i class="fas fa-eye"></i>
                         </span>
@@ -78,7 +78,7 @@
                     <label class="block text-sm font-bold text-gray-700 mb-1">New Password</label>
                     <div class="input-box">
                         <input type="password" id="newPassword" placeholder="Enter new password" 
-                               class="input w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4 pr-12" />
+                               class="input w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4 pr-12" />
                         <span class="eye-btn" onclick="togglePassword('newPassword', this)">
                             <i class="fas fa-eye"></i>
                         </span>
@@ -90,7 +90,7 @@
                     <label class="block text-sm font-bold text-gray-700 mb-1">Confirm Password</label>
                     <div class="input-box">
                         <input type="password" id="confirmPassword" placeholder="Confirm password" 
-                               class="input w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4 pr-12" />
+                               class="input w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4 pr-12" />
                         <span class="eye-btn" onclick="togglePassword('confirmPassword', this)">
                             <i class="fas fa-eye"></i>
                         </span>

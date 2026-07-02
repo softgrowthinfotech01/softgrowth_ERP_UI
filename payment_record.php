@@ -38,14 +38,14 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 antialiased">
+<body class="bg-gray-300 text-gray-800 antialiased">
 
     <!-- PHP includes (header + sidebar) – keep your existing structure -->
     <?php include 'header.php'; ?>
     <?php include 'sidebar.php'; ?>
 
     <!-- MAIN CONTENT -->
-    <main class="md:ml-[300px] max-w-7xl mx-auto px-4 sm:px-6 py-28 pb-10 transition-all duration-200">
+    <main class="md:ml-[300px] max-w-7xl mx-auto px-4 sm:px-6 py-28 pb-10 mb-10 transition-all duration-200">
 
         <!-- ===== PAYMENT RECORDS CARD ===== -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">

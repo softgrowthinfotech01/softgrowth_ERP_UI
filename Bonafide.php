@@ -37,14 +37,14 @@
     </style>
 </head>
 
-<body class="bg-gray-50 text-gray-800 antialiased">
+<body class="bg-gray-300 text-gray-800 antialiased">
 
     <?php include 'header.php' ?>
     <?php include 'sidebar.php' ?>
-<main class="md:ml-[300px] max-w-7xl mx-auto px-4 sm:px-6 py-28 pb-10 transition-all duration-200">
+<main class="md:ml-[300px] max-w-7xl mx-auto px-4 sm:px-6 py-28 pb-10 mb-10 transition-all duration-200">
 
         <!-- ===== BONAFIDE CARD ===== -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-300 overflow-hidden">
 
             <!-- Heading -->
             <div class="flex items-center gap-4 p-6 border-b border-gray-100">
@@ -64,8 +64,8 @@
 
                     <!-- Student Name (select) -->
                     <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-1">Student Name</label>
-                        <select id="student_select" class="input w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" onchange="getStudentDetails(this.value)">
+                        <label class="block text-sm font-bold  text-gray-700 mb-1">Student Name</label>
+                        <select id="student_select" class="input w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" onchange="getStudentDetails(this.value)">
                             <option value="">Select Student</option>
                             <!-- options populated by JS -->
                         </select>
@@ -74,67 +74,67 @@
                     <!-- Parents Name (readonly) -->
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Parents Name</label>
-                        <input type="text" id="parent_name" class="input-readonly w-full rounded-xl border-gray-300 bg-gray-50 text-gray-600 py-2.5 px-4" placeholder="Parents name" readonly />
+                        <input type="text" id="parent_name" class="input-readonly w-full rounded-xl border border-gray-300 bg-gray-50 text-gray-600 py-2.5 px-4" placeholder="Parents name" readonly />
                     </div>
 
                     <!-- Course -->
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Course</label>
-                        <input type="text" id="course" class="input-readonly w-full rounded-xl border-gray-300 bg-gray-50 text-gray-600 py-2.5 px-4" placeholder="Course" readonly />
+                        <input type="text" id="course" class="input-readonly w-full rounded-xl border border-gray-300 bg-gray-50 text-gray-600 py-2.5 px-4" placeholder="Course" readonly />
                     </div>
 
                     <!-- Class Name -->
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Class Name</label>
-                        <input type="text" id="student_year" class="input-readonly w-full rounded-xl border-gray-300 bg-gray-50 text-gray-600 py-2.5 px-4" placeholder="Class name" readonly />
+                        <input type="text" id="student_year" class="input-readonly w-full rounded-xl border border-gray-300 bg-gray-50 text-gray-600 py-2.5 px-4" placeholder="Class name" readonly />
                     </div>
 
                     <!-- Date of Admission -->
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Date of Admission</label>
-                        <input type="date" id="admission_date" class="input-readonly w-full rounded-xl border-gray-300 bg-gray-50 text-gray-600 py-2.5 px-4" readonly />
+                        <input type="date" id="admission_date" class="input-readonly w-full rounded-xl border border-gray-300 bg-gray-50 text-gray-600 py-2.5 px-4" readonly />
                     </div>
 
                     <!-- Date Of Birth -->
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Date Of Birth</label>
-                        <input type="date" id="date_of_birth" class="input-readonly w-full rounded-xl border-gray-300 bg-gray-50 text-gray-600 py-2.5 px-4" readonly />
+                        <input type="date" id="date_of_birth" class="input-readonly w-full rounded-xl border border-gray-300 bg-gray-50 text-gray-600 py-2.5 px-4" readonly />
                     </div>
 
                     <!-- Date Of Birth (In Words) -->
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Date Of Birth (In Words)</label>
-                        <input type="text" id="date_of_birth_words" class="input-readonly w-full rounded-xl border-gray-300 bg-gray-50 text-gray-600 py-2.5 px-4" placeholder="Date in words" readonly />
+                        <input type="text" id="date_of_birth_words" class="input-readonly w-full rounded-xl border border-gray-300 bg-gray-50 text-gray-600 py-2.5 px-4" placeholder="Date in words" readonly />
                     </div>
 
                     <!-- Caste -->
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Caste</label>
-                        <input type="text" id="caste" class="input-readonly w-full rounded-xl border-gray-300 bg-gray-50 text-gray-600 py-2.5 px-4" placeholder="Caste" readonly />
+                        <input type="text" id="caste" class="input-readonly w-full rounded-xl border border-gray-300 bg-gray-50 text-gray-600 py-2.5 px-4" placeholder="Caste" readonly />
                     </div>
 
                     <!-- Sub-Caste -->
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Sub-Caste</label>
-                        <input type="text" id="sub_caste" class="input-readonly w-full rounded-xl border-gray-300 bg-gray-50 text-gray-600 py-2.5 px-4" placeholder="Sub-caste" readonly />
+                        <input type="text" id="sub_caste" class="input-readonly w-full rounded-xl border border-gray-300 bg-gray-50 text-gray-600 py-2.5 px-4" placeholder="Sub-caste" readonly />
                     </div>
 
                     <!-- Address -->
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Address</label>
-                        <input type="text" id="full_address" class="input-readonly w-full rounded-xl border-gray-300 bg-gray-50 text-gray-600 py-2.5 px-4" placeholder="Address" readonly />
+                        <input type="text" id="full_address" class="input-readonly w-full rounded-xl border border-gray-300 bg-gray-50 text-gray-600 py-2.5 px-4" placeholder="Address" readonly />
                     </div>
 
                     <!-- Tahsil -->
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Tahsil</label>
-                        <input type="text" id="tahsil" class="input-readonly w-full rounded-xl border-gray-300 bg-gray-50 text-gray-600 py-2.5 px-4" placeholder="Tahsil" readonly />
+                        <input type="text" id="tahsil" class="input-readonly w-full rounded-xl border border-gray-300 bg-gray-50 text-gray-600 py-2.5 px-4" placeholder="Tahsil" readonly />
                     </div>
 
                     <!-- District -->
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">District</label>
-                        <input type="text" id="district" class="input-readonly w-full rounded-xl border-gray-300 bg-gray-50 text-gray-600 py-2.5 px-4" placeholder="District" readonly />
+                        <input type="text" id="district" class="input-readonly w-full rounded-xl border border-gray-300 bg-gray-50 text-gray-600 py-2.5 px-4" placeholder="District" readonly />
                     </div>
 
                 </div>

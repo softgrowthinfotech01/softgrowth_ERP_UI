@@ -11,7 +11,7 @@
         </div>
 
         <!-- RIGHT -->
-        <div class="erp-footer-right flex flex-wrap items-center gap-2">
+        <!-- <div class="erp-footer-right flex flex-wrap items-center gap-2">
             <a href="privacy_policy.php" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold text-gray-600 bg-gray-50 border border-gray-200 hover:bg-teal-50 hover:text-teal-600 hover:border-teal-300 hover:shadow-md transition-all duration-200">
                 Privacy
             </a>
@@ -21,7 +21,7 @@
             <a href="support.php" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold text-gray-600 bg-gray-50 border border-gray-200 hover:bg-teal-50 hover:text-teal-600 hover:border-teal-300 hover:shadow-md transition-all duration-200">
                 Support
             </a>
-        </div>
+        </div> -->
 
     </div>
 </footer>

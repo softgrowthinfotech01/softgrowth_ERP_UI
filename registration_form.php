@@ -71,7 +71,7 @@
     </style>
 </head>
 
-<body class="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+<body class="min-h-screen flex items-center justify-center bg-gray-300 p-4">
 
     <!-- =========================
          REGISTER CARD

@@ -58,7 +58,7 @@
 
 </head>
 
-<body class="bg-gray-50 text-gray-800 antialiased">
+<body class="bg-gray-300 text-gray-800 antialiased">
     <?php include 'header.php' ?>
     <?php include 'sidebar.php' ?>
     <!-- HEADER -->
@@ -77,12 +77,35 @@
                     <p class="text-sm text-gray-500">View and manage registered student details</p>
                 </div>
             </div>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 border-b border-gray-100">
+                <div class="flex flex-wrap items-center gap-2">
+                    <button class="toolbar-btn px-4 py-2 bg-gray-600 text-white text-sm font-bold rounded-xl hover:bg-gray-700 focus:ring-2 focus:ring-gray-300">
+                        <i class="fas fa-copy mr-1"></i> Copy
+                    </button>
+                    <button class="toolbar-btn px-4 py-2 bg-sky-500 text-white text-sm font-bold rounded-xl hover:bg-sky-600 focus:ring-2 focus:ring-sky-300">
+                        <i class="fas fa-file-csv mr-1"></i> CSV
+                    </button>
+                    <button class="toolbar-btn px-4 py-2 bg-emerald-500 text-white text-sm font-bold rounded-xl hover:bg-emerald-600 focus:ring-2 focus:ring-emerald-300">
+                        <i class="fas fa-file-excel mr-1"></i> Excel
+                    </button>
+                    <button class="toolbar-btn px-4 py-2 bg-red-500 text-white text-sm font-bold rounded-xl hover:bg-red-600 focus:ring-2 focus:ring-red-300">
+                        <i class="fas fa-file-pdf mr-1"></i> PDF
+                    </button>
+                    <button class="toolbar-btn px-4 py-2 bg-purple-500 text-white text-sm font-bold rounded-xl hover:bg-purple-600 focus:ring-2 focus:ring-purple-300">
+                        <i class="fas fa-print mr-1"></i> Print
+                    </button>
+                </div>
+                <div class="w-full sm:w-64">
+                    <input type="text" placeholder="Search payment records..." 
+                           class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4 text-sm" />
+                </div>
+            </div>
 
             <!-- Table -->
             <div class="table-wrap p-4 sm:p-6">
                 <table id="studentTable" class="w-full text-sm text-left">
                     <thead>
-                        <tr class="border-b border-gray-200 text-xs font-semibold uppercase tracking-wider text-gray-500">
+                        <tr class="border-b border-gray-200  bg-teal-600 text-white text-xs font-semibold uppercase tracking-wider text-gray-500">
                             <th class="px-3 py-3 whitespace-nowrap">#</th>
                             <th class="px-3 py-3 whitespace-nowrap">Student Name</th>
                             <th class="px-3 py-3 whitespace-nowrap">Batch</th>
@@ -148,7 +171,21 @@
                     </button>
                 </div>
             </div>
+            
         </div>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 border-t border-gray-100">
+                    <div class="text-sm text-gray-500 font-semibold">
+                        Showing <span id="startEntry">0</span> to <span id="endEntry">0</span> of <span id="totalEntries">0</span> entries
+                    </div>
+                    <div class="flex gap-2">
+                        <button id="prevPage" class="page-btn px-5 py-2 bg-teal-600 text-white font-bold rounded-xl hover:bg-teal-700 focus:ring-2 focus:ring-teal-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                            <i class="fas fa-chevron-left mr-1"></i> Previous
+                        </button>
+                        <button id="nextPage" class="page-btn px-5 py-2 bg-teal-600 text-white font-bold rounded-xl hover:bg-teal-700 focus:ring-2 focus:ring-teal-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                            Next <i class="fas fa-chevron-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
 
     </main>
     <?php include 'footer.php' ?>

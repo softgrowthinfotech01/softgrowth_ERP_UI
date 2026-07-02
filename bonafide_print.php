@@ -36,7 +36,7 @@
 
 </head>
 
-<body class="bg-gray-100 p-4 sm:p-6 md:p-8 print:bg-white">
+<body class="bg-gray-300 p-4 sm:p-6 md:p-8 print:bg-white">
 
     <!-- Print Button (hidden when printing) -->
    

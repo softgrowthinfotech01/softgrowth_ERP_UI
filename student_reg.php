@@ -102,24 +102,30 @@
 
 </head>
 
-<body class="bg-gray-50 text-gray-800 antialiased">
+<body class="bg-gray-300 text-gray-800 antialiased">
 
     <?php include 'header.php' ?>
     <?php include 'sidebar.php' ?>
 
-    <main id="main" class="md:ml-[300px] max-w-6xl mx-auto px-4 sm:px-6 py-28 pb-10 transition-all duration-200">
+    <main id="main" class="md:ml-[300px] max-w-6xl mx-auto px-4 sm:px-6 py-28 pb-10 mb-10 transition-all duration-200">
 
         <!-- STEPPER -->
         <div class="flex items-center gap-2 sm:gap-4 mb-8">
+               <button id="prev" class="px-6 py-2.5 bg-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-300 transition hidden sm:w-auto w-full">
+                <i class="fas fa-arrow-left mr-2"></i> Previous
+            </button>
             <div class="step active" id="s1">1</div>
             <div class="line active" id="l1"></div>
             <div class="step" id="s2">2</div>
             <div class="line" id="l2"></div>
             <div class="step" id="s3">3</div>
+             <button id="next" class="px-6 py-2.5 bg-teal-600 text-white font-bold rounded-xl hover:bg-teal-700 transition sm:w-auto w-full sm:ml-auto">
+                Next <i class="fas fa-arrow-right ml-2"></i>
+            </button>
         </div>
 
         <!-- ================= STEP 1 ================= -->
-        <div class="step-box active bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8" id="step1">
+        <div class="step-box active bg-white rounded-2xl shadow-sm border border-gray-300 p-6 md:p-8" id="step1">
             <h2 class="text-xl md:text-2xl font-extrabold text-gray-900 mb-6 flex items-center gap-3">
                 <span class="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center text-sm">
                     <i class="fas fa-user-graduate"></i>
@@ -131,7 +137,7 @@
                 <!-- Student Batch -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Student Batch</label>
-                    <select class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="student_batch">
+                    <select class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="student_batch">
                         <option value="">Select Batch</option>
                         <option value="2024-25">2024-25</option>
                         <option value="2025-26">2025-26</option>
@@ -141,9 +147,9 @@
                 <!-- Student Year -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Student Year</label>
-                    <select class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="student_year">
+                    <select class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="student_year">
                         <option value="">Select Year</option>
-                        <option value="First Year">1st Year</option>
+                        <option value="First Year">1st Year</option>border border-gray-300
                         <option value="Second Year">2nd Year</option>
                         <option value="Third Year">3rd Year</option>
                     </select>
@@ -152,7 +158,7 @@
                 <!-- Course -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Course</label>
-                    <select class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="course">
+                    <select class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="course">
                         <option value="">Select Course</option>
                         <option value="BCA">BCA</option>
                         <option value="BBA">BBA</option>
@@ -162,61 +168,61 @@
                 <!-- Student Name -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Student Name</label>
-                    <input type="text" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="student_name" placeholder="Enter student name" />
+                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="student_name" placeholder="Enter student name" />
                 </div>
 
                 <!-- Parent Name -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Parent Name</label>
-                    <input type="text" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="parent_name" placeholder="Enter parent name" />
+                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="parent_name" placeholder="Enter parent name" />
                 </div>
 
                 <!-- Caste -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Caste</label>
-                    <input type="text" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="caste" placeholder="Enter caste" />
+                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="caste" placeholder="Enter caste" />
                 </div>
 
                 <!-- Sub Caste -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Sub Caste</label>
-                    <input type="text" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="sub_caste" placeholder="Enter sub caste" />
+                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="sub_caste" placeholder="Enter sub caste" />
                 </div>
 
                 <!-- Admission Date -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Admission Date</label>
-                    <input type="date" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="admission_date" />
+                    <input type="date" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="admission_date" />
                 </div>
 
                 <!-- Aadhaar -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Aadhaar Number</label>
-                    <input type="text" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="aadhaar" maxlength="12" placeholder="XXXX-XXXX-XXXX" />
+                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="aadhaar" maxlength="12" placeholder="XXXX-XXXX-XXXX" />
                 </div>
 
                 <!-- ABC ID -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">ABC ID</label>
-                    <input type="text" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="abc_id" placeholder="Enter ABC ID" />
+                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="abc_id" placeholder="Enter ABC ID" />
                 </div>
 
                 <!-- DOB -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Date of Birth</label>
-                    <input type="date" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="dob" />
+                    <input type="date" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="dob" />
                 </div>
 
                 <!-- Place of Birth -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Place of Birth</label>
-                    <input type="text" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="birth_place" placeholder="Enter place of birth" />
+                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="birth_place" placeholder="Enter place of birth" />
                 </div>
 
                 <!-- Gender -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Gender</label>
-                    <select class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="gender">
+                    <select class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="gender">
                         <option value="">Select Gender</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
@@ -316,31 +322,31 @@
                 <!-- Full Fees -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Full Fees</label>
-                    <input type="text" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="full_fees" placeholder="Enter full fees" />
+                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="full_fees" placeholder="Enter full fees" />
                 </div>
 
                 <!-- Admission Fees -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Admission Fees</label>
-                    <input type="text" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="admission_fees" placeholder="Enter admission fees" />
+                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="admission_fees" placeholder="Enter admission fees" />
                 </div>
 
                 <!-- Student Phone -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Student Phone</label>
-                    <input type="text" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="student_phone" maxlength="10" placeholder="Enter student phone" />
+                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="student_phone" maxlength="10" placeholder="Enter student phone" />
                 </div>
 
                 <!-- Parent Phone -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Parent Phone</label>
-                    <input type="text" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="parent_phone" maxlength="10" placeholder="Enter parent phone" />
+                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="parent_phone" maxlength="10" placeholder="Enter parent phone" />
                 </div>
 
                 <!-- Blood Group -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Blood Group</label>
-                    <select class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="blood_group">
+                    <select class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="blood_group">
                         <option value="">Select Blood Group</option>
                         <option value="A+">A+</option>
                         <option value="A-">A-</option>
@@ -354,19 +360,19 @@
                 <!-- Tahsil -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Tahsil</label>
-                    <input type="text" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="tahsil" placeholder="Enter tahsil" />
+                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="tahsil" placeholder="Enter tahsil" />
                 </div>
 
                 <!-- District -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">District</label>
-                    <input type="text" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="district" placeholder="Enter district" />
+                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="district" placeholder="Enter district" />
                 </div>
 
                 <!-- Address -->
                 <div class="md:col-span-2">
                     <label class="block text-sm font-bold text-gray-700 mb-1">Full Address</label>
-                    <textarea rows="4" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="full_address" placeholder="Enter full address"></textarea>
+                    <textarea rows="4" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="full_address" placeholder="Enter full address"></textarea>
                 </div>
 
             </div>
@@ -379,7 +385,7 @@
                     <!-- First Year -->
                     <div class="p-4 rounded-xl bg-gray-50 border border-gray-200">
                         <p class="font-bold text-gray-800 mb-3">First Year</p>
-                        <label class="flex items-center gap-3 p-3 rounded-lg bg-white border border-gray-200 cursor-pointer hover:bg-gray-50 transition">
+                        <label class="flex items-center gap-3 p-3 rounded-lg bg-white border border-gray-300 cursor-pointer hover:bg-gray-50 transition">
                             <input type="radio" name="semester" value="FY Semester 1" class="w-4 h-4 text-teal-600 focus:ring-teal-500" />
                             <span class="text-gray-700">Semester 1</span>
                         </label>
@@ -392,7 +398,7 @@
                     <!-- Second Year -->
                     <div class="p-4 rounded-xl bg-gray-50 border border-gray-200">
                         <p class="font-bold text-gray-800 mb-3">Second Year</p>
-                        <label class="flex items-center gap-3 p-3 rounded-lg bg-white border border-gray-200 cursor-pointer hover:bg-gray-50 transition">
+                        <label class="flex items-center gap-3 p-3 rounded-lg bg-white border border-gray-300 cursor-pointer hover:bg-gray-50 transition">
                             <input type="radio" name="semester" value="SY Semester 3" class="w-4 h-4 text-teal-600 focus:ring-teal-500" />
                             <span class="text-gray-700">Semester 3</span>
                         </label>
@@ -405,7 +411,7 @@
                     <!-- Third Year -->
                     <div class="p-4 rounded-xl bg-gray-50 border border-gray-200">
                         <p class="font-bold text-gray-800 mb-3">Third Year</p>
-                        <label class="flex items-center gap-3 p-3 rounded-lg bg-white border border-gray-200 cursor-pointer hover:bg-gray-50 transition">
+                        <label class="flex items-center gap-3 p-3 rounded-lg bg-white border border-gray-300 cursor-pointer hover:bg-gray-50 transition">
                             <input type="radio" name="semester" value="TY Semester 5" class="w-4 h-4 text-teal-600 focus:ring-teal-500" />
                             <span class="text-gray-700">Semester 5</span>
                         </label>
@@ -420,15 +426,7 @@
 
         </div>
 
-        <!-- BUTTONS -->
-        <div class="flex flex-col sm:flex-row justify-between gap-4 mt-6">
-            <button id="prev" class="px-6 py-2.5 bg-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-300 transition hidden sm:w-auto w-full">
-                <i class="fas fa-arrow-left mr-2"></i> Previous
-            </button>
-            <button id="next" class="px-6 py-2.5 bg-teal-600 text-white font-bold rounded-xl hover:bg-teal-700 transition sm:w-auto w-full sm:ml-auto">
-                Next <i class="fas fa-arrow-right ml-2"></i>
-            </button>
-        </div>
+      
 
     </main>
 
