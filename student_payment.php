@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Student Payment - ERP</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css">
+<script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
 
 <link rel="stylesheet" href="dist/output.css">
 
@@ -645,34 +647,49 @@ Clear Filter
 
     <div class="grid md:grid-cols-3 gap-4">
 
+    <!-- Student Name -->
+        <div>
+            <label class="text-md text-white font-bold mb-1 block">Student Name</label>
+            <select
+id="student_select"
+class="input">
+
+    <option value="">
+        Select Student
+    </option>
+
+</select>
+        </div>
+
+
         <!-- Class -->
         <div>
-            <label class="text-md text-white font-bold mb-1 block">Class</label>
-            <input class="input" placeholder="Enter Class">
+            <label class="text-md text-white font-bold mb-1 block">Course</label>
+            <input id="course" class="input" placeholder="Enter Course">
         </div>
 
         <!-- Student Name -->
         <div>
-            <label class="text-md text-white font-bold mb-1 block">Student Name</label>
-            <input class="input" placeholder="Enter Student Name">
+            <label class="text-md text-white font-bold mb-1 block">Student Year</label>
+            <input id="student_year" class="input" placeholder="Enter Student Year">
         </div>
 
         <!-- Student ID -->
         <div>
             <label class="text-md text-white font-bold mb-1 block">Student ID</label>
-            <input class="input" placeholder="Enter Student ID">
+            <input id="student_id" class="input" placeholder="Enter Student ID">
         </div>
 
         <!-- Total Amount -->
         <div>
             <label class="text-md text-white font-bold mb-1 block">Total Amount</label>
-            <input class="input" placeholder="Auto Calculated" readonly>
+            <input id="total_amount" class="input" placeholder="Auto Calculated" readonly>
         </div>
 
         <!-- Balance Amount -->
         <div>
             <label class="text-md text-white font-bold mb-1 block">Balance Amount</label>
-            <input class="input" placeholder="Auto Calculated" readonly>
+            <input id="balance_amount" class="input" placeholder="Auto Calculated" readonly>
         </div>
 
     </div>
@@ -864,51 +881,241 @@ Clear Filter
 
 </div>
 <?php include 'footer.php' ?>
+
+<script src="url.js"></script>
 <!-- ================= SCRIPT ================= -->
 <script>
+
+
+// ================= STEP FORM =================
 
 let step = 1;
 
 const next = document.getElementById("next");
 const prev = document.getElementById("prev");
 
-function show(n){
+function showStep(stepNo){
 
-document.querySelectorAll(".step-box").forEach(e=>e.classList.remove("active"));
-document.getElementById("step"+n).classList.add("active");
+    // Hide all steps
+    document.querySelectorAll(".step-box").forEach(box=>{
+        box.classList.remove("active");
+    });
 
-for(let i=1;i<=3;i++){
-document.getElementById("s"+i).classList.remove("active");
+    document.getElementById("step"+stepNo).classList.add("active");
+
+    // Remove active from indicators
+    for(let i=1;i<=3;i++){
+
+        document.getElementById("s"+i).classList.remove("active");
+
+        if(i<3){
+            document.getElementById("l"+i).classList.remove("active");
+        }
+
+    }
+
+    // Add active to completed/current steps
+    for(let i=1;i<=stepNo;i++){
+
+        document.getElementById("s"+i).classList.add("active");
+
+        if(i<stepNo){
+            document.getElementById("l"+i).classList.add("active");
+        }
+
+    }
+
+    prev.classList.toggle("hidden", stepNo===1);
+
+    next.innerText = stepNo===3 ? "Submit" : "Next";
+
 }
 
-for(let i=1;i<=n;i++){
-document.getElementById("s"+i).classList.add("active");
+// NEXT
+next.addEventListener("click",function(){
+
+    if(step < 3){
+
+        step++;
+
+        showStep(step);
+
+    }else{
+
+        alert("Payment Submitted Successfully ✅");
+
+        // submitForm();   // Call your API here later
+
+    }
+
+});
+
+// PREVIOUS
+prev.addEventListener("click",function(){
+
+    if(step>1){
+
+        step--;
+
+        showStep(step);
+
+    }
+
+});
+
+// Initial
+showStep(step);
+
+
+
+
+// api
+
+    let studentDropdown;
+
+window.onload = function () {
+
+    getStudents();
+
+};
+
+
+
+// =========================
+// FETCH ALL STUDENTS
+// =========================
+
+async function getStudents(){
+
+    try{
+
+        const response = await fetch(
+
+            url + "students",
+
+            {
+
+                headers:{
+
+                    "Authorization":"Bearer " +
+                    localStorage.getItem("token"),
+
+                    "Accept":"application/json"
+
+                }
+
+            }
+
+        );
+const result = await response.json();
+
+console.log(result);
+
+if (!result.success) {
+    alert(result.message);
+    return;
 }
 
-for(let i=1;i<n;i++){
-document.getElementById("l"+i).classList.add("active");
+const students = result.data.data;
+
+console.log(students);
+
+const select = document.getElementById("student_select");
+
+select.innerHTML = `
+    <option value="">Select Student</option>
+`;
+
+students.forEach(student => {
+
+    select.innerHTML += `
+        <option value="${student.id}">
+            ${student.student_name}
+        </option>
+    `;
+
+});
+
+        studentDropdown = new TomSelect("#student_select",{
+
+            create:false,
+
+            placeholder:"Search Student..."
+
+        });
+
+    }
+
+    catch(error){
+
+        console.log(error);
+
+    }
+
 }
 
-prev.classList.toggle("hidden", n===1);
-next.innerText = n===3 ? "Submit" : "Next";
+document.getElementById("student_select")
+
+.addEventListener("change",function(){
+
+    if(this.value){
+
+        getStudentData(this.value);
+
+    }
+
+});
+
+async function getStudentData(id){
+
+    try{
+
+        const response = await fetch(
+
+            url + "students/" + id,
+
+            {
+
+                headers:{
+
+                    "Authorization":"Bearer " +
+                    localStorage.getItem("token"),
+
+                    "Accept":"application/json"
+
+                }
+
+            }
+
+        );
+
+        const result = await response.json();
+
+        const student = result.data;
+
+    
+        document.getElementById("course").value =
+        student.course || "";
+
+        document.getElementById("student_year").value =
+        student.student_year || "";
+
+        document.getElementById("student_id").value =
+        student.id;
+
+        // NEXT STEP
+
+        // getFeeSummary(student.id);
+
+    }
+
+    catch(error){
+
+        console.log(error);
+
+    }
 
 }
-
-next.onclick = ()=>{
-if(step===3){
-alert("Payment Submitted Successfully ✅");
-return;
-}
-step++;
-show(step);
-}
-
-prev.onclick = ()=>{
-step--;
-show(step);
-}
-
-show(step);
 
 </script>
 
