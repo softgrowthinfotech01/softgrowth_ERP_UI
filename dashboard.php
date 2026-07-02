@@ -94,10 +94,8 @@
                 <div class="flex items-start justify-between">
                     <div>
                         <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Total Students</p>
-                        <h2 class="text-2xl font-extrabold text-gray-900 mt-1">12K</h2>
-                        <p class="text-sm font-medium text-emerald-600 mt-1">
-                            <i class="fas fa-arrow-up mr-1"></i> 18% Growth
-                        </p>
+                        <h2 class="text-2xl font-extrabold text-gray-900 mt-3">5K</h2>
+                      
                     </div>
                     <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl">
                         <i class="fas fa-user-graduate"></i>
@@ -109,11 +107,9 @@
             <div class="stat-card bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
                 <div class="flex items-start justify-between">
                     <div>
-                        <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Teachers</p>
-                        <h2 class="text-2xl font-extrabold text-gray-900 mt-1">540</h2>
-                        <p class="text-sm font-medium text-blue-600 mt-1">
-                            <i class="fas fa-circle text-[8px] align-middle mr-1"></i> Active Staff
-                        </p>
+                        <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Courses</p>
+                        <h2 class="text-2xl font-extrabold text-gray-900 mt-3">10</h2>
+                        
                     </div>
                     <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
                         <i class="fas fa-chalkboard-teacher"></i>
@@ -126,10 +122,8 @@
                 <div class="flex items-start justify-between">
                     <div>
                         <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Revenue</p>
-                        <h2 class="text-2xl font-extrabold text-gray-900 mt-1">$85K</h2>
-                        <p class="text-sm font-medium text-amber-600 mt-1">
-                            <i class="fas fa-arrow-up mr-1"></i> Monthly Income
-                        </p>
+                        <h2 class="text-2xl font-extrabold text-gray-900 mt-3">85K</h2>
+                      
                     </div>
                     <div class="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl">
                         <i class="fas fa-coins"></i>
@@ -141,11 +135,9 @@
             <div class="stat-card bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
                 <div class="flex items-start justify-between">
                     <div>
-                        <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Courses</p>
-                        <h2 class="text-2xl font-extrabold text-gray-900 mt-1">320</h2>
-                        <p class="text-sm font-medium text-purple-600 mt-1">
-                            <i class="fas fa-circle text-[8px] align-middle mr-1"></i> Running Batches
-                        </p>
+                        <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Batches</p>
+                        <h2 class="text-2xl font-extrabold text-gray-900 mt-3">320</h2>
+                      
                     </div>
                     <div class="w-11 h-11 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl">
                         <i class="fas fa-book-open"></i>

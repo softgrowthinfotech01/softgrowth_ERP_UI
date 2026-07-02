@@ -101,7 +101,7 @@
                 </div>
                 <!-- Total Amount -->
                 <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Total Amount</label>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">Net Payable Amount</label>
                     <input type="text" class="w-full rounded-xl border-gray-300 shadow-sm bg-gray-50 text-gray-500 py-2.5 px-4" placeholder="Auto Calculated" readonly />
                 </div>
                 <!-- Balance Amount -->

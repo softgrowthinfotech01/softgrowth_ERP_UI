@@ -321,8 +321,8 @@
 
                 <!-- Admission Fees -->
                 <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Admission Fees</label>
-                    <input type="text" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="admission_fees" placeholder="Enter admission fees" />
+                    <label class="block text-sm font-bold text-gray-700 mb-1">Discount</label>
+                    <input type="text" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="discount" placeholder="Enter discount" />
                 </div>
 
                 <!-- Student Phone -->
@@ -484,7 +484,7 @@
             prevBtn.addEventListener('click', () => goTo(current - 1));
             nextBtn.addEventListener('click', () => {
                 if (current === steps.length - 1) {
-                    alert('Registration submitted! (demo)');
+                   
                 } else {
                     goTo(current + 1);
                 }
