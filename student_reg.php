@@ -142,6 +142,7 @@
                         <option value="">Select Batch</option>
                         <option value="2024-25">2024-25</option>
                         <option value="2025-26">2025-26</option>
+                        <option value="2025-26">2026-27</option>
                     </select>
                 </div>
 
@@ -150,6 +151,9 @@
                     <label class="block text-sm font-bold text-gray-700 mb-1">Student Class</label>
                     <select class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="course">
                         <option value="">Select Class</option>
+                        <option value="BCA">Nursery</option>
+                        <option value="BCA">KG 1</option>
+                        <option value="BCA">KG 2</option>
                         <option value="BCA">Class 1</option>
                         <option value="BBA">Class 2</option>
                         <option value="BBA">Class 3</option>
@@ -175,6 +179,13 @@
                         <option value="BBA">Section C</option>
                         <option value="BBA">Section D</option>
                     </select>
+                </div>
+                
+
+                  <!-- Student ID -->
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">Student ID</label>
+                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="abc_id" placeholder="Enter Studetnt ID" />
                 </div>
 
                 <!-- Student Name -->
@@ -213,11 +224,7 @@
                     <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="aadhaar" maxlength="12" placeholder="XXXX-XXXX-XXXX" />
                 </div>
 
-                <!-- Student ID -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Student ID</label>
-                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="abc_id" placeholder="Enter Studetnt ID" />
-                </div>
+              
 
                 <!-- APAAR ID -->
                 <div>
