@@ -263,7 +263,7 @@
             ];
             renderTable(allLedger, 1);
             updatePaginationInfo(allLedger.length, 1);
-            showToast('⚠️ Using sample data (API unavailable)', 'warning');
+            
         }
 
         // ============================================================

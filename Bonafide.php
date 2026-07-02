@@ -251,17 +251,7 @@
                 document.getElementById('district').value = student.district;
             };
 
-            // Generate function (demo)
-            window.generateBonafide = function() {
-                const name = select.options[select.selectedIndex]?.text || '';
-                if (!name || name === 'Select Student') {
-                    alert('Please select a student first.');
-                    return;
-                }
-                alert(`Bonafide certificate generated for ${name} (demo)`);
-                // In a real app, you would generate a PDF or print.
-            };
-
+            
         });
     </script>
     <script>
@@ -304,254 +294,254 @@
         // FETCH ALL STUDENTS
         // =========================
 
-        async function getStudents() {
+        // async function getStudents() {
 
-            try {
+        //     try {
 
-                const response = await fetch(
+        //         const response = await fetch(
 
-                    url + "students",
+        //             url + "students",
 
-                    {
+        //             {
 
-                        headers: {
+        //                 headers: {
 
-                            "Authorization": "Bearer " + localStorage.getItem("token"),
+        //                     "Authorization": "Bearer " + localStorage.getItem("token"),
 
-                            "Accept": "application/json"
+        //                     "Accept": "application/json"
 
-                        }
+        //                 }
 
-                    }
+        //             }
 
-                );
+        //         );
 
 
 
-                const result = await response.json();
+        //         const result = await response.json();
 
-                console.log(result);
+        //         console.log(result);
 
 
 
-                const students =
-                    result.data.data;
+        //         const students =
+        //             result.data.data;
 
 
 
-                const select =
-                    document.getElementById("student_select");
+        //         const select =
+        //             document.getElementById("student_select");
 
 
 
-                // RESET
+        //         // RESET
 
-                select.innerHTML = `
+        //         select.innerHTML = `
 
-            <option value="">
-                Select Student
-            </option>
+        //     <option value="">
+        //         Select Student
+        //     </option>
 
-        `;
+        // `;
 
 
 
-                students.forEach(student => {
+        //         students.forEach(student => {
 
-                    select.innerHTML += `
+        //             select.innerHTML += `
 
-                <option value="${student.id}">
+        //         <option value="${student.id}">
 
-                    ${student.student_name}
+        //             ${student.student_name}
 
-                </option>
+        //         </option>
 
-            `;
+        //     `;
 
-                });
+        //         });
 
-                new TomSelect("#student_select", {
+        //         new TomSelect("#student_select", {
 
-                    create: false,
+        //             create: false,
 
-                    sortField: {
-                        field: "text",
-                        direction: "asc"
-                    },
+        //             sortField: {
+        //                 field: "text",
+        //                 direction: "asc"
+        //             },
 
-                    placeholder: "Search Student..."
+        //             placeholder: "Search Student..."
 
-                });
+        //         });
 
 
 
-            } catch (error) {
+        //     } catch (error) {
 
-                console.log(error);
+        //         console.log(error);
 
-                alert("Failed to load students");
+        //         alert("Failed to load students");
 
-            } finally {
+        //     } finally {
 
-                document.getElementById(
-                    "student_select"
-                ).disabled = false;
+        //         document.getElementById(
+        //             "student_select"
+        //         ).disabled = false;
 
-            }
+        //     }
 
 
-        }
+        // }
 
 
-        function convertDateToWords(dateString) {
+        // function convertDateToWords(dateString) {
 
-            const months = [
+        //     const months = [
 
-                "January", "February", "March",
-                "April", "May", "June",
-                "July", "August", "September",
-                "October", "November", "December"
+        //         "January", "February", "March",
+        //         "April", "May", "June",
+        //         "July", "August", "September",
+        //         "October", "November", "December"
 
-            ];
+        //     ];
 
 
 
-            const numbers = [
+        //     const numbers = [
 
-                "Zero", "One", "Two", "Three", "Four",
-                "Five", "Six", "Seven", "Eight", "Nine",
-                "Ten", "Eleven", "Twelve", "Thirteen",
-                "Fourteen", "Fifteen", "Sixteen",
-                "Seventeen", "Eighteen", "Nineteen",
-                "Twenty", "Twenty One", "Twenty Two",
-                "Twenty Three", "Twenty Four",
-                "Twenty Five", "Twenty Six",
-                "Twenty Seven", "Twenty Eight",
-                "Twenty Nine", "Thirty", "Thirty One"
+        //         "Zero", "One", "Two", "Three", "Four",
+        //         "Five", "Six", "Seven", "Eight", "Nine",
+        //         "Ten", "Eleven", "Twelve", "Thirteen",
+        //         "Fourteen", "Fifteen", "Sixteen",
+        //         "Seventeen", "Eighteen", "Nineteen",
+        //         "Twenty", "Twenty One", "Twenty Two",
+        //         "Twenty Three", "Twenty Four",
+        //         "Twenty Five", "Twenty Six",
+        //         "Twenty Seven", "Twenty Eight",
+        //         "Twenty Nine", "Thirty", "Thirty One"
 
-            ];
+        //     ];
 
 
 
-            const date = new Date(dateString);
+        //     const date = new Date(dateString);
 
 
 
-            const day =
-                numbers[date.getDate()];
+        //     const day =
+        //         numbers[date.getDate()];
 
 
 
-            const month =
-                months[date.getMonth()];
+        //     const month =
+        //         months[date.getMonth()];
 
 
 
-            const year =
-                date.getFullYear()
-                .toString()
-                .split("")
-                .map(num => numbers[num])
-                .join(" ");
+        //     const year =
+        //         date.getFullYear()
+        //         .toString()
+        //         .split("")
+        //         .map(num => numbers[num])
+        //         .join(" ");
 
 
 
 
-            return `${day} ${month} ${year}`;
+        //     return `${day} ${month} ${year}`;
 
-        }
-        // =========================
-        // FETCH SINGLE STUDENT
-        // =========================
+        // }
+        // // =========================
+        // // FETCH SINGLE STUDENT
+        // // =========================
 
-        async function getStudentDetails(id) {
+        // async function getStudentDetails(id) {
 
-            if (!id) {
+        //     if (!id) {
 
-                return;
+        //         return;
 
-            }
+        //     }
 
 
 
-            try {
+        //     try {
 
-                const response = await fetch(
+        //         const response = await fetch(
 
-                    url + "students/" + id + "/bonafide",
+        //             url + "students/" + id + "/bonafide",
 
-                    {
+        //             {
 
-                        headers: {
+        //                 headers: {
 
-                            "Authorization": "Bearer " + localStorage.getItem("token"),
+        //                     "Authorization": "Bearer " + localStorage.getItem("token"),
 
-                            "Accept": "application/json"
+        //                     "Accept": "application/json"
 
-                        }
+        //                 }
 
-                    }
+        //             }
 
-                );
+        //         );
 
 
 
-                const result = await response.json();
+        //         const result = await response.json();
 
-                console.log(result);
+        //         console.log(result);
 
 
 
-                const student =
-                    result.data;
+        //         const student =
+        //             result.data;
 
 
 
-                // =========================
-                // PREFILL DATA
-                // =========================
-                document.getElementById("student_select").value =
-                    id;
+        //         // =========================
+        //         // PREFILL DATA
+        //         // =========================
+        //         document.getElementById("student_select").value =
+        //             id;
 
 
-                document.getElementById("parent_name").value =
-                    student.parent_name || "";
+        //         document.getElementById("parent_name").value =
+        //             student.parent_name || "";
 
 
-                document.getElementById("course").value =
-                    student.course || "";
+        //         document.getElementById("course").value =
+        //             student.course || "";
 
-                document.getElementById("student_year").value =
-                    student.student_year || "";
+        //         document.getElementById("student_year").value =
+        //             student.student_year || "";
 
-                document.getElementById("caste").value =
-                    student.caste || "";
+        //         document.getElementById("caste").value =
+        //             student.caste || "";
 
-                document.getElementById("sub_caste").value =
-                    student.sub_caste || "";
+        //         document.getElementById("sub_caste").value =
+        //             student.sub_caste || "";
 
-                document.getElementById("full_address").value =
-                    student.full_address || "";
+        //         document.getElementById("full_address").value =
+        //             student.full_address || "";
 
-                document.getElementById("tahsil").value =
-                    student.tahsil || "";
+        //         document.getElementById("tahsil").value =
+        //             student.tahsil || "";
 
-                document.getElementById("district").value =
-                    student.district || "";
+        //         document.getElementById("district").value =
+        //             student.district || "";
 
-                document.getElementById("date_of_birth").value =
-                    student.date_of_birth || "";
+        //         document.getElementById("date_of_birth").value =
+        //             student.date_of_birth || "";
 
-                document.getElementById(
-                        "date_of_birth_words"
-                    ).value =
+        //         document.getElementById(
+        //                 "date_of_birth_words"
+        //             ).value =
 
-                    convertDateToWords(
-                        student.date_of_birth
-                    );
+        //             convertDateToWords(
+        //                 student.date_of_birth
+        //             );
 
-                document.getElementById("admission_date").value =
-                    student.admission_date || "";
+        //         document.getElementById("admission_date").value =
+        //             student.admission_date || "";
 
 
 
@@ -560,30 +550,30 @@
 
 
 
-                // =========================
-                // DATES
-                // =========================
+        //         // =========================
+        //         // DATES
+        //         // =========================
 
-                document.getElementById("admission_date").value =
-                    student.admission_date || "";
+        //         document.getElementById("admission_date").value =
+        //             student.admission_date || "";
 
 
 
-                document.getElementById("date_of_birth").value =
-                    student.date_of_birth || "";
+        //         document.getElementById("date_of_birth").value =
+        //             student.date_of_birth || "";
 
 
 
-            } catch (error) {
+        //     } catch (error) {
 
-                console.log(error);
+        //         console.log(error);
 
-                alert("Failed to fetch student details");
+        //         alert("Failed to fetch student details");
 
-            }
+        //     }
 
-        }
-        // generate bonafide certificate
+        // }
+        // // generate bonafide certificate
 
         function generateBonafide() {
 
