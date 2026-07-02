@@ -42,7 +42,7 @@
     <?php include 'sidebar.php'; ?>
 
     <!-- MAIN CONTENT -->
-    <main class="md:ml-[300px] max-w-7xl mx-auto px-4 sm:px-6 py-28 pb-10 lg:mb-10 transition-all duration-200 flex items-center justify-center min-h-[calc(100vh-12rem)]">
+    <main class="md:ml-[300px] max-w-7xl mx-auto px-4 sm:px-6 py-28 pb-10  mb-8 lg:mb-10 transition-all duration-200 flex items-center justify-center min-h-[calc(100vh-12rem)]">
 
         <!-- ===== PASSWORD CARD ===== -->
         <div class="w-full max-w-lg bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8">

@@ -17,7 +17,8 @@
             height: 40px;
             border-radius: 50%;
             display: flex;
-            align-items: center;            justify-content: center;
+            align-items: center;         
+               justify-content: center;
             font-weight: 900;
             font-size: 15px;
             transition: all 0.3s ease;
@@ -144,24 +145,35 @@
                     </select>
                 </div>
 
-                <!-- Student Year -->
+                <!-- Student Class -->
                 <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Student Year</label>
-                    <select class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="student_year">
-                        <option value="">Select Year</option>
-                        <option value="First Year">1st Year</option>border border-gray-300
-                        <option value="Second Year">2nd Year</option>
-                        <option value="Third Year">3rd Year</option>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">Student Class</label>
+                    <select class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="course">
+                        <option value="">Select Class</option>
+                        <option value="BCA">Class 1</option>
+                        <option value="BBA">Class 2</option>
+                        <option value="BBA">Class 3</option>
+                        <option value="BBA">Class 4</option>
+                        <option value="BBA">Class 5</option>
+                        <option value="BBA">Class 6</option>
+                        <option value="BBA">Class 7</option>
+                        <option value="BBA">Class 8</option>
+                        <option value="BBA">Class 9</option>
+                        <option value="BBA">Class 10</option>
+                        <option value="BBA">Class 11</option>
+                        <option value="BBA">Class 12</option>
                     </select>
                 </div>
 
-                <!-- Course -->
+                <!-- Student Section -->
                 <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Course</label>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">Student Section</label>
                     <select class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="course">
-                        <option value="">Select Course</option>
-                        <option value="BCA">BCA</option>
-                        <option value="BBA">BBA</option>
+                        <option value="">Select Section</option>
+                        <option value="BCA">Section A</option>
+                        <option value="BBA">Section B</option>
+                        <option value="BBA">Section C</option>
+                        <option value="BBA">Section D</option>
                     </select>
                 </div>
 
@@ -201,10 +213,16 @@
                     <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="aadhaar" maxlength="12" placeholder="XXXX-XXXX-XXXX" />
                 </div>
 
-                <!-- ABC ID -->
+                <!-- Student ID -->
                 <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">ABC ID</label>
-                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="abc_id" placeholder="Enter ABC ID" />
+                    <label class="block text-sm font-bold text-gray-700 mb-1">Student ID</label>
+                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="abc_id" placeholder="Enter Studetnt ID" />
+                </div>
+
+                <!-- APAAR ID -->
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">APAAR ID</label>
+                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="abc_id" placeholder="Enter APAAR ID" />
                 </div>
 
                 <!-- DOB -->
@@ -231,7 +249,7 @@
                 </div>
 
                 <!-- Photo -->
-                <div class="md:col-span-2">
+                <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Passport Photo</label>
                     <input type="file" id="photo" class="file-input" accept="image/*" />
                     <img id="photoPreview" class="preview-img hidden" src="#" alt="Preview" />
@@ -252,28 +270,28 @@
 
                 <!-- TC Certificate -->
                 <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">TC Certificate</label>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">Student Aadhaar Card</label>
                     <input type="file" id="tc_certificate" class="file-input" accept="image/*,application/pdf" />
                     <img id="tcPreview" class="preview-img hidden" src="#" alt="Preview" />
                 </div>
 
                 <!-- 10th Marksheet -->
                 <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">10th Marksheet</label>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">Birth Certificate</label>
                     <input type="file" id="marksheet_10" class="file-input" accept="image/*,application/pdf" />
                     <img id="marksheet10Preview" class="preview-img hidden" src="#" alt="Preview" />
                 </div>
 
                 <!-- 12th Marksheet -->
                 <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">12th Marksheet</label>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">Parent Aadhaar Card</label>
                     <input type="file" id="marksheet_12" class="file-input" accept="image/*,application/pdf" />
                     <img id="marksheet12Preview" class="preview-img hidden" src="#" alt="Preview" />
                 </div>
 
                 <!-- Other Academic Docs -->
                 <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Other Academic Documents</label>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">Address Proof</label>
                     <input type="file" id="other_doc" class="file-input" accept="image/*,application/pdf" />
                     <img id="otherAcademicDocsPreview" class="preview-img hidden" src="#" alt="Preview" />
                 </div>
@@ -328,7 +346,7 @@
                 <!-- Admission Fees -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Discount</label>
-                    <input type="text" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="discount" placeholder="Enter discount" />
+                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="discount" placeholder="Enter discount" />
                 </div>
 
                 <!-- Student Phone -->
@@ -375,53 +393,6 @@
                     <textarea rows="4" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="full_address" placeholder="Enter full address"></textarea>
                 </div>
 
-            </div>
-
-            <!-- ================= SEMESTER PATTERN ================= -->
-            <div class="mt-8">
-                <h3 class="text-md font-extrabold text-gray-900 mb-4">Semester Pattern</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-                    <!-- First Year -->
-                    <div class="p-4 rounded-xl bg-gray-50 border border-gray-200">
-                        <p class="font-bold text-gray-800 mb-3">First Year</p>
-                        <label class="flex items-center gap-3 p-3 rounded-lg bg-white border border-gray-300 cursor-pointer hover:bg-gray-50 transition">
-                            <input type="radio" name="semester" value="FY Semester 1" class="w-4 h-4 text-teal-600 focus:ring-teal-500" />
-                            <span class="text-gray-700">Semester 1</span>
-                        </label>
-                        <label class="flex items-center gap-3 p-3 rounded-lg bg-white border border-gray-300 cursor-pointer hover:bg-gray-50 transition mt-2">
-                            <input type="radio" name="semester" value="FY Semester 2" class="w-4 h-4 text-teal-600 focus:ring-teal-500" />
-                            <span class="text-gray-700">Semester 2</span>
-                        </label>
-                    </div>
-
-                    <!-- Second Year -->
-                    <div class="p-4 rounded-xl bg-gray-50 border border-gray-200">
-                        <p class="font-bold text-gray-800 mb-3">Second Year</p>
-                        <label class="flex items-center gap-3 p-3 rounded-lg bg-white border border-gray-300 cursor-pointer hover:bg-gray-50 transition">
-                            <input type="radio" name="semester" value="SY Semester 3" class="w-4 h-4 text-teal-600 focus:ring-teal-500" />
-                            <span class="text-gray-700">Semester 3</span>
-                        </label>
-                        <label class="flex items-center gap-3 p-3 rounded-lg bg-white border border-gray-300 cursor-pointer hover:bg-gray-50 transition mt-2">
-                            <input type="radio" name="semester" value="SY Semester 4" class="w-4 h-4 text-teal-600 focus:ring-teal-500" />
-                            <span class="text-gray-700">Semester 4</span>
-                        </label>
-                    </div>
-
-                    <!-- Third Year -->
-                    <div class="p-4 rounded-xl bg-gray-50 border border-gray-200">
-                        <p class="font-bold text-gray-800 mb-3">Third Year</p>
-                        <label class="flex items-center gap-3 p-3 rounded-lg bg-white border border-gray-300 cursor-pointer hover:bg-gray-50 transition">
-                            <input type="radio" name="semester" value="TY Semester 5" class="w-4 h-4 text-teal-600 focus:ring-teal-500" />
-                            <span class="text-gray-700">Semester 5</span>
-                        </label>
-                        <label class="flex items-center gap-3 p-3 rounded-lg bg-white border border-gray-300 cursor-pointer hover:bg-gray-50 transition mt-2">
-                            <input type="radio" name="semester" value="TY Semester 6" class="w-4 h-4 text-teal-600 focus:ring-teal-500" />
-                            <span class="text-gray-700">Semester 6</span>
-                        </label>
-                    </div>
-
-                </div>
             </div>
 
         </div>
