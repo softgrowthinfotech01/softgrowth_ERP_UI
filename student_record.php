@@ -65,32 +65,48 @@
     <main class="md:ml-[300px] max-w-7xl mx-auto px-4 sm:px-6 py-28 pb-10 transition-all duration-200">
 
         <!-- ===== STUDENT RECORDS CARD ===== -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-
+<div class="bg-white rounded-3xl shadow-lg border border-gray-200 overflow-hidden">
             <!-- Heading -->
-            <div class="flex items-center gap-4 p-6 border-b border-gray-100">
-                <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-2xl">
-                    <i class="fas fa-user-graduate"></i>
-                </div>
-                <div>
-                    <h2 class="text-xl font-extrabold text-gray-900">Student Records</h2>
-                    <p class="text-sm text-gray-500">View and manage registered student details</p>
-                </div>
-            </div>
+           <div class="flex items-center justify-between p-6 border-b border-gray-200 bg-white">
+
+    <div class="flex items-center gap-4">
+
+        <div class="w-14 h-14 rounded-2xl bg-teal-100 text-teal-600 flex items-center justify-center">
+
+            <i class="fas fa-user-graduate text-2xl"></i>
+
+        </div>
+
+        <div>
+
+            <h2 class="text-4xl font-bold text-slate-900">
+                Student Records
+            </h2>
+
+            <p class="text-gray-500 mt-1">
+                Manage and track all registered students
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
 
             <!-- Table -->
             <div class="table-wrap p-4 sm:p-6">
-                <table id="studentTable" class="w-full text-sm text-left">
-                    <thead>
-                        <tr class="border-b border-gray-200 text-xs font-semibold uppercase tracking-wider text-gray-500">
-                            <th class="px-3 py-3 whitespace-nowrap">#</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Student Name</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Batch</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Year</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Student Phone</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Father Phone</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Branch</th>
-                            <th class="px-3 py-3 whitespace-nowrap text-center">Action</th>
+             <table id="studentTable"
+class="min-w-full text-sm">
+                    <thead class="bg-teal-600 text-white uppercase text-xs tracking-wider">
+                        <tr class="border-b border-gray-200 text-xs font-semibold uppercase tracking-wider">
+                            <th class="px-3 py-3">#</th>
+                            <th class="px-3 py-3">Student Name</th>
+                            <th class="px-3 py-3">Batch</th>
+                            <th class="px-3 py-3">Year</th>
+                            <th class="px-3 py-3">Student Phone</th>
+                            <th class="px-3 py-3">Father Phone</th>
+                            <th class="px-3 py-3">Branch</th>
+                            <th class="px-3 py-3 text-center rounded-r-xl text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody id="studentTableBody" class="divide-y divide-gray-100">
@@ -232,7 +248,7 @@
 
             <!-- MAIN ROW -->
 
-            <tr class="hover:bg-slate-700/30 transition">
+          <tr class="py-2 text-center bg-white rounded-xl shadow hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
 
                 <td>${index + 1}</td>
 
@@ -257,43 +273,49 @@
 
         <button
 
-        onclick='openDetailsModal(${JSON.stringify(student)})'
+        
+onclick='openDetailsModal(${JSON.stringify(student)})'
+class="px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-semibold transition">
 
-        class="px-3 py-1 rounded-lg
-        bg-cyan-500 text-white text-xs">
+<i class="fas fa-eye mr-1"></i>
 
-            Details
+Details
 
-        </button>
+</button>
 
                          <!-- DOCUMENTS -->
 
+        
         <button
+         onclick='openDocumentsModal(${JSON.stringify(student)})'
+class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold transition">
 
-        onclick='openDocumentsModal(${JSON.stringify(student)})'
+<i class="fas fa-folder-open mr-1"></i>
 
-        class="px-3 py-1 rounded-lg
-        bg-green-500 text-white text-xs">
+Documents
 
-            Documents
+</button>
 
-        </button>
+                        
+    <button
+        onclick="window.location.href='student_reg_update.php?id=${student.id}'"
+class="px-4 py-2 rounded-xl bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold transition">
 
-                        <button
-                           onclick="window.location.href='student_reg_update.php?id=${student.id}'"
-                            class="px-3 py-1 rounded bg-blue-500 text-white text-xs">
 
-                            Edit
 
-                        </button>
+Edit
 
-                        <button
-                            onclick="deleteStudent(${student.id})"
-                            class="px-3 py-1 rounded bg-red-500 text-white text-xs">
+</button>
 
-                            Delete
+  <button
+          onclick="deleteStudent(${student.id})"
+class="px-4 py-2 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-semibold transition">
 
-                        </button>
+
+
+ Delete
+
+</button>
 
                     </div>
 
