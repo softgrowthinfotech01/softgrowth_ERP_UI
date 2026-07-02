@@ -79,14 +79,14 @@
 
                     <!-- Course -->
                     <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-1">Course</label>
-                        <input type="text" id="course" class="input-readonly w-full rounded-xl border border-gray-300 bg-gray-50 text-gray-600 py-2.5 px-4" placeholder="Course" readonly />
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Student Class</label>
+                        <input type="text" id="course" class="input-readonly w-full rounded-xl border border-gray-300 bg-gray-50 text-gray-600 py-2.5 px-4" placeholder="Student Class" readonly />
                     </div>
 
                     <!-- Class Name -->
                     <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-1">Class Name</label>
-                        <input type="text" id="student_year" class="input-readonly w-full rounded-xl border border-gray-300 bg-gray-50 text-gray-600 py-2.5 px-4" placeholder="Class name" readonly />
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Student Section</label>
+                        <input type="text" id="student_year" class="input-readonly w-full rounded-xl border border-gray-300 bg-gray-50 text-gray-600 py-2.5 px-4" placeholder="Student Section" readonly />
                     </div>
 
                     <!-- Date of Admission -->
