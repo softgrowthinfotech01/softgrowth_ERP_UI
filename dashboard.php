@@ -63,14 +63,14 @@
     </style>
 </head>
 
-<body class="bg-gray-100 text-gray-800 antialiased">
+<body class="bg-gray-300 text-gray-800 antialiased">
 
     <!-- PHP includes (header + sidebar) -->
     <?php include 'header.php'; ?>
     <?php include 'sidebar.php'; ?>
 
     <!-- MAIN CONTENT -->
-    <main class="pt-28 px-4 sm:px-6 pb-10 transition-all duration-200">
+    <main class="pt-28 px-4 sm:px-6 pb-10 lg:mb-10 transition-all duration-200">
 
         <!-- HERO -->
         <!-- <section class="mb-6">
@@ -90,7 +90,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
 
             <!-- Card 1 -->
-            <div class="stat-card bg-white rounded-2xl p-5 shadow-xl border border-gray-100">
+            <div class="stat-card bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
                 <div class="flex items-start justify-between">
                     <div>
                         <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Total Students</p>

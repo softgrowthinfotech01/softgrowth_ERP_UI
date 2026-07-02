@@ -44,12 +44,12 @@
     </style>
 </head>
 
-<body class="bg-gray-50 text-gray-800 antialiased">
+<body class="bg-gray-300 text-gray-800 antialiased">
 
     <?php include 'header.php' ?>
     <?php include 'sidebar.php' ?>
 
-<main class="md:ml-[300px] max-w-7xl mx-auto px-4 sm:px-6 py-28 pb-10 transition-all duration-200">
+<main class="md:ml-[300px] max-w-7xl mx-auto px-4 sm:px-6 py-28 pb-10 mb-10 transition-all duration-200">
 
         <!-- ===== ID CARD FORM CARD ===== -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
@@ -73,7 +73,7 @@
                     <!-- Select Student -->
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Select Student</label>
-                        <select id="student_select" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4">
+                        <select id="student_select" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4">
                             <option value="">Search Student</option>
                             <option value="1">Rahul Sharma</option>
                             <option value="2">Priya Patel</option>
@@ -85,34 +85,34 @@
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Course</label>
                         <input type="text" id="course" placeholder="Enter course name" 
-                               class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
+                               class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
                     </div>
 
                     <!-- Class -->
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Class</label>
                         <input type="text" id="student_year" placeholder="Enter class name" 
-                               class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
+                               class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
                     </div>
 
                     <!-- Date of Birth -->
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Date of Birth</label>
                         <input type="date" id="date_of_birth" 
-                               class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
+                               class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
                     </div>
 
                     <!-- Phone Number -->
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Phone Number</label>
                         <input type="number" id="student_phone" placeholder="Enter phone number" 
-                               class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
+                               class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
                     </div>
 
                     <!-- Blood Group -->
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Blood Group</label>
-                        <select id="blood_group" class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4">
+                        <select id="blood_group" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4">
                             <option value="">-- Select Blood Group --</option>
                             <option value="A+">A+</option>
                             <option value="A-">A-</option>
@@ -129,7 +129,7 @@
                     <div class="md:col-span-2">
                         <label class="block text-sm font-bold text-gray-700 mb-1">Address</label>
                         <textarea id="full_address" rows="3" placeholder="Enter address" 
-                                  class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4"></textarea>
+                                  class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4"></textarea>
                     </div>
 
                     <!-- Photo -->
@@ -140,7 +140,7 @@
                         </div>
                         <div class="mt-3">
                             <input type="file" id="photoInput" accept="image/*" 
-                                   class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100" />
+                                   class="text-sm text-gray-500  file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100" />
                         </div>
                     </div>
 

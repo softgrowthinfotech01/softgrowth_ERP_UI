@@ -44,12 +44,12 @@
     </style>
 </head>
 
-<body class="bg-gray-50 text-gray-800 antialiased">
+<body class="bg-gray-300 text-gray-800 antialiased">
 
     <?php include 'header.php' ?>
     <?php include 'sidebar.php' ?>
 
- <main class="md:ml-[300px] max-w-7xl mx-auto px-4 sm:px-6 py-28 pb-10 transition-all duration-200">
+ <main class="md:ml-[300px] max-w-7xl mx-auto px-4 sm:px-6 py-28 pb-10 mb-10 transition-all duration-200">
 
         <!-- ===== CASH MEMO CARD ===== -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
@@ -71,12 +71,12 @@
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">From Date</label>
                         <input type="date" id="fromDate" 
-                               class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
+                               class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
                     </div>
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">To Date</label>
                         <input type="date" id="toDate" 
-                               class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
+                               class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
                     </div>
                     <div class="flex gap-3">
                         <button onclick="filterByDate()" 

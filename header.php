@@ -12,12 +12,11 @@
         </div>
 
         <!-- Search – hidden on mobile -->
-        <div class="hidden md:flex relative w-72 lg:w-96">
+        <!-- <div class="hidden md:flex relative w-72 lg:w-96">
             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><i class="fas fa-search"></i></span>
             <input id="searchInput" onclick="toggleSearch()" type="text"
                    placeholder="Search students, fees, records..."
                    class="w-full h-10 pl-10 pr-4 rounded-xl border border-gray-200 bg-gray-50 text-gray-700 placeholder:text-gray-400 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 outline-none transition" />
-            <!-- Search dropdown -->
             <div id="searchBox" class="hidden absolute top-12 left-0 w-full bg-white rounded-xl shadow-lg border border-gray-100 p-3 dropdown-animate">
                 <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Recent Searches</p>
                 <div class="space-y-1">
@@ -35,7 +34,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!-- Right: Profile -->
         <div class="flex items-center gap-3">

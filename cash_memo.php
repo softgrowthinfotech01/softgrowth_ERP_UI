@@ -22,7 +22,7 @@
     </style>
 </head>
 
-<body class="bg-gray-50 text-gray-800 antialiased">
+<body class="bg-gray-300 text-gray-800 antialiased">
 
     <?php include 'header.php' ?>
     <?php include 'sidebar.php' ?>
@@ -52,28 +52,28 @@
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Cash Memo No</label>
                         <input type="text" id="cash_memo_no" placeholder="Enter cash memo no" 
-                               class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
+                               class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
                     </div>
 
                     <!-- Amount -->
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Amount</label>
                         <input type="number" id="amount" placeholder="Enter amount" 
-                               class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
+                               class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
                     </div>
 
                     <!-- Receipt Number -->
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Receipt Number</label>
                         <input type="text" id="receipt_number" placeholder="Enter receipt number" 
-                               class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
+                               class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
                     </div>
 
                     <!-- Date -->
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Date</label>
                         <input type="date" id="date" 
-                               class="w-full rounded-xl border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
+                               class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
                     </div>
 
                 </div>

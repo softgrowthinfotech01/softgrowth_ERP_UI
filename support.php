@@ -32,7 +32,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 antialiased">
+<body class="bg-gray-300 text-gray-800 antialiased">
 
     <!-- PHP includes (header + sidebar) – keep your existing structure -->
     <?php include 'header.php'; ?>
