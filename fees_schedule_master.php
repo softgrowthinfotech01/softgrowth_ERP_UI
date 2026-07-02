@@ -44,10 +44,10 @@
 </head>
 <?php include 'header.php' ?>
 <?php include 'sidebar.php' ?>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
 
     <!-- Main Container -->
-    <div class="md:ml-[300px] max-w-5xl mx-auto px-4 sm:px-6 py-28 pb-10  mb-8 lg:mb-10 transition-all duration-200 flex items-center justify-center min-h-[calc(100vh-12rem)]">
+    <div class="md:ml-[550px] max-w-5xl mx-auto px-4 -mt-5 sm:px-6 py-28 pb-10  mb-8 lg:mb-10 transition-all duration-200 flex items-center justify-center min-h-[calc(100vh-12rem)]">
 
         <!-- Card -->
         <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
