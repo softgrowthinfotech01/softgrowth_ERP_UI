@@ -82,13 +82,25 @@ class="input">
         <!-- Total Amount -->
         <div>
             <label class="text-md text-white font-bold mb-1 block">Total Amount</label>
-            <input id="total_amount" class="input" placeholder="Auto Calculated" readonly>
+            <input id="total_amount" class="input"  >
+        </div>
+
+        <!-- Discount Amount -->
+        <div>
+            <label class="text-md text-white font-bold mb-1 block">Discount Amount</label>
+            <input id="discount_amount" class="input"  >
+        </div>
+
+        <!--Net payable Amount -->
+        <div>
+            <label class="text-md text-white font-bold mb-1 block">Net payable</label>
+            <input id="net_payable_amount" class="input" readonly >
         </div>
 
         <!-- Balance Amount -->
         <div>
             <label class="text-md text-white font-bold mb-1 block">Balance Amount</label>
-            <input id="balance_amount" class="input" placeholder="Auto Calculated" readonly>
+            <input id="balance_amount" class="input" readonly >
         </div>
 
     </div>
