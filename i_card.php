@@ -205,244 +205,64 @@
 
 
     <script>
-        let tomSelectInstance;
-
-
-
-        window.onload = function() {
-
-            getStudents();
-
-        }
-
-
-
-        // =========================
-        // FETCH STUDENTS
-        // =========================
-
-        async function getStudents() {
-
-            try {
-
-                const response = await fetch(
-
-                    url + "students",
-
-                    {
-
-                        headers: {
-
-                            "Authorization": "Bearer " +
-                                localStorage.getItem("token"),
-
-                            "Accept": "application/json"
-
-                        }
-
-                    }
-
-                );
-
-
-
-                const result =
-                    await response.json();
-
-
-
-                console.log(result);
-
-
-
-                const students =
-                    result.data.data;
-
-
-
-                const select =
-                    document.getElementById(
-                        "student_select"
-                    );
-
-
-
-                students.forEach(student => {
-
-                    select.innerHTML += `
-
-                <option value="${student.id}">
-
-                    ${student.student_name}
-
-                </option>
-
-            `;
-
-                });
-
-
-
-                // TOM SELECT
-
-                tomSelectInstance =
-                    new TomSelect(
-
-                        "#student_select",
-
-                        {
-
-                            create: false,
-
-                            sortField: {
-                                field: "text",
-                                direction: "asc"
-                            }
-
-                        }
-
-                    );
-
-
-
-                // CHANGE EVENT
-
-                tomSelectInstance.on(
-
-                    "change",
-
-                    function(value) {
-
-                        getStudentData(value);
-
-                    }
-
-                );
-
-
-
-            } catch (error) {
-
-                console.log(error);
-
-            }
-
-        }
-
-
-
-        // =========================
-        // FETCH SINGLE STUDENT
-        // =========================
-
-        async function getStudentData(id) {
-
-            try {
-
-                const response = await fetch(
-
-                    url + "students/" + id,
-
-                    {
-
-                        headers: {
-
-                            "Authorization": "Bearer " +
-                                localStorage.getItem("token"),
-
-                            "Accept": "application/json"
-
-                        }
-
-                    }
-
-                );
-
-
-
-                const result =
-                    await response.json();
-
-
-
-                console.log(result);
-
-
-
-                const student =
-                    result.data;
-
-
-
-                // FILL DATA
-
-
-
-
-                document.getElementById(
-                        "course"
-                    ).value =
-                    student.course || "";
-
-
-
-                document.getElementById(
-                        "student_year"
-                    ).value =
-                    student.student_year || "";
-
-
-
-                document.getElementById(
-                        "date_of_birth"
-                    ).value =
-                    student.date_of_birth || "";
-
-
-
-                document.getElementById(
-                        "student_phone"
-                    ).value =
-                    student.student_phone || "";
-
-
-
-                document.getElementById(
-                        "blood_group"
-                    ).value =
-                    student.blood_group || "";
-
-                document.getElementById(
-                        "full_address"
-                    ).value =
-                    student.full_address || "";
-
-
-
-                // PHOTO PREVIEW
-
-                if (student.passport_photo) {
-
-                    document.getElementById(
-                            "photoPreview"
-                        ).src =
-
-                        baseUrl +
-                        "storage/" +
-                        student.passport_photo;
-
-                }
-
-
-
-            } catch (error) {
-
-                console.log(error);
-
-            }
-
-        }
-    </script>
+       const students = [
+{
+    id: "1",
+    student_name: "Rahul Sharma",
+    course: "BCA",
+    student_year: "FY",
+    date_of_birth: "2004-01-10",
+    student_phone: "9876543210",
+    blood_group: "A+",
+    full_address: "Pune, Maharashtra",
+    photo: "assets/images/student1.jpg"
+},
+{
+    id: "2",
+    student_name: "Priya Patel",
+    course: "BSc",
+    student_year: "SY",
+    date_of_birth: "2003-08-20",
+    student_phone: "9988776655",
+    blood_group: "B+",
+    full_address: "Mumbai",
+    photo: "assets/images/student2.jpg"
+}
+];
+
+window.onload = function () {
+
+    const select = document.getElementById("student_select");
+
+    select.innerHTML = '<option value="">Select Student</option>';
+
+    students.forEach(student => {
+
+        select.innerHTML += `
+            <option value="${student.id}">
+                ${student.student_name}
+            </option>
+        `;
+
+    });
+
+    select.addEventListener("change", function () {
+
+    const student = students.find(s => s.id == this.value);
+
+    if (!student) return;
+
+    document.getElementById("course").value = student.course;
+    document.getElementById("student_year").value = student.student_year;
+    document.getElementById("date_of_birth").value = student.date_of_birth;
+    document.getElementById("student_phone").value = student.student_phone;
+    document.getElementById("blood_group").value = student.blood_group;
+    document.getElementById("full_address").value = student.full_address;
+    document.getElementById("photoPreview").src = student.photo;
+
+});
+
+}; </script>
 
 </body>
 
