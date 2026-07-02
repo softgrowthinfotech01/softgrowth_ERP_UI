@@ -308,20 +308,7 @@ class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
     <script src="url.js"></script>
 
     <script>
-        const token = localStorage.getItem("token");
-
-
-
-        // ==============================
-        // AUTH CHECK
-        // ==============================
-
-        if (!token) {
-
-            window.location.href = "login";
-
-        }
-
+  
 
 
         // ==============================
@@ -332,23 +319,196 @@ class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
 
             try {
 
-                const response = await fetch(
-                    url + "students", {
+            const result = {
 
-                        method: "GET",
+    data: {
 
-                        headers: {
+        data: [
 
-                            "Authorization": `Bearer ${token}`,
-                            "Accept": "application/json"
+            {
 
-                        }
+                id: 1,
 
-                    }
-                );
+                student_name: "Rahul Sharma",
 
+                student_batch: "2025-26",
 
-                const result = await response.json();
+                student_year: "FY",
+
+                student_phone: "9876543210",
+
+                parent_phone: "9988776655",
+
+                course: "Computer Engineering",
+
+                date_of_birth: "10-01-2004",
+
+                blood_group: "A+",
+
+                full_address: "Pune",
+
+                passport_photo: "https://placehold.co/120x120",
+
+                aadhaar_card: "",
+
+                birth_certificate: "",
+
+                marksheet_10: "",
+
+                marksheet_12: "",
+
+                tc_certificate: "",
+
+                caste_certificate: "",
+
+                domicile_certificate: "",
+
+                non_creamy_layer_certificate: "",
+
+                other_academic_documents: "",
+
+                other_documents: ""
+
+            },
+            {
+    id: 2,
+    student_name: "Amit Singh",
+    student_batch: "2025-26",
+    student_year: "TY",
+    parent_name: "Suresh Singh",
+    student_phone: "9876501234",
+    parent_phone: "9988771111",
+    course: "Civil Engineering",
+    gender: "Male",
+    date_of_birth: "05-03-2003",
+    blood_group: "O+",
+    aadhaar_number: "123456789013",
+    admission_date: "12-06-2023",
+    abc_id: "ABC123457",
+    semester_pattern: "Semester",
+    full_address: "Nagpur, Maharashtra",
+    passport_photo: "https://placehold.co/120x120"
+},
+
+{
+    id: 3,
+    student_name: "Amit Singh",
+    student_batch: "2025-26",
+    student_year: "TY",
+    parent_name: "Suresh Singh",
+    student_phone: "9876501234",
+    parent_phone: "9988771111",
+    course: "Civil Engineering",
+    gender: "Male",
+    date_of_birth: "05-03-2003",
+    blood_group: "O+",
+    aadhaar_number: "123456789013",
+    admission_date: "12-06-2023",
+    abc_id: "ABC123457",
+    semester_pattern: "Semester",
+    full_address: "Nagpur, Maharashtra",
+    passport_photo: "https://placehold.co/120x120"
+},
+{
+    id: 4,
+    student_name: "Sneha Joshi",
+    student_batch: "2025-26",
+    student_year: "FY",
+    parent_name: "Vijay Joshi",
+    student_phone: "9876541122",
+    parent_phone: "9988772233",
+    course: "Computer Engineering",
+    gender: "Female",
+    date_of_birth: "18-07-2005",
+    blood_group: "AB+",
+    aadhaar_number: "123456789014",
+    admission_date: "14-06-2025",
+    abc_id: "ABC123458",
+    semester_pattern: "Semester",
+    full_address: "Pune, Maharashtra",
+    passport_photo: "https://placehold.co/120x120"
+},
+{
+    id: 5,
+    student_name: "Rohan Patil",
+    student_batch: "2025-26",
+    student_year: "SY",
+    parent_name: "Ashok Patil",
+    student_phone: "9876505678",
+    parent_phone: "9988773344",
+    course: "Mechanical Engineering",
+    gender: "Male",
+    date_of_birth: "22-11-2004",
+    blood_group: "B+",
+    aadhaar_number: "123456789015",
+    admission_date: "15-06-2024",
+    abc_id: "ABC123459",
+    semester_pattern: "Semester",
+    full_address: "Kolhapur, Maharashtra",
+    passport_photo: "https://placehold.co/120x120"
+},
+{
+    id: 6,
+    student_name: "Pooja Kulkarni",
+    student_batch: "2025-26",
+    student_year: "TY",
+    parent_name: "Ramesh Kulkarni",
+    student_phone: "9876509876",
+    parent_phone: "9988774455",
+    course: "Electronics Engineering",
+    gender: "Female",
+    date_of_birth: "09-09-2003",
+    blood_group: "A-",
+    aadhaar_number: "123456789016",
+    admission_date: "13-06-2023",
+    abc_id: "ABC123460",
+    semester_pattern: "Semester",
+    full_address: "Nashik, Maharashtra",
+    passport_photo: "https://placehold.co/120x120"
+},
+{
+    id: 7,
+    student_name: "Aditya Deshmukh",
+    student_batch: "2025-26",
+    student_year: "FY",
+    parent_name: "Sunil Deshmukh",
+    student_phone: "9876512345",
+    parent_phone: "9988775566",
+    course: "Information Technology",
+    gender: "Male",
+    date_of_birth: "14-04-2005",
+    blood_group: "O-",
+    aadhaar_number: "123456789017",
+    admission_date: "16-06-2025",
+    abc_id: "ABC123461",
+    semester_pattern: "Semester",
+    full_address: "Aurangabad, Maharashtra",
+    passport_photo: "https://placehold.co/120x120"
+},
+{
+    id: 8,
+    student_name: "Neha Shinde",
+    student_batch: "2025-26",
+    student_year: "SY",
+    parent_name: "Mohan Shinde",
+    student_phone: "9876515678",
+    parent_phone: "9988776677",
+    course: "Computer Engineering",
+    gender: "Female",
+    date_of_birth: "30-08-2004",
+    blood_group: "B-",
+    aadhaar_number: "123456789018",
+    admission_date: "17-06-2024",
+    abc_id: "ABC123462",
+    semester_pattern: "Semester",
+    full_address: "Satara, Maharashtra",
+    passport_photo: "https://placehold.co/120x120"
+}
+        ]
+
+    }
+
+};
 
                 const tbody =
                     document.getElementById("studentTableBody");

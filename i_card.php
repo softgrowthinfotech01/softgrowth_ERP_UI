@@ -167,6 +167,39 @@
 
     </main>
 
+    <div id="idCardModal"
+class="fixed inset-0 hidden items-center justify-center bg-black/60 z-50">
+
+<div class="bg-white rounded-2xl shadow-xl p-8 w-[420px]">
+
+    <img id="cardPhoto" class="w-28 h-28 rounded-full mx-auto">
+
+    <h2 id="cardStudentName"></h2>
+
+    <p id="cardCourse"></p>
+
+    <p id="cardYear"></p>
+
+    <p id="cardDOB"></p>
+
+    <p id="cardPhone"></p>
+
+    <p id="cardBlood"></p>
+
+    <p id="cardAddress"></p>
+
+    <div class="mt-6 flex gap-3">
+
+        <button onclick="printCard()">Print</button>
+
+        <button onclick="closeCardModal()">Close</button>
+
+    </div>
+
+</div>
+
+</div>
+
     <?php include 'footer.php' ?>
 
 
@@ -196,10 +229,47 @@
             }
 
             // Demo: Generate button click
-            document.querySelector('.submit-btn').addEventListener('click', function() {
-                alert('ID Card generated successfully! (demo)');
-            });
+       document.querySelector(".submit-btn").addEventListener("click", generateIDCard);
+
+function generateIDCard() {
+
+    document.getElementById("cardStudentName").innerText =
+        document.getElementById("student_select").selectedOptions[0].text;
+
+    document.getElementById("cardCourse").innerText =
+        document.getElementById("course").value;
+
+    document.getElementById("cardYear").innerText =
+        document.getElementById("student_year").value;
+
+    document.getElementById("cardDOB").innerText =
+        document.getElementById("date_of_birth").value;
+
+    document.getElementById("cardPhone").innerText =
+        document.getElementById("student_phone").value;
+
+    document.getElementById("cardBlood").innerText =
+        document.getElementById("blood_group").value;
+
+    document.getElementById("cardAddress").innerText =
+        document.getElementById("full_address").value;
+
+    document.getElementById("cardPhoto").src =
+        document.getElementById("photoPreview").src;
+
+    document.getElementById("idCardModal").classList.remove("hidden");
+    document.getElementById("idCardModal").classList.add("flex");
+
+}
         });
+
+        function closeCardModal(){
+
+    document.getElementById("idCardModal").classList.add("hidden");
+
+    document.getElementById("idCardModal").classList.remove("flex");
+
+}
     </script>
 
 
@@ -262,7 +332,14 @@ window.onload = function () {
 
 });
 
-}; </script>
+}; 
+
+function printCard(){
+
+    window.print();
+
+}
+</script>
 
 </body>
 
