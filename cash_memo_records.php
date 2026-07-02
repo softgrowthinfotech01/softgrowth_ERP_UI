@@ -420,13 +420,13 @@
 
 });
 
-            } catch (error) {
+            // } catch (error) {
 
-                console.log(error);
+            //     console.log(error);
 
-                alert("Failed To Fetch Data");
+            //     alert("Failed To Fetch Data");
 
-            }
+            // }
 
         }
 
