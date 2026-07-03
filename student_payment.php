@@ -117,12 +117,12 @@
                 <!-- Total Amount -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Net Payable Amount</label>
-                    <input id="netPayable" type="text" class="w-full rounded-xl border border-gray-300 shadow-sm bg-gray-50 text-gray-500 py-2.5 px-4" placeholder="Auto Calculated" readonly />
+                    <input id="netPayable" type="text" class="w-full rounded-xl border border-gray-300 shadow-sm bg-gray-50 text-gray-500 py-2.5 px-4" placeholder="0.00" readonly />
                 </div>
                 <!-- Balance Amount -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Balance Amount</label>
-                    <input id="balanceAmount" type="text" class="w-full rounded-xl border border-gray-300 shadow-sm bg-gray-50 text-gray-500 py-2.5 px-4" placeholder="Auto Calculated" readonly />
+                    <input id="balanceAmount" type="text" class="w-full rounded-xl border border-gray-300 shadow-sm bg-gray-50 text-gray-500 py-2.5 px-4" placeholder="0.00 " readonly />
                 </div>
             </div>
         </div>
@@ -183,8 +183,8 @@
                 </div>
                 <!-- Total Amount -->
                 <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Total Amount</label>
-                    <input id="totalAmount" type="text" readonly class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Amount" />
+                    <label class="block text-sm font-bold text-gray-700 mb-1">Total Fees</label>
+                    <input id="totalAmount" type="text" readonly class="bg-gray-100 w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="0.00" />
                 </div>
                 <!-- Amount Entered -->
                 <div>
