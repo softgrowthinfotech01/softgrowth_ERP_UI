@@ -22,7 +22,7 @@ body {
     align-items: center;
 
     /* Background Image */
-    background: url("images/erp_bg2.png") no-repeat center center;
+    background: url("images/erp_bg.png") no-repeat center center;
 
     /* Make image cover entire screen */
     background-size: cover;
