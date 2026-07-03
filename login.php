@@ -79,10 +79,11 @@
         </div>
 
         <!-- Login Button -->
-        <button onclick="login()" class="btn-transition w-full py-3 rounded-xl bg-teal-600 text-white font-bold shadow-md hover:bg-teal-700">
-            Login
-        </button>
-
+    <button
+    onclick="goToDashboard()"
+    class="btn-transition w-full py-3 rounded-xl bg-teal-600 text-white font-bold shadow-md hover:bg-teal-700">
+    Login
+</button>
         <!-- Register link (commented out in original, but we can keep it) -->
         <!-- <p class="mt-6 text-center text-sm text-gray-500">
             Don’t have an account?
@@ -101,14 +102,40 @@
     <script src="url.js"></script>
     <script>
 
+function goToDashboard() {
 
-           setTimeout(() => {
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-                        customAlert.classList.add("hidden");
+    // Optional validation
+    if (username === "" || password === "") {
 
-                        window.location.href = "dashboard";
+        alert("Please enter Username and Password");
 
-                    }, 1500);
+        return;
+
+    }
+
+    // Show success message
+    const customAlert = document.getElementById("customAlert");
+    customAlert.classList.remove("hidden");
+
+    // Redirect after 1.5 seconds
+    setTimeout(() => {
+
+        window.location.href = "dashboard.php"; // Change if your dashboard file has a different name
+
+    }, 1500);
+
+}
+
+        //    setTimeout(() => {
+
+        //                 customAlert.classList.add("hidden");
+
+        //                 window.location.href = "dashboard";
+
+        //             }, 1500);
 
 
         // async function login() {
