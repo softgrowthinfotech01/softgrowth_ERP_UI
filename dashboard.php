@@ -135,8 +135,8 @@
             <div class="stat-card bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
                 <div class="flex items-start justify-between">
                     <div>
-                        <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Batches</p>
-                        <h2 class="text-2xl font-extrabold text-gray-900 mt-3">320</h2>
+                        <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Expenses</p>
+                        <h2 class="text-2xl font-extrabold text-gray-900 mt-3">44K</h2>
                       
                     </div>
                     <div class="w-11 h-11 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl">
@@ -281,7 +281,7 @@
                     },
                     data: [
                         { value: 60, name: 'Students', itemStyle: { color: '#0f766e' } },
-                        { value: 10, name: 'Teachers', itemStyle: { color: '#3b82f6' } },
+                        { value: 10, name: 'Expenses', itemStyle: { color: '#3b82f6' } },
                         { value: 20, name: 'Courses', itemStyle: { color: '#d4af37' } },
                         { value: 10, name: 'Revenue', itemStyle: { color: '#8b5cf6' } }
                     ]

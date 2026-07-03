@@ -77,9 +77,9 @@
             <span>I Card</span>
         </a>
 
-        <a href="fees_schedule_master" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-bold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
+        <a href="fees_structure_master" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-bold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
             <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-teal-600 text-lg">💰</span>
-            <span>Fees Schedule Master</span>
+            <span>Fees Structure Master</span>
         </a>
 
         <a href="log" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-bold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
