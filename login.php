@@ -100,88 +100,9 @@
     </div>
     <script src="url.js"></script>
     <script>
-        async function login() {
-
-            try {
-
-                // ======================
-                // GET INPUT VALUES
-                // ======================
-
-                const data = {
-
-                    username: document.getElementById("username").value,
-
-                    password: document.getElementById("password").value
-
-                };
 
 
-
-                console.log(data);
-
-
-
-                // ======================
-                // API CALL
-                // ======================
-
-                const response = await fetch(
-                    url + "login", {
-
-                        method: "POST",
-
-                        headers: {
-
-                            "Content-Type": "application/json",
-                            "Accept": "application/json"
-
-                        },
-
-                        body: JSON.stringify(data)
-
-                    }
-                );
-
-
-
-                const result = await response.json();
-
-                console.log(result);
-
-
-
-                // ======================
-                // SUCCESS
-                // ======================
-
-                if (response.ok) {
-
-                    // SAVE TOKEN
-
-                    localStorage.setItem("token", result.token);
-
-                    // SAVE USER
-
-                    localStorage.setItem(
-                        "user",
-                        JSON.stringify(result.user)
-                    );
-
-                    const customAlert =
-                        document.getElementById("customAlert");
-
-
-
-                    // SHOW ALERT
-
-                    customAlert.classList.remove("hidden");
-
-
-
-                    // AUTO HIDE + REDIRECT
-
-                    setTimeout(() => {
+           setTimeout(() => {
 
                         customAlert.classList.add("hidden");
 
@@ -189,21 +110,111 @@
 
                     }, 1500);
 
-                } else {
 
-                    alert(result.message);
+        // async function login() {
 
-                }
+            // try {
 
-            } catch (error) {
+            //     // ======================
+            //     // GET INPUT VALUES
+            //     // ======================
 
-                console.log(error);
+            //     const data = {
 
-                alert("Login Error");
+            //         username: document.getElementById("username").value,
 
-            }
+            //         password: document.getElementById("password").value
 
-        }
+            //     };
+
+
+
+            //     console.log(data);
+
+
+
+                // ======================
+                // API CALL
+                // ======================
+
+                // const response = await fetch(
+                //     url + "login", {
+
+                //         method: "POST",
+
+                //         headers: {
+
+                //             "Content-Type": "application/json",
+                //             "Accept": "application/json"
+
+                //         },
+
+                //         body: JSON.stringify(data)
+
+                //     }
+                // );
+
+
+
+                // const result = await response.json();
+
+                // console.log(result);
+
+
+
+                // ======================
+                // SUCCESS
+                // ======================
+
+                // if (response.ok) {
+
+                    // SAVE TOKEN
+
+                    // localStorage.setItem("token", result.token);
+
+                    // // SAVE USER
+
+                    // localStorage.setItem(
+                    //     "user",
+                    //     JSON.stringify(result.user)
+                    // );
+
+                    // const customAlert =
+                    //     document.getElementById("customAlert");
+
+
+
+                    // // SHOW ALERT
+
+                    // customAlert.classList.remove("hidden");
+
+
+
+            //         // AUTO HIDE + REDIRECT
+
+            //         setTimeout(() => {
+
+            //             customAlert.classList.add("hidden");
+
+            //             window.location.href = "dashboard";
+
+            //         }, 1500);
+
+            //     } else {
+
+            //         alert(result.message);
+
+            //     }
+
+            // } catch (error) {
+
+            //     console.log(error);
+
+            //     alert("Login Error");
+
+            // }
+
+        // }
     </script>
 </body>
 
