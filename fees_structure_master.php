@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fees Schedule Master - ERP</title>
+    <title>Fees Structure Master - ERP</title>
     <!-- Tailwind via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome -->
@@ -58,7 +58,7 @@
                     <i class="fas fa-calendar-alt"></i>
                 </div>
                 <div>
-                    <h2 class="text-xl sm:text-2xl font-extrabold text-gray-900">Fees Schedule Master</h2>
+                    <h2 class="text-xl sm:text-2xl font-extrabold text-gray-900">Fees Structure Master</h2>
                     <p class="text-xs sm:text-sm text-gray-500">Add and manage fee items with labels and amounts</p>
                 </div>
             </div>
@@ -108,7 +108,7 @@
                 <!-- Submit Button -->
                 <button type="submit" 
                         class="w-full py-3.5 rounded-xl bg-teal-600 text-white font-bold text-base sm:text-lg shadow-md hover:bg-teal-700 transition-all duration-200 hover:shadow-lg focus:ring-4 focus:ring-teal-200">
-                    <i class="fas fa-save mr-2"></i> Save Fees Schedule
+                    <i class="fas fa-save mr-2"></i> Save Fees Structure
                 </button>
 
             </form>
@@ -117,7 +117,7 @@
 
         <!-- Toast Notification -->
         <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 bg-teal-600 text-white px-6 py-3 rounded-xl shadow-lg hidden z-50 transition-all duration-300 max-w-[90%] text-center">
-            <i class="fas fa-check-circle mr-2"></i> <span id="toastMessage">Fees schedule saved!</span>
+            <i class="fas fa-check-circle mr-2"></i> <span id="toastMessage">Fees structure saved!</span>
         </div>
     </div>
 <?php include 'footer.php' ?>
