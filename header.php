@@ -53,7 +53,7 @@
                         <i class="fas fa-cog text-gray-500"></i> Settings
                     </div>
                     <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-red-50 cursor-pointer text-red-600 font-medium">
-                        <i class="fas fa-sign-out-alt"></i> Logout
+                        <a href="login.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
                     </div>
                 </div>
             </div>
