@@ -12,259 +12,35 @@
 
 
     <style>
-        /* logs table   */
-
-        .status {
-            padding: 5px 12px;
-            border-radius: 20px;
-            color: white;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .success {
-            background: #16a34a;
-        }
-
-        .failed {
-            background: #dc2626;
-        }
-
-        .completed {
-            background: #2563eb;
-        }
-
-        .log-toolbar {
-
-            display: flex;
-
-            gap: 10px;
-
-            flex-wrap: wrap;
-
-            margin-bottom: 20px;
-
-        }
-
-        .log-toolbar input,
-        .log-toolbar select {
-
-            padding: 10px;
-
-            border: 1px solid #ddd;
-
-            border-radius: 6px;
-
-        }
-
-        .log-toolbar button {
-
-            padding: 10px 18px;
-
-            border: none;
-
-            background: #0d6efd;
-
-            color: white;
-
-            border-radius: 6px;
-
-            cursor: pointer;
-
-        }
-
-        .pagination {
-
-            margin-top: 20px;
-
-            display: flex;
-
-            justify-content: center;
-
-            align-items: center;
-
-            gap: 15px;
-
-        }
-
-
-        /*  */
-
-        /* minimal custom styles – everything else is Tailwind */
-        .table-row-hover:hover {
-            background-color: #f8fafc;
-        }
-
-        .modal-overlay {
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-        }
-
-        .modal-box {
-            animation: fadeIn 0.25s ease;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.97);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        /* responsive table wrapper */
+   /* Modal animation (kept minimal) */
+    .modal-overlay {
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+    }
+    .modal-box {
+        animation: fadeIn 0.25s ease;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.97); }
+        to { opacity: 1; transform: scale(1); }
+    }
+    /* Print overrides */
+    @media print {
         .table-wrap {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
+            overflow: visible !important;
         }
-
-        @media (max-width: 640px) {
-            .table-wrap table {
-                font-size: 0.85rem;
-            }
-
-            .table-wrap table th,
-            .table-wrap table td {
-                padding: 0.5rem 0.25rem;
-            }
+        .table-wrap table {
+            font-size: 0.75rem !important;
         }
-
-        .dt-buttons {
-
-            display: flex;
-
-            gap: 10px;
-
-            margin-bottom: 20px;
-
+        .table-wrap table th,
+        .table-wrap table td {
+            padding: 8px !important;
+            border: 1px solid #ccc !important;
         }
-
-        .dt-button {
-
-            border: none !important;
-
-            padding: 10px 22px !important;
-
-            border-radius: 14px !important;
-
-            font-weight: 600 !important;
-
-            color: white !important;
-
-            box-shadow: 0 5px 15px rgba(0, 0, 0, .12);
-
+        .no-print {
+            display: none !important;
         }
-
-        .btn-copy {
-
-            background: #374151 !important;
-
-        }
-
-        .btn-csv {
-
-            background: #0ea5e9 !important;
-
-        }
-
-        .btn-excel {
-
-            background: #10b981 !important;
-
-        }
-
-        .btn-pdf {
-
-            background: #ef4444 !important;
-
-        }
-
-        .btn-print {
-
-            background: #8b5cf6 !important;
-
-        }
-
-        .dataTables_filter {
-
-            float: right;
-
-            margin-bottom: 20px;
-
-        }
-
-        .dataTables_filter input {
-
-            height: 46px;
-
-            width: 300px;
-
-            padding: 0 18px;
-
-            border-radius: 14px;
-
-            border: 1px solid #e5e7eb;
-
-            outline: none;
-
-            background: #f8fafc;
-
-        }
-
-        .dataTables_length {
-
-            display: none;
-
-        }
-
-        .dataTables_info {
-
-            margin-top: 20px;
-
-            font-weight: 600;
-
-            color: #64748b;
-
-        }
-
-        .dataTables_paginate {
-
-            margin-top: 20px !important;
-
-        }
-
-        .paginate_button {
-
-            border-radius: 12px !important;
-
-            padding: 8px 18px !important;
-
-            margin: 0 5px !important;
-
-            border: none !important;
-
-        }
-
-        .current {
-
-            background: #0f9d94 !important;
-
-            color: white !important;
-
-        }
-
-        .previous,
-        .next {
-
-            background: #14b8a6 !important;
-
-            color: white !important;
-
-        }
+    }
     </style>
 
 </head>
@@ -273,127 +49,118 @@
     <?php include 'header.php' ?>
     <?php include 'sidebar.php' ?>
     <!-- HEADER -->
-    <main class="md:ml-[300px] max-w-7xl mx-auto mb-8 px-4 sm:px-6 py-28 pb-10 transition-all duration-200">
+   <main class="md:ml-[300px] max-w-7xl mx-auto mb-8 px-4 sm:px-6 py-28 pb-10 md:mb-8 transition-all duration-200">
 
-        <!-- ===== STUDENT RECORDS CARD ===== -->
-        <div class="bg-white rounded-3xl shadow-lg border border-gray-200 overflow-hidden">
-            <!-- Heading -->
-            <div class="flex items-center justify-between p-6 border-b border-gray-200 bg-white">
+    <!-- ===== LOGS CARD ===== -->
+    <div class="bg-white rounded-3xl shadow-lg border border-gray-200 overflow-hidden">
 
-                <div class="flex items-center gap-4">
-
-                    <div class="w-14 h-14 rounded-2xl bg-teal-100 text-teal-600 flex items-center justify-center">
-
-                        <i class="fas fa-user-graduate text-2xl"></i>
-
-                    </div>
-
-                    <div>
-
-                        <h2 class="text-4xl font-bold text-slate-900">
-                            Student Records
-                        </h2>
-
-                        <p class="text-gray-500 mt-1">
-                            Manage and track all registered students
-                        </p>
-
-                    </div>
-
+        <!-- Heading -->
+        <div class="flex items-center justify-between p-6 border-b border-gray-200 bg-white">
+            <div class="flex items-center gap-4">
+                <div class="w-14 h-14 rounded-2xl bg-teal-100 text-teal-600 flex items-center justify-center">
+                    <i class="fas fa-user-graduate text-2xl"></i>
                 </div>
-
+                <div>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-slate-900">User Logs</h2>
+                    <p class="text-gray-500 mt-1 text-sm">Manage and track all registered users</p>
+                </div>
             </div>
-
-            <!-- Table -->
-            <div class="log-toolbar">
-
-                <input
-                    type="text"
-                    id="searchLog"
-                    placeholder="🔍 Search user, activity or IP">
-
-                <input
-                    type="date"
-                    id="dateFilter">
-
-                <select id="roleFilter">
-                    <option value="">All Roles</option>
-                    <option>Admin</option>
-                    <option>Teacher</option>
-                    <option>Accountant</option>
-                    <option>Reception</option>
-                    <option>Library</option>
-                    <option>Hostel</option>
-                    <option>System</option>
-                </select>
-
-                <select id="moduleFilter">
-                    <option value="">All Modules</option>
-                    <option>Students</option>
-                    <option>Fees</option>
-                    <option>Attendance</option>
-                    <option>Teachers</option>
-                    <option>Library</option>
-                    <option>Admissions</option>
-                    <option>Exams</option>
-                    <option>Hostel</option>
-                    <option>Backup</option>
-                </select>
-
-                <select id="statusFilter">
-                    <option value="">All Status</option>
-                    <option>Success</option>
-                    <option>Failed</option>
-                    <option>Completed</option>
-                </select>
-
-                <button id="resetBtn">Reset</button>
-
-                <button id="excelBtn">
-                    Export Excel
-                </button>
-
-                <button onclick="window.print()">
-                    Export PDF
-                </button>
-
-            </div>
-            <div class="table-wrap">
-                <table class="w-full border-collapse">
-
-                    <thead class="bg-gray-100">
-                        <tr>
-                            <th>#</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>User</th>
-                            <th>Module</th>
-                            <th>Activity</th>
-                            <th>IP Address</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="logsTable"></tbody>
-
-                </table>
-            </div>
-            <div class="pagination">
-
-                <button id="prevPage">
-                    ◀ Previous
-                </button>
-
-                <span id="pageInfo"></span>
-
-                <button id="nextPage">
-                    Next ▶
-                </button>
-
-            </div>
-
         </div>
-    </main>
+
+        <!-- Toolbar -->
+        <div class="flex flex-wrap items-center gap-3 p-4 sm:p-6 border-b border-gray-200 bg-gray-50">
+            <input type="text" id="searchLog" placeholder="🔍 Search user, activity or IP"
+                   class="flex-1 min-w-[140px] sm:min-w-[180px] px-4 py-2.5 rounded-xl border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-teal-400 focus:border-transparent outline-none transition" />
+
+            <input type="date" id="dateFilter"
+                   class="px-4 py-2.5 rounded-xl border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-teal-400 focus:border-transparent outline-none transition" />
+
+            <select id="roleFilter" class="px-4 py-2.5 rounded-xl border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-teal-400 focus:border-transparent outline-none transition">
+                <option value="">All Roles</option>
+                <option>Admin</option>
+                <option>Teacher</option>
+                <option>Accountant</option>
+                <option>Reception</option>
+                <option>Library</option>
+                <option>Hostel</option>
+                <option>System</option>
+            </select>
+
+            <select id="moduleFilter" class="px-4 py-2.5 rounded-xl border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-teal-400 focus:border-transparent outline-none transition">
+                <option value="">All Modules</option>
+                <option>Students</option>
+                <option>Fees</option>
+                <option>Attendance</option>
+                <option>Teachers</option>
+                <option>Library</option>
+                <option>Admissions</option>
+                <option>Exams</option>
+                <option>Hostel</option>
+                <option>Backup</option>
+            </select>
+
+            <select id="statusFilter" class="px-4 py-2.5 rounded-xl border border-gray-300 bg-white text-sm focus:ring-2 focus:ring-teal-400 focus:border-transparent outline-none transition">
+                <option value="">All Status</option>
+                <option>Success</option>
+                <option>Failed</option>
+                <option>Completed</option>
+            </select>
+
+            <button id="resetBtn" class="px-5 py-2.5 rounded-xl bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition shadow-sm">
+                Reset
+            </button>
+
+            <button id="excelBtn" class="px-5 py-2.5 rounded-xl bg-emerald-500 text-white font-semibold hover:bg-emerald-600 transition shadow-sm">
+                <i class="fas fa-file-excel mr-1"></i> Excel
+            </button>
+
+            <button onclick="window.print()" class="px-5 py-2.5 rounded-xl bg-red-500 text-white font-semibold hover:bg-red-600 transition shadow-sm">
+                <i class="fas fa-file-pdf mr-1"></i> PDF
+            </button>
+        </div>
+
+        <!-- Table -->
+        <div class="table-wrap p-4 sm:p-6">
+            <table class="w-full text-sm text-left border-collapse">
+                <thead class="bg-[#0D9488] text-white text-xs font-semibold uppercase tracking-wider">
+                    <tr>
+                        <th class="px-3 py-3 whitespace-nowrap">#</th>
+                        <th class="px-3 py-3 whitespace-nowrap">Date</th>
+                        <th class="px-3 py-3 whitespace-nowrap">Time</th>
+                        <th class="px-3 py-3 whitespace-nowrap">User</th>
+                        <th class="px-3 py-3 whitespace-nowrap">Module</th>
+                        <th class="px-3 py-3 whitespace-nowrap">Activity</th>
+                        <th class="px-3 py-3 whitespace-nowrap">IP Address</th>
+                        <th class="px-3 py-3 whitespace-nowrap">Status</th>
+                    </tr>
+                </thead>
+                <tbody id="logsTable" class="divide-y divide-gray-100">
+                    <!-- Rows injected by JavaScript -->
+                    <tr>
+                        <td colspan="8" class="text-center py-10 text-gray-400">Loading...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="flex flex-wrap items-center justify-between gap-4 p-4 sm:p-6 border-t border-gray-200 bg-gray-50">
+            <!-- <div class="text-sm text-gray-600 font-semibold">
+                Showing <span id="startEntry">0</span> to <span id="endEntry">0</span> of <span id="totalEntries">0</span> entries
+            </div> -->
+            <div class="flex items-center gap-2">
+                <button id="prevPage" class="px-4 py-2 rounded-xl bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fas fa-chevron-left mr-1"></i> Previous
+                </button>
+                <span id="pageInfo" class="px-4 py-2 rounded-xl bg-teal-100 text-teal-800 font-bold text-sm">1</span>
+                <button id="nextPage" class="px-4 py-2 rounded-xl bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                    Next <i class="fas fa-chevron-right ml-1"></i>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</main>
     <?php include 'footer.php' ?>
 
 
