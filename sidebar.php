@@ -29,11 +29,11 @@
                     <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-teal-600 text-lg">🎓</span>
                     <span>Student Entry</span>
                 </span>
-               <span class="arrow transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] inline-flex items-center justify-center w-6 h-6 rounded-3xl bg-[#0F7D74] backdrop-blur-md border border-white/30 shadow-lg shadow-black/5 hover:shadow-teal-400/20 rotate-0 group">
-    <svg class="w-4 h-4 text-white   transition-all duration-500 group-hover:text-teal-600 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
-    </svg>
-</span>
+                <span class="arrow transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] inline-flex items-center justify-center w-6 h-6 rounded-3xl bg-[#0F7D74] backdrop-blur-md border border-white/30 shadow-lg shadow-black/5 hover:shadow-teal-400/20 rotate-0 group">
+                    <svg class="w-4 h-4 text-white   transition-all duration-500 group-hover:text-teal-600 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </span>
             </button>
             <div id="studentMenu" class="dropdown-menu overflow-hidden max-h-0 transition-all duration-300 ease-in-out ml-4 pl-4 border-l-2 border-teal-200 space-y-1 mt-1">
                 <a href="student_reg" class="sidebar-sub-link block px-3 py-2 rounded-lg text-gray-600 font-semibold hover:bg-teal-50 hover:text-teal-700 transition">➕ Student Registration</a>
@@ -48,11 +48,11 @@
                     <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-teal-600 text-lg">📊</span>
                     <span>Records</span>
                 </span>
-              <span class="arrow transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] inline-flex items-center justify-center w-6 h-6 rounded-3xl bg-[#0F7D74] backdrop-blur-md border border-white/30 shadow-lg shadow-black/5 hover:shadow-teal-400/20 rotate-0 group">
-    <svg class="w-4 h-4 text-white   transition-all duration-500 group-hover:text-teal-600 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
-    </svg>
-</span>            </button>
+                <span class="arrow transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] inline-flex items-center justify-center w-6 h-6 rounded-3xl bg-[#0F7D74] backdrop-blur-md border border-white/30 shadow-lg shadow-black/5 hover:shadow-teal-400/20 rotate-0 group">
+                    <svg class="w-4 h-4 text-white   transition-all duration-500 group-hover:text-teal-600 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </span> </button>
             <div id="recordMenu" class="dropdown-menu overflow-hidden max-h-0 transition-all duration-300 ease-in-out ml-4 pl-4 border-l-2 border-teal-200 space-y-1 mt-1">
                 <a href="student_record" class="sidebar-sub-link block px-3 py-2 rounded-lg text-gray-600 font-semibold hover:bg-teal-50 hover:text-teal-700 transition">👨‍🎓 Student Record</a>
                 <a href="payment_record" class="sidebar-sub-link block px-3 py-2 rounded-lg text-gray-600 font-semibold hover:bg-teal-50 hover:text-teal-700 transition">💰 Payment Record</a>
@@ -82,6 +82,12 @@
             <span>Fees Schedule Master</span>
         </a>
 
+        <a href="log" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-bold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
+            <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-teal-600 text-lg">📖</span>
+            <span>User Logs</span>
+        </a>
+
+
         <a href="update_password" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-bold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
             <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-teal-600 text-lg">🔑</span>
             <span>Update Password</span>
@@ -107,20 +113,26 @@
         overflow: hidden;
         transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
     .dropdown-menu.open {
-        max-height: 500px; /* enough to show all items */
+        max-height: 500px;
+        /* enough to show all items */
     }
+
     .arrow.rotate-180 {
         transform: rotate(180deg);
     }
+
     /* custom scrollbar for sidebar */
     .erp-side::-webkit-scrollbar {
         width: 5px;
     }
+
     .erp-side::-webkit-scrollbar-thumb {
         background: #d1d5db;
         border-radius: 20px;
     }
+
     .erp-side::-webkit-scrollbar-thumb:hover {
         background: #a1a8b3;
     }
@@ -132,34 +144,40 @@
         border-left: 4px solid #0f766e;
         padding-left: 11px;
     }
+
     .sidebar-link.active .w-9 {
         background: #0f766e;
         color: white;
     }
+
     .sidebar-dropdown-btn.active {
         background: #f0fdfa;
         color: #0f766e;
         border-left: 4px solid #0f766e;
         padding-left: 11px;
     }
+
     .sidebar-dropdown-btn.active .w-9 {
         background: #0f766e;
         color: white;
     }
+
     .sidebar-sub-link.active {
         background: #f0fdfa;
         color: #0f766e;
         border-left: 3px solid #0f766e;
         padding-left: 11px;
     }
+
     /* dropdown parent active state when child is active */
-    .dropdown.has-active > .sidebar-dropdown-btn {
+    .dropdown.has-active>.sidebar-dropdown-btn {
         background: #f0fdfa;
         color: #0f766e;
         border-left: 4px solid #0f766e;
         padding-left: 11px;
     }
-    .dropdown.has-active > .sidebar-dropdown-btn .w-9 {
+
+    .dropdown.has-active>.sidebar-dropdown-btn .w-9 {
         background: #0f766e;
         color: white;
     }
