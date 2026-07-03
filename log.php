@@ -144,7 +144,7 @@
         </div>
 
         <!-- Pagination -->
-        <div class="flex flex-wrap items-center justify-between gap-4 p-4 sm:p-6 border-t border-gray-200 bg-gray-50">
+        <div class="flex flex-wrap items-center justify-end gap-4 p-4 sm:p-6 border-t border-gray-200 bg-gray-50">
             <!-- <div class="text-sm text-gray-600 font-semibold">
                 Showing <span id="startEntry">0</span> to <span id="endEntry">0</span> of <span id="totalEntries">0</span> entries
             </div> -->
