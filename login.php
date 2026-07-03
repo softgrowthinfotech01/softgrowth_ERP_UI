@@ -22,7 +22,7 @@ body {
     align-items: center;
 
     /* Background Image */
-    background: url("images/erp_bg.png") no-repeat center center;
+    background: url("images/erp_bg2.png") no-repeat center center;
 
     /* Make image cover entire screen */
     background-size: cover;
@@ -100,12 +100,12 @@ body::before {
                class="input-transition w-full mb-4 p-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-800 placeholder:text-gray-400 outline-none focus:border-teal-600" />
 
         <!-- Options -->
-        <div class="flex flex-wrap items-center justify-between gap-2 mb-6 text-sm">
-            <label class="flex items-center gap-2 text-gray-600 cursor-pointer">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-6 font-semibold text-md">
+            <label class="flex items-center gap-2 text-black cursor-pointer">
                 <input type="checkbox" class="accent-teal-600 w-4 h-4" />
                 Remember me
             </label>
-            <a href="#" class="text-teal-600 hover:text-teal-800 font-medium transition">
+            <a href="#" class="text-teal-400 hover:text-teal-800 font-medium transition">
                 Forgot Password?
             </a>
         </div>
