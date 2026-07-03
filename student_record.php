@@ -234,10 +234,10 @@ class="w-full text-sm text-center text-gray-500">
                             <th class="px-3 py-3 whitespace-nowrap">#</th>
                             <th class="px-3 py-3 whitespace-nowrap ">Student Name</th>
                             <th class="px-3 py-3 whitespace-nowrap">Batch</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Year</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Student Phone</th>
+                            <th class="px-3 py-3 whitespace-nowrap">Class</th>
+                            <th class="px-3 py-3 whitespace-nowrap">Section</th>
+                            <th class="px-3 py-3 whitespace-nowrap">Student ID</th>
                             <th class="px-3 py-3 whitespace-nowrap">Father Phone</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Branch</th>
                             <th class="px-3 py-3 whitespace-nowrap text-center rounded-r-xl text-center">Action</th>
                         </tr>
                     </thead>
@@ -253,7 +253,7 @@ class="w-full text-sm text-center text-gray-500">
         </div>
 
         <!-- ===== DETAILS MODAL ===== -->
-        <div id="detailsModal" class="fixed inset-0 modal-overlay hidden justify-center items-center z-50 p-4">
+        <div id="detailsModal" class="fixed inset-0 modal-overlay hidden justify-center items-center z-50 p-4 z-[99999]">
             <div class="modal-box bg-white rounded-2xl w-full max-w-4xl p-6 relative shadow-2xl">
                 <button onclick="closeDetailsModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-2xl transition">
                     <i class="fas fa-times"></i>
@@ -277,7 +277,7 @@ class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
         </div>
 
         <!-- ===== DOCUMENTS MODAL ===== -->
-        <div id="documentsModal" class="fixed inset-0 modal-overlay hidden justify-center items-center z-50 p-4">
+        <div id="documentsModal" class="fixed inset-0 modal-overlay hidden justify-center items-center z-50 p-4 z-[99999]">
             <div class="modal-box bg-white rounded-2xl w-full max-w-4xl p-6 relative shadow-2xl">
                 <button onclick="closeDocumentsModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-2xl transition">
                     <i class="fas fa-times"></i>
@@ -333,13 +333,13 @@ class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
 
                 student_batch: "2025-26",
 
-                student_year: "FY",
+                class: "1",
 
-                student_phone: "9876543210",
+                section: "A",
 
-                parent_phone: "9988776655",
+                
 
-                course: "Computer Engineering",
+                student_id: "STUD001",parent_phone: "9988776655",
 
                 date_of_birth: "10-01-2004",
 
@@ -347,19 +347,23 @@ class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
 
                 full_address: "Pune",
 
+                 admission_date: "12-06-2023",
+    abc_id: "ABC123457",
+    semester_pattern: "Semester",
+
                 passport_photo: "https://placehold.co/120x120",
 
-                aadhaar_card: "",
+                 aadhaar_number: "123456789013",
 
-                birth_certificate: "",
+                birth_certificate: "https://placehold.co/120x120",
 
-                marksheet_10: "",
+                marksheet_10: "https://placehold.co/120x120",
 
-                marksheet_12: "",
+                marksheet_12: "https://placehold.co/120x120",
 
-                tc_certificate: "",
+                tc_certificate: "https://placehold.co/120x120",
 
-                caste_certificate: "",
+                caste_certificate: "https://placehold.co/120x120",
 
                 domicile_certificate: "",
 
@@ -374,10 +378,10 @@ class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
     id: 2,
     student_name: "Amit Singh",
     student_batch: "2025-26",
-    student_year: "TY",
+    class: "2",
     parent_name: "Suresh Singh",
-    student_phone: "9876501234",
-    parent_phone: "9988771111",
+    section: "B",
+    student_id: "STUD002",parent_phone: "9988776655",
     course: "Civil Engineering",
     gender: "Male",
     date_of_birth: "05-03-2003",
@@ -387,17 +391,29 @@ class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
     abc_id: "ABC123457",
     semester_pattern: "Semester",
     full_address: "Nagpur, Maharashtra",
-    passport_photo: "https://placehold.co/120x120"
+    passport_photo: "https://placehold.co/120x120",
+    
+                marksheet_10: "https://placehold.co/120x120",
+
+                marksheet_12: "https://placehold.co/120x120",
+
+                tc_certificate: "https://placehold.co/120x120",
+
+                caste_certificate: "https://placehold.co/120x120",
+
+                domicile_certificate: "https://placehold.co/120x120"
+
+
 },
 
 {
     id: 3,
     student_name: "Amit Singh",
     student_batch: "2025-26",
-    student_year: "TY",
+    class: "2",
     parent_name: "Suresh Singh",
-    student_phone: "9876501234",
-    parent_phone: "9988771111",
+    section: "C",
+    student_id: "STUD003",parent_phone: "9988776655",
     course: "Civil Engineering",
     gender: "Male",
     date_of_birth: "05-03-2003",
@@ -407,16 +423,26 @@ class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
     abc_id: "ABC123457",
     semester_pattern: "Semester",
     full_address: "Nagpur, Maharashtra",
-    passport_photo: "https://placehold.co/120x120"
+    passport_photo: "https://placehold.co/120x120",
+    
+                marksheet_10: "https://placehold.co/120x120",
+
+                marksheet_12: "https://placehold.co/120x120",
+
+                tc_certificate: "https://placehold.co/120x120",
+
+                caste_certificate: "https://placehold.co/120x120",
+
+                domicile_certificate: "https://placehold.co/120x120"
 },
 {
     id: 4,
     student_name: "Sneha Joshi",
     student_batch: "2025-26",
-    student_year: "FY",
+    class: "1",
     parent_name: "Vijay Joshi",
-    student_phone: "9876541122",
-    parent_phone: "9988772233",
+    section: "A",
+    student_id: "STUD004",parent_phone: "9988776655",
     course: "Computer Engineering",
     gender: "Female",
     date_of_birth: "18-07-2005",
@@ -426,16 +452,26 @@ class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
     abc_id: "ABC123458",
     semester_pattern: "Semester",
     full_address: "Pune, Maharashtra",
-    passport_photo: "https://placehold.co/120x120"
+    passport_photo: "https://placehold.co/120x120",
+    
+                marksheet_10: "https://placehold.co/120x120",
+
+                marksheet_12: "https://placehold.co/120x120",
+
+                tc_certificate: "https://placehold.co/120x120",
+
+                caste_certificate: "https://placehold.co/120x120",
+
+                domicile_certificate: "https://placehold.co/120x120"
 },
 {
     id: 5,
     student_name: "Rohan Patil",
     student_batch: "2025-26",
-    student_year: "SY",
+    class: "2",
     parent_name: "Ashok Patil",
-    student_phone: "9876505678",
-    parent_phone: "9988773344",
+    section: "B",
+    student_id: "STUD005",parent_phone: "9988773344",
     course: "Mechanical Engineering",
     gender: "Male",
     date_of_birth: "22-11-2004",
@@ -445,16 +481,26 @@ class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
     abc_id: "ABC123459",
     semester_pattern: "Semester",
     full_address: "Kolhapur, Maharashtra",
-    passport_photo: "https://placehold.co/120x120"
+    passport_photo: "https://placehold.co/120x120",
+    
+                marksheet_10: "https://placehold.co/120x120",
+
+                marksheet_12: "https://placehold.co/120x120",
+
+                tc_certificate: "https://placehold.co/120x120",
+
+                caste_certificate: "https://placehold.co/120x120",
+
+                domicile_certificate: "https://placehold.co/120x120"
 },
 {
     id: 6,
     student_name: "Pooja Kulkarni",
     student_batch: "2025-26",
-    student_year: "TY",
+    class: "2",
     parent_name: "Ramesh Kulkarni",
-    student_phone: "9876509876",
-    parent_phone: "9988774455",
+    section: "C",
+    student_id: "STUD006",parent_phone: "9988774455",
     course: "Electronics Engineering",
     gender: "Female",
     date_of_birth: "09-09-2003",
@@ -464,16 +510,26 @@ class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
     abc_id: "ABC123460",
     semester_pattern: "Semester",
     full_address: "Nashik, Maharashtra",
-    passport_photo: "https://placehold.co/120x120"
+    passport_photo: "https://placehold.co/120x120",
+    
+                marksheet_10: "https://placehold.co/120x120",
+
+                marksheet_12: "https://placehold.co/120x120",
+
+                tc_certificate: "https://placehold.co/120x120",
+
+                caste_certificate: "https://placehold.co/120x120",
+
+                domicile_certificate: "https://placehold.co/120x120"
 },
 {
     id: 7,
     student_name: "Aditya Deshmukh",
     student_batch: "2025-26",
-    student_year: "FY",
+    class: "1",
     parent_name: "Sunil Deshmukh",
-    student_phone: "9876512345",
-    parent_phone: "9988775566",
+    section: "C",
+    student_id: "STUD007",parent_phone: "9988775566",
     course: "Information Technology",
     gender: "Male",
     date_of_birth: "14-04-2005",
@@ -483,16 +539,26 @@ class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
     abc_id: "ABC123461",
     semester_pattern: "Semester",
     full_address: "Aurangabad, Maharashtra",
-    passport_photo: "https://placehold.co/120x120"
+    passport_photo: "https://placehold.co/120x120",
+    
+                marksheet_10: "https://placehold.co/120x120",
+
+                marksheet_12: "https://placehold.co/120x120",
+
+                tc_certificate: "https://placehold.co/120x120",
+
+                caste_certificate: "https://placehold.co/120x120",
+
+                domicile_certificate: "https://placehold.co/120x120"
 },
 {
     id: 8,
     student_name: "Neha Shinde",
     student_batch: "2025-26",
-    student_year: "SY",
+    class: "3",
     parent_name: "Mohan Shinde",
-    student_phone: "9876515678",
-    parent_phone: "9988776677",
+    section: "D",
+    student_id: "STUD008",parent_phone: "9988776677",
     course: "Computer Engineering",
     gender: "Female",
     date_of_birth: "30-08-2004",
@@ -502,7 +568,17 @@ class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
     abc_id: "ABC123462",
     semester_pattern: "Semester",
     full_address: "Satara, Maharashtra",
-    passport_photo: "https://placehold.co/120x120"
+    passport_photo: "https://placehold.co/120x120",
+    
+                marksheet_10: "https://placehold.co/120x120",
+
+                marksheet_12: "https://placehold.co/120x120",
+
+                tc_certificate: "https://placehold.co/120x120",
+
+                caste_certificate: "https://placehold.co/120x120",
+
+                domicile_certificate: "https://placehold.co/120x120"
 }
         ]
 
@@ -552,13 +628,13 @@ class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
                 <td>${student.student_name ?? '-'}</td>
 
                 <td>${student.student_batch ?? '-'}</td>
-                <td>${student.student_year ?? '-'}</td>
+                <td>${student.class ?? '-'}</td>
 
-                <td>${student.student_phone ?? '-'}</td>
+                <td>${student.section ?? '-'}</td>
+
+                <td>${student.student_id ?? '-'}</td>
 
                 <td>${student.parent_phone ?? '-'}</td>
-
-                <td>${student.course ?? '-'}</td>
 
                 <td>
 

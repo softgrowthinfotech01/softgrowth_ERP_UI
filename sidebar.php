@@ -87,7 +87,7 @@
             <span>Update Password</span>
         </a>
 
-        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl  text-red-600 font-bold hover:bg-red-50 transition-all duration-200 mt-4 border-b border-gray-300 pt-4">
+        <a href="login.php" class="flex items-center gap-3 px-3 py-2.5 rounded-xl  text-red-600 font-bold hover:bg-red-50 transition-all duration-200 mt-4 border-b border-gray-300 pt-4">
             <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-50 text-red-500 text-lg">🚪</span>
             <span>Logout</span>
         </a>
