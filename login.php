@@ -11,6 +11,36 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
     <style>
+
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* Background Image */
+    background: url("images/erp_bg.png") no-repeat center center;
+
+    /* Make image cover entire screen */
+    background-size: cover;
+
+    /* Keep image fixed while scrolling */
+    background-attachment: fixed;
+
+    /* Fallback color */
+    background-color: #e5e7eb;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: -1;
+}
           /* minimal custom – only for smooth transitions and subtle hover */
         .input-transition {
             transition: 0.25s ease;
@@ -44,8 +74,10 @@
 
 <body class="min-h-screen flex items-center justify-center bg-gray-300 p-4">
 
+
+
     <!-- ===== LOGIN CARD ===== -->
-    <div class="w-full max-w-sm bg-white rounded-2xl shadow-lg p-6 sm:p-8 border border-gray-100">
+    <div class="w-full max-w-sm bg-white/30 rounded-2xl shadow-lg p-6 sm:p-8 border border-gray-100">
 
         <!-- Icon -->
         <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-teal-50 border border-teal-200 flex items-center justify-center">
@@ -55,7 +87,7 @@
         <h2 class="text-center text-2xl font-extrabold text-gray-900 mb-1">
             Welcome Back
         </h2>
-        <p class="text-center text-sm text-gray-500 mb-6">
+        <p class="text-center font-semibold text-md text-black mb-6">
             Login to continue your journey
         </p>
 
