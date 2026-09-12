@@ -22,7 +22,6 @@
          .sidebar-fixed {
             width: 288px;
         }
-        
 
         .chart-box {
             height: 260px;
