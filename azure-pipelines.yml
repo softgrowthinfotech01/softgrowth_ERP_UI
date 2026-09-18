@@ -1,8 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - main
 
@@ -10,10 +5,23 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- checkout: self
+  persistCredentials: true
+  fetchDepth: 0
 
 - script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+    git config user.email "azure-pipeline@softgrowthinfotech.com"
+    git config user.name "Azure Pipeline"
+
+    echo "Adding Azure Repos destination..."
+    git remote add azure "https://dev.azure.com/softgrowthinfotech19/Softgrowth_ERP/_git/Softgrowth_ERP"
+
+    echo "Fetching Azure branches..."
+    git fetch azure
+
+    echo "Checking out GitHub main as test branch..."
+    git checkout -B github-sync-test
+
+    echo "Pushing GitHub code to Azure test branch..."
+    git push azure github-sync-test:github-sync-test
+  displayName: "Sync GitHub main to Azure test branch"
