@@ -85,7 +85,7 @@ body::before {
         </div>
 
         <h2 class="text-center text-2xl font-extrabold text-gray-900 mb-1">
-            Welcome Back 12334
+            Welcome Back 
         </h2>
         <p class="text-center font-semibold text-md text-black mb-6">
             Login to continue your journey
@@ -103,7 +103,7 @@ body::before {
         <div class="flex flex-wrap items-center justify-between gap-2 mb-6 font-semibold text-md">
             <label class="flex items-center gap-2 text-black cursor-pointer">
                 <input type="checkbox" class="accent-teal-600 w-4 h-4" />
-                Remember me
+                Remember me dad
             </label>
             <a href="#" class="text-teal-400 hover:text-teal-800 font-medium transition">
                 Forgot Password?
