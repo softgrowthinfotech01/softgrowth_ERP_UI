@@ -85,7 +85,7 @@ body::before {
         </div>
 
         <h2 class="text-center text-2xl font-extrabold text-gray-900 mb-1">
-            Welcome Back 123445
+            Welcome Back 
         </h2>
         <p class="text-center font-semibold text-md text-black mb-6">
             Login to continue your journey
