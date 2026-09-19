@@ -13,8 +13,8 @@ steps:
     git config user.email "azure-pipeline@softgrowthinfotech.com"
     git config user.name "Azure Pipeline"
 
-    echo "Adding Azure Repos destination..."
-    git remote add azure "https://$(System.AccessToken)@dev.azure.com/softgrowthinfotech19/Softgrowth_ERP/_git/Softgrowth_ERP"
+    echo "Adding Azure Repos destination with PAT..."
+    git remote add azure "https://pat:$(AZURE_PAT)@dev.azure.com/softgrowthinfotech19/Softgrowth_ERP/_git/Softgrowth_ERP"
 
     echo "Fetching Azure branches..."
     git fetch azure
@@ -26,4 +26,4 @@ steps:
     git push azure github-sync-test:github-sync-test
   displayName: "Sync GitHub main to Azure test branch"
   env:
-    System.AccessToken: $(System.AccessToken)
+    AZURE_PAT: $(AZURE_PAT)
