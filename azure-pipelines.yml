@@ -1,5 +1,7 @@
 trigger:
-- main
+  branches:
+    include:
+    - '*'  # Triggers the pipeline when any branch in GitHub is updated
 
 pool:
   vmImage: ubuntu-latest
@@ -7,23 +9,20 @@ pool:
 steps:
 - checkout: self
   persistCredentials: true
-  fetchDepth: 0
+  fetchDepth: 0 # Fetches full history and all branches
 
 - script: |
     git config user.email "azure-pipeline@softgrowthinfotech.com"
     git config user.name "Azure Pipeline"
 
-    echo "Adding Azure Repos destination with PAT..."
+    echo "Adding Azure Repos destination..."
     git remote add azure "https://pat:$(AZURE_PAT)@dev.azure.com/softgrowthinfotech19/Softgrowth_ERP/_git/Softgrowth_ERP"
 
-    echo "Fetching Azure branches..."
-    git fetch azure
+    echo "Fetching all branches from GitHub and Azure Repos..."
+    git fetch --all
 
-    echo "Checking out GitHub main as test branch..."
-    git checkout -B github-sync-test
-
-    echo "Pushing GitHub code to Azure test branch..."
-    git push azure github-sync-test:github-sync-test
-  displayName: "Sync GitHub main to Azure test branch"
+    echo "Pushing all GitHub branches to Azure Repos..."
+    git push azure "refs/remotes/origin/*:refs/heads/*"
+  displayName: "Sync All GitHub Branches to Azure Repos"
   env:
     AZURE_PAT: $(AZURE_PAT)
