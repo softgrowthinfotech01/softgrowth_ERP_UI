@@ -117,12 +117,12 @@
                 <!-- Total Amount -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Net Payable Amount</label>
-                    <input id="netPayable" type="text" class="w-full rounded-xl border border-gray-300 shadow-sm bg-gray-50 text-gray-500 py-2.5 px-4" placeholder="Auto Calculated" readonly />
+                    <input id="netPayable" type="text" class="w-full rounded-xl border border-gray-300 shadow-sm bg-gray-50 text-gray-500 py-2.5 px-4" placeholder="0.00" readonly />
                 </div>
                 <!-- Balance Amount -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Balance Amount</label>
-                    <input id="balanceAmount" type="text" class="w-full rounded-xl border border-gray-300 shadow-sm bg-gray-50 text-gray-500 py-2.5 px-4" placeholder="Auto Calculated" readonly />
+                    <input id="balanceAmount" type="text" class="w-full rounded-xl border border-gray-300 shadow-sm bg-gray-50 text-gray-500 py-2.5 px-4" placeholder="0.00 " readonly />
                 </div>
             </div>
         </div>
@@ -135,32 +135,32 @@
             </h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <!-- All fee fields -->
-                <div><label class="block text-sm font-bold text-gray-700 mb-1">Admission Fee</label><input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
-                <div><label class="block text-sm font-bold text-gray-700 mb-1">Integration Fee</label><input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
-                <div><label class="block text-sm font-bold text-gray-700 mb-1">Exam Fee</label><input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
-                <div><label class="block text-sm font-bold text-gray-700 mb-1">Practical Exam Fee</label><input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
-                <div><label class="block text-sm font-bold text-gray-700 mb-1">University Development Fee</label><input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
-                <div><label class="block text-sm font-bold text-gray-700 mb-1">Avishkar / Indra Fee</label><input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
-                <div><label class="block text-sm font-bold text-gray-700 mb-1">E-Suvidha Fee</label><input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
-                <div><label class="block text-sm font-bold text-gray-700 mb-1">ID Card Fee</label><input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
-                <div><label class="block text-sm font-bold text-gray-700 mb-1">Computer Lab Fee</label><input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
-                <div><label class="block text-sm font-bold text-gray-700 mb-1">Course Fee</label><input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
-                <div><label class="block text-sm font-bold text-gray-700 mb-1">Youth Festival Fee</label><input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
-                <div><label class="block text-sm font-bold text-gray-700 mb-1">Alumni Union Fee</label><input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
-                <div><label class="block text-sm font-bold text-gray-700 mb-1">College Magazine Fee</label><input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
-                <div><label class="block text-sm font-bold text-gray-700 mb-1">Tuition Fee</label><input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Tuition Fee" /></div>
-                <div><label class="block text-sm font-bold text-gray-700 mb-1">Enrollment Fee</label><input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Enrollment Fee" /></div>
-                <div><label class="block text-sm font-bold text-gray-700 mb-1">Eligibility Fee</label><input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Eligibility Fee" /></div>
-                <div><label class="block text-sm font-bold text-gray-700 mb-1">Laboratory Fee</label><input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Laboratory Fee" /></div>
-                <div><label class="block text-sm font-bold text-gray-700 mb-1">Library Fee</label><input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Library Fee" /></div>
-                <div><label class="block text-sm font-bold text-gray-700 mb-1">Disaster Management Fee</label><input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
-                <div><label class="block text-sm font-bold text-gray-700 mb-1">Exam Form Process Fee</label><input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
-                <div><label class="block text-sm font-bold text-gray-700 mb-1">Convocation Fee</label><input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
-                <div><label class="block text-sm font-bold text-gray-700 mb-1">College Exam Fee</label><input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
-                <div><label class="block text-sm font-bold text-gray-700 mb-1">University Fee</label><input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
-                <div><label class="block text-sm font-bold text-gray-700 mb-1">Maintenance Fee</label><input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
-                <div><label class="block text-sm font-bold text-gray-700 mb-1">Student Insurance Fee</label><input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
-                <div><label class="block text-sm font-bold text-gray-700 mb-1">Other Fee</label><input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
+                <div><label class=" block text-sm font-bold text-gray-700 mb-1">Admission Fee</label><input type="text" class="fee-field w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
+                <div><label class=" block text-sm font-bold text-gray-700 mb-1">Integration Fee</label><input type="text" class="fee-field w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
+                <div><label class=" block text-sm font-bold text-gray-700 mb-1">Exam Fee</label><input type="text" class="fee-field w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
+                <div><label class=" block text-sm font-bold text-gray-700 mb-1">Practical Exam Fee</label><input type="text" class="fee-field w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
+                <div><label class=" block text-sm font-bold text-gray-700 mb-1">University Development Fee</label><input type="text" class="fee-field w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
+                <div><label class=" block text-sm font-bold text-gray-700 mb-1">Avishkar / Indra Fee</label><input type="text" class="fee-field w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
+                <div><label class=" block text-sm font-bold text-gray-700 mb-1">E-Suvidha Fee</label><input type="text" class="fee-field w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
+                <div><label class=" block text-sm font-bold text-gray-700 mb-1">ID Card Fee</label><input type="text" class="fee-field w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
+                <div><label class=" block text-sm font-bold text-gray-700 mb-1">Computer Lab Fee</label><input type="text" class="fee-field w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
+                <div><label class=" block text-sm font-bold text-gray-700 mb-1">Course Fee</label><input type="text" class="fee-field w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
+                <div><label class=" block text-sm font-bold text-gray-700 mb-1">Youth Festival Fee</label><input type="text" class="fee-field w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
+                <div><label class=" block text-sm font-bold text-gray-700 mb-1">Alumni Union Fee</label><input type="text" class="fee-field w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
+                <div><label class=" block text-sm font-bold text-gray-700 mb-1">College Magazine Fee</label><input type="text" class="fee-field w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
+                <div><label class=" block text-sm font-bold text-gray-700 mb-1">Tuition Fee</label><input type="text" class="fee-field w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Tuition Fee" /></div>
+                <div><label class=" block text-sm font-bold text-gray-700 mb-1">Enrollment Fee</label><input type="text" class="fee-field w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Enrollment Fee" /></div>
+                <div><label class=" block text-sm font-bold text-gray-700 mb-1">Eligibility Fee</label><input type="text" class="fee-field w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Eligibility Fee" /></div>
+                <div><label class=" block text-sm font-bold text-gray-700 mb-1">Laboratory Fee</label><input type="text" class="fee-field w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Laboratory Fee" /></div>
+                <div><label class=" block text-sm font-bold text-gray-700 mb-1">Library Fee</label><input type="text" class="fee-field w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Library Fee" /></div>
+                <div><label class=" block text-sm font-bold text-gray-700 mb-1">Disaster Management Fee</label><input type="text" class="fee-field w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
+                <div><label class=" block text-sm font-bold text-gray-700 mb-1">Exam Form Process Fee</label><input type="text" class="fee-field w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
+                <div><label class=" block text-sm font-bold text-gray-700 mb-1">Convocation Fee</label><input type="text" class="fee-field w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
+                <div><label class=" block text-sm font-bold text-gray-700 mb-1">College Exam Fee</label><input type="text" class="fee-field w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
+                <div><label class=" block text-sm font-bold text-gray-700 mb-1">University Fee</label><input type="text" class="fee-field w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
+                <div><label class=" block text-sm font-bold text-gray-700 mb-1">Maintenance Fee</label><input type="text" class="fee-field w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
+                <div><label class=" block text-sm font-bold text-gray-700 mb-1">Student Insurance Fee</label><input type="text" class="fee-field w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
+                <div><label class=" block text-sm font-bold text-gray-700 mb-1">Other Fee</label><input type="text" class="fee-field w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Fee" /></div>
             </div>
         </div>
 
@@ -181,7 +181,12 @@
                         <option>Full Payment</option>
                     </select>
                 </div>
-                <!-- Amount -->
+                <!-- Total Amount -->
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">Total Fees</label>
+                    <input id="totalAmount" type="text" readonly class="bg-gray-100 w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="0.00" />
+                </div>
+                <!-- Amount Entered -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Amount Entered</label>
                     <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" placeholder="Enter Amount" />
@@ -304,6 +309,38 @@ document.getElementById("studentId").addEventListener("change", function () {
         document.getElementById("balanceAmount").value = "";
     }
 });
+
+
+window.onload = function () {
+
+    const feeFields = document.querySelectorAll(".fee-field");
+    const totalAmount = document.getElementById("totalAmount");
+
+    feeFields.forEach(function(field){
+
+        field.onkeyup = function(){
+
+            let total = 0;
+
+            feeFields.forEach(function(f){
+
+                console.log("Value =", f.value);
+
+                total += Number(f.value);
+
+            });
+
+            console.log("TOTAL =", total);
+
+            totalAmount.value = total;
+
+        };
+
+    });
+
+};
+
+
 </script>
 
 </body>

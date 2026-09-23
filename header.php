@@ -51,12 +51,9 @@
 
 
                 <!-- Profile dropdown -->
-                <div id="profileBox"
-                     class="hidden absolute right-0 top-12 w-48 bg-white rounded-xl shadow-lg border border-gray-100 p-2 dropdown-animate">
-
-                    <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer text-gray-700 font-semibold">
-                        <i class="fas fa-user-circle text-teal-500"></i>
-                        Profile
+                <div id="profileBox" class="hidden absolute right-0 top-12 w-48 bg-white rounded-xl shadow-lg border border-gray-100 p-2 dropdown-animate">
+                    <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer text-gray-700 font-medium">
+                        <i class="fas fa-user-circle text-teal-500"></i> Profile 
                     </div>
 
                     <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer text-gray-700 font-semibold">
