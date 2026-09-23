@@ -55,7 +55,7 @@
                  class="w-24 h-24 mx-auto mb-3 rounded-full border-2 border-gray-200" />
             <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800">SOFTGROWTH COLLEGE</h1>
             <p class="text-gray-600 mt-1">Nagpur, Maharashtra</p>
-            <h2 class="text-2xl font-extrabold mt-4 underline decoration-teal-600 underline-offset-4">BONAFIDE CERTIFICATE</h2>
+            <h2 class="text-2xl font-bold mt-4 underline decoration-teal-600 underline-offset-4">BONAFIDE CERTIFICATE</h2>
         </div>
 
         <!-- Content -->

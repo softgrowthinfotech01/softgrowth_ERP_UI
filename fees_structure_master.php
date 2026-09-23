@@ -58,7 +58,7 @@
                     <i class="fas fa-calendar-alt"></i>
                 </div>
                 <div>
-                    <h2 class="text-xl sm:text-2xl font-extrabold text-gray-900">Fees Structure Master</h2>
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-900">Fees Structure Master</h2>
                     <p class="text-xs sm:text-sm text-gray-500">Add and manage fee items with labels and amounts</p>
                 </div>
             </div>

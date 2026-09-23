@@ -52,7 +52,7 @@
                     <i class="fas fa-file-alt"></i>
                 </div>
                 <div>
-                    <h2 class="text-xl font-extrabold text-gray-900">Bonafide Certificate</h2>
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-900">Bonafide Certificate</h2>
                     <p class="text-sm text-gray-500">Generate student bonafide certificate instantly</p>
                 </div>
             </div>

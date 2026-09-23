@@ -67,7 +67,7 @@
                     <i class="fas fa-lock"></i>
                 </div>
                 <div>
-                    <h1 class="text-2xl font-extrabold text-gray-900">Privacy Policy</h1>
+                    <h1 class="text-2xl md:text-3xl font-bold text-gray-900">Privacy Policy</h1>
                     <p class="text-sm text-gray-500">Student and institutional data protection policy</p>
                 </div>
             </div>

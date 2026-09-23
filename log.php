@@ -61,7 +61,7 @@
                     <i class="fas fa-user-graduate text-2xl"></i>
                 </div>
                 <div>
-                    <h2 class="text-3xl sm:text-4xl font-bold text-slate-900">User Logs</h2>
+                    <h2 class="text-xl md:text-2xl font-bold text-slate-900">User Logs</h2>
                     <p class="text-gray-500 mt-1 text-sm">Manage and track all registered users</p>
                 </div>
             </div>
