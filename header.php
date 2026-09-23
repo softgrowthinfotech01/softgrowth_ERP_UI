@@ -51,15 +51,16 @@
 
 
                 <!-- Profile dropdown -->
-                <div id="profileBox" class="hidden absolute right-0 top-12 w-48 bg-white rounded-xl shadow-lg border border-gray-100 p-2 dropdown-animate">
+                 <a href="profile.php"> <div id="profileBox" class="hidden absolute right-0 top-12 w-48 bg-white rounded-xl shadow-lg border border-gray-100 p-2 dropdown-animate">
                     <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer text-gray-700 font-medium">
                         <i class="fas fa-user-circle text-teal-500"></i> Profile 
-                    </div>
+                    </div></a>
+               
 
-                    <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer text-gray-700 font-semibold">
-                        <i class="fas fa-cog text-gray-500"></i>
-                        Settings
-                    </div>
+                     <a href="register_user.php"><div class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer text-gray-700 font-medium">
+                        <i class="fas fa-user-plus"></i> Register User 
+                    </div></a>
+                  
 
                     <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-red-50 cursor-pointer text-red-600 font-semibold">
                         <a href="login.php">
