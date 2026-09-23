@@ -77,7 +77,7 @@
                     <i class="fas fa-balance-scale"></i>
                 </div>
                 <div>
-                    <h2 class="text-xl font-extrabold text-gray-900">Student Balance Details</h2>
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-900">Student Balance Details</h2>
                     <p class="text-sm text-gray-500">Track pending balance and payment details</p>
                 </div>
             </div>

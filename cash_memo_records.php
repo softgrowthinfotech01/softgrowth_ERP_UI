@@ -60,7 +60,7 @@
                     <i class="fas fa-money-bill-wave"></i>
                 </div>
                 <div>
-                    <h2 class="text-xl font-extrabold text-gray-900">Cash Memo Records</h2>
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-900">Cash Memo Records</h2>
                     <p class="text-sm text-gray-500">Filter and view all cash memo records</p>
                 </div>
             </div>

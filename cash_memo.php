@@ -40,7 +40,7 @@
                     <i class="fas fa-money-bill-wave"></i>
                 </div>
                 <div>
-                    <h2 class="text-xl font-extrabold text-gray-900">Cash Memo</h2>
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-900">Cash Memo</h2>
                     <p class="text-sm text-gray-500">Create and submit student cash memo details</p>
                 </div>
             </div>

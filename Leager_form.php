@@ -93,7 +93,7 @@
                     <i class="fas fa-book"></i>
                 </div>
                 <div>
-                    <h2 class="text-xl font-extrabold text-gray-900">Ledger Report</h2>
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-900">Ledger Report</h2>
                     <p class="text-sm text-gray-500">Track debit, credit and transaction history</p>
                 </div>
             </div>

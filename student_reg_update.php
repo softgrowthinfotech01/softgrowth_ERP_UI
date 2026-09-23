@@ -126,7 +126,7 @@
 
         <!-- ================= STEP 1 ================= -->
         <div class="step-box active bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8" id="step1">
-            <h2 class="text-xl md:text-2xl font-extrabold text-gray-900 mb-6 flex items-center gap-3">
+            <h2 class="text-xl md:text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
                 <span class="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center text-sm">
                     <i class="fas fa-user-graduate"></i>
                 </span>

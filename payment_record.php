@@ -88,7 +88,7 @@
                     <i class="fas fa-credit-card"></i>
                 </div>
                 <div>
-                    <h2 class="text-xl font-extrabold text-gray-900">Payment Records</h2>
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-900">Payment Records</h2>
                     <p class="text-sm text-gray-500">Manage and track all student payment transactions</p>
                 </div>
             </div>

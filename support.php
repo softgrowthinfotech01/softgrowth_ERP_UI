@@ -53,7 +53,7 @@
                         <i class="fas fa-headset"></i>
                     </div>
                     <div>
-                        <h1 class="text-xl font-extrabold text-gray-900">Support Center</h1>
+                        <h1 class="text-xl md:text-2xl font-bold text-gray-900">Support Center</h1>
                         <p class="text-sm text-gray-500">ERP help and service desk</p>
                     </div>
                 </div>

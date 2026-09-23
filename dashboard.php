@@ -217,7 +217,7 @@
                         borderRadius: [8, 8, 0, 0],
                         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                             { offset: 0, color: '#14b8a6' },
-                            { offset: 1, color: '#0f766e' }
+                            { offset: 1, color: '#14b8a6' }
                         ])
                     }
                 }]

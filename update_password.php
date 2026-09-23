@@ -53,7 +53,7 @@
                     <i class="fas fa-lock"></i>
                 </div>
                 <div>
-                    <h2 class="text-xl font-extrabold text-gray-900">Update Admin Password</h2>
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-900">Update Admin Password</h2>
                     <p class="text-sm text-gray-500">Secure your ERP account with a strong password</p>
                 </div>
             </div>

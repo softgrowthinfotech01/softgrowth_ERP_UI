@@ -51,7 +51,7 @@
                     <i class="fas fa-file-contract"></i>
                 </div>
                 <div>
-                    <h1 class="text-2xl font-extrabold text-gray-900">Terms &amp; Conditions</h1>
+                    <h1 class="text-2xl md:text-3xl font-bold text-gray-900">Terms &amp; Conditions</h1>
                     <p class="text-sm text-gray-500">Rules and guidelines for using the ERP system</p>
                 </div>
             </div>

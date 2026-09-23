@@ -203,15 +203,15 @@ color:white!important;
 
     <div class="flex items-center gap-4">
 
-        <div class="w-14 h-14 rounded-2xl bg-teal-100 text-teal-600 flex items-center justify-center">
+        <div class="w-12 h-12 rounded-2xl bg-teal-100 text-teal-600 flex items-center justify-center">
 
-            <i class="fas fa-user-graduate text-2xl"></i>
+            <i class="fas fa-user-graduate text-xl"></i>
 
         </div>
 
         <div>
 
-            <h2 class="text-4xl font-bold text-slate-900">
+            <h2 class="text-xl md:text-2xl font-bold text-slate-900">
                 Student Records
             </h2>
 

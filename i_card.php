@@ -68,7 +68,7 @@
                     <i class="fas fa-id-card"></i>
                 </div>
                 <div>
-                    <h2 class="text-xl font-extrabold text-gray-900">Student ID Card Form</h2>
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-900">Student ID Card Form</h2>
                     <p class="text-sm text-gray-500">Generate student identity card details</p>
                 </div>
             </div>
