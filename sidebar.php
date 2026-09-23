@@ -303,7 +303,7 @@
 
 
         <!-- I Card -->
-        <a href="i_card"
+        <!-- <a href="i_card"
             class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
 
             <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-teal-600">
@@ -321,7 +321,7 @@
             </span>
 
             <span>I Card</span>
-        </a>
+        </a> -->
 
 
         <!-- Fees Structure Master -->
