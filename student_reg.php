@@ -135,6 +135,19 @@
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
 
+               
+               <!-- Student Board -->
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">Board / Course</label>
+                    <select class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="student_board">
+                        <option value="">Select Board</option>
+                        <option value="CBSE">CBSE</option>
+                        <option value="State">State</option>
+                        <option value="BCA">BCA</option>
+                        <option value="BBA">BBA</option>
+                    </select>
+                </div>
+                
                 <!-- Student Batch -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Student Batch</label>
