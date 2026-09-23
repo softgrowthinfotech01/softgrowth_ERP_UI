@@ -4,8 +4,8 @@
         <!-- LEFT -->
         <div class="erp-footer-left flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-full border border-gray-200">
             <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-md shadow-emerald-500/50"></span>
-            <p class="text-xs sm:text-sm font-bold text-gray-600">
-                © 2026 <strong class="text-gray-800">ERP Dashboard</strong>
+            <p class="text-xs sm:text-sm text-gray-600">
+                © 2026 <span class="text-gray-800">ERP Dashboard</span>
                 <span class="text-gray-400 hidden sm:inline">All Rights Reserved</span>
             </p>
         </div>

@@ -93,11 +93,11 @@
             <div class="stat-card bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
                 <div class="flex items-start justify-between">
                     <div>
-                        <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Total Students</p>
-                        <h2 class="text-2xl font-extrabold text-gray-900 mt-3">5K</h2>
+                        <p class="text-sm font-semibold uppercase tracking-wider text-gray-500">Total Students</p>
+                        <h2 class="text-xl font-bold text-gray-900 mt-3">5K</h2>
                       
                     </div>
-                    <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl">
+                    <div class="w-11 h-11 rounded-xl text-gray-500 flex items-center justify-center text-2xl md:mt-2">
                         <i class="fas fa-user-graduate"></i>
                     </div>
                 </div>
@@ -107,11 +107,11 @@
             <div class="stat-card bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
                 <div class="flex items-start justify-between">
                     <div>
-                        <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Courses</p>
-                        <h2 class="text-2xl font-extrabold text-gray-900 mt-3">10</h2>
+                        <p class="text-sm font-semibold uppercase tracking-wider text-gray-500">Courses</p>
+                        <h2 class="text-xl font-bold text-gray-900 mt-3">10</h2>
                         
                     </div>
-                    <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
+                    <div class="w-11 h-11 rounded-xl text-gray-500 flex items-center justify-center text-2xl md:mt-2">
                         <i class="fas fa-chalkboard-teacher"></i>
                     </div>
                 </div>
@@ -121,11 +121,11 @@
             <div class="stat-card bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
                 <div class="flex items-start justify-between">
                     <div>
-                        <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Revenue</p>
-                        <h2 class="text-2xl font-extrabold text-gray-900 mt-3">85K</h2>
+                        <p class="text-sm font-semibold uppercase tracking-wider text-gray-500">Revenue</p>
+                        <h2 class="text-xl font-bold text-gray-900 mt-3">85K</h2>
                       
                     </div>
-                    <div class="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl">
+                    <div class="w-11 h-11 rounded-xl text-gray-500 flex items-center justify-center text-2xl md:mt-2">
                         <i class="fas fa-coins"></i>
                     </div>
                 </div>
@@ -135,11 +135,11 @@
             <div class="stat-card bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
                 <div class="flex items-start justify-between">
                     <div>
-                        <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Expenses</p>
-                        <h2 class="text-2xl font-extrabold text-gray-900 mt-3">44K</h2>
+                        <p class="text-sm font-semibold uppercase tracking-wider text-gray-500">Expenses</p>
+                        <h2 class="text-xl font-bold text-gray-900 mt-3">44K</h2>
                       
                     </div>
-                    <div class="w-11 h-11 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl">
+                    <div class="w-11 h-11 rounded-xl text-gray-500 flex items-center justify-center text-2xl md:mt-2">
                         <i class="fas fa-book-open"></i>
                     </div>
                 </div>
@@ -153,7 +153,7 @@
             <!-- Bar Chart -->
             <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
                 <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-base font-extrabold text-gray-800">Monthly Performance</h2>
+                    <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-500">Monthly Performance</h2>
                     <span class="text-xs font-semibold text-gray-400 bg-gray-50 px-3 py-1 rounded-full border border-gray-200">2026</span>
                 </div>
                 <div id="barChart" class="chart-box"></div>
@@ -162,7 +162,7 @@
             <!-- Pie Chart -->
             <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
                 <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-base font-extrabold text-gray-800">ERP Distribution</h2>
+                    <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-500">ERP Distribution</h2>
                     <span class="text-xs font-semibold text-gray-400 bg-gray-50 px-3 py-1 rounded-full border border-gray-200">Live</span>
                 </div>
                 <div id="pieChart" class="chart-box"></div>
@@ -200,13 +200,13 @@
                 xAxis: {
                     type: 'category',
                     data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                    axisLabel: { color: '#6b7280', fontWeight: '600', fontSize: 11 },
+                    axisLabel: { color: '#4c4e52', fontWeight: '500', fontSize: 13 },
                     axisLine: { lineStyle: { color: '#e5e7eb' } },
                     axisTick: { show: false }
                 },
                 yAxis: {
                     type: 'value',
-                    axisLabel: { color: '#9ca3af', fontSize: 11 },
+                    axisLabel: { color: '#4c4e52', fontSize: 13 },
                     splitLine: { lineStyle: { color: '#f3f4f6' } },
                 },
                 series: [{
@@ -234,7 +234,7 @@
                 },
                 legend: {
                     bottom: 0,
-                    textStyle: { color: '#4b5563', fontWeight: '600', fontSize: 12 },
+                    textStyle: { color: '#4a4f55', fontWeight: '500', fontSize: 14 },
                     itemGap: 16,
                 },
                 graphic: [{
@@ -250,13 +250,13 @@
                 }, {
                     type: 'text',
                     left: 'center',
-                    top: '52%',
+                    top: '50%',
                     style: {
                         text: 'TOTAL',
-                        fill: '#9ca3af',
-                        fontSize: 10,
+                        fill: '#4d525b',
+                        fontSize: 12,
                         fontWeight: '700',
-                        letterSpacing: 2
+                        letterSpacing: 4
                     }
                 }],
                 series: [{
@@ -271,8 +271,8 @@
                     label: {
                         color: '#1f2937',
                         formatter: '{b}\n{d}%',
-                        fontWeight: '600',
-                        fontSize: 11,
+                        fontWeight: '500',
+                        fontSize: 13,
                         lineHeight: 16
                     },
                     emphasis: {
@@ -280,10 +280,10 @@
                         scaleSize: 8
                     },
                     data: [
-                        { value: 60, name: 'Students', itemStyle: { color: '#0f766e' } },
-                        { value: 10, name: 'Expenses', itemStyle: { color: '#3b82f6' } },
-                        { value: 20, name: 'Courses', itemStyle: { color: '#d4af37' } },
-                        { value: 10, name: 'Revenue', itemStyle: { color: '#8b5cf6' } }
+               { value: 60, name: 'Students', itemStyle: { color: '#037f70' } },
+{ value: 10, name: 'Expenses', itemStyle: { color: '#1c534d' } },
+{ value: 20, name: 'Courses', itemStyle: { color: '#14B8A6' } },
+{ value: 10, name: 'Revenue', itemStyle: { color: '#5EEAD4' } }
                     ]
                 }]
             });
