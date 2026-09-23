@@ -57,7 +57,7 @@
                     </div>
                     <span class="text-2xl font-bold tracking-wide uppercase text-center drop-shadow-lg -mt-4">
                         Softgrowth Infotech LLP.
-                    </span>
+                    </span><br>
                     <span class="text-2xl font-bold tracking-wide uppercase -mt-3 text-teal-100 text-center drop-shadow-lg">
                         ERP System
                     </span>
