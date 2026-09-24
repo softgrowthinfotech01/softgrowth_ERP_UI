@@ -269,9 +269,9 @@
                     stroke="currentColor"
                     stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M6 3h9l4 4v14H6V3z" />
+                        d="M7 3h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-4l-3 4-3-4H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
                     <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M15 3v5h5M9 13h6M9 17h4" />
+                        d="M9 8h6M9 12h6" />
                 </svg>
             </span>
 
@@ -290,11 +290,11 @@
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                     stroke-width="2">
-                    <rect x="4" y="3" width="16" height="18" rx="2" />
-                    <path stroke-linecap="round" d="M8 7h8" />
-                    <path stroke-linecap="round" d="M8 11h8" />
-                    <path stroke-linecap="round" d="M8 15h5" />
-                    <path stroke-linecap="round" d="M8 18h3" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M5 4h14v16l-2-1.5L15 20l-3-1.5L9 20l-2-1.5L5 20V4z" />
+                    <path stroke-linecap="round" d="M8 8h8M8 12h6" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15 15h3" />
                 </svg>
             </span>
 
@@ -335,10 +335,10 @@
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                     stroke-width="2">
-                    <rect x="4" y="3" width="16" height="18" rx="2" />
-                    <path stroke-linecap="round" d="M8 8h8" />
-                    <path stroke-linecap="round" d="M8 12h8" />
-                    <path stroke-linecap="round" d="M8 16h5" />
+                    <circle cx="9" cy="9" r="5" />
+                    <circle cx="15" cy="15" r="5" />
+                    <path stroke-linecap="round" d="M9 7v4M7 9h4" />
+                    <path stroke-linecap="round" d="M15 13v4M13 15h4" />
                 </svg>
             </span>
 
@@ -357,12 +357,13 @@
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                     stroke-width="2">
-                    <path stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M5 4h14v16H5V4z" />
-                    <path stroke-linecap="round" d="M8 8h8" />
-                    <path stroke-linecap="round" d="M8 12h8" />
-                    <path stroke-linecap="round" d="M8 16h5" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M4 5h16v14H4z" />
+                    <path stroke-linecap="round" d="M8 9h8M8 13h5" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M8 17a5 5 0 0 0 8-1" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M16 13v3h-3" />
                 </svg>
             </span>
 
@@ -370,7 +371,7 @@
         </a>
 
 
-      
+
 
 
         <!-- Logout -->
@@ -467,7 +468,7 @@
     .sidebar-sub-link.active {
         background: #f0fdfa;
         color: #0f766e;
-            /* border-left: 3px solid #0f766e; */
+        /* border-left: 3px solid #0f766e; */
         padding-left: 11px;
     }
 
