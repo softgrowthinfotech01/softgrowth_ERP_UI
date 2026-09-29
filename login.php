@@ -123,10 +123,10 @@
     </style>
 </head>
 
-<body class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-100 via-slate-50 to-orange-50">
+<body class="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-br from-slate-100 via-slate-50 to-orange-50">
 
     <!-- ===== STEP INDICATOR ===== -->
-    <div id="stepIndicator" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 hidden sm:flex items-center gap-2 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-slate-200 transition-all duration-500">
+    <!-- <div id="stepIndicator" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 hidden sm:flex items-center gap-2 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-slate-200 transition-all duration-500">
         <div id="stepIndicator1" class="flex items-center gap-1.5 text-xs font-semibold transition-all duration-500">
             <span class="w-5 h-5 rounded-full bg-orange-600 text-white flex items-center justify-center text-[10px] transition-all duration-500">1</span>
             <span class="text-slate-700 transition-all duration-500">Login</span>
@@ -141,18 +141,78 @@
             <span class="w-5 h-5 rounded-full bg-slate-300 text-white flex items-center justify-center text-[10px] transition-all duration-500">3</span>
             <span class="text-slate-500 transition-all duration-500">Success</span>
         </div>
-    </div>
+    </div> -->
 
     <!-- =========================
          MAIN CARD
     ========================= -->
     <div class="w-full max-w-5xl bg-white rounded-3xl shadow-2xl shadow-slate-300/50 overflow-hidden grid grid-cols-1 lg:grid-cols-2 border border-slate-200">
 
-        <!-- ===== LEFT SIDE: IMAGE PANEL ===== -->
+        <!-- ===== LEFT SIDE: BRAND PANEL ===== -->
         <div class="relative hidden lg:flex flex-col items-center justify-center p-10 text-white overflow-hidden min-h-[520px]">
+
+            <!-- Background Image -->
             <img src="images/login_img.png" alt="ERP Background"
-                 class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" />
-            <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/20"></div>
+                 class="absolute inset-0 w-full h-full object-cover" />
+
+            <!-- Overlay Gradient -->
+            <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-black/70"></div>
+
+            <!-- Subtle Dot Pattern -->
+
+            <!-- Brand Content -->
+            <div class="relative z-10 flex flex-col items-center text-center gap-5 w-full">
+
+                <!-- Organization Logo -->
+                <div class="bg-white rounded-2xl p-3 shadow-2xl ring-4 ring-white/20 transition-transform duration-500 hover:scale-105">
+                    <img src="images/" alt="Organization Logo"
+                         class="h-20 w-auto max-w-[180px] object-contain" />
+                </div>
+
+                <!-- Organization Name & Subtitle -->
+                <div class="space-y-1.5">
+                    <h1 class="text-xl font-extrabold tracking-tight text-white drop-shadow-lg">
+                        Oraganization Name
+                    </h1>
+                    <p class="text-orange-200 text-xs font-semibold tracking-widest uppercase">
+                        Subtittle
+                    </p>
+                </div>
+
+                <!-- Tagline -->
+                <div class="flex items-center gap-3">
+                    <span class="h-px w-8 bg-orange-300/50"></span>
+                    <p class="text-slate-300 text-xs font-medium tracking-wider">
+                       Tagline or slogan 
+                    </p>
+                    <span class="h-px w-8 bg-orange-300/50"></span>
+                </div>
+
+                <!-- Trust Features -->
+                <div class="grid grid-cols-3 gap-3 mt-4 w-full max-w-[240px]">
+                    <div class="flex flex-col items-center gap-1.5">
+                        <div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/15">
+                            <i class="fas fa-shield-alt text-orange-300 text-xs"></i>
+                        </div>
+                        <span class="text-[9px] uppercase tracking-widest text-slate-300 font-semibold">Secure</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-1.5">
+                        <div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/15">
+                            <i class="fas fa-bolt text-orange-300 text-xs"></i>
+                        </div>
+                        <span class="text-[9px] uppercase tracking-widest text-slate-300 font-semibold">Fast</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-1.5">
+                        <div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/15">
+                            <i class="fas fa-chart-line text-orange-300 text-xs"></i>
+                        </div>
+                        <span class="text-[9px] uppercase tracking-widest text-slate-300 font-semibold">Scalable</span>
+                    </div>
+                </div>
+
+             
+
+            </div>
         </div>
 
         <!-- ===== RIGHT SIDE: MULTI-STEP FORM ===== -->
@@ -216,7 +276,7 @@
                         Cancel
                     </button>
                     <button type="button" onclick="handleLogin()"
-                            class="flex-1 py-3 rounded-xl bg-orange-600 text-white font-bold text-sm shadow-md hover:bg-orange-600 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200">
+                            class="flex-1 py-3 rounded-xl bg-orange-600 text-white font-bold text-sm shadow-md hover:bg-orange-700 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200">
                         Login
                     </button>
                 </div>
@@ -260,7 +320,7 @@
                         Cancel
                     </button>
                     <button type="button" onclick="verifyLoginOtp()"
-                            class="flex-1 py-3 rounded-xl bg-orange-600 text-white font-bold text-sm shadow-md hover:bg-orange-600 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200">
+                            class="flex-1 py-3 rounded-xl bg-orange-600 text-white font-bold text-sm shadow-md hover:bg-orange-700 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200">
                         Verify
                     </button>
                 </div>
@@ -281,7 +341,7 @@
                     </p>
 
                     <button type="button" onclick="window.location.href='dashboard.php'"
-                            class="w-full py-3.5 rounded-xl bg-orange-600 text-white font-bold text-sm shadow-md hover:bg-orange-600 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200">
+                            class="w-full py-3.5 rounded-xl bg-orange-600 text-white font-bold text-sm shadow-md hover:bg-orange-700 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200">
                         Go to Dashboard
                     </button>
                 </div>
@@ -317,7 +377,7 @@
                         Cancel
                     </button>
                     <button type="button" onclick="sendResetOtp()"
-                            class="flex-1 py-3 rounded-xl bg-orange-600 text-white font-bold text-sm shadow-md hover:bg-orange-600 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200">
+                            class="flex-1 py-3 rounded-xl bg-orange-600 text-white font-bold text-sm shadow-md hover:bg-orange-700 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200">
                         Send OTP
                     </button>
                 </div>
@@ -361,7 +421,7 @@
                         Cancel
                     </button>
                     <button type="button" onclick="verifyResetOtp()"
-                            class="flex-1 py-3 rounded-xl bg-orange-600 text-white font-bold text-sm shadow-md hover:bg-orange-600 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200">
+                            class="flex-1 py-3 rounded-xl bg-orange-600 text-white font-bold text-sm shadow-md hover:bg-orange-700 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200">
                         Verify
                     </button>
                 </div>
@@ -434,7 +494,7 @@
                         Cancel
                     </button>
                     <button type="button" onclick="resetPassword()"
-                            class="flex-1 py-3 rounded-xl bg-orange-600 text-white font-bold text-sm shadow-md hover:bg-orange-600 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200">
+                            class="flex-1 py-3 rounded-xl bg-orange-600 text-white font-bold text-sm shadow-md hover:bg-orange-700 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200">
                         Reset Password
                     </button>
                 </div>
@@ -442,6 +502,15 @@
 
         </div>
     </div>
+
+    <!-- ===== FOOTER CREDIT ===== -->
+    <p class="text-center text-xs text-slate-500 mt-6">
+        © 2026 Softgrowth Infotech LLP. · Designed & Developed by
+        <a href="https://softgrowthinfotech.com/" target="_blank" rel="noopener noreferrer"
+           class="text-orange-600 font-semibold hover:text-orange-700 underline underline-offset-2 transition-colors duration-200">
+            Softgrowth Infotech LLP.
+        </a>
+    </p>
 
     <!-- ===== CUSTOM ALERT ===== -->
     <div id="customAlert"
@@ -472,21 +541,18 @@
 
             if (currentActive === nextStep) return;
 
-            // Step 1: Fade out current step
             if (currentActive) {
                 currentActive.classList.add('exiting');
                 currentActive.classList.remove('active');
 
                 setTimeout(() => {
                     currentActive.classList.remove('exiting');
-                    // Step 2: Fade in new step
                     nextStep.classList.add('active');
                 }, 250);
             } else {
                 nextStep.classList.add('active');
             }
 
-            // Update step indicator
             const stepNum = parseInt(stepId.replace('step', ''));
             const indicator = document.getElementById('stepIndicator');
 
