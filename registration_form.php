@@ -27,8 +27,6 @@
         <!-- ===== PROFESSIONAL HEADER ===== -->
         <div class="bg-gradient-to-r from-[#ea580c] to-[#f97316] px-6 sm:px-8 py-5 text-white relative overflow-hidden">
             <!-- Decorative subtle pattern -->
-            <div class="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.08)_1px,transparent_1px)] bg-[length:18px_18px]"></div>
-            <div class="absolute -top-16 -right-16 w-48 h-48 bg-white/10 rounded-full blur-2xl"></div>
 
             <div class="relative z-10 flex flex-col sm:flex-row items-center gap-5">
 
@@ -63,7 +61,7 @@
             <!-- ===== SECTION 1: INSTITUTION DETAILS ===== -->
             <div>
                 <div class="bg-orange-50 border-l-4 border-orange-500 rounded-r-lg px-4 py-3 mb-6 flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-lg bg-orange-500 flex items-center justify-center text-white shadow-md">
+                    <div class="w-10 h-10 rounded-lg bg-orange-600 flex items-center justify-center text-white shadow-md">
                         <i class="fas fa-university text-lg"></i>
                     </div>
                     <h2 class="text-lg sm:text-xl font-bold text-gray-800">Institution Details</h2>
@@ -182,7 +180,7 @@
                                 <p class="text-sm font-medium text-gray-600">Drag & drop logo here</p>
                                 <p class="text-xs text-gray-400 my-1">or</p>
                                 <button type="button" onclick="document.getElementById('logoInput').click()"
-                                        class="text-sm font-semibold text-orange-500 border border-orange-500 rounded-lg px-4 py-1.5 hover:bg-orange-500 hover:text-white transition-all duration-200">
+                                        class="text-sm font-semibold text-orange-500 border border-orange-500 rounded-lg px-4 py-1.5 hover:bg-orange-600 hover:text-white transition-all duration-200">
                                     Browse Logo
                                 </button>
                                 <input type="file" id="logoInput" accept=".png,.jpg,.jpeg" class="hidden" />
@@ -305,7 +303,7 @@
                         Cancel
                     </button>
                     <button type="submit"
-                            class="px-8 py-3 rounded-xl bg-orange-500 text-white font-bold shadow-md hover:bg-orange-600 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2">
+                            class="px-8 py-3 rounded-xl bg-orange-600 text-white font-bold shadow-md hover:bg-orange-600 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2">
                         <i class="fas fa-check-circle"></i>
                         Register Institution
                     </button>
