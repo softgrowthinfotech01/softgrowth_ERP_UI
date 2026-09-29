@@ -126,7 +126,7 @@
 <body class="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-br from-slate-100 via-slate-50 to-orange-50">
 
     <!-- ===== STEP INDICATOR ===== -->
-    <div id="stepIndicator" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 hidden sm:flex items-center gap-2 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-slate-200 transition-all duration-500">
+    <!-- <div id="stepIndicator" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 hidden sm:flex items-center gap-2 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-slate-200 transition-all duration-500">
         <div id="stepIndicator1" class="flex items-center gap-1.5 text-xs font-semibold transition-all duration-500">
             <span class="w-5 h-5 rounded-full bg-orange-600 text-white flex items-center justify-center text-[10px] transition-all duration-500">1</span>
             <span class="text-slate-700 transition-all duration-500">Login</span>
@@ -141,7 +141,7 @@
             <span class="w-5 h-5 rounded-full bg-slate-300 text-white flex items-center justify-center text-[10px] transition-all duration-500">3</span>
             <span class="text-slate-500 transition-all duration-500">Success</span>
         </div>
-    </div>
+    </div> -->
 
     <!-- =========================
          MAIN CARD
