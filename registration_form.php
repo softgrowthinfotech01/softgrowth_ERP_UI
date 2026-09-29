@@ -41,7 +41,7 @@
 
                 <!-- Header Text -->
                 <div class="text-center sm:text-left flex-1">
-                    <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight drop-shadow-sm">
+                    <h1 class="text-2xl sm:text-3xl font-bold tracking-tight drop-shadow-sm">
                         Register Institution
                     </h1>
                     <p class="text-orange-50 text-sm mt-1 font-medium">
