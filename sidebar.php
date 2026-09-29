@@ -269,9 +269,9 @@
                     stroke="currentColor"
                     stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M6 3h9l4 4v14H6V3z" />
+                        d="M7 3h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-4l-3 4-3-4H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
                     <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M15 3v5h5M9 13h6M9 17h4" />
+                        d="M9 8h6M9 12h6" />
                 </svg>
             </span>
 
@@ -290,11 +290,11 @@
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                     stroke-width="2">
-                    <rect x="4" y="3" width="16" height="18" rx="2" />
-                    <path stroke-linecap="round" d="M8 7h8" />
-                    <path stroke-linecap="round" d="M8 11h8" />
-                    <path stroke-linecap="round" d="M8 15h5" />
-                    <path stroke-linecap="round" d="M8 18h3" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M5 4h14v16l-2-1.5L15 20l-3-1.5L9 20l-2-1.5L5 20V4z" />
+                    <path stroke-linecap="round" d="M8 8h8M8 12h6" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15 15h3" />
                 </svg>
             </span>
 
@@ -303,7 +303,7 @@
 
 
         <!-- I Card -->
-        <a href="i_card"
+        <!-- <a href="i_card"
             class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
 
             <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-teal-600">
@@ -321,7 +321,7 @@
             </span>
 
             <span>I Card</span>
-        </a>
+        </a> -->
 
 
         <!-- Fees Structure Master -->
@@ -335,10 +335,10 @@
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                     stroke-width="2">
-                    <rect x="4" y="3" width="16" height="18" rx="2" />
-                    <path stroke-linecap="round" d="M8 8h8" />
-                    <path stroke-linecap="round" d="M8 12h8" />
-                    <path stroke-linecap="round" d="M8 16h5" />
+                    <circle cx="9" cy="9" r="5" />
+                    <circle cx="15" cy="15" r="5" />
+                    <path stroke-linecap="round" d="M9 7v4M7 9h4" />
+                    <path stroke-linecap="round" d="M15 13v4M13 15h4" />
                 </svg>
             </span>
 
@@ -357,12 +357,13 @@
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                     stroke-width="2">
-                    <path stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M5 4h14v16H5V4z" />
-                    <path stroke-linecap="round" d="M8 8h8" />
-                    <path stroke-linecap="round" d="M8 12h8" />
-                    <path stroke-linecap="round" d="M8 16h5" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M4 5h16v14H4z" />
+                    <path stroke-linecap="round" d="M8 9h8M8 13h5" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M8 17a5 5 0 0 0 8-1" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M16 13v3h-3" />
                 </svg>
             </span>
 
@@ -370,26 +371,7 @@
         </a>
 
 
-        <!-- Update Password -->
-        <a href="update_password"
-            class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
 
-            <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-teal-600">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    class="w-5 h-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2">
-                    <path stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M15 7a4 4 0 10-5.9 3.5L4 15.6V20h4v-3h3v-3h2.5A4 4 0 0015 7z" />
-                    <circle cx="11" cy="7" r="1" />
-                </svg>
-            </span>
-
-            <span>Update Password</span>
-        </a>
 
 
         <!-- Logout -->
@@ -486,7 +468,7 @@
     .sidebar-sub-link.active {
         background: #f0fdfa;
         color: #0f766e;
-            /* border-left: 3px solid #0f766e; */
+        /* border-left: 3px solid #0f766e; */
         padding-left: 11px;
     }
 

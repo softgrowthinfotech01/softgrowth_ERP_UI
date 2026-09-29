@@ -32,11 +32,48 @@
 
             <div class="relative z-10 flex flex-col sm:flex-row items-center gap-5">
 
-                <!-- Logo Container - Professional -->
-                <div class="flex-shrink-0 bg-white rounded-2xl p-3 shadow-xl ring-4 ring-white/20">
-                    <img src="images/logo_SI.png"
-                         alt="Softgrowth Infotech Logo"
-                         class="h-16 w-auto object-contain" />
+                <div class="relative z-10 flex flex-col items-center gap-4">
+                    <!-- Floating logo -->
+                    <div class="animate-float">
+                        <img src="images/soft_logo.webp"
+                             alt="Softgrowth Infotech Logo"
+                             class="h-48 w-auto rounded-2xl ml-10 p-3  " />
+                    </div>
+                    <span class="text-2xl font-bold tracking-wide uppercase text-center drop-shadow-lg -mt-4">
+                        Softgrowth Infotech LLP.
+                    </span><br>
+                    <span class="text-2xl font-bold tracking-wide uppercase -mt-3 text-teal-100 text-center drop-shadow-lg">
+                        ERP System
+                    </span>
+                    <div class="flex items-center gap-3 mt-2">
+                        <span class="h-px w-8 bg-teal-200/60"></span>
+                        <p class="text-teal-100 text-md font-medium tracking-wider">Grow With Technology</p>
+                        <span class="h-px w-8 bg-teal-200/60"></span>
+                    </div>
+                    <!-- Trust badges -->
+                    <div class="flex gap-6 mt-6 text-teal-100/80">
+                        <div class="flex flex-col items-center gap-1">
+                            <i class="fas fa-shield-alt text-xl"></i>
+                            <span class="text-[10px] uppercase tracking-wider">Secure</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1">
+                            <i class="fas fa-bolt text-xl"></i>
+                            <span class="text-[10px] uppercase tracking-wider">Fast</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1">
+                            <i class="fas fa-chart-line text-xl"></i>
+                            <span class="text-[10px] uppercase tracking-wider">Scalable</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== RIGHT SIDE: FORM ===== -->
+            <div class="p-8 lg:p-10 bg-white/80 backdrop-blur-sm">
+
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="h-1 w-8 bg-gradient-to-r from-teal-500 to-teal-300 rounded-full"></span>
+                    <span class="text-xs font-semibold uppercase tracking-widest text-teal-600">Get Started</span>
                 </div>
 
                 <!-- Header Text -->

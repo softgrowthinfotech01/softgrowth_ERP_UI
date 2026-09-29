@@ -66,8 +66,11 @@
 <body class="bg-gray-300 text-gray-800 antialiased">
     <?php include 'header.php' ?>
     <?php include 'sidebar.php' ?>
- <main class="md:ml-[300px] max-w-7xl mx-auto px-4 sm:px-6 py-28 pb-10 mb-4 transition-all duration-200">
 
+
+ <main class="md:ml-[300px] px-4 sm:px-6 py-28 pb-10 flex flex-col items-center justify-center mb-4 transition-all duration-200">
+
+  <div class="w-full max-w-6xl">
         <!-- STEPPER -->
         <div class="flex items-center gap-2 sm:gap-4 mb-8">
                 <button id="prev" class="px-6 py-2.5 bg-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-300 transition hidden sm:w-auto w-full">
@@ -204,6 +207,7 @@
         
         </div>
 
+        </div>
     </main>
 
 
