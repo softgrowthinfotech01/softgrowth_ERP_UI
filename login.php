@@ -505,10 +505,10 @@
 
     <!-- ===== FOOTER CREDIT ===== -->
     <p class="text-center text-xs text-slate-500 mt-6">
-        © 2025 Softgrowth Infotech LLP. · Designed & Developed by
+        © 2026 Softgrowth Infotech LLP. · Designed & Developed by
         <a href="https://softgrowthinfotech.com/" target="_blank" rel="noopener noreferrer"
            class="text-orange-600 font-semibold hover:text-orange-700 underline underline-offset-2 transition-colors duration-200">
-            Softgrowth Infotech
+            Softgrowth Infotech LLP.
         </a>
     </p>
 
