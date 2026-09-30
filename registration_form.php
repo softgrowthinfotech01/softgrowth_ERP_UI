@@ -88,10 +88,23 @@
                         <p class="text-red-500 text-xs mt-1 hidden" id="error-collegeName">College / School Name is required.</p>
                     </div>
 
+                    <!-- Regi No. -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">
+                           Organisation Registration No. <span class="text-gray-400 text-xs font-normal">(Optional)</span>
+                        </label>
+                        <div class="relative">
+                            <i class="fas fa-file-signature absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 z-10"></i>
+                            <input type="text" id="org_registration_no" placeholder="Enter registration number"
+                                   class="input-focus w-full pl-11 pr-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-800 placeholder:text-gray-400 outline-none transition-all duration-200" />
+                        </div>
+                        <p class="text-red-500 text-xs mt-1 hidden" id="error-registrationNo">Registration No. is required.</p>
+                    </div>
+
                     <!-- AFF. No. -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1.5">
-                            AFF. No. <span class="text-gray-400 text-xs font-normal">(Optional)</span>
+                            Affiliation No. <span class="text-gray-400 text-xs font-normal">(Optional)</span>
                         </label>
                         <div class="relative">
                             <i class="fas fa-file-signature absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 z-10"></i>
@@ -135,7 +148,7 @@
                     </div>
 
                     <!-- Website -->
-                    <div>
+                    <div class="md:col-span-2">
                         <label class="block text-sm font-semibold text-gray-700 mb-1.5">
                             Website <span class="text-gray-400 text-xs font-normal">(Optional)</span>
                         </label>
@@ -481,6 +494,7 @@
             // Construct FormData payload
             const formData = new FormData();
             formData.append('org_name', orgNameVal);
+            formData.append('org_registration_no', document.getElementById('org_registration_no').value.trim());
             formData.append('affiliation_no', document.getElementById('affiliation_no').value.trim());
             formData.append('mobile', mobileVal);
             formData.append('email', emailVal);
@@ -529,6 +543,7 @@
                 } else if (response.status === 422) {
                     const errors = data.errors;
                     if (errors.org_name) showError('org_name', 'error-collegeName', errors.org_name[0], true);
+                    if (errors.org_registration_no) showError('org_registration_no', 'error-registrationNo', errors.org_registration_no[0], true);
                     if (errors.affiliation_no) showError('affiliation_no', 'error-affiliationNo', errors.affiliation_no[0], true);
                     if (errors.mobile) showError('mobile', 'error-phoneNo', errors.mobile[0], true);
                     if (errors.email) showError('email', 'error-emailId', errors.email[0], true);
@@ -552,12 +567,13 @@
         });
 
         // CLEAR ERRORS ON INPUT TYPING
-        ['org_name', 'affiliation_no', 'mobile', 'email', 'website', 'address', 'username', 'password', 'password_confirmation'].forEach(id => {
+        ['org_name', 'org_registration_no', 'affiliation_no', 'mobile', 'email', 'website', 'address', 'username', 'password', 'password_confirmation'].forEach(id => {
             const el = document.getElementById(id);
             if (el) {
                 el.addEventListener('input', () => {
                     const errorMap = {
                         'org_name': 'error-collegeName',
+                        'org_registration_no': 'error-registrationNo',
                         'mobile': 'error-phoneNo',
                         'email': 'error-emailId',
                         'website': 'error-website',
