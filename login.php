@@ -175,7 +175,7 @@
                         Oraganization Name
                     </h1>
                     <p class="text-orange-200 text-xs font-semibold tracking-widest uppercase">
-                        Subtittle
+                       Smart Schools, Simple Management.
                     </p>
                 </div>
 
@@ -183,7 +183,7 @@
                 <div class="flex items-center gap-3">
                     <span class="h-px w-8 bg-orange-300/50"></span>
                     <p class="text-slate-300 text-xs font-medium tracking-wider">
-                       Tagline or slogan 
+                       *****
                     </p>
                     <span class="h-px w-8 bg-orange-300/50"></span>
                 </div>
@@ -236,14 +236,14 @@
 
                 <div class="mb-4">
                     <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
-                        Username <span class="text-red-500">*</span>
+                        Email <span class="text-red-500">*</span>
                     </label>
                     <div class="relative">
                         <i class="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm z-10"></i>
-                        <input type="text" id="username" placeholder="Enter username"
+                        <input type="email" id="email" placeholder="Enter email address"
                                class="input-focus w-full p-3.5 pl-11 rounded-xl border border-slate-200 bg-slate-50/60 text-slate-800 text-sm placeholder:text-slate-400 outline-none transition-all duration-200" />
                     </div>
-                    <p class="text-red-500 text-xs mt-1.5 hidden" id="error-username">Username is required.</p>
+                    <p class="text-red-500 text-xs mt-1.5 hidden" id="error-email">Email is required.</p>
                 </div>
 
                 <div class="mb-4">
