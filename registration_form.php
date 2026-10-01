@@ -18,6 +18,14 @@
         .check-valid i { color: #22c55e !important; }
         .check-invalid i { color: #ef4444 !important; }
     </style>
+    <script>
+        /* 
+          prevent opening registration page again after successful registration
+          if (localStorage.getItem('institution_registered') === 'true') {
+              window.location.href = 'login.php'; 
+          }
+        */
+    </script>
 </head>
 
 <body class="bg-gray-100 min-h-screen py-6 px-4 sm:px-6 lg:px-8">
@@ -26,8 +34,6 @@
 
         <!-- ===== PROFESSIONAL HEADER ===== -->
         <div class="bg-gradient-to-r from-[#ea580c] to-[#f97316] px-6 sm:px-8 py-5 text-white relative overflow-hidden">
-            <!-- Decorative subtle pattern -->
-
             <div class="relative z-10 flex flex-col sm:flex-row items-center gap-5">
 
                 <!-- Logo Container - Professional -->
@@ -76,20 +82,20 @@
                         </label>
                         <div class="relative">
                             <i class="fas fa-university absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 z-10"></i>
-                            <input type="text" id="collegeName" placeholder="Enter college / school name"
+                            <input type="text" id="org_name" placeholder="Enter college / school name"
                                    class="input-focus w-full pl-11 pr-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-800 placeholder:text-gray-400 outline-none transition-all duration-200" />
                         </div>
                         <p class="text-red-500 text-xs mt-1 hidden" id="error-collegeName">College / School Name is required.</p>
                     </div>
 
-                    <!-- Registration No. -->
+                    <!-- Regi No. -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1.5">
-                            Registration No. <span class="text-red-500">*</span>
+                           Organisation Registration No. <span class="text-gray-400 text-xs font-normal">(Optional)</span>
                         </label>
                         <div class="relative">
-                            <i class="fas fa-file-alt absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 z-10"></i>
-                            <input type="text" id="registrationNo" placeholder="Enter registration number"
+                            <i class="fas fa-file-signature absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 z-10"></i>
+                            <input type="text" id="org_registration_no" placeholder="Enter registration number"
                                    class="input-focus w-full pl-11 pr-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-800 placeholder:text-gray-400 outline-none transition-all duration-200" />
                         </div>
                         <p class="text-red-500 text-xs mt-1 hidden" id="error-registrationNo">Registration No. is required.</p>
@@ -98,11 +104,11 @@
                     <!-- AFF. No. -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1.5">
-                            AFF. No. <span class="text-gray-400 text-xs font-normal">(Optional)</span>
+                            Affiliation No. <span class="text-gray-400 text-xs font-normal">(Optional)</span>
                         </label>
                         <div class="relative">
                             <i class="fas fa-file-signature absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 z-10"></i>
-                            <input type="text" id="affNo" placeholder="Enter affiliation number"
+                            <input type="text" id="affiliation_no" placeholder="Enter affiliation number"
                                    class="input-focus w-full pl-11 pr-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-800 placeholder:text-gray-400 outline-none transition-all duration-200" />
                         </div>
                     </div>
@@ -122,7 +128,7 @@
                                 </select>
                                 <i class="fas fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
                             </div>
-                            <input type="tel" id="phoneNo" placeholder="Enter 10 digit phone number"
+                            <input type="tel" id="mobile" placeholder="Enter 10 digit phone number" maxlength="10"
                                    class="input-focus flex-1 pl-4 pr-4 py-3 rounded-r-xl border border-gray-300 bg-white text-gray-800 placeholder:text-gray-400 outline-none transition-all duration-200" />
                         </div>
                         <p class="text-red-500 text-xs mt-1 hidden" id="error-phoneNo">Please enter a valid 10-digit phone number.</p>
@@ -135,7 +141,7 @@
                         </label>
                         <div class="relative">
                             <i class="fas fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 z-10"></i>
-                            <input type="email" id="emailId" placeholder="Enter email address"
+                            <input type="email" id="email" placeholder="Enter email address"
                                    class="input-focus w-full pl-11 pr-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-800 placeholder:text-gray-400 outline-none transition-all duration-200" />
                         </div>
                         <p class="text-red-500 text-xs mt-1 hidden" id="error-emailId">Please enter a valid email address.</p>
@@ -175,7 +181,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
                             <div id="dropZone"
-                                 class="upload-area border-2 border-dashed border-gray-300 rounded-xl bg-white p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 min-h-[160px]">
+                                 class="upload-area border-2 border-dashed border-gray-300 rounded-xl bg-white p-2 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 min-h-[160px]">
                                 <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-3"></i>
                                 <p class="text-sm font-medium text-gray-600">Drag & drop logo here</p>
                                 <p class="text-xs text-gray-400 my-1">or</p>
@@ -186,14 +192,15 @@
                                 <input type="file" id="logoInput" accept=".png,.jpg,.jpeg" class="hidden" />
                             </div>
 
-                            <div class="border border-gray-200 rounded-xl bg-gray-50 p-6 flex flex-col items-center justify-center text-center min-h-[160px]">
-                                <div id="logoPreviewContainer" class="hidden">
-                                    <img id="logoPreview" src="#" alt="Logo Preview" class="h-20 w-20 object-contain rounded-lg mx-auto mb-2" />
-                                    <p class="text-xs text-green-600 font-medium" id="logoFileName">logo.png</p>
-                                    <button type="button" onclick="removeLogo()" class="text-xs text-red-500 hover:underline mt-1">Remove</button>
+                            <!-- PREVIEW CONTAINER -->
+                            <div class="border border-gray-200 rounded-xl bg-gray-50 p-4 flex flex-col items-center justify-center text-center min-h-[160px]">
+                                <div id="logoPreviewContainer" class="hidden flex flex-col items-center justify-center">
+                                    <img id="logoPreview" src="#" alt="Logo Preview" class="h-28 w-28 object-contain rounded-lg shadow-sm bg-white p-1 mb-1" />
+                                    <p class="text-xs text-green-600 font-medium truncate max-w-[200px]" id="logoFileName">logo.png</p>
+                                    <button type="button" onclick="removeLogo()" class="text-xs text-red-500 hover:underline mt-0.5">Remove</button>
                                 </div>
                                 <div id="logoPlaceholder">
-                                    <i class="fas fa-image text-5xl text-gray-300 mb-3"></i>
+                                    <i class="fas fa-image text-4xl text-gray-300 mb-2"></i>
                                     <p class="text-sm text-gray-500 font-medium">No logo selected</p>
                                     <p class="text-xs text-gray-400">Upload institution logo</p>
                                 </div>
@@ -226,6 +233,7 @@
                             <input type="text" id="username" placeholder="Enter username"
                                    class="input-focus w-full pl-11 pr-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-800 placeholder:text-gray-400 outline-none transition-all duration-200" />
                         </div>
+                        <p class="text-xs text-gray-500 mt-1">e.g., admin_college or principal_office (alphanumeric and underscores only)</p>
                         <p class="text-red-500 text-xs mt-1 hidden" id="error-username">Username is required.</p>
                     </div>
 
@@ -248,9 +256,9 @@
                         </label>
                         <div class="relative">
                             <i class="fas fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 z-10"></i>
-                            <input type="password" id="confirmPassword" placeholder="Re-enter password"
+                            <input type="password" id="password_confirmation" placeholder="Re-enter password"
                                    class="input-focus w-full pl-11 pr-11 py-3 rounded-xl border border-gray-300 bg-white text-gray-800 placeholder:text-gray-400 outline-none transition-all duration-200" />
-                            <i class="fas fa-eye absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer hover:text-orange-500 transition-colors" onclick="togglePassword('confirmPassword', this)"></i>
+                            <i class="fas fa-eye absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer hover:text-orange-500 transition-colors" onclick="togglePassword('password_confirmation', this)"></i>
                         </div>
                         <p class="text-red-500 text-xs mt-1 hidden" id="error-confirmPassword">Passwords do not match.</p>
                     </div>
@@ -287,7 +295,7 @@
             <!-- TERMS & SUBMIT -->
             <div class="pt-4 border-t border-gray-200">
                 <label class="flex items-start gap-3 cursor-pointer mb-4">
-                    <input type="checkbox" id="termsCheck" class="mt-1 accent-orange-500 w-4 h-4 rounded" />
+                    <input type="checkbox" id="terms_accepted" class="mt-1 accent-orange-500 w-4 h-4 rounded" />
                     <span class="text-sm text-gray-600">
                         I agree to the
                         <a href="#" class="text-blue-600 hover:underline font-medium">Terms & Conditions</a>
@@ -317,8 +325,11 @@
     <div id="successToast"
          class="fixed top-5 left-1/2 -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-xl shadow-2xl hidden z-50 flex items-center gap-2">
         <i class="fas fa-check-circle text-lg"></i>
-        <span>Institution registered successfully!</span>
+        <span>Institution registered successfully! Redirecting to login...</span>
     </div>
+
+    <!-- Include your url.js file first -->
+    <script src="url.js"></script>
 
     <script>
         // PASSWORD TOGGLE
@@ -333,7 +344,7 @@
             }
         }
 
-        // LOGO UPLOAD
+        // LOGO UPLOAD & PREVIEW WITH SIZE VALIDATION (Max 2MB)
         const dropZone = document.getElementById('dropZone');
         const logoInput = document.getElementById('logoInput');
         const logoPreview = document.getElementById('logoPreview');
@@ -364,22 +375,26 @@
 
         function handleLogoFile(file) {
             const validTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+            const errorLogo = document.getElementById('error-logo');
+
             if (!validTypes.includes(file.type)) {
-                alert('Please upload a PNG, JPG, or JPEG file.');
+                errorLogo.textContent = 'Please upload a valid PNG, JPG, or JPEG image.';
+                errorLogo.classList.remove('hidden');
                 return;
             }
             if (file.size > 2 * 1024 * 1024) {
-                alert('File size must be less than 2MB.');
+                errorLogo.textContent = 'Institution logo must not exceed 2 MB.';
+                errorLogo.classList.remove('hidden');
                 return;
             }
 
+            errorLogo.classList.add('hidden');
             const reader = new FileReader();
             reader.onload = (e) => {
                 logoPreview.src = e.target.result;
                 logoFileName.textContent = file.name;
                 logoPreviewContainer.classList.remove('hidden');
                 logoPlaceholder.classList.add('hidden');
-                document.getElementById('error-logo').classList.add('hidden');
                 dropZone.classList.remove('border-red-500', 'bg-red-50');
             };
             reader.readAsDataURL(file);
@@ -392,9 +407,9 @@
             logoPlaceholder.classList.remove('hidden');
         }
 
-        // PASSWORD REQUIREMENTS
+        // PASSWORD REQUIREMENTS LIVE VALIDATION
         const passwordInput = document.getElementById('password');
-        const confirmInput = document.getElementById('confirmPassword');
+        const confirmInput = document.getElementById('password_confirmation');
 
         passwordInput.addEventListener('input', () => {
             const val = passwordInput.value;
@@ -402,7 +417,7 @@
             updateReq('req-upper', /[A-Z]/.test(val));
             updateReq('req-lower', /[a-z]/.test(val));
             updateReq('req-number', /[0-9]/.test(val));
-            updateReq('req-special', /[!@#$%^&*(),.?":{}|<>]/.test(val));
+            updateReq('req-special', /[^A-Za-z0-9]/.test(val));
         });
 
         function updateReq(id, isValid) {
@@ -419,80 +434,164 @@
             }
         }
 
-        // FORM SUBMIT
-        document.getElementById('institutionForm').addEventListener('submit', function(e) {
+        // FORM SUBMIT & API INTEGRATION
+        document.getElementById('institutionForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             let isValid = true;
 
-            function showError(id, show) {
-                const el = document.getElementById('error-' + id);
-                const input = document.getElementById(id);
+            function showError(fieldId, errorElementId, message, show) {
+                const el = document.getElementById(errorElementId);
+                const input = document.getElementById(fieldId);
                 if (show) {
-                    el.classList.remove('hidden');
+                    if (message && el) el.textContent = message;
+                    if (el) el.classList.remove('hidden');
                     if (input) input.classList.add('border-red-500', 'bg-red-50');
                     isValid = false;
                 } else {
-                    el.classList.add('hidden');
+                    if (el) el.classList.add('hidden');
                     if (input) input.classList.remove('border-red-500', 'bg-red-50');
                 }
             }
 
-            showError('collegeName', document.getElementById('collegeName').value.trim() === '');
-            showError('registrationNo', document.getElementById('registrationNo').value.trim() === '');
-            showError('phoneNo', !/^\d{10}$/.test(document.getElementById('phoneNo').value.trim()));
-            showError('emailId', !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('emailId').value.trim()));
+            // Quick Frontend Validations
+            const orgNameVal = document.getElementById('org_name').value.trim();
+            showError('org_name', 'error-collegeName', 'College / School Name is required.', orgNameVal === '');
+
+            const mobileVal = document.getElementById('mobile').value.trim();
+            showError('mobile', 'error-phoneNo', 'Please enter a valid 10-digit phone number starting with 6-9.', !/^[6-9]\d{9}$/.test(mobileVal));
+
+            const emailVal = document.getElementById('email').value.trim();
+            showError('email', 'error-emailId', 'Please enter a valid email address.', !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal));
 
             const website = document.getElementById('website').value.trim();
-            showError('website', website !== '' && !/^https?:\/\/.+\..+/.test(website));
+            showError('website', 'error-website', 'Please enter a valid URL.', website !== '' && !/^https?:\/\/.+/.test(website));
 
-            showError('address', document.getElementById('address').value.trim() === '');
+            const addressVal = document.getElementById('address').value.trim();
+            showError('address', 'error-address', 'Address is required.', addressVal === '');
 
-            const logoUploaded = !logoPreviewContainer.classList.contains('hidden');
-            showError('logo', !logoUploaded);
+            const logoUploaded = logoInput.files.length > 0;
+            showError('logoInput', 'error-logo', 'Please upload an institution logo (PNG/JPG, max 2MB).', !logoUploaded);
 
-            showError('username', document.getElementById('username').value.trim() === '');
+            const usernameVal = document.getElementById('username').value.trim();
+            showError('username', 'error-username', 'Username is required.', usernameVal === '');
 
             const password = passwordInput.value;
-            const passValid = password.length >= 8 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password) && /[!@#$%^&*(),.?":{}|<>]/.test(password);
-            showError('password', !passValid);
+            const passValid = password.length >= 8 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password) && /[^A-Za-z0-9]/.test(password);
+            showError('password', 'error-password', 'Password does not meet the requirements.', !passValid);
 
             const confirm = confirmInput.value;
-            showError('confirmPassword', confirm !== password || confirm === '');
+            showError('password_confirmation', 'error-confirmPassword', 'Passwords do not match.', confirm !== password || confirm === '');
 
-            showError('terms', !document.getElementById('termsCheck').checked);
+            const termsChecked = document.getElementById('terms_accepted').checked;
+            showError('terms_accepted', 'error-terms', 'You must agree to the Terms & Conditions.', !termsChecked);
 
-            if (isValid) {
-                const toast = document.getElementById('successToast');
-                toast.classList.remove('hidden');
-                setTimeout(() => {
-                    toast.classList.add('hidden');
-                    this.reset();
-                    removeLogo();
-                    document.querySelectorAll('#req-length, #req-upper, #req-lower, #req-number, #req-special').forEach(el => {
-                        el.classList.remove('check-valid', 'check-invalid');
-                        const icon = el.querySelector('i');
-                        icon.className = 'fas fa-check-circle text-gray-300';
-                    });
-                    alert('Form submitted successfully! (Demo)');
-                }, 2500);
-            } else {
+            if (!isValid) {
                 const firstError = document.querySelector('.text-red-500.text-xs:not(.hidden)');
                 if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            // Construct FormData payload
+            const formData = new FormData();
+            formData.append('org_name', orgNameVal);
+            formData.append('org_registration_no', document.getElementById('org_registration_no').value.trim());
+            formData.append('affiliation_no', document.getElementById('affiliation_no').value.trim());
+            formData.append('mobile', mobileVal);
+            formData.append('email', emailVal);
+            formData.append('website', website);
+            formData.append('address', addressVal);
+            if (logoInput.files[0]) {
+                formData.append('logo', logoInput.files[0]);
+            }
+            formData.append('username', usernameVal);
+            formData.append('password', password);
+            formData.append('password_confirmation', confirm);
+            formData.append('terms_accepted', termsChecked ? '1' : '');
+
+            try {
+                const response = await fetch(url + 'setup/register', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                });
+
+                // Improved handling: Check if response is JSON to prevent syntax errors
+                const contentType = response.headers.get("content-type");
+                let data;
+                if (contentType && contentType.includes("application/json")) {
+                    data = await response.json();
+                } else {
+                    const rawText = await response.text();
+                    console.error("Server response was not JSON:", rawText);
+                    throw new Error("Server returned non-JSON response (Check backend errors or path).");
+                }
+
+                if (response.ok) {
+                    // Lock registration from re-opening using browser localStorage (can be re-enabled later)
+                    localStorage.setItem('institution_registered', 'true');
+
+                    // Show Success Toast and Redirect to Login Page
+                    const toast = document.getElementById('successToast');
+                    toast.classList.remove('hidden');
+
+                    setTimeout(() => {
+                        window.location.href = 'login.php'; 
+                    }, 2000);
+
+                } else if (response.status === 422) {
+                    const errors = data.errors;
+                    if (errors.org_name) showError('org_name', 'error-collegeName', errors.org_name[0], true);
+                    if (errors.org_registration_no) showError('org_registration_no', 'error-registrationNo', errors.org_registration_no[0], true);
+                    if (errors.affiliation_no) showError('affiliation_no', 'error-affiliationNo', errors.affiliation_no[0], true);
+                    if (errors.mobile) showError('mobile', 'error-phoneNo', errors.mobile[0], true);
+                    if (errors.email) showError('email', 'error-emailId', errors.email[0], true);
+                    if (errors.website) showError('website', 'error-website', errors.website[0], true);
+                    if (errors.address) showError('address', 'error-address', errors.address[0], true);
+                    if (errors.logo) showError('logoInput', 'error-logo', errors.logo[0], true);
+                    if (errors.username) showError('username', 'error-username', errors.username[0], true);
+                    if (errors.password) showError('password', 'error-password', errors.password[0], true);
+                    if (errors.terms_accepted) showError('terms_accepted', 'error-terms', errors.terms_accepted[0], true);
+
+                    const firstError = document.querySelector('.text-red-500.text-xs:not(.hidden)');
+                    if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else {
+                    alert(data.message || 'Something went wrong during registration.');
+                }
+
+            } catch (error) {
+                console.error('API Error:', error);
+                alert('Unable to connect to the server or parse response. Check your network, console logs, or API endpoint.');
             }
         });
 
-        // CLEAR ERRORS ON INPUT
-        ['collegeName', 'registrationNo', 'phoneNo', 'emailId', 'website', 'address', 'username', 'password', 'confirmPassword'].forEach(id => {
+        // CLEAR ERRORS ON INPUT TYPING
+        ['org_name', 'org_registration_no', 'affiliation_no', 'mobile', 'email', 'website', 'address', 'username', 'password', 'password_confirmation'].forEach(id => {
             const el = document.getElementById(id);
             if (el) {
                 el.addEventListener('input', () => {
-                    document.getElementById('error-' + id).classList.add('hidden');
+                    const errorMap = {
+                        'org_name': 'error-collegeName',
+                        'org_registration_no': 'error-registrationNo',
+                        'mobile': 'error-phoneNo',
+                        'email': 'error-emailId',
+                        'website': 'error-website',
+                        'address': 'error-address',
+                        'username': 'error-username',
+                        'password': 'error-password',
+                        'password_confirmation': 'error-confirmPassword'
+                    };
+                    const errId = errorMap[id];
+                    if (errId) {
+                        document.getElementById(errId).classList.add('hidden');
+                    }
                     el.classList.remove('border-red-500', 'bg-red-50');
                 });
             }
         });
 
-        document.getElementById('termsCheck').addEventListener('change', function() {
+        document.getElementById('terms_accepted').addEventListener('change', function() {
             document.getElementById('error-terms').classList.add('hidden');
         });
     </script>
