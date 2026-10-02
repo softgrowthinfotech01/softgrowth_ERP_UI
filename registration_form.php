@@ -91,7 +91,7 @@
                     <!-- Regi No. -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1.5">
-                           Organisation Registration No. <span class="text-gray-400 text-xs font-normal">(Optional)</span>
+                           Organisation Registration No. <span class="text-red-500">*</span>
                         </label>
                         <div class="relative">
                             <i class="fas fa-file-signature absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 z-10"></i>
