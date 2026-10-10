@@ -82,11 +82,11 @@
             <!-- USERNAME FIELD -->
             <div class="mt-3">
                 <label class="block text-xs font-bold text-gray-800 mb-0.5">
-                    Username <span class="text-red-500 ml-0.5 font-semibold">*</span>
+                    Name <span class="text-red-500 ml-0.5 font-semibold">*</span>
                 </label>
                 <div class="relative">
                     <i class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                    <input type="text" id="username" placeholder="Enter username" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm bg-white">
+                    <input type="text" id="name" placeholder="Enter name" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm bg-white">
                 </div>
             </div>
 
@@ -121,7 +121,7 @@
                     Cancel
                 </button>
                 <button id="saveUserBtn" class="px-4 py-2 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition sm:w-2/3 w-full shadow-md flex items-center justify-center gap-2 text-sm">
-                    Save User <i class="fas fa-chevron-right text-[10px]"></i>
+                    Save User 
                 </button>
             </div>
 
@@ -216,12 +216,12 @@
                 e.preventDefault();
 
                 const role = roleSelect.value;
-                const username = document.getElementById('username').value.trim();
+                const username = document.getElementById('name').value.trim();
                 const email = document.getElementById('email').value.trim();
                 const password = document.getElementById('password').value.trim();
 
                 if (!role) { alert('Please select a user role.'); return; }
-                if (!username) { alert('Please enter a username.'); return; }
+                if (!username) { alert('Please enter a name.'); return; }
                 if (!email) { alert('Please enter an email address.'); return; }
                 if (!password) { alert('Please enter a password.'); return; }
 
@@ -236,7 +236,7 @@
             cancelMainBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 roleSelect.value = '';
-                document.getElementById('username').value = '';
+                document.getElementById('name').value = '';
                 document.getElementById('email').value = '';
                 document.getElementById('password').value = 'Abcd@123';
                 if (!newRolePopup.classList.contains('hidden')) {

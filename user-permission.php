@@ -17,10 +17,10 @@
     <?php include 'sidebar.php' ?>
 
     <!-- MAIN WRAPPER CENTERED -->
-    <main id="main" class="md:ml-[300px] px-4 sm:px-6 py-20 pb-6 mb-6 transition-all duration-200 flex flex-col items-center justify-center">
+    <main id="main" class="md:ml-[300px] px-4 sm:px-6 py-20 pb-6 mb-6  transition-all duration-200 flex flex-col items-center justify-center">
 
         <!-- ================= USER ROLE PERMISSION CARD ================= -->
-        <div class="w-full max-w-4xl bg-white rounded-lg shadow-lg border border-gray-200 p-3 md:p-4">
+        <div class="w-full max-w-4xl bg-white rounded-lg shadow-lg border border-gray-200 p-3 md:p-4 md:mb-10">
 
             <!-- ===== HEADER ===== -->
             <div class="flex items-start gap-2.5 mb-2.5 pb-2.5 border-b border-gray-200">
@@ -35,7 +35,44 @@
 
             <!-- ===== USER INFO BAR ===== -->
             <div class="bg-blue-50 border border-blue-100 rounded-md p-2 mb-3">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-1.5 md:gap-3">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-1.5 md:gap-4">
+                 <!-- ===== SELECTOR BAR: ROLE + NAME DROPDOWNS ===== -->
+                    <div class="bg-blue-50 border border-blue-100 rounded-md p-2 mb-3">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <!-- Role Dropdown -->
+                            <div>
+                                <label class="block text-[10px] font-bold text-gray-700 mb-0.5">
+                                    User Role <span class="text-red-500">*</span>
+                                </label>
+                                <div class="relative">
+                                    <i class="fas fa-user-tag absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-[10px]"></i>
+                                    <select id="roleDropdown" class="w-full pl-7 pr-7 py-1.5 text-[11px] rounded-md border border-gray-300 bg-white text-gray-700 appearance-none focus:border-blue-400 focus:ring-1 focus:ring-blue-200 focus:outline-none shadow-sm">
+                                        <option value="Accountant" selected>Accountant</option>
+                                        <option value="HR Manager">HR Manager</option>
+                                        <option value="Inventory Clerk">Inventory Clerk</option>
+                                        <option value="Super Admin">Super Admin</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-[9px] pointer-events-none"></i>
+                                </div>
+                            </div>
+                            <!-- Name Dropdown -->
+                            <div>
+                                <label class="block text-[10px] font-bold text-gray-700 mb-0.5">
+                                    Username <span class="text-red-500">*</span>
+                                </label>
+                                <div class="relative">
+                                    <i class="fas fa-user absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-[10px]"></i>
+                                    <select id="nameDropdown" class="w-full pl-7 pr-7 py-1.5 text-[11px] rounded-md border border-gray-300 bg-white text-gray-700 appearance-none focus:border-blue-400 focus:ring-1 focus:ring-blue-200 focus:outline-none shadow-sm">
+                                        <option value="john.smith" selected>john.smith</option>
+                                        <option value="jane.doe">jane.doe</option>
+                                        <option value="robert.johnson">robert.johnson</option>
+                                        <option value="sarah.williams">sarah.williams</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-[9px] pointer-events-none"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="flex items-center gap-2">
                         <div class="w-7 h-7 rounded-full bg-blue-200 flex items-center justify-center flex-shrink-0">
                             <i class="fas fa-user text-blue-600 text-[10px]"></i>
@@ -556,6 +593,35 @@
             });
         })();
     </script>
+
+    <script>
+    (function() {
+        const roleDropdown = document.getElementById('roleDropdown');
+        const nameDropdown = document.getElementById('nameDropdown');
+        const displayUsername = document.getElementById('displayUsername');
+        const displayEmail = document.getElementById('displayEmail');
+        const displayRole = document.getElementById('displayRole');
+
+        // Dummy email mapping
+        const emailMap = {
+            'john.smith': 'john.smith@example.com',
+            'jane.doe': 'jane.doe@example.com',
+            'robert.johnson': 'robert.johnson@example.com',
+            'sarah.williams': 'sarah.williams@example.com'
+        };
+
+        function updateDisplay() {
+            const selectedName = nameDropdown.value;
+            const selectedRole = roleDropdown.value;
+            if (displayUsername) displayUsername.textContent = selectedName;
+            if (displayEmail) displayEmail.textContent = emailMap[selectedName] || '';
+            if (displayRole) displayRole.textContent = selectedRole;
+        }
+
+        if (roleDropdown) roleDropdown.addEventListener('change', updateDisplay);
+        if (nameDropdown) nameDropdown.addEventListener('change', updateDisplay);
+    })();
+</script>
 </body>
 
 </html>
