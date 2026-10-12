@@ -1,3 +1,6 @@
+<?php
+// user_registration.php
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -44,10 +47,7 @@
                     <div class="relative flex-1">
                         <i class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
                         <select id="roleSelect" class="w-full pl-8 pr-7 py-2 text-sm rounded-lg border border-gray-300 bg-white text-gray-700 appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
-                            <option value="" disabled selected>Select user role</option>
-                            <option value="Accountant">Accountant</option>
-                            <option value="HR Manager">HR Manager</option>
-                            <option value="Inventory Clerk">Inventory Clerk</option>
+                            <option value="" disabled selected>Loading roles...</option>
                         </select>
                         <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
                     </div>
@@ -82,11 +82,11 @@
             <!-- USERNAME FIELD -->
             <div class="mt-3">
                 <label class="block text-xs font-bold text-gray-800 mb-0.5">
-                    Name <span class="text-red-500 ml-0.5 font-semibold">*</span>
+                    Username <span class="text-red-500 ml-0.5 font-semibold">*</span>
                 </label>
                 <div class="relative">
                     <i class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                    <input type="text" id="name" placeholder="Enter name" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm bg-white">
+                    <input type="text" id="username" placeholder="Enter username" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm bg-white">
                 </div>
             </div>
 
@@ -97,7 +97,7 @@
                 </label>
                 <div class="relative">
                     <i class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                    <input type="text" id="password" value="Abcd@123" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm bg-white text-gray-700">
+                    <input type="password" id="password" placeholder="Enter password" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm bg-white text-gray-700">
                 </div>
                 <p class="text-[10px] text-green-600 mt-0.5 flex items-center gap-1">
                     <i class="fas fa-check-circle text-green-500 text-[9px]"></i> Password will be visible while entering.
@@ -142,7 +142,7 @@
             </div>
 
             <!-- Arrow decoration -->
-          <div class="absolute -right-60 top-1/2 transform -translate-y-1/2 hidden md:block">
+            <div class="absolute -right-60 top-1/2 transform -translate-y-1/2 hidden md:block">
                 <a href="user-permission.php" class="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-teal-500 text-teal-600 text-sm font-semibold rounded-xl shadow-md hover:bg-teal-50 hover:border-teal-600 transition-all duration-200">
                     <i class="fas fa-arrow-right text-teal-500"></i>
                     User Permission
@@ -156,10 +156,18 @@
     <script src="url.js"></script>
 
     <!-- ============================================================
-        REGISTRATION SUBMISSION LOGIC + UI INTERACTIONS
+        REGISTRATION SUBMISSION LOGIC + API INTEGRATION
         ============================================================ -->
     <script>
-        (function() {
+        function getApiUrl(path) {
+            const baseUrl = typeof url !== 'undefined' ? url : '';
+            if (!baseUrl) return path;
+            const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+            const cleanPath = path.startsWith('/') ? path : '/' + path;
+            return cleanBase + cleanPath;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
             const createRoleBtn = document.getElementById('createRoleBtn');
             const newRolePopup = document.getElementById('newRolePopup');
             const cancelNewRoleBtn = document.getElementById('cancelNewRoleBtn');
@@ -170,6 +178,41 @@
             const saveUserBtn = document.getElementById('saveUserBtn');
             const cancelMainBtn = document.getElementById('cancelMainBtn');
             const successPopup = document.getElementById('successPopup');
+
+            function getToken() {
+                return localStorage.getItem('auth_token') || localStorage.getItem('token') || localStorage.getItem('accessToken');
+            }
+
+            // Fetch Roles on Page Load
+            async function fetchRoles() {
+                try {
+                    const response = await fetch(getApiUrl('roles'), {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${getToken()}`,
+                            'Accept': 'application/json'
+                        }
+                    });
+                    const result = await response.json();
+                    if (response.ok) {
+                        roleSelect.innerHTML = '<option value="" disabled selected>Select user role</option>';
+                        const roles = result.data || result;
+                        roles.forEach(role => {
+                            const option = document.createElement('option');
+                            option.value = role.id;
+                            option.textContent = role.name;
+                            roleSelect.appendChild(option);
+                        });
+                    } else {
+                        roleSelect.innerHTML = '<option value="" disabled selected>Failed to load roles</option>';
+                    }
+                } catch (error) {
+                    console.error('Error fetching roles:', error);
+                    roleSelect.innerHTML = '<option value="" disabled selected>Error loading roles</option>';
+                }
+            }
+
+            fetchRoles();
 
             function showPopup(element) {
                 element.classList.remove('hidden');
@@ -189,54 +232,112 @@
                 newRoleInput.value = '';
             });
 
-            saveNewRoleBtn.addEventListener('click', function() {
+            // Save New Role via API (POST /roles)
+            saveNewRoleBtn.addEventListener('click', async function() {
                 const newRoleName = newRoleInput.value.trim();
                 if (!newRoleName) {
                     alert('Please enter a role name.');
                     return;
                 }
 
-                const existingOptions = Array.from(roleSelect.options).map(opt => opt.value.toLowerCase());
-                if (existingOptions.includes(newRoleName.toLowerCase())) {
-                    alert('Role already exists!');
-                    return;
+                try {
+                    saveNewRoleBtn.disabled = true;
+                    saveNewRoleBtn.textContent = 'Saving...';
+
+                    const response = await fetch(getApiUrl('roles'), {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${getToken()}`,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({ name: newRoleName })
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        const newRole = result.data;
+                        const newOption = document.createElement('option');
+                        newOption.value = newRole.id;
+                        newOption.textContent = newRole.name;
+                        roleSelect.appendChild(newOption);
+                        roleSelect.value = newRole.id;
+
+                        newRoleInput.value = '';
+                        hidePopup(newRolePopup);
+                    } else {
+                        alert(result.message || 'Failed to create role.');
+                    }
+                } catch (error) {
+                    console.error('Error creating role:', error);
+                    alert('Network error while creating role.');
+                } finally {
+                    saveNewRoleBtn.disabled = false;
+                    saveNewRoleBtn.textContent = 'Save Role';
                 }
-
-                const newOption = document.createElement('option');
-                newOption.value = newRoleName;
-                newOption.textContent = newRoleName;
-                roleSelect.appendChild(newOption);
-                roleSelect.value = newRoleName;
-
-                newRoleInput.value = '';
-                hidePopup(newRolePopup);
             });
 
-            saveUserBtn.addEventListener('click', function(e) {
+            // Save User via API (POST /users)
+            saveUserBtn.addEventListener('click', async function(e) {
                 e.preventDefault();
 
-                const role = roleSelect.value;
-                const username = document.getElementById('name').value.trim();
+                const roleId = roleSelect.value;
+                const username = document.getElementById('username').value.trim();
                 const email = document.getElementById('email').value.trim();
                 const password = document.getElementById('password').value.trim();
 
-                if (!role) { alert('Please select a user role.'); return; }
-                if (!username) { alert('Please enter a name.'); return; }
+                if (!roleId) { alert('Please select a user role.'); return; }
+                if (!username) { alert('Please enter a username.'); return; }
                 if (!email) { alert('Please enter an email address.'); return; }
                 if (!password) { alert('Please enter a password.'); return; }
 
-                showPopup(successPopup);
+                try {
+                    saveUserBtn.disabled = true;
+                    saveUserBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving User...';
 
-                setTimeout(() => {
-                    hidePopup(successPopup);
-                    console.log('Redirecting to User Role Permission...');
-                }, 2800);
+                    const payload = {
+                        role_id: roleId,
+                        username: username,
+                        email: email,
+                        password: password
+                    };
+
+                    const response = await fetch(getApiUrl('users'), {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${getToken()}`,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        showPopup(successPopup);
+                        setTimeout(() => {
+                            hidePopup(successPopup);
+                            window.location.href = 'user-permission.php';
+                        }, 2000);
+                    } else {
+                        alert(result.message || JSON.stringify(result.errors) || 'Failed to create user.');
+                        saveUserBtn.disabled = false;
+                        saveUserBtn.innerHTML = 'Save User';
+                    }
+                } catch (error) {
+                    console.error('Error creating user:', error);
+                    alert('Network error while saving user.');
+                    saveUserBtn.disabled = false;
+                    saveUserBtn.innerHTML = 'Save User';
+                }
             });
 
             cancelMainBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 roleSelect.value = '';
-                document.getElementById('name').value = '';
+                document.getElementById('username').value = '';
                 document.getElementById('email').value = '';
                 document.getElementById('password').value = 'Abcd@123';
                 if (!newRolePopup.classList.contains('hidden')) {
@@ -258,7 +359,7 @@
                     }
                 }
             });
-        })();
+        });
     </script>
 </body>
 
