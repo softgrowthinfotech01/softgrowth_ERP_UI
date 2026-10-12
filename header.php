@@ -51,19 +51,19 @@
 
 
                 <!-- Profile dropdown -->
-                 <a href="profile.php"> <div id="profileBox" class="hidden absolute right-0 top-12 w-48 bg-white rounded-xl shadow-lg border border-gray-100 p-2 dropdown-animate">
+                 <a href="profile"> <div id="profileBox" class="hidden absolute right-0 top-12 w-48 bg-white rounded-xl shadow-lg border border-gray-100 p-2 dropdown-animate">
                     <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer text-gray-700 font-medium">
                         <i class="fas fa-user-circle text-teal-500"></i> Profile 
                     </div></a>
                
 
-                     <a href="register_user.php"><div class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer text-gray-700 font-medium">
+                     <a href="register_user"><div class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer text-gray-700 font-medium">
                         <i class="fas fa-user-plus"></i> Register User 
                     </div></a>
                   
 
                     <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-red-50 cursor-pointer text-red-600 font-semibold">
-                        <a href="login.php">
+                        <a href="login">
                             <i class="fas fa-sign-out-alt"></i>
                             Logout
                         </a>
