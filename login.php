@@ -6,6 +6,8 @@
     <title>Login - Softgrowth ERP</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Include your global URL configuration script -->
+    <script src="url.js"></script>
     <style>
         /* ===== SMOOTH STEP TRANSITIONS ===== */
         .step-box {
@@ -73,6 +75,8 @@
         .otp-input:focus {
             box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
             border-color: #f97316;
+            transform: scale(1.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
         }
         .check-valid i { color: #22c55e !important; }
         .check-invalid i { color: #ef4444 !important; }
@@ -103,12 +107,6 @@
             animation: pulse-ring 2s ease-out infinite;
         }
 
-        /* ===== OTP BOUNCE ON FOCUS ===== */
-        .otp-input:focus {
-            transform: scale(1.05);
-            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-        }
-
         /* ===== SUCCESS CHECKMARK SCALE ===== */
         @keyframes successPop {
             0% { transform: scale(0.5); opacity: 0; }
@@ -125,24 +123,6 @@
 
 <body class="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-br from-slate-100 via-slate-50 to-orange-50">
 
-    <!-- ===== STEP INDICATOR ===== -->
-    <!-- <div id="stepIndicator" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 hidden sm:flex items-center gap-2 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-slate-200 transition-all duration-500">
-        <div id="stepIndicator1" class="flex items-center gap-1.5 text-xs font-semibold transition-all duration-500">
-            <span class="w-5 h-5 rounded-full bg-orange-600 text-white flex items-center justify-center text-[10px] transition-all duration-500">1</span>
-            <span class="text-slate-700 transition-all duration-500">Login</span>
-        </div>
-        <i class="fas fa-chevron-right text-slate-300 text-[10px]"></i>
-        <div id="stepIndicator2" class="flex items-center gap-1.5 text-xs font-semibold opacity-40 transition-all duration-500">
-            <span class="w-5 h-5 rounded-full bg-slate-300 text-white flex items-center justify-center text-[10px] transition-all duration-500">2</span>
-            <span class="text-slate-500 transition-all duration-500">Verify</span>
-        </div>
-        <i class="fas fa-chevron-right text-slate-300 text-[10px]"></i>
-        <div id="stepIndicator3" class="flex items-center gap-1.5 text-xs font-semibold opacity-40 transition-all duration-500">
-            <span class="w-5 h-5 rounded-full bg-slate-300 text-white flex items-center justify-center text-[10px] transition-all duration-500">3</span>
-            <span class="text-slate-500 transition-all duration-500">Success</span>
-        </div>
-    </div> -->
-
     <!-- =========================
          MAIN CARD
     ========================= -->
@@ -158,21 +138,19 @@
             <!-- Overlay Gradient -->
             <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-black/70"></div>
 
-            <!-- Subtle Dot Pattern -->
-
             <!-- Brand Content -->
             <div class="relative z-10 flex flex-col items-center text-center gap-5 w-full">
 
                 <!-- Organization Logo -->
-                <div class="bg-white rounded-2xl p-3 shadow-2xl ring-4 ring-white/20 transition-transform duration-500 hover:scale-105">
-                    <img src="images/" alt="Organization Logo"
-                         class="h-20 w-auto max-w-[180px] object-contain" />
+                <div class="bg-white rounded-2xl shadow-2xl p-0.5 ring-4 ring-white/20 transition-transform duration-500 hover:scale-105">
+                    <img id="brandLogo" src="images/default_logo.png" alt="Organization Logo"
+                         class="h-20 w-auto max-w-[180px] object-contain rounded-xl" />
                 </div>
 
                 <!-- Organization Name & Subtitle -->
                 <div class="space-y-1.5">
-                    <h1 class="text-xl font-extrabold tracking-tight text-white drop-shadow-lg">
-                        Oraganization Name
+                    <h1 id="brandOrgName" class="text-xl font-extrabold tracking-tight text-white drop-shadow-lg">
+                        Softgrowth ERP
                     </h1>
                     <p class="text-orange-200 text-xs font-semibold tracking-widest uppercase">
                        Smart Schools, Simple Management.
@@ -183,7 +161,7 @@
                 <div class="flex items-center gap-3">
                     <span class="h-px w-8 bg-orange-300/50"></span>
                     <p class="text-slate-300 text-xs font-medium tracking-wider">
-                       *****
+                       Secure Portal
                     </p>
                     <span class="h-px w-8 bg-orange-300/50"></span>
                 </div>
@@ -210,8 +188,6 @@
                     </div>
                 </div>
 
-             
-
             </div>
         </div>
 
@@ -236,14 +212,14 @@
 
                 <div class="mb-4">
                     <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
-                        Email <span class="text-red-500">*</span>
+                        Email or Username <span class="text-red-500">*</span>
                     </label>
                     <div class="relative">
                         <i class="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm z-10"></i>
-                        <input type="email" id="email" placeholder="Enter email address"
+                        <input type="text" id="loginIdentifier" placeholder="Enter email or username"
                                class="input-focus w-full p-3.5 pl-11 rounded-xl border border-slate-200 bg-slate-50/60 text-slate-800 text-sm placeholder:text-slate-400 outline-none transition-all duration-200" />
                     </div>
-                    <p class="text-red-500 text-xs mt-1.5 hidden" id="error-email">Email is required.</p>
+                    <p class="text-red-500 text-xs mt-1.5 hidden" id="error-loginIdentifier">Email or username is required.</p>
                 </div>
 
                 <div class="mb-4">
@@ -260,11 +236,7 @@
                     <p class="text-red-500 text-xs mt-1.5 hidden" id="error-password">Password is required.</p>
                 </div>
 
-                <div class="flex items-center justify-between mb-5">
-                    <label class="flex items-center gap-2 text-slate-600 cursor-pointer select-none text-xs font-medium">
-                        <input type="checkbox" class="accent-orange-500 w-4 h-4 rounded" />
-                        Remember me
-                    </label>
+                <div class="flex items-center justify-end mb-5">
                     <a href="#" onclick="showStep('step4'); return false;" class="text-orange-500 hover:text-orange-700 font-semibold text-xs transition">
                         Forgot Password?
                     </a>
@@ -273,9 +245,9 @@
                 <div class="flex gap-3">
                     <button type="button" onclick="resetLoginForm()"
                             class="flex-1 py-3 rounded-xl border border-slate-300 text-slate-600 font-semibold text-sm hover:bg-slate-50 transition-all duration-200">
-                        Cancel
+                        Clear
                     </button>
-                    <button type="button" onclick="handleLogin()"
+                    <button type="button" id="loginBtn" onclick="handleLogin()"
                             class="flex-1 py-3 rounded-xl bg-orange-600 text-white font-bold text-sm shadow-md hover:bg-orange-700 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200">
                         Login
                     </button>
@@ -297,7 +269,7 @@
                     </p>
                 </div>
 
-                <div class="flex justify-center gap-1.5 sm:gap-2 mb-3">
+                <div class="flex justify-center gap-1.5 sm:gap-2 mb-3" id="loginOtpContainer">
                     <input type="text" maxlength="1" class="otp-input w-10 h-12 sm:w-11 sm:h-13 text-center text-lg font-bold rounded-xl border border-slate-200 bg-slate-50 text-slate-800 outline-none transition-all duration-200" data-index="0" />
                     <input type="text" maxlength="1" class="otp-input w-10 h-12 sm:w-11 sm:h-13 text-center text-lg font-bold rounded-xl border border-slate-200 bg-slate-50 text-slate-800 outline-none transition-all duration-200" data-index="1" />
                     <input type="text" maxlength="1" class="otp-input w-10 h-12 sm:w-11 sm:h-13 text-center text-lg font-bold rounded-xl border border-slate-200 bg-slate-50 text-slate-800 outline-none transition-all duration-200" data-index="2" />
@@ -309,8 +281,8 @@
 
                 <p class="text-center text-xs text-slate-500 mb-5">
                     Didn't receive the OTP?
-                    <a href="#" id="resendOtpLogin" onclick="resendOtp('login'); return false;" class="text-blue-500 hover:text-blue-700 font-semibold transition">
-                        Resend OTP (00:45)
+                    <a href="#" id="resendOtpLogin" onclick="resendLoginOtp(); return false;" class="text-blue-500 hover:text-blue-700 font-semibold transition">
+                        Resend OTP
                     </a>
                 </p>
 
@@ -321,7 +293,7 @@
                     </button>
                     <button type="button" onclick="verifyLoginOtp()"
                             class="flex-1 py-3 rounded-xl bg-orange-600 text-white font-bold text-sm shadow-md hover:bg-orange-700 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200">
-                        Verify
+                        Verify & Login
                     </button>
                 </div>
             </div>
@@ -398,7 +370,7 @@
                     </p>
                 </div>
 
-                <div class="flex justify-center gap-1.5 sm:gap-2 mb-3">
+                <div class="flex justify-center gap-1.5 sm:gap-2 mb-3" id="resetOtpContainer">
                     <input type="text" maxlength="1" class="otp-input w-10 h-12 sm:w-11 sm:h-13 text-center text-lg font-bold rounded-xl border border-slate-200 bg-slate-50 text-slate-800 outline-none transition-all duration-200" data-index="0" />
                     <input type="text" maxlength="1" class="otp-input w-10 h-12 sm:w-11 sm:h-13 text-center text-lg font-bold rounded-xl border border-slate-200 bg-slate-50 text-slate-800 outline-none transition-all duration-200" data-index="1" />
                     <input type="text" maxlength="1" class="otp-input w-10 h-12 sm:w-11 sm:h-13 text-center text-lg font-bold rounded-xl border border-slate-200 bg-slate-50 text-slate-800 outline-none transition-all duration-200" data-index="2" />
@@ -410,8 +382,8 @@
 
                 <p class="text-center text-xs text-slate-500 mb-5">
                     Didn't receive the OTP?
-                    <a href="#" id="resendOtpReset" onclick="resendOtp('reset'); return false;" class="text-blue-500 hover:text-blue-700 font-semibold transition">
-                        Resend OTP (00:45)
+                    <a href="#" id="resendOtpReset" onclick="sendResetOtp(); return false;" class="text-blue-500 hover:text-blue-700 font-semibold transition">
+                        Resend OTP
                     </a>
                 </p>
 
@@ -422,7 +394,7 @@
                     </button>
                     <button type="button" onclick="verifyResetOtp()"
                             class="flex-1 py-3 rounded-xl bg-orange-600 text-white font-bold text-sm shadow-md hover:bg-orange-700 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200">
-                        Verify
+                        Verify OTP
                     </button>
                 </div>
             </div>
@@ -468,23 +440,7 @@
                 <ul class="space-y-1 text-xs text-slate-600 mb-5">
                     <li class="flex items-center gap-2" id="reset-req-length">
                         <i class="fas fa-circle-check text-slate-300 text-sm"></i>
-                        <span>Minimum 8 characters</span>
-                    </li>
-                    <li class="flex items-center gap-2" id="reset-req-upper">
-                        <i class="fas fa-circle-check text-slate-300 text-sm"></i>
-                        <span>At least 1 uppercase letter</span>
-                    </li>
-                    <li class="flex items-center gap-2" id="reset-req-lower">
-                        <i class="fas fa-circle-check text-slate-300 text-sm"></i>
-                        <span>At least 1 lowercase letter</span>
-                    </li>
-                    <li class="flex items-center gap-2" id="reset-req-number">
-                        <i class="fas fa-circle-check text-slate-300 text-sm"></i>
-                        <span>At least 1 number</span>
-                    </li>
-                    <li class="flex items-center gap-2" id="reset-req-special">
-                        <i class="fas fa-circle-check text-slate-300 text-sm"></i>
-                        <span>At least 1 special character</span>
+                        <span>Minimum 6 characters</span>
                     </li>
                 </ul>
 
@@ -493,7 +449,7 @@
                             class="flex-1 py-3 rounded-xl border border-slate-300 text-slate-600 font-semibold text-sm hover:bg-slate-50 transition-all duration-200">
                         Cancel
                     </button>
-                    <button type="button" onclick="resetPassword()"
+                    <button type="button" onclick="submitNewPassword()"
                             class="flex-1 py-3 rounded-xl bg-orange-600 text-white font-bold text-sm shadow-md hover:bg-orange-700 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200">
                         Reset Password
                     </button>
@@ -522,6 +478,40 @@
     </div>
 
     <script>
+
+        
+        // Global state IDs
+        let verificationId = null;
+        let resetVerificationId = null;
+
+        // ===== LOAD CACHED SCHOOL BRANDING ON STARTUP =====
+        document.addEventListener('DOMContentLoaded', () => {
+            const cachedInstitute = localStorage.getItem('cached_institute');
+            if (cachedInstitute) {
+                try {
+                    const institute = JSON.parse(cachedInstitute);
+                    if (institute.org_name) {
+                        document.getElementById('brandOrgName').textContent = institute.org_name;
+                    }
+                    if (institute.logo) {
+                        document.getElementById('brandLogo').src = institute.logo;
+                    }
+                } catch (e) {
+                    console.error('Error parsing cached institute data', e);
+                }
+            }
+        });
+
+        // ===== HELPER: CLEAR OTP FIELDS =====
+        function clearOtpInputs(containerId) {
+            const container = document.getElementById(containerId);
+            if (container) {
+                container.querySelectorAll('.otp-input').forEach(input => {
+                    input.value = '';
+                });
+            }
+        }
+
         // ===== PASSWORD TOGGLE =====
         function togglePassword(id, icon) {
             const input = document.getElementById(id);
@@ -541,6 +531,17 @@
 
             if (currentActive === nextStep) return;
 
+            if (stepId === 'step1') {
+                clearOtpInputs('loginOtpContainer');
+                clearOtpInputs('resetOtpContainer');
+            }
+            if (stepId === 'step2') {
+                clearOtpInputs('loginOtpContainer');
+            }
+            if (stepId === 'step5') {
+                clearOtpInputs('resetOtpContainer');
+            }
+
             if (currentActive) {
                 currentActive.classList.add('exiting');
                 currentActive.classList.remove('active');
@@ -552,28 +553,6 @@
             } else {
                 nextStep.classList.add('active');
             }
-
-            const stepNum = parseInt(stepId.replace('step', ''));
-            const indicator = document.getElementById('stepIndicator');
-
-            if (stepNum > 3) {
-                indicator.classList.add('hidden');
-            } else {
-                indicator.classList.remove('hidden');
-                for (let i = 1; i <= 3; i++) {
-                    const el = document.getElementById('stepIndicator' + i);
-                    const circle = el.querySelector('span');
-                    if (i <= stepNum) {
-                        el.classList.remove('opacity-40');
-                        circle.classList.remove('bg-slate-300');
-                        circle.classList.add('bg-orange-600');
-                    } else {
-                        el.classList.add('opacity-40');
-                        circle.classList.remove('bg-orange-600');
-                        circle.classList.add('bg-slate-300');
-                    }
-                }
-            }
         }
 
         // ===== TOAST ALERT =====
@@ -581,31 +560,44 @@
             const alert = document.getElementById('customAlert');
             document.getElementById('alertMessage').textContent = msg;
             alert.classList.remove('hidden');
-            setTimeout(() => alert.classList.add('hidden'), 2200);
+            setTimeout(() => alert.classList.add('hidden'), 3000);
+        }
+
+        // ===== DYNAMIC SCHOOL BRANDING =====
+        function updateSchoolBranding(institute) {
+            if (institute) {
+                if (institute.org_name) {
+                    document.getElementById('brandOrgName').textContent = institute.org_name;
+                }
+                if (institute.logo) {
+                    document.getElementById('brandLogo').src = institute.logo;
+                }
+            }
         }
 
         // ===== LOGIN FORM =====
         function resetLoginForm() {
-            document.getElementById('username').value = '';
+            document.getElementById('loginIdentifier').value = '';
             document.getElementById('password').value = '';
-            document.getElementById('error-username').classList.add('hidden');
+            document.getElementById('error-loginIdentifier').classList.add('hidden');
             document.getElementById('error-password').classList.add('hidden');
-            document.getElementById('username').classList.remove('border-red-500', 'bg-red-50');
+            document.getElementById('loginIdentifier').classList.remove('border-red-500', 'bg-red-50');
             document.getElementById('password').classList.remove('border-red-500', 'bg-red-50');
+            clearOtpInputs('loginOtpContainer');
         }
 
-        function handleLogin() {
-            const username = document.getElementById('username').value.trim();
+        async function handleLogin() {
+            const identifier = document.getElementById('loginIdentifier').value.trim();
             const password = document.getElementById('password').value.trim();
             let valid = true;
 
-            if (username === '') {
-                document.getElementById('error-username').classList.remove('hidden');
-                document.getElementById('username').classList.add('border-red-500', 'bg-red-50');
+            if (identifier === '') {
+                document.getElementById('error-loginIdentifier').classList.remove('hidden');
+                document.getElementById('loginIdentifier').classList.add('border-red-500', 'bg-red-50');
                 valid = false;
             } else {
-                document.getElementById('error-username').classList.add('hidden');
-                document.getElementById('username').classList.remove('border-red-500', 'bg-red-50');
+                document.getElementById('error-loginIdentifier').classList.add('hidden');
+                document.getElementById('loginIdentifier').classList.remove('border-red-500', 'bg-red-50');
             }
 
             if (password === '') {
@@ -617,12 +609,43 @@
                 document.getElementById('password').classList.remove('border-red-500', 'bg-red-50');
             }
 
-            if (valid) {
-                showAlert('Credentials validated. Sending OTP...');
-                setTimeout(() => {
-                    showStep('step2');
-                    startCountdown('resendOtpLogin');
-                }, 800);
+            if (!valid) return;
+
+            const isEmail = identifier.includes('@');
+            const payload = { password: password };
+            if (isEmail) {
+                payload.email = identifier;
+            } else {
+                payload.username = identifier;
+            }
+
+            try {
+                const response = await fetch(url + `login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message || 'Login failed.');
+                }
+
+                verificationId = data.verification_id;
+
+                if (data.institute) {
+                    updateSchoolBranding(data.institute);
+                }
+
+                showAlert(data.message || 'OTP sent successfully.');
+                showStep('step2');
+
+            } catch (error) {
+                showAlert(error.message);
             }
         }
 
@@ -655,46 +678,78 @@
             return Array.from(container.querySelectorAll('.otp-input')).map(i => i.value).join('');
         }
 
-        // ===== RESEND COUNTDOWN =====
-        function startCountdown(linkId) {
-            const link = document.getElementById(linkId);
-            if (!link) return;
-            let seconds = 45;
-            link.style.pointerEvents = 'none';
-            link.style.opacity = '0.6';
-            link.textContent = `Resend OTP (00:${seconds.toString().padStart(2, '0')})`;
-            const timer = setInterval(() => {
-                seconds--;
-                link.textContent = `Resend OTP (00:${seconds.toString().padStart(2, '0')})`;
-                if (seconds <= 0) {
-                    clearInterval(timer);
-                    link.textContent = 'Resend OTP';
-                    link.style.pointerEvents = 'auto';
-                    link.style.opacity = '1';
-                }
-            }, 1000);
-        }
-
-        function resendOtp(type) {
-            const linkId = type === 'login' ? 'resendOtpLogin' : 'resendOtpReset';
-            showAlert('OTP resent to your email!');
-            startCountdown(linkId);
+        async function resendLoginOtp() {
+            if (!verificationId) return;
+            clearOtpInputs('loginOtpContainer');
+            try {
+                const response = await fetch(url + `login/resend-otp`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ verification_id: verificationId })
+                });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.message || 'Could not resend OTP.');
+                verificationId = data.verification_id;
+                showAlert('A new OTP has been sent to your email.');
+            } catch (error) {
+                showAlert(error.message);
+            }
         }
 
         // ===== VERIFY LOGIN OTP =====
-        function verifyLoginOtp() {
-            const otp = getOtpValues('step2');
+        async function verifyLoginOtp() {
+            const otp = getOtpValues('loginOtpContainer');
             if (otp.length !== 6) {
                 document.getElementById('error-otp').classList.remove('hidden');
                 return;
             }
             document.getElementById('error-otp').classList.add('hidden');
-            showAlert('OTP verified successfully!');
-            setTimeout(() => showStep('step3'), 800);
+
+            try {
+                const response = await fetch(url + `login/verify-otp`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        verification_id: verificationId,
+                        otp: otp
+                    })
+                });
+
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.message || 'OTP verification failed.');
+
+                // Store Sanctum token and user details locally
+                localStorage.setItem('auth_token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
+                
+                if (data.institute) {
+                    localStorage.setItem('institute', JSON.stringify(data.institute));
+                    
+                    // Cache branding for future revisits to the login page
+                    localStorage.setItem('cached_institute', JSON.stringify({
+                        org_name: data.institute.org_name,
+                        logo: data.institute.logo
+                    }));
+
+                    updateSchoolBranding(data.institute);
+                }
+
+                showAlert(data.message || 'Login Success!');
+                setTimeout(() => showStep('step3'), 800);
+
+            } catch (error) {
+                showAlert(error.message);
+            }
         }
 
         // ===== FORGOT PASSWORD =====
-        function sendResetOtp() {
+        async function sendResetOtp() {
             const email = document.getElementById('resetEmail').value.trim();
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
@@ -704,58 +759,69 @@
             }
             document.getElementById('error-resetEmail').classList.add('hidden');
             document.getElementById('resetEmail').classList.remove('border-red-500', 'bg-red-50');
-            showAlert('Reset OTP sent to your email!');
-            setTimeout(() => {
+
+            try {
+                const response = await fetch(url + `forgot-password`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ email: email })
+                });
+
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.message || 'Failed to send reset OTP.');
+
+                resetVerificationId = data.verification_id;
+                showAlert(data.message);
                 showStep('step5');
-                startCountdown('resendOtpReset');
-            }, 800);
+
+            } catch (error) {
+                showAlert(error.message);
+            }
         }
 
         // ===== VERIFY RESET OTP =====
-        function verifyResetOtp() {
-            const otp = getOtpValues('step5');
+        async function verifyResetOtp() {
+            const otp = getOtpValues('resetOtpContainer');
             if (otp.length !== 6) {
                 document.getElementById('error-otp2').classList.remove('hidden');
                 return;
             }
             document.getElementById('error-otp2').classList.add('hidden');
-            showAlert('OTP verified!');
-            setTimeout(() => showStep('step6'), 800);
-        }
 
-        // ===== NEW PASSWORD VALIDATION =====
-        const newPasswordInput = document.getElementById('newPassword');
-        newPasswordInput.addEventListener('input', () => {
-            const val = newPasswordInput.value;
-            updateResetReq('reset-req-length', val.length >= 8);
-            updateResetReq('reset-req-upper', /[A-Z]/.test(val));
-            updateResetReq('reset-req-lower', /[a-z]/.test(val));
-            updateResetReq('reset-req-number', /[0-9]/.test(val));
-            updateResetReq('reset-req-special', /[!@#$%^&*(),.?":{}|<>]/.test(val));
-        });
+            try {
+                const response = await fetch(url + `forgot-password/verify-otp`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        verification_id: resetVerificationId,
+                        otp: otp
+                    })
+                });
 
-        function updateResetReq(id, isValid) {
-            const el = document.getElementById(id);
-            const icon = el.querySelector('i');
-            if (isValid) {
-                el.classList.add('check-valid');
-                el.classList.remove('check-invalid');
-                icon.classList.remove('text-slate-300');
-            } else {
-                el.classList.remove('check-valid');
-                el.classList.add('check-invalid');
-                icon.classList.add('text-slate-300');
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.message || 'Invalid or expired OTP.');
+
+                showAlert(data.message);
+                setTimeout(() => showStep('step6'), 800);
+
+            } catch (error) {
+                showAlert(error.message);
             }
         }
 
-        // ===== RESET PASSWORD =====
-        function resetPassword() {
+        // ===== SUBMIT NEW PASSWORD =====
+        async function submitNewPassword() {
             const newPass = document.getElementById('newPassword').value;
             const confirmPass = document.getElementById('confirmNewPassword').value;
             let valid = true;
 
-            const passValid = newPass.length >= 8 && /[A-Z]/.test(newPass) && /[a-z]/.test(newPass) && /[0-9]/.test(newPass) && /[!@#$%^&*(),.?":{}|<>]/.test(newPass);
-            if (!passValid) {
+            if (newPass.length < 6) {
                 document.getElementById('error-newPassword').classList.remove('hidden');
                 document.getElementById('newPassword').classList.add('border-red-500', 'bg-red-50');
                 valid = false;
@@ -773,18 +839,39 @@
                 document.getElementById('confirmNewPassword').classList.remove('border-red-500', 'bg-red-50');
             }
 
-            if (valid) {
-                showAlert('Password reset successfully!');
+            if (!valid) return;
+
+            try {
+                const response = await fetch(url + `forgot-password/reset`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        verification_id: resetVerificationId,
+                        password: newPass,
+                        password_confirmation: confirmPass
+                    })
+                });
+
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.message || 'Password reset failed.');
+
+                showAlert(data.message);
                 setTimeout(() => {
                     document.getElementById('newPassword').value = '';
                     document.getElementById('confirmNewPassword').value = '';
                     showStep('step1');
                 }, 1400);
+
+            } catch (error) {
+                showAlert(error.message);
             }
         }
 
         // ===== CLEAR ERRORS ON INPUT =====
-        ['username', 'password', 'resetEmail', 'newPassword', 'confirmNewPassword'].forEach(id => {
+        ['loginIdentifier', 'password', 'resetEmail', 'newPassword', 'confirmNewPassword'].forEach(id => {
             const el = document.getElementById(id);
             if (el) {
                 el.addEventListener('input', () => {
