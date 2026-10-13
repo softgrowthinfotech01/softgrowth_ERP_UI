@@ -12,6 +12,22 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <style>
+        /* ===== EYE BUTTON ===== */
+        .eye-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #94a3b8;
+            transition: color 0.2s;
+            font-size: 0.9rem;
+            line-height: 1;
+        }
+        .eye-btn:hover { color: #0f766e; }
+    </style>
 </head>
 
 <body class="bg-gray-300 text-gray-800 antialiased min-h-screen">
@@ -79,28 +95,29 @@
                 </div>
             </div>
 
-            <!-- USERNAME FIELD -->
+            <!-- NAME FIELD (Maps to username in backend) -->
             <div class="mt-3">
                 <label class="block text-xs font-bold text-gray-800 mb-0.5">
-                    Username <span class="text-red-500 ml-0.5 font-semibold">*</span>
+                    Name <span class="text-red-500 ml-0.5 font-semibold">*</span>
                 </label>
                 <div class="relative">
                     <i class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                    <input type="text" id="username" placeholder="Enter username" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm bg-white">
+                    <input type="text" id="username" placeholder="Enter name" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm bg-white">
                 </div>
             </div>
 
-            <!-- PASSWORD FIELD -->
+            <!-- PASSWORD FIELD WITH EYE TOGGLE -->
             <div class="mt-2.5">
                 <label class="block text-xs font-bold text-gray-800 mb-0.5">
                     Password <span class="text-red-500 ml-0.5 font-semibold">*</span>
                 </label>
                 <div class="relative">
-                    <i class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                    <input type="password" id="password" placeholder="Enter password" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm bg-white text-gray-700">
+                    <i class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs z-10"></i>
+                    <input type="password" id="password" value="" placeholder="Enter password" class="w-full pl-8 pr-9 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm bg-white text-gray-700">
+                    <span class="eye-btn" onclick="togglePassword('password', this)"><i class="fas fa-eye"></i></span>
                 </div>
                 <p class="text-[10px] text-green-600 mt-0.5 flex items-center gap-1">
-                    <i class="fas fa-check-circle text-green-500 text-[9px]"></i> Password will be visible while entering.
+                    <i class="fas fa-check-circle text-green-500 text-[9px]"></i> Click the eye icon to view or hide password.
                 </p>
             </div>
 
@@ -165,6 +182,18 @@
             const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
             const cleanPath = path.startsWith('/') ? path : '/' + path;
             return cleanBase + cleanPath;
+        }
+
+        // Password Eye Toggle Function
+        function togglePassword(id, icon) {
+            const input = document.getElementById(id);
+            if (input.type === "password") {
+                input.type = "text";
+                icon.innerHTML = '<i class="fas fa-eye-slash"></i>';
+            } else {
+                input.type = "password";
+                icon.innerHTML = '<i class="fas fa-eye"></i>';
+            }
         }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -288,7 +317,7 @@
                 const password = document.getElementById('password').value.trim();
 
                 if (!roleId) { alert('Please select a user role.'); return; }
-                if (!username) { alert('Please enter a username.'); return; }
+                if (!username) { alert('Please enter a name.'); return; }
                 if (!email) { alert('Please enter an email address.'); return; }
                 if (!password) { alert('Please enter a password.'); return; }
 
