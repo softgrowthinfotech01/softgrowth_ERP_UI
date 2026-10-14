@@ -17,387 +17,174 @@
     <!-- MENU -->
     <div class="p-4 space-y-1">
 
-        <a href="dashboard" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-bold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
+        <!-- Dashboard -->
+        <a href="dashboard" data-slug="dashboard" class="sidebar-menu-item sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-bold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
             <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-teal-600">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    class="w-5 h-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M3 10.5L12 3l9 7.5M5 9.5V21h14V9.5M9 21v-6h6v6" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 10.5L12 3l9 7.5M5 9.5V21h14V9.5M9 21v-6h6v6" />
                 </svg>
             </span> <span>Dashboard</span>
         </a>
 
         <!-- Student Entry Dropdown -->
-        <div class="dropdown">
-            <button onclick="toggleDropdown('studentMenu')" class="sidebar-dropdown-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
+        <div class="dropdown sidebar-menu-group" data-group-slug="student-entry">
+            <button onclick="toggleDropdown('studentMenu')" data-slug="student-entry" class="sidebar-menu-item sidebar-dropdown-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
                 <span class="flex items-center gap-3">
                     <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-teal-600">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            class="w-5 h-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M22 10L12 5 2 10l10 5 10-5z" />
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M6 12.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-3.5" />
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M22 10v6" />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M22 10L12 5 2 10l10 5 10-5z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 12.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-3.5" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M22 10v6" />
                         </svg>
                     </span>
                     <span>Student Entry</span>
                 </span>
                 <span class="arrow transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] inline-flex items-center justify-center w-6 h-6 rounded-3xl bg-transparent backdrop-blur-md border border-white/30 shadow-lg shadow-black/5 hover:shadow-teal-400/20 rotate-0 group">
-                    <svg class="w-4 h-4 text-gray-700   transition-all duration-500 group-hover:text-teal-600 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4 text-gray-700 transition-all duration-500 group-hover:text-teal-600 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
                     </svg>
                 </span>
             </button>
             <div id="studentMenu" class="dropdown-menu overflow-hidden max-h-0 transition-all duration-300 ease-in-out ml-4 pl-4 border-l-2 border-teal-200 space-y-1 mt-1">
-                <a href="student_reg"
-                    class="sidebar-sub-link flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 font-semibold hover:bg-teal-50 hover:text-teal-700 transition">
-
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        class="w-5 h-5 text-teal-600"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M15 19a4 4 0 00-8 0" />
+                <a href="student_reg" data-slug="student-registration" class="sidebar-menu-item sidebar-sub-link flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 font-semibold hover:bg-teal-50 hover:text-teal-700 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19a4 4 0 00-8 0" />
                         <circle cx="11" cy="8" r="3" />
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M19 8v6M16 11h6" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 8v6M16 11h6" />
                     </svg>
-
                     <span>Student Registration</span>
                 </a>
-                <a href="student_payment"
-                    class="sidebar-sub-link flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 font-semibold hover:bg-teal-50 hover:text-teal-700 transition">
-
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        class="w-5 h-5 text-teal-600"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        stroke-width="2">
+                <a href="student_payment" data-slug="student-payment" class="sidebar-menu-item sidebar-sub-link flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 font-semibold hover:bg-teal-50 hover:text-teal-700 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <rect x="3" y="5" width="18" height="14" rx="2" />
                         <path stroke-linecap="round" d="M3 10h18" />
                         <path stroke-linecap="round" d="M7 15h3" />
                     </svg>
-
                     <span>Student Payment</span>
                 </a>
             </div>
         </div>
 
         <!-- Records Dropdown -->
-        <div class="dropdown">
-
-            <button onclick="toggleDropdown('recordMenu')"
-                class="sidebar-dropdown-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
-
+        <div class="dropdown sidebar-menu-group" data-group-slug="records">
+            <button onclick="toggleDropdown('recordMenu')" data-slug="records" class="sidebar-menu-item sidebar-dropdown-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
                 <span class="flex items-center gap-3">
-
-                    <!-- Records Icon -->
                     <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-teal-600">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            class="w-5 h-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M4 6h16M4 12h16M4 18h16" />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                             <circle cx="7" cy="6" r="1" />
                             <circle cx="7" cy="12" r="1" />
                             <circle cx="7" cy="18" r="1" />
                         </svg>
                     </span>
-
                     <span>Records</span>
                 </span>
-
-                <!-- Arrow -->
                 <span class="arrow transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] inline-flex items-center justify-center w-6 h-6 rounded-3xl bg-transparent backdrop-blur-md border border-white/30 hover:shadow-teal-400/20 rotate-0 group">
-                    <svg class="w-4 h-4 text-gray-700 transition-all duration-500 group-hover:text-teal-600 group-hover:scale-110"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2.5"
-                            d="M19 9l-7 7-7-7">
-                        </path>
+                    <svg class="w-4 h-4 text-gray-700 transition-all duration-500 group-hover:text-teal-600 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
                     </svg>
                 </span>
-
             </button>
-
-
-            <div id="recordMenu"
-                class="dropdown-menu overflow-hidden max-h-0 transition-all duration-300 ease-in-out ml-4 pl-4 border-l-2 border-teal-200 space-y-1 mt-1">
-
-
-                <!-- Student Record -->
-                <a href="student_record"
-                    class="sidebar-sub-link flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 font-semibold hover:bg-teal-50 hover:text-teal-700 transition">
-
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        class="w-5 h-5 text-teal-600"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        stroke-width="2">
-
+            <div id="recordMenu" class="dropdown-menu overflow-hidden max-h-0 transition-all duration-300 ease-in-out ml-4 pl-4 border-l-2 border-teal-200 space-y-1 mt-1">
+                <a href="student_record" data-slug="student-record" class="sidebar-menu-item sidebar-sub-link flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 font-semibold hover:bg-teal-50 hover:text-teal-700 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <circle cx="9" cy="8" r="3" />
-                        <path stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M3 20a6 6 0 0112 0" />
-
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 20a6 6 0 0112 0" />
                         <circle cx="17" cy="8" r="2" />
-                        <path stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M15 20a4 4 0 014-4 4 4 0 014 4" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 20a4 4 0 014-4 4 4 0 014 4" />
                     </svg>
-
                     <span>Student Record</span>
                 </a>
-
-
-                <!-- Payment Record -->
-                <a href="payment_record"
-                    class="sidebar-sub-link flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 font-semibold hover:bg-teal-50 hover:text-teal-700 transition">
-
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        class="w-5 h-5 text-teal-600"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        stroke-width="2">
-
+                <a href="payment_record" data-slug="payment-record" class="sidebar-menu-item sidebar-sub-link flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 font-semibold hover:bg-teal-50 hover:text-teal-700 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <rect x="3" y="5" width="18" height="14" rx="2" />
                         <path stroke-linecap="round" d="M3 10h18" />
                         <path stroke-linecap="round" d="M7 15h4" />
                     </svg>
-
                     <span>Payment Record</span>
                 </a>
-
-
-                <!-- Balance Payments -->
-                <a href="balance_payment"
-                    class="sidebar-sub-link flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 font-semibold hover:bg-teal-50 hover:text-teal-700 transition">
-
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        class="w-5 h-5 text-teal-600"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        stroke-width="2">
-
-                        <path stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M12 3v18M3 8h18M3 16h18" />
-
+                <a href="balance_payment" data-slug="balance-payments" class="sidebar-menu-item sidebar-sub-link flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 font-semibold hover:bg-teal-50 hover:text-teal-700 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18M3 8h18M3 16h18" />
                         <circle cx="12" cy="12" r="9" />
                     </svg>
-
                     <span>Balance Payments</span>
                 </a>
-
-
-                <!-- Ledger -->
-                <a href="Leager_form"
-                    class="sidebar-sub-link flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 font-semibold hover:bg-teal-50 hover:text-teal-700 transition">
-
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        class="w-5 h-5 text-teal-600"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        stroke-width="2">
-
-                        <path stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M6 3h12v18H6z" />
-
-                        <path stroke-linecap="round"
-                            d="M9 7h6M9 11h6M9 15h4" />
+                <a href="Leager_form" data-slug="ledger" class="sidebar-menu-item sidebar-sub-link flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 font-semibold hover:bg-teal-50 hover:text-teal-700 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 3h12v18H6z" />
+                        <path stroke-linecap="round" d="M9 7h6M9 11h6M9 15h4" />
                     </svg>
-
                     <span>Ledger</span>
                 </a>
-
-
-                <!-- Cash Memo Records -->
-                <a href="cash_memo_records"
-                    class="sidebar-sub-link flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 font-semibold hover:bg-teal-50 hover:text-teal-700 transition">
-
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        class="w-5 h-5 text-teal-600"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        stroke-width="2">
-
+                <a href="cash_memo_records" data-slug="cash-memo-records" class="sidebar-menu-item sidebar-sub-link flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 font-semibold hover:bg-teal-50 hover:text-teal-700 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <rect x="4" y="3" width="16" height="18" rx="2" />
                         <path stroke-linecap="round" d="M8 7h8M8 11h8M8 15h5" />
                         <path stroke-linecap="round" d="M8 18h3" />
                     </svg>
-
                     <span>Cash Memo Records</span>
                 </a>
-
             </div>
         </div>
 
         <!-- Bonafide -->
-        <a href="bonafide"
-            class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
-
+        <a href="bonafide" data-slug="bonafide" class="sidebar-menu-item sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
             <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-teal-600">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    class="w-5 h-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M7 3h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-4l-3 4-3-4H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M9 8h6M9 12h6" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 3h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-4l-3 4-3-4H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 8h6M9 12h6" />
                 </svg>
             </span>
-
             <span>Bonafide</span>
         </a>
 
-
         <!-- Cash Memo -->
-        <a href="cash_memo"
-            class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
-
+        <a href="cash_memo" data-slug="cash-memo" class="sidebar-menu-item sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
             <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-teal-600">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    class="w-5 h-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M5 4h14v16l-2-1.5L15 20l-3-1.5L9 20l-2-1.5L5 20V4z" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 4h14v16l-2-1.5L15 20l-3-1.5L9 20l-2-1.5L5 20V4z" />
                     <path stroke-linecap="round" d="M8 8h8M8 12h6" />
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M15 15h3" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 15h3" />
                 </svg>
             </span>
-
             <span>Cash Memo</span>
         </a>
 
-
-        <!-- I Card -->
-        <!-- <a href="i_card"
-            class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
-
-            <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-teal-600">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    class="w-5 h-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2">
-                    <rect x="3" y="5" width="18" height="14" rx="2" />
-                    <circle cx="8" cy="12" r="2.5" />
-                    <path stroke-linecap="round" d="M13 10h5" />
-                    <path stroke-linecap="round" d="M13 14h4" />
-                </svg>
-            </span>
-
-            <span>I Card</span>
-        </a> -->
-
-
         <!-- Fees Structure Master -->
-        <a href="fees_structure_master"
-            class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
-
+        <a href="fees_structure_master" data-slug="fees-structure-master" class="sidebar-menu-item sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
             <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-teal-600">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    class="w-5 h-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <circle cx="9" cy="9" r="5" />
                     <circle cx="15" cy="15" r="5" />
                     <path stroke-linecap="round" d="M9 7v4M7 9h4" />
                     <path stroke-linecap="round" d="M15 13v4M13 15h4" />
                 </svg>
             </span>
-
             <span>Fees Structure Master</span>
         </a>
 
-
         <!-- User Logs -->
-        <a href="log"
-            class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
-
+        <a href="log" data-slug="user-logs" class="sidebar-menu-item sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
             <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-teal-600">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    class="w-5 h-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M4 5h16v14H4z" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 5h16v14H4z" />
                     <path stroke-linecap="round" d="M8 9h8M8 13h5" />
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M8 17a5 5 0 0 0 8-1" />
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M16 13v3h-3" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 17a5 5 0 0 0 8-1" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 13v3h-3" />
                 </svg>
             </span>
-
             <span>User Logs</span>
         </a>
 
-
-
-
-
         <!-- Logout -->
-        <a href="login.php"
-            class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-600 font-semibold hover:bg-red-50 transition-all duration-200 mt-4 border-b border-gray-300 pt-4">
-
+        <a href="login.php" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-600 font-semibold hover:bg-red-50 transition-all duration-200 mt-4 border-b border-gray-300 pt-4">
             <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-50 text-red-500">
-
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    class="w-5 h-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2">
-
-                    <path stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M10 5H5v14h5" />
-
-                    <path stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M14 8l4 4-4 4M18 12H9" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 5H5v14h5" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 8l4 4-4 4M18 12H9" />
                 </svg>
-
             </span>
-
             <span>Logout</span>
         </a>
 
@@ -410,82 +197,36 @@
 </button>
 
 <style>
-    /* minimal custom – dropdown max-height animation & scrollbar */
     .dropdown-menu {
         max-height: 0;
         overflow: hidden;
         transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
-
     .dropdown-menu.open {
         max-height: 500px;
-        /* enough to show all items */
     }
-
     .arrow.rotate-180 {
         transform: rotate(180deg);
     }
-
-    /* custom scrollbar for sidebar */
     .erp-side::-webkit-scrollbar {
         width: 5px;
     }
-
     .erp-side::-webkit-scrollbar-thumb {
         background: #d1d5db;
         border-radius: 20px;
     }
-
-    .erp-side::-webkit-scrollbar-thumb:hover {
-        background: #a1a8b3;
-    }
-
-    /* ---- ACTIVE MENU STYLES ---- */
-    .sidebar-link.active {
+    .sidebar-link.active, .sidebar-dropdown-btn.active, .sidebar-sub-link.active {
         background: #f0fdfa;
         color: #0f766e;
-        /* border-left: 4px solid #0f766e; */
         padding-left: 11px;
     }
-
-    .sidebar-link.active .w-9 {
-        background: #0D9488;
-        color: white;
-    }
-
-    .sidebar-dropdown-btn.active {
-        background: #f0fdfa;
-        color: #0f766e;
-        /* border-left: 4px solid #0f766e; */
-        padding-left: 11px;
-    }
-
-    .sidebar-dropdown-btn.active .w-9 {
-        background: #0f766e;
-        color: white;
-    }
-
-    .sidebar-sub-link.active {
-        background: #f0fdfa;
-        color: #0f766e;
-        /* border-left: 3px solid #0f766e; */
-        padding-left: 11px;
-    }
-
-    /* dropdown parent active state when child is active */
-    .dropdown.has-active>.sidebar-dropdown-btn {
-        background: #f0fdfa;
-        color: #0f766e;
-        /* border-left: 4px solid #0f766e; */
-        padding-left: 11px;
-    }
-
-    .dropdown.has-active>.sidebar-dropdown-btn .w-9 {
+    .sidebar-link.active .w-9, .sidebar-dropdown-btn.active .w-9 {
         background: #0D9488;
         color: white;
     }
 </style>
 
+<script src="url.js"></script>
 <script>
     const sidebar = document.getElementById("sidebar");
     const overlay = document.getElementById("overlay");
@@ -507,7 +248,6 @@
         const arrow = menu.closest(".dropdown").querySelector(".arrow");
         const isOpen = menu.classList.contains("open");
 
-        // close all other dropdowns
         document.querySelectorAll(".dropdown-menu").forEach(m => {
             if (m.id !== id) {
                 m.classList.remove("open");
@@ -524,7 +264,6 @@
         }
     }
 
-    // close sidebar on window resize to desktop
     window.addEventListener("resize", () => {
         if (window.innerWidth >= 1024) {
             overlay.classList.add("hidden");
@@ -534,51 +273,84 @@
         }
     });
 
-    // ============================================
-    // ACTIVE MENU DETECTION
-    // ============================================
-    document.addEventListener("DOMContentLoaded", function() {
+    // Permission filtering on load
+    document.addEventListener("DOMContentLoaded", async function() {
+        function getToken() {
+            return localStorage.getItem('auth_token') || localStorage.getItem('token') || localStorage.getItem('accessToken') || sessionStorage.getItem('token');
+        }
+
+        const token = getToken();
+        if (!token) return;
+
+        const baseUrl = typeof url !== 'undefined' ? url : '';
+        const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+
+        try {
+            const headers = {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json'
+            };
+
+            const userRes = await fetch(`${cleanBase}/user`, { method: 'GET', headers });
+            if (!userRes.ok) return;
+            const userData = await userRes.json();
+            const user = userData.data || userData;
+
+            // Admin sees everything
+            if (user.role === 'admin' || user.role === 'Super Admin') return;
+
+            if (!user.role_id) {
+                document.querySelectorAll('.sidebar-menu-item').forEach(el => el.style.display = 'none');
+                return;
+            }
+
+            const permRes = await fetch(`${cleanBase}/roles/${user.role_id}/permissions`, { method: 'GET', headers });
+            if (!permRes.ok) return;
+            const permData = await permRes.json();
+            const permissions = permData.data.permissions || [];
+
+            // Get allowed menu slugs with 'view' permission
+            const allowedSlugs = permissions
+                .filter(p => p.action.toLowerCase() === 'view')
+                .map(p => p.menu_slug ? p.menu_slug.toLowerCase() : '');
+
+            // Loop through static menu elements and hide unauthorized ones
+            document.querySelectorAll('.sidebar-menu-item').forEach(item => {
+                const slug = item.getAttribute('data-slug');
+                if (slug && !allowedSlugs.includes(slug)) {
+                    item.style.display = 'none';
+                }
+            });
+
+            // Hide parent dropdown containers if all their children are hidden
+            document.querySelectorAll('.sidebar-menu-group').forEach(group => {
+                const visibleChildren = group.querySelectorAll('.sidebar-sub-link:not([style*="display: none"])');
+                const parentBtn = group.querySelector('.sidebar-dropdown-btn');
+                
+                // If parent button itself is hidden or all children are hidden, hide the whole group container
+                if (parentBtn && parentBtn.style.display === 'none' && visibleChildren.length === 0) {
+                    group.style.display = 'none';
+                } else if (visibleChildren.length === 0) {
+                    group.style.display = 'none';
+                }
+            });
+
+        } catch (err) {
+            console.error('Error applying sidebar permissions:', err);
+        }
+
+        // Highlight active link
         const currentPath = window.location.pathname.split("/").pop() || "dashboard";
-        const currentPage = currentPath.split(".")[0]; // remove .php if present
-
-        // 1. Highlight direct links
-        document.querySelectorAll(".sidebar-link").forEach(link => {
+        const currentPage = currentPath.split(".")[0];
+        document.querySelectorAll(".sidebar-link, .sidebar-sub-link").forEach(link => {
             const href = link.getAttribute("href");
-            if (href) {
-                const linkPage = href.split("/").pop().split(".")[0];
-                if (linkPage === currentPage) {
-                    link.classList.add("active");
+            if (href && href.split(".")[0] === currentPage) {
+                link.classList.add("active");
+                const parentMenu = link.closest(".dropdown-menu");
+                if (parentMenu) {
+                    parentMenu.classList.add("open");
+                    parentMenu.closest(".dropdown").querySelector(".arrow")?.classList.add("rotate-180");
                 }
-            }
-        });
-
-        // 2. Highlight sub-links and expand parent dropdown
-        document.querySelectorAll(".sidebar-sub-link").forEach(sub => {
-            const href = sub.getAttribute("href");
-            if (href) {
-                const linkPage = href.split("/").pop().split(".")[0];
-                if (linkPage === currentPage) {
-                    sub.classList.add("active");
-                    // expand parent dropdown
-                    const parentMenu = sub.closest(".dropdown-menu");
-                    if (parentMenu) {
-                        parentMenu.classList.add("open");
-                        const parentBtn = parentMenu.closest(".dropdown").querySelector(".sidebar-dropdown-btn");
-                        if (parentBtn) {
-                            parentBtn.classList.add("active");
-                            const arrow = parentBtn.querySelector(".arrow");
-                            if (arrow) arrow.classList.add("rotate-180");
-                        }
-                    }
-                }
-            }
-        });
-
-        // 3. Highlight dropdown parent if any child is active (fallback)
-        document.querySelectorAll(".dropdown").forEach(drop => {
-            const hasActiveChild = drop.querySelector(".sidebar-sub-link.active");
-            if (hasActiveChild) {
-                drop.classList.add("has-active");
             }
         });
     });
