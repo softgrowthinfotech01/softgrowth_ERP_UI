@@ -17,3 +17,34 @@
 
     </div>
 </footer>
+
+<script>
+    
+        //logout script
+
+        async function handleLogout() {
+    const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token');
+    const baseUrl = typeof url !== 'undefined' ? url : '';
+    const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+
+    try {
+        if (token) {
+            await fetch(`${cleanBase}/logout`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            });
+        }
+    } catch (err) {
+        console.error('Logout error:', err);
+    } finally {
+        // Clear all storage and force redirect to login page
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.href = 'login.php';
+    }
+}
+</script>

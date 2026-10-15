@@ -291,7 +291,7 @@
                             class="flex-1 py-3 rounded-xl border border-slate-300 text-slate-600 font-semibold text-sm hover:bg-slate-50 transition-all duration-200">
                         Cancel
                     </button>
-                    <button type="button" onclick="verifyLoginOtp()"
+                    <button type="button" id="verifyOtpBtn" onclick="verifyLoginOtp()"
                             class="flex-1 py-3 rounded-xl bg-orange-600 text-white font-bold text-sm shadow-md hover:bg-orange-700 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200">
                         Verify & Login
                     </button>
@@ -476,31 +476,10 @@
         </div>
         <span class="text-sm font-medium" id="alertMessage">Success!</span>
     </div>
-
-    <script>
-
-        
+<script>
         // Global state IDs
         let verificationId = null;
         let resetVerificationId = null;
-
-        // ===== LOAD CACHED SCHOOL BRANDING ON STARTUP =====
-        document.addEventListener('DOMContentLoaded', () => {
-            const cachedInstitute = localStorage.getItem('cached_institute');
-            if (cachedInstitute) {
-                try {
-                    const institute = JSON.parse(cachedInstitute);
-                    if (institute.org_name) {
-                        document.getElementById('brandOrgName').textContent = institute.org_name;
-                    }
-                    if (institute.logo) {
-                        document.getElementById('brandLogo').src = institute.logo;
-                    }
-                } catch (e) {
-                    console.error('Error parsing cached institute data', e);
-                }
-            }
-        });
 
         // ===== HELPER: CLEAR OTP FIELDS =====
         function clearOtpInputs(containerId) {
@@ -570,11 +549,34 @@
                     document.getElementById('brandOrgName').textContent = institute.org_name;
                 }
                 if (institute.logo) {
-                    document.getElementById('brandLogo').src = institute.logo;
+                    let logoUrl = institute.logo;
+                    if (!logoUrl.startsWith('http') && !logoUrl.startsWith('data:')) {
+                        const baseDomain = typeof url !== 'undefined' ? url.replace(/\/api\/?\$/, '') : '';
+                        logoUrl = baseDomain + (logoUrl.startsWith('/') ? '' : '/') + logoUrl;
+                    }
+                    document.getElementById('brandLogo').src = logoUrl;
                 }
             }
         }
 
+        // ===== LOAD PUBLIC SCHOOL BRANDING ON STARTUP =====
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch(url + 'public-institute', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                if (response.ok && data) {
+                    updateSchoolBranding(data);
+                }
+            } catch (e) {
+                console.error('Could not fetch public institute branding:', e);
+            }
+        });
+        
         // ===== LOGIN FORM =====
         function resetLoginForm() {
             document.getElementById('loginIdentifier').value = '';
@@ -611,6 +613,11 @@
 
             if (!valid) return;
 
+            const loginBtn = document.getElementById('loginBtn');
+            if (loginBtn.disabled) return; // Prevent double click
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Logging in...';
+
             const isEmail = identifier.includes('@');
             const payload = { password: password };
             if (isEmail) {
@@ -637,8 +644,11 @@
 
                 verificationId = data.verification_id;
 
-                if (data.institute) {
-                    updateSchoolBranding(data.institute);
+                // Extract institute info from login response
+                const instituteData = data.institute || (data.data && data.data.institute);
+                if (instituteData) {
+                    updateSchoolBranding(instituteData);
+                    localStorage.setItem('institute', JSON.stringify(instituteData));
                 }
 
                 showAlert(data.message || 'OTP sent successfully.');
@@ -646,6 +656,9 @@
 
             } catch (error) {
                 showAlert(error.message);
+            } finally {
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = 'Login';
             }
         }
 
@@ -708,6 +721,11 @@
             }
             document.getElementById('error-otp').classList.add('hidden');
 
+            const verifyBtn = document.getElementById('verifyOtpBtn');
+            if (verifyBtn.disabled) return; // Prevent double click
+            verifyBtn.disabled = true;
+            verifyBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Verifying...';
+
             try {
                 const response = await fetch(url + `login/verify-otp`, {
                     method: 'POST',
@@ -728,16 +746,10 @@
                 localStorage.setItem('auth_token', data.token);
                 localStorage.setItem('user', JSON.stringify(data.user));
                 
-                if (data.institute) {
-                    localStorage.setItem('institute', JSON.stringify(data.institute));
-                    
-                    // Cache branding for future revisits to the login page
-                    localStorage.setItem('cached_institute', JSON.stringify({
-                        org_name: data.institute.org_name,
-                        logo: data.institute.logo
-                    }));
-
-                    updateSchoolBranding(data.institute);
+                const instituteData = data.institute || (data.data && data.data.institute);
+                if (instituteData) {
+                    localStorage.setItem('institute', JSON.stringify(instituteData));
+                    updateSchoolBranding(instituteData);
                 }
 
                 showAlert(data.message || 'Login Success!');
@@ -745,13 +757,17 @@
 
             } catch (error) {
                 showAlert(error.message);
+            } finally {
+                verifyBtn.disabled = false;
+                verifyBtn.innerHTML = 'Verify & Login';
             }
         }
 
+        
         // ===== FORGOT PASSWORD =====
         async function sendResetOtp() {
             const email = document.getElementById('resetEmail').value.trim();
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+\$/;
             if (!emailRegex.test(email)) {
                 document.getElementById('error-resetEmail').classList.remove('hidden');
                 document.getElementById('resetEmail').classList.add('border-red-500', 'bg-red-50');

@@ -489,9 +489,10 @@
                         <i class="fas fa-arrow-left text-xs"></i> Back to Edit
                     </button>
 
-                    <button type="button" id="submitBtn" class="w-full sm:w-auto px-6 py-2.5 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition text-sm shadow-md flex items-center justify-center gap-2">
-                        <i class="fas fa-paper-plane text-xs"></i> Submit Registration
-                    </button>
+                   <!-- Submit Registration Button with permission attribute -->
+<button type="button" id="submitBtn" data-permission="student-registration.add" class="w-full sm:w-auto px-6 py-2.5 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition text-sm shadow-md flex items-center justify-center gap-2">
+    <i class="fas fa-paper-plane text-xs"></i> Submit Registration
+</button>
                 </div>
 
             </div>

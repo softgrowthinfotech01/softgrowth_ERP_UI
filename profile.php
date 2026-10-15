@@ -173,9 +173,10 @@
                                 <p class="text-red-500 text-[10px] mt-1 hidden" id="error-collegeName">College / School Name is required.</p>
                             </div>
 
-                            <!-- Username -->
-                            <div class="md:col-span-2">
-                                <label class="block text-[10px] font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                         
+                           <!-- Username -->
+                            <div class="">
+                                <label id="usernameLabel" class="block text-[10px] font-semibold text-slate-700 uppercase tracking-wider mb-1">
                                     Username <span class="text-red-500">*</span>
                                 </label>
                                 <div class="relative">
@@ -185,7 +186,6 @@
                                 </div>
                                 <p class="text-red-500 text-[10px] mt-1 hidden" id="error-username">Username is required.</p>
                             </div>
-
                             <!-- Registration No. -->
                             <div>
                                 <label class="block text-[10px] font-semibold text-slate-700 uppercase tracking-wider mb-1">
@@ -246,7 +246,7 @@
                             </div>
 
                             <!-- Website -->
-                            <div class="md:col-span-2">
+                            <div class="">
                                 <label class="block text-[10px] font-semibold text-slate-700 uppercase tracking-wider mb-1">
                                     Website <span class="text-slate-400 text-[10px] font-normal normal-case">(Optional)</span>
                                 </label>
@@ -399,10 +399,7 @@
     <?php include 'footer.php'; ?>
     <script src="url.js"></script>
 
-    <!-- ============================================================
-         JAVASCRIPT WITH API INTEGRATION
-    ============================================================ -->
-  <script>
+<script>
         function getApiUrl(path) {
             const baseUrl = typeof url !== 'undefined' ? url : '';
             if (!baseUrl) return path;
@@ -413,18 +410,79 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('institutionForm').classList.add('locked');
-            fetchProfileData();
+            checkUserRoleAndProfile();
         });
 
-        async function fetchProfileData() {
+        async function getToken() {
+            return localStorage.getItem('auth_token') || localStorage.getItem('token') || localStorage.getItem('accessToken') || sessionStorage.getItem('token');
+        }
+
+        async function checkUserRoleAndProfile() {
             try {
-                const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || localStorage.getItem('accessToken');
+                const token = await getToken();
                 const headers = {
                     'Authorization': token ? `Bearer ${token}` : '',
                     'Accept': 'application/json'
                 };
 
-                // 1. Fetch Institute Details
+                // 1. Fetch current user data
+                const userResponse = await fetch(getApiUrl('user'), {
+                    method: 'GET',
+                    headers: headers
+                });
+                const userData = await userResponse.json();
+
+                if (userResponse.ok && userData.data) {
+                    const user = userData.data;
+                    const role = (user.role || '').toLowerCase();
+
+                    // Update summary sidebar name and role
+                    document.getElementById('summaryName').textContent = user.name || user.username || 'User Profile';
+                    document.getElementById('summaryReg').textContent = 'Role: ' + user.role.toUpperCase();
+
+                    // If NOT admin, adapt form for regular user (hide institute fields & phone number, update label)
+                    if (role !== 'admin') {
+                        adaptForRegularUser(user);
+                    }
+                }
+
+                // 2. Fetch Institute Details (to load logo and institute info for everyone if available)
+                fetchInstituteData(headers);
+
+            } catch (error) {
+                console.error('Error loading profile data:', error);
+            }
+        }
+
+        function adaptForRegularUser(user) {
+            // Hide institution-only fields including phone number, registration no, and aff no
+            const fieldsToHide = ['collegeName', 'registrationNo', 'affNo', 'phoneNo', 'website', 'address', 'logoInput'];
+            fieldsToHide.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    const wrapper = el.closest('.md\\:col-span-2') || el.closest('div').parentElement;
+                    if (wrapper) wrapper.style.display = 'none';
+                }
+            });
+
+            // Change Username label to "Name" for non-admin users using explicit ID
+            const usernameLabel = document.getElementById('usernameLabel');
+            if (usernameLabel) {
+                usernameLabel.innerHTML = 'Name <span class="text-red-500">*</span>';
+            }
+            document.getElementById('username').placeholder = 'Enter name';
+
+            // Populate available personal fields
+            document.getElementById('username').value = user.username || '';
+            document.getElementById('emailId').value = user.email || '';
+
+            // Update header title to reflect personal profile
+            document.querySelector('h1.text-lg').textContent = 'My Profile';
+            document.querySelector('p.text-xs.text-gray-500').textContent = 'Manage your account credentials';
+        }
+
+        async function fetchInstituteData(headers) {
+            try {
                 const response = await fetch(getApiUrl('institute'), {
                     method: 'GET',
                     headers: headers
@@ -433,18 +491,26 @@
                 const data = await response.json();
 
                 if (response.ok && data) {
-                    document.getElementById('collegeName').value = data.org_name || '';
-                    document.getElementById('registrationNo').value = data.org_registration_no || data.org_registration_no || '';
-                    document.getElementById('affNo').value = data.affiliation_no || '';
-                    document.getElementById('phoneNo').value = data.mobile || '';
-                    document.getElementById('emailId').value = data.email || '';
-                    document.getElementById('website').value = data.website || '';
-                    document.getElementById('address').value = data.address || '';
+                    // Populate admin fields if inputs are visible
+                    if (document.getElementById('collegeName').offsetParent !== null) {
+                        document.getElementById('collegeName').value = data.org_name || '';
+                        document.getElementById('registrationNo').value = data.org_registration_no || '';
+                        document.getElementById('affNo').value = data.affiliation_no || '';
+                        document.getElementById('phoneNo').value = data.mobile || '';
+                        document.getElementById('emailId').value = data.email || '';
+                        document.getElementById('website').value = data.website || '';
+                        document.getElementById('address').value = data.address || '';
+                    }
 
-                    document.getElementById('summaryName').textContent = data.org_name || 'Institution Name';
-                    document.getElementById('summaryReg').textContent = 'Reg No: ' + (data.org_registration_no || '—');
+                    document.getElementById('summaryName').textContent = data.org_name || document.getElementById('summaryName').textContent;
+                    if (document.getElementById('registrationNo').offsetParent !== null) {
+                        document.getElementById('summaryReg').textContent = 'Reg No: ' + (data.org_registration_no || '—');
+                    }
 
+                    // Handle Logo Display for all users (Admin & Regular Users)
                     const logoVal = data.logo;
+                    const logoContainerParent = document.getElementById('summaryLogo').closest('.bg-slate-50');
+                    
                     if (logoVal) {
                         let logoUrl = logoVal;
                         if (!logoUrl.startsWith('http') && !logoUrl.startsWith('data:')) {
@@ -453,24 +519,32 @@
                         }
                         document.getElementById('summaryLogo').src = logoUrl;
                         document.getElementById('logoPreview').src = logoUrl;
+                        document.getElementById('logoPreviewContainer').style.display = 'flex';
                         document.getElementById('logoPreviewContainer').classList.remove('hidden');
-                        document.getElementById('logoPreviewContainer').classList.add('flex');
+                        document.getElementById('logoPlaceholder').style.display = 'none';
                         document.getElementById('logoPlaceholder').classList.add('hidden');
+                    } else {
+                        // If no institute logo exists, completely remove/hide the logo box for regular users
+                        const userResponse = await fetch(getApiUrl('user'), { method: 'GET', headers });
+                        const userData = await userResponse.json();
+                        const role = userData.data ? (userData.data.role || '').toLowerCase() : 'admin';
+
+                        if (role !== 'admin' && logoContainerParent) {
+                            logoContainerParent.style.display = 'none';
+                        }
                     }
                 }
 
-                // 2. Fetch Admin Details for Username
                 const adminResponse = await fetch(getApiUrl('admin/details'), {
                     method: 'GET',
                     headers: headers
                 });
                 const adminData = await adminResponse.json();
-                if (adminResponse.ok && adminData.username) {
+                if (adminResponse.ok && adminData.username && document.getElementById('username').offsetParent !== null) {
                     document.getElementById('username').value = adminData.username;
                 }
-
             } catch (error) {
-                console.error('Error fetching profile data:', error);
+                console.error('Error fetching institute data:', error);
             }
         }
 
@@ -491,7 +565,7 @@
                 if (el) el.value = originalValues[id];
             });
             removeLogo();
-            fetchProfileData();
+            checkUserRoleAndProfile();
         }
 
         function toggleEditMode() {
@@ -557,6 +631,7 @@
             setTimeout(() => toast.classList.add('hidden'), 2500);
         }
 
+        // Logo Upload Preview Fix
         const dropZone = document.getElementById('dropZone');
         const logoInput = document.getElementById('logoInput');
         const logoPreview = document.getElementById('logoPreview');
@@ -564,35 +639,46 @@
         const logoPlaceholder = document.getElementById('logoPlaceholder');
         const logoFileName = document.getElementById('logoFileName');
 
-        dropZone.addEventListener('click', () => {
-            if (!document.getElementById('institutionForm').classList.contains('locked')) {
-                logoInput.click();
-            }
-        });
-
-        logoInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    logoPreview.src = e.target.result;
-                    logoFileName.textContent = file.name;
-                    logoPreviewContainer.classList.remove('hidden');
-                    logoPreviewContainer.classList.add('flex');
-                    logoPlaceholder.classList.add('hidden');
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        function removeLogo() {
-            logoInput.value = '';
-            logoPreview.src = '#';
-            logoPreviewContainer.classList.add('hidden');
-            logoPreviewContainer.classList.remove('flex');
-            logoPlaceholder.classList.add('hidden');
+        if (dropZone) {
+            dropZone.addEventListener('click', () => {
+                if (!document.getElementById('institutionForm').classList.contains('locked')) {
+                    logoInput.click();
+                }
+            });
         }
 
+        if (logoInput) {
+            logoInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        logoPreview.src = event.target.result;
+                        logoFileName.textContent = file.name;
+                        logoPreviewContainer.style.display = 'flex';
+                        logoPreviewContainer.classList.remove('hidden');
+                        logoPlaceholder.style.display = 'none';
+                        logoPlaceholder.classList.add('hidden');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        function removeLogo() {
+            if (logoInput) logoInput.value = '';
+            if (logoPreview) logoPreview.src = '#';
+            if (logoPreviewContainer) {
+                logoPreviewContainer.style.display = 'none';
+                logoPreviewContainer.classList.add('hidden');
+            }
+            if (logoPlaceholder) {
+                logoPlaceholder.style.display = 'flex';
+                logoPlaceholder.classList.remove('hidden');
+            }
+        }
+
+        // Update Password Function
         async function updatePassword() {
             const current = document.getElementById('currentPassword').value.trim();
             const newPass = document.getElementById('newPassword').value.trim();
@@ -613,14 +699,11 @@
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
 
             try {
-                const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || localStorage.getItem('accessToken');
+                const token = await getToken();
                 const payload = {
                     current_password: current,
-                    old_password: current,
                     password: newPass,
-                    new_password: newPass,
-                    password_confirmation: confirmPass,
-                    new_password_confirmation: confirmPass
+                    password_confirmation: confirmPass
                 };
 
                 const response = await fetch(getApiUrl('update-password'), {
@@ -641,7 +724,14 @@
                     document.getElementById('newPassword').value = '';
                     document.getElementById('confirmNewPassword').value = '';
                 } else {
-                    alert(result.message || JSON.stringify(result.errors) || 'Failed to update password.');
+                    let errorMessage = result.message || 'Failed to update password.';
+                    if (result.errors) {
+                        const firstErrorKey = Object.keys(result.errors)[0];
+                        if (firstErrorKey && result.errors[firstErrorKey][0]) {
+                            errorMessage = result.errors[firstErrorKey][0];
+                        }
+                    }
+                    alert(errorMessage);
                 }
             } catch (error) {
                 console.error('Password update network error:', error);
@@ -655,82 +745,72 @@
         // Profile Form Submission
         document.getElementById('institutionForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            let isValid = true;
-
-            function checkField(id, condition) {
-                const el = document.getElementById('error-' + id);
-                const input = document.getElementById(id);
-                if (condition) {
-                    if (el) el.classList.remove('hidden');
-                    if (input) input.classList.add('border-red-500', 'bg-red-50');
-                    isValid = false;
-                } else {
-                    if (el) el.classList.add('hidden');
-                    if (input) input.classList.remove('border-red-500', 'bg-red-50');
-                }
-            }
-
-            checkField('collegeName', document.getElementById('collegeName').value.trim() === '');
-            checkField('registrationNo', document.getElementById('registrationNo').value.trim() === '');
             
-            const phoneVal = document.getElementById('phoneNo').value.trim();
-            checkField('phoneNo', phoneVal.length < 7 || phoneVal.length > 15);
-
-            const emailVal = document.getElementById('emailId').value.trim();
-            checkField('emailId', !emailVal.includes('@') || !emailVal.includes('.'));
-
-            checkField('address', document.getElementById('address').value.trim() === '');
-            checkField('username', document.getElementById('username').value.trim() === '');
-            checkField('terms', !document.getElementById('termsCheck').checked);
-
-            if (!isValid) {
-                const firstError = document.querySelector('.text-red-500:not(.hidden)');
-                if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                return;
-            }
-
             const saveBtn = document.getElementById('saveBtn');
             saveBtn.disabled = true;
             saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
 
-            const formData = new FormData();
-            formData.append('org_name', document.getElementById('collegeName').value);
-            formData.append('org_registration_no', document.getElementById('registrationNo').value);
-            formData.append('affiliation_no', document.getElementById('affNo').value);
-            formData.append('mobile', document.getElementById('phoneNo').value);
-            formData.append('email', document.getElementById('emailId').value);
-            formData.append('website', document.getElementById('website').value);
-            formData.append('address', document.getElementById('address').value);
-            formData.append('username', document.getElementById('username').value);
-
-            const logoFile = document.getElementById('logoInput').files[0];
-            if (logoFile) {
-                formData.append('logo', logoFile);
-            }
+            const token = await getToken();
+            const headers = {
+                'Authorization': token ? `Bearer ${token}` : '',
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            };
 
             try {
-                const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || localStorage.getItem('accessToken');
-                const response = await fetch(getApiUrl('institute/update'), {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': token ? `Bearer ${token}` : '',
-                        'Accept': 'application/json'
-                    },
-                    body: formData
-                });
+                const userResponse = await fetch(getApiUrl('user'), { method: 'GET', headers });
+                const userData = await userResponse.json();
+                const isAdmin = userData.data && userData.data.role.toLowerCase() === 'admin';
 
-                const result = await response.json();
-                if (response.ok) {
-                    showToast('Institution profile updated successfully!');
-                    setTimeout(() => {
-                        toggleEditMode();
-                        fetchProfileData();
-                    }, 1000);
+                let endpoint = 'user/profile';
+                let payload = {
+                    username: document.getElementById('username').value,
+                    email: document.getElementById('emailId').value
+                };
+
+                if (isAdmin) {
+                    endpoint = 'institute/update';
+                    const formData = new FormData();
+                    formData.append('org_name', document.getElementById('collegeName').value);
+                    formData.append('org_registration_no', document.getElementById('registrationNo').value);
+                    formData.append('affiliation_no', document.getElementById('affNo').value);
+                    formData.append('mobile', document.getElementById('phoneNo').value);
+                    formData.append('email', document.getElementById('emailId').value);
+                    formData.append('website', document.getElementById('website').value);
+                    formData.append('address', document.getElementById('address').value);
+                    formData.append('username', document.getElementById('username').value);
+
+                    const logoFile = document.getElementById('logoInput').files[0];
+                    if (logoFile) formData.append('logo', logoFile);
+
+                    const response = await fetch(getApiUrl(endpoint), {
+                        method: 'POST',
+                        headers: { 'Authorization': token ? `Bearer ${token}` : '', 'Accept': 'application/json' },
+                        body: formData
+                    });
+                    const result = await response.json();
+                    if (response.ok) {
+                        showToast('Institution profile updated successfully!');
+                        setTimeout(() => { toggleEditMode(); checkUserRoleAndProfile(); }, 1000);
+                    } else {
+                        alert(result.message || 'Failed to update profile.');
+                    }
                 } else {
-                    alert(result.message || JSON.stringify(result.errors) || 'Failed to update profile.');
+                    const response = await fetch(getApiUrl(endpoint), {
+                        method: 'PUT',
+                        headers: headers,
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+                    if (response.ok) {
+                        showToast('Profile updated successfully!');
+                        setTimeout(() => { toggleEditMode(); checkUserRoleAndProfile(); }, 1000);
+                    } else {
+                        alert(result.message || 'Failed to update profile.');
+                    }
                 }
             } catch (error) {
-                console.error('Profile update network error:', error);
+                console.error('Profile update error:', error);
                 alert('Network error while saving profile.');
             } finally {
                 saveBtn.disabled = false;

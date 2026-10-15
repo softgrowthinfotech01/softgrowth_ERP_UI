@@ -178,7 +178,8 @@
         </a>
 
         <!-- Logout -->
-        <a href="login.php" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-600 font-semibold hover:bg-red-50 transition-all duration-200 mt-4 border-b border-gray-300 pt-4">
+    <!-- Logout -->
+        <a href="#" onclick="handleLogout(); return false;" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-600 font-semibold hover:bg-red-50 transition-all duration-200 mt-4 border-b border-gray-300 pt-4">
             <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-50 text-red-500">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M10 5H5v14h5" />
@@ -187,7 +188,6 @@
             </span>
             <span>Logout</span>
         </a>
-
     </div>
 </aside>
 
@@ -264,16 +264,9 @@
         }
     }
 
-    window.addEventListener("resize", () => {
-        if (window.innerWidth >= 1024) {
-            overlay.classList.add("hidden");
-            sidebar.classList.remove("-translate-x-full");
-        } else {
-            sidebar.classList.add("-translate-x-full");
-        }
-    });
+    window.innerWidth >= 1024 ? overlay.classList.add("hidden") : null;
 
-    // Permission filtering on load
+    // Filter sidebar using the working /my-menus endpoint
     document.addEventListener("DOMContentLoaded", async function() {
         function getToken() {
             return localStorage.getItem('auth_token') || localStorage.getItem('token') || localStorage.getItem('accessToken') || sessionStorage.getItem('token');
@@ -291,52 +284,50 @@
                 'Accept': 'application/json'
             };
 
-            const userRes = await fetch(`${cleanBase}/user`, { method: 'GET', headers });
-            if (!userRes.ok) return;
-            const userData = await userRes.json();
-            const user = userData.data || userData;
+            // Call your verified /my-menus endpoint
+            const res = await fetch(`${cleanBase}/my-menus`, { method: 'GET', headers });
+            if (!res.ok) return;
 
-            // Admin sees everything
-            if (user.role === 'admin' || user.role === 'Super Admin') return;
+            const json = await res.json();
+            const menus = json.data || [];
 
-            if (!user.role_id) {
-                document.querySelectorAll('.sidebar-menu-item').forEach(el => el.style.display = 'none');
-                return;
+            // If user is admin, /my-menus returns everything so we don't need to hide anything
+            // Collect all allowed menu slugs from the returned structure recursively
+            const allowedSlugs = [];
+            function extractSlugs(menuList) {
+                menuList.forEach(m => {
+                    if (m.slug) allowedSlugs.push(m.slug.toLowerCase());
+                    if (m.children && m.children.length > 0) {
+                        extractSlugs(m.children);
+                    }
+                });
             }
+            extractSlugs(menus);
 
-            const permRes = await fetch(`${cleanBase}/roles/${user.role_id}/permissions`, { method: 'GET', headers });
-            if (!permRes.ok) return;
-            const permData = await permRes.json();
-            const permissions = permData.data.permissions || [];
+            console.log("Allowed Slugs from /my-menus:", allowedSlugs);
 
-            // Get allowed menu slugs with 'view' permission
-            const allowedSlugs = permissions
-                .filter(p => p.action.toLowerCase() === 'view')
-                .map(p => p.menu_slug ? p.menu_slug.toLowerCase() : '');
-
-            // Loop through static menu elements and hide unauthorized ones
+            // Hide menu items that are not in the allowed list
             document.querySelectorAll('.sidebar-menu-item').forEach(item => {
                 const slug = item.getAttribute('data-slug');
-                if (slug && !allowedSlugs.includes(slug)) {
+                if (slug && !allowedSlugs.includes(slug.toLowerCase())) {
                     item.style.display = 'none';
                 }
             });
 
-            // Hide parent dropdown containers if all their children are hidden
+            // Hide parent groups if all children are hidden
             document.querySelectorAll('.sidebar-menu-group').forEach(group => {
-                const visibleChildren = group.querySelectorAll('.sidebar-sub-link:not([style*="display: none"])');
                 const parentBtn = group.querySelector('.sidebar-dropdown-btn');
+                const visibleSubLinks = group.querySelectorAll('.sidebar-sub-link:not([style*="display: none"])');
                 
-                // If parent button itself is hidden or all children are hidden, hide the whole group container
-                if (parentBtn && parentBtn.style.display === 'none' && visibleChildren.length === 0) {
+                if (parentBtn && parentBtn.style.display === 'none' && visibleSubLinks.length === 0) {
                     group.style.display = 'none';
-                } else if (visibleChildren.length === 0) {
+                } else if (visibleSubLinks.length === 0) {
                     group.style.display = 'none';
                 }
             });
 
         } catch (err) {
-            console.error('Error applying sidebar permissions:', err);
+            console.error('Error filtering sidebar menus:', err);
         }
 
         // Highlight active link
