@@ -50,7 +50,7 @@
                             </div>
 
                             <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">ABC ID <span class="text-red-500">*</span></label>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">ABC ID/ APAAR ID <span class="text-red-500">*</span></label>
                                 <div class="relative">
                                     <i class="fas fa-id-card absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
                                     <input type="text" id="abc_id" placeholder="Enter Student ID" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
