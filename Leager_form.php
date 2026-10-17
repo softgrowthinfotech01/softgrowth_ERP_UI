@@ -89,7 +89,7 @@
 
             <!-- Header -->
             <div class="flex items-center gap-4 p-6 border-b border-gray-100 no-print">
-                <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-2xl">
+                <div class="w-12 h-12 rounded-xl bg-teal-50 text-orange-400 flex items-center justify-center text-2xl">
                     <i class="fas fa-book"></i>
                 </div>
                 <div>
@@ -118,7 +118,7 @@
                     </div>
                     <div class="flex items-end">
                         <button onclick="loadLedger()" 
-                                class="w-full bg-teal-600 text-white font-bold py-2.5 px-4 rounded-xl hover:bg-teal-700 transition focus:ring-2 focus:ring-teal-300">
+                                class="w-full bg-orange-400 text-white font-bold py-2.5 px-4 rounded-xl hover:bg-teal-700 transition focus:ring-2 focus:ring-teal-300">
                             <i class="fas fa-filter mr-1"></i> Filter Report
                         </button>
                     </div>
@@ -148,7 +148,7 @@
             <div class="table-wrap p-4 sm:p-6">
                 <table class="w-full text-sm text-left" id="ledgerTable">
                     <thead>
-                        <tr class="bg-teal-600 text-white text-xs font-semibold uppercase tracking-wider">
+                        <tr class="bg-orange-400 text-white text-xs font-semibold uppercase tracking-wider">
                             <th class="px-3 py-3 whitespace-nowrap">SR.NO.</th>
                             <th class="px-3 py-3 whitespace-nowrap">RECEIPT NUMBER</th>
                             <th class="px-3 py-3 whitespace-nowrap">MEMO DETAILS</th>
@@ -174,11 +174,11 @@
                     Showing <span id="startEntry">0</span> to <span id="endEntry">0</span> of <span id="totalEntries">0</span> entries
                 </div>
                 <div class="flex items-center gap-2">
-                    <button id="prevPage" class="page-btn px-5 py-2 bg-teal-600 text-white font-bold rounded-xl hover:bg-teal-700 focus:ring-2 focus:ring-teal-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <button id="prevPage" class="page-btn px-5 py-2 bg-orange-400 text-white font-bold rounded-xl hover:bg-orange-700 focus:ring-2 focus:ring-teal-300 disabled:opacity-50 disabled:cursor-not-allowed">
                         <i class="fas fa-chevron-left mr-1"></i> Previous
                     </button>
                     <span id="currentPageDisplay" class="px-4 py-2 bg-teal-100 text-teal-800 font-bold rounded-xl">1</span>
-                    <button id="nextPage" class="page-btn px-5 py-2 bg-teal-600 text-white font-bold rounded-xl hover:bg-teal-700 focus:ring-2 focus:ring-teal-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <button id="nextPage" class="page-btn px-5 py-2 bg-orange-400 text-white font-bold rounded-xl hover:bg-orange-700 focus:ring-2 focus:ring-teal-300 disabled:opacity-50 disabled:cursor-not-allowed">
                         Next <i class="fas fa-chevron-right ml-1"></i>
                     </button>
                 </div>

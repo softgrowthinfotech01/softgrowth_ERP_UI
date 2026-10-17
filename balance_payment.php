@@ -73,7 +73,7 @@
 
             <!-- Heading -->
             <div class="flex items-center gap-4 p-6 border-b border-gray-100 no-print">
-                <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-2xl">
+                <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-400 flex items-center justify-center text-2xl">
                     <i class="fas fa-balance-scale"></i>
                 </div>
                 <div>
@@ -111,7 +111,7 @@
             <div class="table-wrap p-4 sm:p-6">
                 <table class="w-full text-sm text-left" id="balanceTable">
                     <thead>
-                        <tr class="bg-teal-600 text-white text-xs font-semibold uppercase tracking-wider">
+                        <tr class="bg-orange-400 text-white text-xs font-semibold uppercase tracking-wider">
                             <th class="px-3 py-3 whitespace-nowrap">#</th>
                             <th class="px-3 py-3 whitespace-nowrap">Student Name</th>
                             <th class="px-3 py-3 whitespace-nowrap">Batch</th>
@@ -136,10 +136,10 @@
                     Showing <span id="startEntry">0</span> to <span id="endEntry">0</span> of <span id="totalEntries">0</span> entries
                 </div>
                 <div class="flex gap-2">
-                    <button id="prevPage" class="page-btn px-5 py-2 bg-teal-600 text-white font-bold rounded-xl hover:bg-teal-700 focus:ring-2 focus:ring-teal-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <button id="prevPage" class="page-btn px-5 py-2 bg-orange-400 text-white font-bold rounded-xl hover:bg-orange-700 focus:ring-2 focus:ring-teal-300 disabled:opacity-50 disabled:cursor-not-allowed">
                         <i class="fas fa-chevron-left mr-1"></i> Previous
                     </button>
-                    <button id="nextPage" class="page-btn px-5 py-2 bg-teal-600 text-white font-bold rounded-xl hover:bg-teal-700 focus:ring-2 focus:ring-teal-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <button id="nextPage" class="page-btn px-5 py-2 bg-orange-400 text-white font-bold rounded-xl hover:bg-orange-700 focus:ring-2 focus:ring-teal-300 disabled:opacity-50 disabled:cursor-not-allowed">
                         Next <i class="fas fa-chevron-right ml-1"></i>
                     </button>
                 </div>
@@ -257,13 +257,13 @@
                         <td class="px-3 py-3 whitespace-nowrap font-medium text-gray-900">${student.student_name || 'N/A'}</td>
                         <td class="px-3 py-3 whitespace-nowrap">${student.student_batch || 'N/A'}</td>
                         <td class="px-3 py-3 whitespace-nowrap font-semibold">₹ ${Number(student.total_fees || 0).toLocaleString()}</td>
-                        <td class="px-3 py-3 whitespace-nowrap font-semibold text-teal-600">₹ ${Number(student.paid_fees || 0).toLocaleString()}</td>
+                        <td class="px-3 py-3 whitespace-nowrap font-semibold text-orange-400">₹ ${Number(student.paid_fees || 0).toLocaleString()}</td>
                         <td class="px-3 py-3 whitespace-nowrap font-semibold ${balance > 0 ? 'text-red-600' : 'text-green-600'}">
                             ₹ ${balance.toLocaleString()}
                         </td>
                         <td class="px-3 py-3 whitespace-nowrap">${status}</td>
                         <td class="px-3 py-3 whitespace-nowrap text-center no-print">
-                            <button class="text-teal-600 hover:text-teal-800 transition" title="View Details">
+                            <button class="text-orange-400 hover:text-teal-800 transition" title="View Details">
                                 <i class="fas fa-eye"></i>
                             </button>
                         </td>
@@ -350,7 +350,7 @@
             if (existing) existing.remove();
 
             const colors = {
-                success: 'bg-teal-600',
+                success: 'bg-orange-400',
                 error: 'bg-red-600',
                 warning: 'bg-amber-500',
                 info: 'bg-blue-500'

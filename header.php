@@ -3,11 +3,11 @@
 
         <!-- Brand -->
         <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl bg-teal-600 text-white flex items-center justify-center font-semibold text-lg shadow-md">
+            <div class="w-9 h-9 rounded-xl bg-orange-400 text-white flex items-center justify-center font-semibold text-lg shadow-md">
                 E
             </div>
             <h1 class="text-xl font-bold text-gray-800 tracking-tight">
-                ERP <span class="text-teal-600">System</span>
+                ERP <span class="text-orange-400">System</span>
             </h1>
         </div>
 
@@ -29,7 +29,7 @@
                 <button onclick="toggleProfile()"
                         class="flex items-center gap-2 h-10 px-3 rounded-full bg-gray-50 border border-gray-200 hover:bg-white hover:border-teal-300 transition shadow-sm">
 
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-teal-600 to-teal-400 text-white flex items-center justify-center font-semibold text-sm">
+                    <div class="w-8 h-8 rounded-full bg-orange-400 text-white flex items-center justify-center font-semibold text-sm">
                         <span id="headerUserInitial">U</span>
                     </div>
 
@@ -44,7 +44,7 @@
                 <div id="profileBox" class="hidden absolute right-0 top-12 w-48 bg-white rounded-xl shadow-lg border border-gray-100 p-2 dropdown-animate">
                     <a href="profile">
                         <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer text-gray-700 font-medium">
-                            <i class="fas fa-user-circle text-teal-500"></i> Profile 
+                            <i class="fas fa-user-circle text-orange-400"></i> Profile 
                         </div>
                     </a>
 

@@ -7,19 +7,16 @@
     <title>ERP Dashboard</title>
 
     <!-- Tailwind via CDN -->
-    <script src="https://cdn.tailwindcss.com">
-    </script>
-  
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- ECharts -->
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js">
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
 
     <!-- Font Awesome (optional icons) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
     <style>
-         .sidebar-fixed {
+        .sidebar-fixed {
             width: 288px;
         }
 
@@ -59,7 +56,6 @@
             transform: translateY(-2px);
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.07);
         }
-
     </style>
 </head>
 
@@ -72,20 +68,6 @@
     <!-- MAIN CONTENT -->
     <main class="pt-24 mb-8 px-4 sm:px-6 pb-10 lg:mb-10 transition-all duration-200">
 
-        <!-- HERO -->
-        <!-- <section class="mb-6">
-            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
-                <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
-                    Dashboard
-                </h1>
-                <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-gray-500 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-200">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                    Live
-                </span>
-            </div>
-            <p class="text-sm text-gray-500 mt-1">Overview of your ERP system</p>
-        </section> -->
-
         <!-- STATS CARDS -->
         <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
 
@@ -95,7 +77,6 @@
                     <div>
                         <p class="text-sm font-semibold uppercase tracking-wider text-gray-500">Total Students</p>
                         <h2 class="text-xl font-bold text-gray-900 mt-3">5K</h2>
-                      
                     </div>
                     <div class="w-11 h-11 rounded-xl text-gray-500 flex items-center justify-center text-2xl md:mt-2">
                         <i class="fas fa-user-graduate"></i>
@@ -109,7 +90,6 @@
                     <div>
                         <p class="text-sm font-semibold uppercase tracking-wider text-gray-500">Courses</p>
                         <h2 class="text-xl font-bold text-gray-900 mt-3">10</h2>
-                        
                     </div>
                     <div class="w-11 h-11 rounded-xl text-gray-500 flex items-center justify-center text-2xl md:mt-2">
                         <i class="fas fa-chalkboard-teacher"></i>
@@ -123,7 +103,6 @@
                     <div>
                         <p class="text-sm font-semibold uppercase tracking-wider text-gray-500">Revenue</p>
                         <h2 class="text-xl font-bold text-gray-900 mt-3">85K</h2>
-                      
                     </div>
                     <div class="w-11 h-11 rounded-xl text-gray-500 flex items-center justify-center text-2xl md:mt-2">
                         <i class="fas fa-coins"></i>
@@ -137,7 +116,6 @@
                     <div>
                         <p class="text-sm font-semibold uppercase tracking-wider text-gray-500">Expenses</p>
                         <h2 class="text-xl font-bold text-gray-900 mt-3">44K</h2>
-                      
                     </div>
                     <div class="w-11 h-11 rounded-xl text-gray-500 flex items-center justify-center text-2xl md:mt-2">
                         <i class="fas fa-book-open"></i>
@@ -216,8 +194,8 @@
                     itemStyle: {
                         borderRadius: [8, 8, 0, 0],
                         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                            { offset: 0, color: '#14b8a6' },
-                            { offset: 1, color: '#14b8a6' }
+                            { offset: 0, color: '#f97316' }, // Replaced Teal with Orange 500
+                            { offset: 1, color: '#f97316' }  // Replaced Teal with Orange 500
                         ])
                     }
                 }]
@@ -279,11 +257,12 @@
                         scale: true,
                         scaleSize: 8
                     },
+                    // Replaced Teal colors with Orange shades
                     data: [
-               { value: 60, name: 'Students', itemStyle: { color: '#037f70' } },
-{ value: 10, name: 'Expenses', itemStyle: { color: '#1c534d' } },
-{ value: 20, name: 'Courses', itemStyle: { color: '#14B8A6' } },
-{ value: 10, name: 'Revenue', itemStyle: { color: '#5EEAD4' } }
+                        { value: 60, name: 'Students', itemStyle: { color: '#d05513' } }, // Orange 600
+                        { value: 10, name: 'Expenses', itemStyle: { color: '#9a3412' } }, // Orange 800 (Dark)
+                        { value: 20, name: 'Courses', itemStyle: { color: '#f97316' } },  // Orange 500
+                        { value: 10, name: 'Revenue', itemStyle: { color: '#fdba74' } }   // Orange 300 (Light)
                     ]
                 }]
             });
@@ -299,10 +278,6 @@
             });
 
         });
-
-
-
-
     </script>
 
 </body>

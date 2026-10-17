@@ -203,7 +203,7 @@ color:white!important;
 
     <div class="flex items-center gap-4">
 
-        <div class="w-12 h-12 rounded-2xl bg-teal-100 text-teal-600 flex items-center justify-center">
+        <div class="w-12 h-12 rounded-2xl bg-orange-100 text-orange-400 flex items-center justify-center">
 
             <i class="fas fa-user-graduate text-xl"></i>
 
@@ -230,7 +230,7 @@ color:white!important;
              <table id="studentTable"
 class="w-full text-sm text-center text-gray-500">
                     <thead>
-                        <tr class="bg-teal-600 text-white text-xs font-semibold uppercase tracking-wider">
+                        <tr class="bg-orange-400 text-white text-xs font-semibold uppercase tracking-wider">
                             <th class="px-3 py-3 whitespace-nowrap">#</th>
                             <th class="px-3 py-3 whitespace-nowrap ">Student Name</th>
                             <th class="px-3 py-3 whitespace-nowrap">Batch</th>

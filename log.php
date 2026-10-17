@@ -57,7 +57,7 @@
         <!-- Heading -->
         <div class="flex items-center justify-between p-6 border-b border-gray-200 bg-white">
             <div class="flex items-center gap-4">
-                <div class="w-14 h-14 rounded-2xl bg-teal-100 text-teal-600 flex items-center justify-center">
+                <div class="w-14 h-14 rounded-2xl bg-orange-100 text-orange-400 flex items-center justify-center">
                     <i class="fas fa-user-graduate text-2xl"></i>
                 </div>
                 <div>
@@ -122,7 +122,7 @@
         <!-- Table -->
         <div class="table-wrap p-4 sm:p-6">
             <table class="w-full text-sm text-left border-collapse">
-                <thead class="bg-[#0D9488] text-white text-xs font-semibold uppercase tracking-wider">
+                <thead class="bg-orange-400 text-white text-xs font-semibold uppercase tracking-wider">
                     <tr>
                         <th class="px-3 py-3 whitespace-nowrap">#</th>
                         <th class="px-3 py-3 whitespace-nowrap">Date</th>

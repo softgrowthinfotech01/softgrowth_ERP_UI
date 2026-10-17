@@ -84,7 +84,7 @@
 
             <!-- Heading -->
             <div class="flex items-center gap-4 p-6 border-b border-gray-100 no-print">
-                <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-2xl">
+                <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-400 flex items-center justify-center text-2xl">
                     <i class="fas fa-credit-card"></i>
                 </div>
                 <div>
@@ -114,7 +114,7 @@
                 </div>
                 <div class="w-full sm:w-64">
                     <input id="searchInput" type="text" placeholder="Search payment records..." 
-                           class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4 text-sm" />
+                           class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 bg-white py-2.5 px-4 text-sm" />
                 </div>
             </div>
 
@@ -122,7 +122,7 @@
             <div class="table-wrap p-4 sm:p-6">
                 <table class="w-full text-sm text-left" id="paymentTable">
                     <thead>
-                        <tr class="bg-teal-600 text-white text-xs font-semibold uppercase tracking-wider">
+                        <tr class="bg-orange-400 text-white text-xs font-semibold uppercase tracking-wider">
                             <th class="px-3 py-3 whitespace-nowrap">#</th>
                             <th class="px-3 py-3 whitespace-nowrap">Student Name</th>
                             <th class="px-3 py-3 whitespace-nowrap">Student ID</th>
@@ -149,10 +149,10 @@
                     Showing <span id="startEntry">0</span> to <span id="endEntry">0</span> of <span id="totalEntries">0</span> entries
                 </div>
                 <div class="flex gap-2">
-                    <button id="prevPage" class="page-btn px-5 py-2 bg-teal-600 text-white font-bold rounded-xl hover:bg-teal-700 focus:ring-2 focus:ring-teal-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <button id="prevPage" class="page-btn px-5 py-2 bg-orange-400 text-white font-bold rounded-xl hover:bg-orange-700 focus:ring-2 focus:ring-orange-300 disabled:opacity-50 disabled:cursor-not-allowed">
                         <i class="fas fa-chevron-left mr-1"></i> Previous
                     </button>
-                    <button id="nextPage" class="page-btn px-5 py-2 bg-teal-600 text-white font-bold rounded-xl hover:bg-teal-700 focus:ring-2 focus:ring-teal-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <button id="nextPage" class="page-btn px-5 py-2 bg-orange-400 text-white font-bold rounded-xl hover:bg-orange-700 focus:ring-2 focus:ring-orange-300 disabled:opacity-50 disabled:cursor-not-allowed">
                         Next <i class="fas fa-chevron-right ml-1"></i>
                     </button>
                 </div>
@@ -209,7 +209,7 @@
                                 <td class="px-3 py-3 whitespace-nowrap font-medium text-gray-900">${p.studentName}</td>
                                 <td class="px-3 py-3 whitespace-nowrap">${p.studentId}</td>
                                 <td class="px-3 py-3 whitespace-nowrap">${p.feesPaid}</td>
-                                <td class="px-3 py-3 whitespace-nowrap font-semibold text-teal-700">${p.amount}</td>
+                                <td class="px-3 py-3 whitespace-nowrap font-semibold text-orange-700">${p.amount}</td>
                                 <td class="px-3 py-3 whitespace-nowrap">${p.receipt}</td>
                                 <td class="px-3 py-3 whitespace-nowrap">
                                     <span class="px-2 py-1 rounded-full text-xs font-semibold 
@@ -221,7 +221,7 @@
                                 </td>
                                 <td class="px-3 py-3 whitespace-nowrap">${p.date}</td>
                                 <td class="px-3 py-3 whitespace-nowrap text-center no-print">
-                                    <button class="text-teal-600 hover:text-teal-800 transition" title="View Payment">
+                                    <button class="text-orange-600 hover:text-orange-800 transition" title="View Payment">
                                         <i class="fas fa-eye"></i>
                                     </button>
                                 </td>
@@ -430,7 +430,7 @@
                 if (existing) existing.remove();
 
                 const toast = document.createElement('div');
-                toast.className = 'export-toast fixed top-20 left-1/2 -translate-x-1/2 bg-teal-600 text-white px-6 py-3 rounded-xl shadow-lg z-50 transition-all duration-300';
+                toast.className = 'export-toast fixed top-20 left-1/2 -translate-x-1/2 bg-orange-600 text-white px-6 py-3 rounded-xl shadow-lg z-50 transition-all duration-300';
                 toast.style.animation = 'fadeIn 0.3s ease';
                 toast.textContent = message;
                 document.body.appendChild(toast);

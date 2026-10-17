@@ -43,11 +43,11 @@
     <main class="lg:ml-72 max-w-7xl mx-auto px-4 sm:px-6 py-28 pb-10 transition-all duration-200">
 
         <!-- ===== POLICY CARD ===== -->
-        <div class="policy-card bg-white shadow-sm border border-gray-200 p-6 md:p-8">
+        <div class="policy-card bg-white shadow-sm border border-gray-200 p-6 md:p-8 md:mb-20">
 
             <!-- Heading -->
             <div class="flex items-center gap-4 mb-6 pb-4 border-b border-gray-100">
-                <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-2xl">
+                <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-400 flex items-center justify-center text-2xl">
                     <i class="fas fa-file-contract"></i>
                 </div>
                 <div>

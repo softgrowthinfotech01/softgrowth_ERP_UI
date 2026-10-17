@@ -36,7 +36,7 @@
             <!-- Heading -->
             <div class="flex items-center gap-4 p-6 border-b border-gray-100">
 
-                <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-2xl">
+                <div class="w-12 h-12 rounded-xl bg-orange text-orange-400 flex items-center justify-center text-2xl">
                     <i class="fas fa-money-bill-wave"></i>
                 </div>
 
@@ -212,7 +212,7 @@
                 <div class="flex justify-center pt-4">
 
                     <button type="button"
-                        class="submit-btn bg-teal-600 text-white font-bold py-3 px-8 rounded-xl shadow-md hover:bg-teal-700 focus:ring-2 focus:ring-teal-300"
+                        class="submit-btn bg-orange-400 text-white font-bold py-3 px-8 rounded-xl shadow-md hover:bg-orange-700 focus:ring-2 focus:ring-teal-300"
                         onclick="saveCashMemo(event)">
 
                         <i class="fas fa-check-circle mr-2"></i>
