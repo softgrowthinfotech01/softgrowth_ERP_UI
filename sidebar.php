@@ -151,6 +151,27 @@
             <span>Cash Memo</span>
         </a>
 
+
+
+        <a href="cash_master.php" data-slug="cash-memo" class="sidebar-menu-item sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
+            <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-teal-600">
+               <svg xmlns="http://www.w3.org/2000/svg"
+     class="w-5 h-5"
+     fill="none"
+     viewBox="0 0 24 24"
+     stroke="currentColor"
+     stroke-width="2">
+    <rect x="3" y="6" width="18" height="12" rx="2"
+          stroke-linecap="round" stroke-linejoin="round" />
+    <circle cx="12" cy="12" r="3"
+            stroke-linecap="round" stroke-linejoin="round" />
+    <path stroke-linecap="round" stroke-linejoin="round"
+          d="M7 9h.01M17 15h.01M5 4h14" />
+</svg>
+            </span>
+            <span>Cash Master</span>
+        </a>
+
         <!-- Fees Structure Master -->
         <a href="fees_structure_master" data-slug="fees-structure-master" class="sidebar-menu-item sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-teal-50 hover:text-teal-700 transition-all duration-200">
             <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-teal-600">

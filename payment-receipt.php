@@ -99,33 +99,48 @@
 
                 <div class="border-t border-gray-200"></div>
 
-                <!-- FEE DESCRIPTION TABLE -->
+                <!-- ============================================================ -->
+                <!-- FEE CATEGORIES BREAKDOWN -->
+                <!-- ============================================================ -->
+                <div class="px-4 py-1.5 bg-orange-50 border-b border-orange-100 flex items-center justify-between">
+                    <h3 class="text-[10px] font-bold text-gray-900">Fee Categories</h3>
+                </div>
                 <div class="px-4 py-2">
-                    <div class="border border-gray-200 rounded-sm overflow-hidden">
-                        <table class="w-full text-[10.5px] border-collapse">
-                            <thead>
-                                <tr class="bg-orange-50">
-                                    <th class="text-left font-bold text-gray-900 px-2.5 py-1.5 border-b border-gray-200">Description</th>
-                                    <th class="text-right font-bold text-gray-900 px-2.5 py-1.5 border-b border-gray-200 w-24">Amount (₹)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="border-b border-gray-100">
-                                    <td class="px-2.5 py-1.5 text-gray-700">Course Fees</td>
-                                    <td class="px-2.5 py-1.5 text-right text-gray-800">15,000</td>
-                                </tr>
-                                <tr class="border-b border-gray-100">
-                                    <td class="px-2.5 py-1.5 text-gray-700">Paid Amount</td>
-                                    <td class="px-2.5 py-1.5 text-right text-gray-800">5,000</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-2.5 py-1.5 text-gray-700">Pending Amount</td>
-                                    <td class="px-2.5 py-1.5 text-right text-gray-800">10,000</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-[10px]">
+                        <div class="flex justify-between border-b border-gray-100 pb-0.5">
+                            <span class="text-gray-600">Tuition Fee</span>
+                            <span class="font-semibold text-gray-900">₹5,000</span>
+                        </div>
+                        <div class="flex justify-between border-b border-gray-100 pb-0.5">
+                            <span class="text-gray-600">Admission Fee</span>
+                            <span class="font-semibold text-gray-900">₹2,500</span>
+                        </div>
+                        <div class="flex justify-between border-b border-gray-100 pb-0.5">
+                            <span class="text-gray-600">Exam Fee</span>
+                            <span class="font-semibold text-gray-900">₹1,200</span>
+                        </div>
+                        <div class="flex justify-between border-b border-gray-100 pb-0.5">
+                            <span class="text-gray-600">Library Fee</span>
+                            <span class="font-semibold text-gray-900">₹1,500</span>
+                        </div>
+                        <div class="flex justify-between border-b border-gray-100 pb-0.5">
+                            <span class="text-gray-600">Transportation</span>
+                            <span class="font-semibold text-gray-900">₹3,000</span>
+                        </div>
+                        <div class="flex justify-between border-b border-gray-100 pb-0.5">
+                            <span class="text-gray-600">Lab Fee</span>
+                            <span class="font-semibold text-gray-900">₹1,800</span>
+                        </div>
+                    </div>
+                    
+                    <!-- NEW: Category Total -->
+                    <div class="mt-2 pt-1.5 border-t border-gray-300 flex justify-between items-center text-[11px]">
+                        <span class="font-bold text-gray-800">Total Category Fees</span>
+                        <span class="font-bold text-orange-600">₹15,000</span>
                     </div>
                 </div>
+
+                <div class="border-t border-gray-200"></div>
 
                 <!-- PAYMENT DETAILS -->
                 <div class="px-4 py-1.5 bg-orange-50 border-y border-orange-100">

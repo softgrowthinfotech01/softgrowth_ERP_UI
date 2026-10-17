@@ -8,292 +8,439 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    <style>
-        /* Minimal custom styles */
-        .fee-row {
-            animation: fadeSlide 0.3s ease;
-        }
-        @keyframes fadeSlide {
-            from { opacity: 0; transform: translateY(-10px) scale(0.98); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        .fee-row-removing {
-            animation: fadeOut 0.25s ease forwards;
-        }
-        @keyframes fadeOut {
-            from { opacity: 1; transform: scale(1); }
-            to { opacity: 0; transform: scale(0.95); }
-        }
-        .btn-add, .btn-remove {
-            transition: all 0.2s ease;
-        }
-        .btn-add:hover { transform: scale(1.05) rotate(90deg); }
-        .btn-remove:hover { transform: scale(1.1); color: #dc2626; }
-        input:focus {
-            box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
-            border-color: #0f766e;
-        }
-        /* Mobile‑first responsive adjustments */
-        @media (max-width: 640px) {
-            .fee-row { padding: 1rem; }
-            .fee-row .flex-1 { width: 100%; }
-            .fee-row .flex-1 + .flex-1 { margin-top: 0.5rem; }
-            .btn-add, .btn-remove { width: 44px; height: 44px; font-size: 1rem; }
-        }
-    </style>
 </head>
 <?php include 'header.php' ?>
 <?php include 'sidebar.php' ?>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+<body class="bg-gray-200 text-gray-800 antialiased min-h-screen">
 
-    <!-- Main Container -->
-    <div class="md:ml-[550px] max-w-5xl mx-auto px-4 -mt-5 sm:px-6 py-28 pb-10  mb-8 lg:mb-10 transition-all duration-200 flex items-center justify-center min-h-[calc(100vh-12rem)]">
-
-        <!-- Card -->
-        <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+    <main id="main" class="md:ml-[300px] px-4 sm:px-6 py-24 pb-10 mb-10 transition-all duration-200 flex flex-col items-center justify-center">
+        
+        <div class="w-full max-w-5xl space-y-4">
 
             <!-- Header -->
-            <div class="flex items-center gap-3 p-4 sm:p-6 border-b border-gray-100">
-                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-xl sm:text-2xl">
-                    <i class="fas fa-calendar-alt"></i>
+            <div class="bg-white rounded-xl shadow-md border border-gray-200 p-4 flex items-center justify-between gap-3 flex-wrap">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-orange-500 text-white flex items-center justify-center text-sm shadow-sm">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-gray-900 leading-tight">Fees Structure Master</h1>
+                        <p class="text-[11px] text-gray-500 mt-0.5">Add and manage fee items with categories and amounts.</p>
+                    </div>
                 </div>
-                <div>
-                    <h2 class="text-xl md:text-2xl font-bold text-gray-900">Fees Structure Master</h2>
-                    <p class="text-xs sm:text-sm text-gray-500">Add and manage fee items with labels and amounts</p>
+                <span class="text-[10px] bg-orange-100 text-orange-700 px-2.5 py-1 rounded-full font-semibold">
+                    <i class="fas fa-layer-group text-[9px] mr-1"></i> Fee Setup
+                </span>
+            </div>
+
+            <!-- Input Section -->
+            <div class="bg-white rounded-xl shadow-md border border-gray-200 p-4">
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
+                    
+                    <!-- Class Input -->
+                    <div class="md:col-span-3">
+                        <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Class <span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <i class="fas fa-graduation-cap absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                            <input type="text" id="classInput" placeholder="e.g., Class 10"
+                                   class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                        </div>
+                    </div>
+
+                    <!-- Category Dropdown + Add Button -->
+                    <div class="md:col-span-4">
+                        <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Category <span class="text-red-500">*</span></label>
+                        <div class="flex gap-1.5">
+                            <div class="relative flex-1">
+                                <i class="fas fa-tags absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                <select id="categoryInput" class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                    <option value="">Select Category</option>
+                                    <option value="Tuition Fee">Tuition Fee</option>
+                                    <option value="Admission Fee">Admission Fee</option>
+                                    <option value="Exam Fee">Exam Fee</option>
+                                    <option value="Transportation">Transportation</option>
+                                    <option value="Library Fee">Library Fee</option>
+                                    <option value="Lab Fee">Lab Fee</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
+                            </div>
+                            <!-- Add Category Button -->
+                            <button type="button" id="addCategoryBtn" title="Add New Category"
+                                    class="w-[38px] h-[38px] flex-shrink-0 flex items-center justify-center bg-orange-100 text-orange-600 hover:bg-orange-500 hover:text-white rounded-lg transition border border-orange-200">
+                                <i class="fas fa-plus text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Amount Input -->
+                    <div class="md:col-span-3">
+                        <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Amount (₹) <span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <i class="fas fa-rupee-sign absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                            <input type="number" id="amountInput" min="0" step="0.01" placeholder="e.g., 15000"
+                                   class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                        </div>
+                    </div>
+
+                    <!-- Add Item Button -->
+                    <div class="md:col-span-2">
+                        <button type="button" id="addBtn"
+                                class="w-full px-4 py-2 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition text-sm shadow-md flex items-center justify-center gap-1.5 h-[38px]">
+                            <i class="fas fa-plus text-xs"></i> Add
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Form -->
-            <form id="feesForm" class="p-4 sm:p-6 space-y-4 sm:space-y-6" onsubmit="submitFees(event)">
-
-                <!-- Fee Items Container -->
-                <div id="feeContainer" class="space-y-3">
-                    <!-- Default first row -->
-                    <div class="fee-row flex flex-col sm:flex-row items-stretch sm:items-center gap-3 p-3 sm:p-4 bg-gray-50 rounded-xl border border-gray-200">
-                        <div class="flex-1 w-full">
-                            <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">Label</label>
-                            <input type="text" name="label[]" placeholder="e.g., Tuition Fee" 
-                                   class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm focus:outline-none transition" />
-                        </div>
-                        <div class="flex-1 w-full">
-                            <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">Amount (₹)</label>
-                            <input type="number" name="amount[]" placeholder="e.g., 15000" 
-                                   class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm focus:outline-none transition" />
-                        </div>
-                        <div class="flex items-center justify-end sm:justify-start gap-2 mt-1 sm:mt-0">
-                            <button type="button" onclick="addRow(this)" 
-                                    class="btn-add w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-xl bg-teal-600 text-white hover:bg-teal-700 shadow-md transition">
-                                <i class="fas fa-plus text-sm"></i>
-                            </button>
-                            <button type="button" onclick="removeRow(this)" 
-                                    class="btn-remove w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-xl bg-gray-200 text-gray-500 hover:bg-red-100 hover:text-red-600 transition">
-                                <i class="fas fa-times text-sm"></i>
-                            </button>
-                        </div>
+            <!-- Table Section -->
+            <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
+                <div class="bg-orange-50 px-4 py-2.5 border-b border-orange-100 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-list text-orange-500 text-xs"></i>
+                        <h3 class="font-bold text-gray-800 text-[13px]">Fee Structure</h3>
                     </div>
+                    <span class="text-[10px] text-gray-500" id="countText">0 entries</span>
                 </div>
 
-                <!-- Summary -->
-                <div class="flex flex-col sm:flex-row items-center justify-between gap-3 p-4 bg-teal-50 rounded-xl border border-teal-200">
-                    <div class="flex items-center gap-2">
-                        <span class="text-sm font-semibold text-gray-700">Total Items:</span>
-                        <span id="totalItems" class="text-lg font-extrabold text-teal-700">1</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-sm font-semibold text-gray-700">Total Amount:</span>
-                        <span id="totalAmount" class="text-lg font-extrabold text-teal-700">₹ 0</span>
-                    </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full min-w-[600px] border-collapse text-[12px]">
+                        <thead>
+                            <tr>
+                                <th class="text-left font-bold text-gray-700 bg-gray-50 px-4 py-2.5 border-b border-gray-200 w-12">#</th>
+                                <th class="text-left font-bold text-gray-700 bg-gray-50 px-4 py-2.5 border-b border-gray-200 w-32">Class</th>
+                                <th class="text-left font-bold text-gray-700 bg-gray-50 px-4 py-2.5 border-b border-gray-200">Category & Fee Breakdown</th>
+                                <th class="text-right font-bold text-gray-700 bg-gray-50 px-4 py-2.5 border-b border-gray-200 w-32">Total Amount (₹)</th>
+                                <th class="text-center font-bold text-gray-700 bg-gray-50 px-4 py-2.5 border-b border-gray-200 w-20">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <!-- Populated by JS -->
+                            <tr id="emptyRow">
+                                <td colspan="5" class="text-center text-gray-500 py-6 text-[11px]">
+                                    <i class="fas fa-info-circle mr-1 text-orange-400"></i> No fee structure added yet.
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot id="tableFooter" class="hidden">
+                            <tr>
+                                <td colspan="3" class="text-right font-bold text-gray-800 px-4 py-2.5 bg-orange-50 border-t border-gray-200">Grand Total:</td>
+                                <td id="grandTotal" class="text-right font-bold text-orange-600 px-4 py-2.5 bg-orange-50 border-t border-gray-200">₹0.00</td>
+                                <td class="bg-orange-50 border-t border-gray-200"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
+            </div>
 
-                <!-- Submit Button -->
-                <button type="submit" 
-                        class="w-full py-3.5 rounded-xl bg-teal-600 text-white font-bold text-base sm:text-lg shadow-md hover:bg-teal-700 transition-all duration-200 hover:shadow-lg focus:ring-4 focus:ring-teal-200">
-                    <i class="fas fa-save mr-2"></i> Save Fees Structure
+            <!-- Submit Button -->
+            <div class="flex justify-end pt-2">
+                <button type="button" id="saveBtn"
+                        class="px-6 py-2.5 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition text-sm shadow-md flex items-center gap-2">
+                    <i class="fas fa-save text-xs"></i> Save Fees Structure
                 </button>
-
-            </form>
+            </div>
 
         </div>
 
-        <!-- Toast Notification -->
-        <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 bg-teal-600 text-white px-6 py-3 rounded-xl shadow-lg hidden z-50 transition-all duration-300 max-w-[90%] text-center">
-            <i class="fas fa-check-circle mr-2"></i> <span id="toastMessage">Fees structure saved!</span>
+        <!-- Toast -->
+        <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 bg-orange-500 text-white px-5 py-2.5 rounded-lg shadow-lg hidden z-50 transition-all duration-300 text-[12px] font-semibold text-center">
+            <i class="fas fa-check-circle mr-1.5"></i> <span id="toastMessage">Saved!</span>
         </div>
-    </div>
-<?php include 'footer.php' ?>
 
+        <!-- ADD CATEGORY MODAL -->
+        <div id="categoryModal" class="fixed inset-0 bg-black/40 flex items-center justify-center z-[100] hidden">
+            <div class="bg-white rounded-xl shadow-xl w-full max-w-sm mx-4 overflow-hidden">
+                <div class="bg-orange-50 px-4 py-3 border-b border-orange-100 flex items-center justify-between">
+                    <h3 class="font-bold text-gray-800 text-sm flex items-center gap-2">
+                        <i class="fas fa-tags text-orange-500 text-xs"></i> Add New Category
+                    </h3>
+                    <button type="button" id="closeCategoryModal" class="text-gray-400 hover:text-red-500 transition">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="p-4 space-y-3">
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Category Name <span class="text-red-500">*</span></label>
+                        <input type="text" id="newCategoryName" placeholder="e.g., Sports Fee"
+                               class="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                    </div>
+                    <div class="flex justify-end gap-2 pt-1">
+                        <button type="button" id="cancelCategoryBtn" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition text-[12px] shadow-sm">Cancel</button>
+                        <button type="button" id="saveCategoryBtn" class="px-4 py-2 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition text-[12px] shadow-md">Save Category</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <?php include 'footer.php' ?>
+    <script src="url.js"></script>
+
+    <!-- Script -->
     <script>
-        // ============================================================
-        // ADD NEW ROW
-        // ============================================================
-        function addRow(button) {
-            const container = document.getElementById('feeContainer');
-            const currentRow = button.closest('.fee-row');
-            
-            // Clone the row
-            const newRow = currentRow.cloneNode(true);
-            
-            // Clear input values
-            newRow.querySelectorAll('input').forEach(input => input.value = '');
-            
-            // Insert after current row
-            currentRow.parentNode.insertBefore(newRow, currentRow.nextSibling);
-            
-            // Update totals
-            updateTotals();
-            
-            // Animate
-            newRow.style.animation = 'none';
-            requestAnimationFrame(() => {
-                newRow.style.animation = 'fadeSlide 0.3s ease';
-            });
-        }
+        (function() {
+            // ============================================================
+            // STATE
+            // ============================================================
+            let feeItems = [];
 
-        // ============================================================
-        // REMOVE ROW
-        // ============================================================
-        function removeRow(button) {
-            const row = button.closest('.fee-row');
-            const container = document.getElementById('feeContainer');
+            // ============================================================
+            // DOM REFS
+            // ============================================================
+            const classInput = document.getElementById('classInput');
+            const categoryInput = document.getElementById('categoryInput');
+            const amountInput = document.getElementById('amountInput');
+            const addBtn = document.getElementById('addBtn');
             
-            // Don't remove if it's the last row
-            if (container.children.length <= 1) {
-                showToast('At least one fee item is required', 'warning');
-                return;
+            const tableBody = document.getElementById('tableBody');
+            const tableFooter = document.getElementById('tableFooter');
+            const grandTotalEl = document.getElementById('grandTotal');
+            const countText = document.getElementById('countText');
+            const saveBtn = document.getElementById('saveBtn');
+
+            // Modal Refs
+            const addCategoryBtn = document.getElementById('addCategoryBtn');
+            const categoryModal = document.getElementById('categoryModal');
+            const closeCategoryModal = document.getElementById('closeCategoryModal');
+            const cancelCategoryBtn = document.getElementById('cancelCategoryBtn');
+            const saveCategoryBtn = document.getElementById('saveCategoryBtn');
+            const newCategoryName = document.getElementById('newCategoryName');
+
+            // ============================================================
+            // HELPERS
+            // ============================================================
+            function formatCurrency(n) {
+                return '₹' + Number(n || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             }
-            
-            // Animate removal
-            row.classList.add('fee-row-removing');
-            setTimeout(() => {
-                row.remove();
-                updateTotals();
-            }, 250);
-        }
 
-        // ============================================================
-        // UPDATE TOTALS
-        // ============================================================
-        function updateTotals() {
-            const rows = document.querySelectorAll('.fee-row');
-            const totalItems = rows.length;
-            let totalAmount = 0;
-            
-            rows.forEach(row => {
-                const amountInput = row.querySelector('input[name="amount[]"]');
-                if (amountInput) {
-                    const val = parseFloat(amountInput.value);
-                    if (!isNaN(val) && val > 0) {
-                        totalAmount += val;
+            // ============================================================
+            // CATEGORY MODAL LOGIC
+            // ============================================================
+            function openCategoryModal() {
+                newCategoryName.value = '';
+                categoryModal.classList.remove('hidden');
+                setTimeout(() => newCategoryName.focus(), 100);
+            }
+
+            function closeCategoryModalFn() {
+                categoryModal.classList.add('hidden');
+            }
+
+            addCategoryBtn.addEventListener('click', openCategoryModal);
+            closeCategoryModal.addEventListener('click', closeCategoryModalFn);
+            cancelCategoryBtn.addEventListener('click', closeCategoryModalFn);
+
+            saveCategoryBtn.addEventListener('click', function() {
+                const newCat = newCategoryName.value.trim();
+                if (!newCat) { alert('Please enter a category name.'); return; }
+                const exists = Array.from(categoryInput.options).some(opt => opt.value.toLowerCase() === newCat.toLowerCase());
+                if (exists) { alert('This category already exists.'); return; }
+
+                const newOption = document.createElement('option');
+                newOption.value = newCat;
+                newOption.textContent = newCat;
+                categoryInput.appendChild(newOption);
+                categoryInput.value = newCat;
+
+                closeCategoryModalFn();
+                showToast('New category added! ✅', 'success');
+                amountInput.focus();
+            });
+
+            newCategoryName.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') { e.preventDefault(); saveCategoryBtn.click(); }
+            });
+
+
+            // ============================================================
+            // RENDER TABLE (Grouped by Class)
+            // ============================================================
+            function renderTable() {
+                tableBody.innerHTML = '';
+
+                if (feeItems.length === 0) {
+                    tableBody.innerHTML = `
+                        <tr id="emptyRow">
+                            <td colspan="5" class="text-center text-gray-500 py-6 text-[11px]">
+                                <i class="fas fa-info-circle mr-1 text-orange-400"></i> No fee structure added yet.
+                            </td>
+                        </tr>
+                    `;
+                    tableFooter.classList.add('hidden');
+                    countText.textContent = '0 entries';
+                    return;
+                }
+
+                // Group items by class name
+                const groupedItems = {};
+                feeItems.forEach(item => {
+                    if (!groupedItems[item.className]) {
+                        groupedItems[item.className] = [];
                     }
-                }
+                    groupedItems[item.className].push(item);
+                });
+
+                // Convert to array for rendering
+                const classNames = Object.keys(groupedItems);
+                countText.textContent = classNames.length + ' class' + (classNames.length === 1 ? '' : 'es');
+
+                let globalIndex = 0;
+
+                classNames.forEach((className, index) => {
+                    const items = groupedItems[className];
+                    
+                    // Build the breakdown string
+                    let breakdownHtml = '';
+                    let classTotal = 0;
+                    
+                    items.forEach((item, i) => {
+                        breakdownHtml += `<span class="inline-block bg-orange-50 border border-orange-100 text-gray-700 px-2 py-0.5 rounded text-[11px] mr-1 mb-1">${item.category}: <b>${formatCurrency(item.amount)}</b></span>`;
+                        classTotal += item.amount;
+                    });
+
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-orange-50/40 transition';
+                    tr.innerHTML = `
+                        <td class="px-4 py-3 border-b border-gray-100 text-gray-500 align-top">${index + 1}</td>
+                        <td class="px-4 py-3 border-b border-gray-100 font-bold text-gray-800 align-top">${className}</td>
+                        <td class="px-4 py-3 border-b border-gray-100 text-gray-700 align-top">
+                            <div class="flex flex-wrap gap-1">${breakdownHtml}</div>
+                        </td>
+                        <td class="px-4 py-3 border-b border-gray-100 text-right font-bold text-orange-600 align-top">${formatCurrency(classTotal)}</td>
+                        <td class="px-4 py-3 border-b border-gray-100 text-center align-top">
+                            <button type="button" class="remove-class-btn text-red-500 hover:text-red-700 hover:bg-red-50 rounded w-7 h-7 inline-flex items-center justify-center transition" data-class="${className}" title="Remove entire class">
+                                <i class="fas fa-trash text-[11px]"></i>
+                            </button>
+                        </td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+
+                // Attach remove handlers
+                tableBody.querySelectorAll('.remove-class-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const cls = this.getAttribute('data-class');
+                        if (confirm(`Are you sure you want to remove all fee items for "${cls}"?`)) {
+                            // Filter out all items of this class
+                            feeItems = feeItems.filter(item => item.className !== cls);
+                            renderTable();
+                        }
+                    });
+                });
+
+                // Update Grand total
+                const total = feeItems.reduce((sum, i) => sum + Number(i.amount), 0);
+                tableFooter.classList.remove('hidden');
+                grandTotalEl.textContent = formatCurrency(total);
+            }
+
+            // ============================================================
+            // ADD ITEM
+            // ============================================================
+            function addItem() {
+                const cls = classInput.value.trim();
+                const category = categoryInput.value;
+                const amount = parseFloat(amountInput.value);
+
+                if (!cls) { alert('Please enter a Class.'); classInput.focus(); return; }
+                if (!category) { alert('Please select a Category.'); categoryInput.focus(); return; }
+                if (!amount || amount <= 0) { alert('Please enter a valid Amount.'); amountInput.focus(); return; }
+
+                feeItems.push({
+                    className: cls,
+                    category: category,
+                    amount: amount
+                });
+
+                // Reset inputs
+                categoryInput.value = '';
+                amountInput.value = '';
+                // Keep class input populated so user can quickly add more items for the same class
+                
+                renderTable();
+                categoryInput.focus();
+            }
+
+            addBtn.addEventListener('click', addItem);
+
+            // Enter key triggers add
+            [classInput, categoryInput, amountInput].forEach(input => {
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        addItem();
+                    }
+                });
             });
-            
-            document.getElementById('totalItems').textContent = totalItems;
-            document.getElementById('totalAmount').textContent = '₹ ' + totalAmount.toLocaleString('en-IN');
-        }
 
-        // ============================================================
-        // REAL-TIME TOTAL UPDATE ON INPUT
-        // ============================================================
-        document.addEventListener('input', function(e) {
-            if (e.target.name === 'label[]' || e.target.name === 'amount[]') {
-                updateTotals();
-            }
-        });
+            // ============================================================
+            // SAVE ALL
+            // ============================================================
+            saveBtn.addEventListener('click', function() {
+                if (feeItems.length === 0) {
+                    showToast('Please add at least one fee item.', 'error');
+                    return;
+                }
 
-        // ============================================================
-        // SUBMIT FORM
-        // ============================================================
-        function submitFees(event) {
-            event.preventDefault();
-            
-            const rows = document.querySelectorAll('.fee-row');
-            const feesData = [];
-            let isValid = true;
-            
-            rows.forEach(row => {
-                const label = row.querySelector('input[name="label[]"]').value.trim();
-                const amount = row.querySelector('input[name="amount[]"]').value.trim();
-                
-                if (!label) {
-                    isValid = false;
-                    row.querySelector('input[name="label[]"]').style.borderColor = '#dc2626';
-                } else {
-                    row.querySelector('input[name="label[]"]').style.borderColor = '';
-                }
-                
-                if (!amount || isNaN(parseFloat(amount)) || parseFloat(amount) <= 0) {
-                    isValid = false;
-                    row.querySelector('input[name="amount[]"]').style.borderColor = '#dc2626';
-                } else {
-                    row.querySelector('input[name="amount[]"]').style.borderColor = '';
-                }
-                
-                if (label && amount && parseFloat(amount) > 0) {
-                    feesData.push({ label, amount: parseFloat(amount) });
-                }
+                saveBtn.disabled = true;
+                saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin text-xs"></i> Saving...';
+
+                setTimeout(() => {
+                    // Group data before saving to API (if needed)
+                    const groupedData = {};
+                    feeItems.forEach(item => {
+                        if (!groupedData[item.className]) groupedData[item.className] = [];
+                        groupedData[item.className].push({ category: item.category, amount: item.amount });
+                    });
+
+                    console.log('Saving grouped fees structure:', groupedData);
+                    
+                    const total = feeItems.reduce((sum, i) => sum + Number(i.amount), 0);
+                    showToast(`Saved successfully! Total: ${formatCurrency(total)}`, 'success');
+                    
+                    // Reset after save
+                    feeItems = [];
+                    classInput.value = '';
+                    categoryInput.value = '';
+                    amountInput.value = '';
+                    renderTable();
+
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = '<i class="fas fa-save text-xs"></i> Save Fees Structure';
+                }, 800);
             });
-            
-            if (!isValid || feesData.length === 0) {
-                showToast('Please fill all fields correctly', 'error');
-                return;
+
+            // ============================================================
+            // TOAST
+            // ============================================================
+            function showToast(message, type = 'success') {
+                const toast = document.getElementById('toast');
+                const toastMessage = document.getElementById('toastMessage');
+                
+                toast.className = `fixed top-5 left-1/2 -translate-x-1/2 text-white px-5 py-2.5 rounded-lg shadow-lg z-50 transition-all duration-300 text-[12px] font-semibold text-center ${
+                    type === 'error' ? 'bg-red-500' : 'bg-orange-500'
+                }`;
+                
+                toastMessage.textContent = message;
+                toast.classList.remove('hidden');
+                
+                clearTimeout(toast._timeout);
+                toast._timeout = setTimeout(() => {
+                    toast.classList.add('hidden');
+                }, 3000);
             }
-            
-            // Display the data (you can send to server via AJAX here)
-            console.log('Fees Data:', feesData);
-            
-            // Show success message
-            const total = feesData.reduce((sum, item) => sum + item.amount, 0);
-            showToast(`✅ Fees schedule saved! ${feesData.length} items, Total: ₹${total.toLocaleString('en-IN')}`, 'success');
-            
-            // You can send data to server here:
-            // fetch('your-api-endpoint', {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify({ fees: feesData })
-            // })
-        }
 
-        // ============================================================
-        // TOAST NOTIFICATION
-        // ============================================================
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            const toastMessage = document.getElementById('toastMessage');
-            
-            const colors = {
-                success: 'bg-teal-600',
-                error: 'bg-red-600',
-                warning: 'bg-amber-500',
-                info: 'bg-blue-500'
-            };
-            
-            toast.className = `fixed top-5 left-1/2 -translate-x-1/2 text-white px-6 py-3 rounded-xl shadow-lg z-50 transition-all duration-300 max-w-[90%] text-center ${colors[type] || colors.success}`;
-            toastMessage.textContent = message;
-            toast.classList.remove('hidden');
-            
-            clearTimeout(toast._timeout);
-            toast._timeout = setTimeout(() => {
-                toast.classList.add('hidden');
-            }, 3000);
-        }
+            categoryModal.addEventListener('click', function(e) {
+                if (e.target === categoryModal) closeCategoryModalFn();
+            });
 
-        // ============================================================
-        // KEYBOARD SHORTCUT: Ctrl+Enter to submit
-        // ============================================================
-        document.addEventListener('keydown', function(e) {
-            if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
-                e.preventDefault();
-                document.getElementById('feesForm').dispatchEvent(new Event('submit'));
-            }
-        });
-
-        // ============================================================
-        // INIT: Update totals on load
-        // ============================================================
-        document.addEventListener('DOMContentLoaded', function() {
-            updateTotals();
-        });
+            // ============================================================
+            // INIT
+            // ============================================================
+            renderTable();
+        })();
     </script>
 
 </body>
