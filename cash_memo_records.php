@@ -56,7 +56,7 @@
 
             <!-- Heading -->
             <div class="flex items-center gap-4 p-6 border-b border-gray-100">
-                <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-2xl">
+                <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-400 flex items-center justify-center text-2xl">
                     <i class="fas fa-money-bill-wave"></i>
                 </div>
                 <div>
@@ -71,16 +71,16 @@
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">From Date</label>
                         <input type="date" id="fromDate" 
-                               class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
+                               class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 bg-white py-2.5 px-4" />
                     </div>
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">To Date</label>
                         <input type="date" id="toDate" 
-                               class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
+                               class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 bg-white py-2.5 px-4" />
                     </div>
                     <div class="flex gap-3">
                         <button onclick="filterByDate()" 
-                                class="memo-btn flex-1 bg-teal-600 text-white font-bold py-2.5 px-4 rounded-xl hover:bg-teal-700 focus:ring-2 focus:ring-teal-300">
+                                class="memo-btn flex-1 bg-orange-400 text-white font-bold py-2.5 px-4 rounded-xl hover:bg-orange-700 focus:ring-2 focus:ring-orange-300">
                             <i class="fas fa-filter mr-1"></i> Filter
                         </button>
                         <button onclick="resetFilter()" 
@@ -95,7 +95,7 @@
             <div class="table-wrap p-4 sm:p-6">
                 <table class="w-full text-sm text-left">
                     <thead>
-                        <tr class="bg-teal-600 text-white text-xs font-semibold uppercase tracking-wider">
+                        <tr class="bg-orange-400 text-white text-xs font-semibold uppercase tracking-wider">
                             <th class="px-3 py-3 whitespace-nowrap">Sr No</th>
                             <th class="px-3 py-3 whitespace-nowrap">Cash Memo No</th>
                             <th class="px-3 py-3 whitespace-nowrap">Amount</th>
@@ -118,11 +118,11 @@
                     Showing <span id="startEntry">0</span> to <span id="endEntry">0</span> of <span id="totalEntries">0</span> entries
                 </div>
                 <div class="flex items-center gap-2">
-                    <button id="prevPage" class="page-btn px-5 py-2 bg-teal-600 text-white font-bold rounded-xl hover:bg-teal-700 focus:ring-2 focus:ring-teal-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <button id="prevPage" class="page-btn px-5 py-2 bg-orange-600 text-white font-bold rounded-xl hover:bg-orange-700 focus:ring-2 focus:ring-orange-300 disabled:opacity-50 disabled:cursor-not-allowed">
                         <i class="fas fa-chevron-left mr-1"></i> Previous
                     </button>
-                    <span id="currentPageDisplay" class="px-4 py-2 bg-teal-100 text-teal-800 font-bold rounded-xl">1</span>
-                    <button id="nextPage" class="page-btn px-5 py-2 bg-teal-600 text-white font-bold rounded-xl hover:bg-teal-700 focus:ring-2 focus:ring-teal-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <span id="currentPageDisplay" class="px-4 py-2 bg-orange-100 text-orange-800 font-bold rounded-xl">1</span>
+                    <button id="nextPage" class="page-btn px-5 py-2 bg-orange-400 text-white font-bold rounded-xl hover:bg-orange-700 focus:ring-2 focus:ring-orange-300 disabled:opacity-50 disabled:cursor-not-allowed">
                         Next <i class="fas fa-chevron-right ml-1"></i>
                     </button>
                 </div>
@@ -180,7 +180,7 @@
                             <tr class="table-row-hover transition">
                                 <td class="px-3 py-3 whitespace-nowrap">${item.sr}</td>
                                 <td class="px-3 py-3 whitespace-nowrap font-medium text-gray-900">${item.memoNo}</td>
-                                <td class="px-3 py-3 whitespace-nowrap font-semibold text-teal-700">${item.amount}</td>
+                                <td class="px-3 py-3 whitespace-nowrap font-semibold text-orange-700">${item.amount}</td>
                                 <td class="px-3 py-3 whitespace-nowrap">${item.receipt}</td>
                                 <td class="px-3 py-3 whitespace-nowrap">${item.date}</td>
                             </tr>
@@ -420,13 +420,13 @@
 
 });
 
-            // } catch (error) {
+            } catch (error) {
 
-            //     console.log(error);
+                console.log(error);
 
-            //     alert("Failed To Fetch Data");
+                alert("Failed To Fetch Data");
 
-            // }
+            }
 
         }
 
