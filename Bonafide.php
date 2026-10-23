@@ -19,6 +19,12 @@
     <main id="main" class="md:ml-[300px] px-4 sm:px-6 py-24 pb-10 mb-10 transition-all duration-200 flex flex-col items-center justify-center">
         <div class="w-full max-w-4xl">
 
+            <!-- Global Error Banner -->
+            <div id="globalErrorBanner" class="hidden mb-4 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl text-sm flex items-center gap-3">
+                <i class="fas fa-exclamation-circle text-red-500 text-lg"></i>
+                <span id="globalErrorMessage">Please correct the highlighted fields before proceeding.</span>
+            </div>
+
             <!-- Page Header -->
             <div class="bg-white rounded-xl shadow-md border border-gray-200 p-4 mb-4 flex items-start justify-between gap-3 flex-wrap">
                 <div class="flex items-center gap-3">
@@ -45,7 +51,7 @@
                 <div class="p-4 space-y-4">
 
                     <!-- ============================================================ -->
-                    <!-- COMBINED SEARCH + DROPDOWN -->
+                    <!-- LIVE SEARCH + DROPDOWN -->
                     <!-- ============================================================ -->
                     <div class="relative" id="studentPickerWrapper">
                         <label class="block text-[11px] font-bold text-gray-700 mb-0.5">
@@ -57,33 +63,33 @@
 
                             <input type="text"
                                    id="studentPickerInput"
-                                   placeholder="Enter Student Name / ID / APAAR ID"
+                                   placeholder="Type Student Name, Registration ID or APAAR ID..."
                                    autocomplete="off"
                                    class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
 
                             <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
 
-                            <!-- Hidden native select stores the actual value -->
+                            <!-- Hidden select stores the selected student database ID -->
                             <select id="studentSelect" class="hidden">
-                                <option value="">Select or enter student name</option>
+                                <option value="">Select student</option>
                             </select>
                         </div>
 
                         <!-- Suggestions dropdown -->
                         <div id="studentPickerDropdown"
                              class="hidden absolute z-20 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-64 overflow-y-auto">
-                            <!-- Populated by JS -->
+                            <!-- Populated via API fetch -->
                         </div>
 
-                        <p class="text-[10px] text-gray-400 mt-1">Start typing to filter · click a name to select</p>
+                        <p class="text-[10px] text-gray-400 mt-1">Start typing to search database · click a student to select</p>
                     </div>
 
                     <!-- Auto-populated Student Details -->
                     <div id="detailsBlock" class="hidden bg-gray-50 border border-gray-200 rounded-lg p-3 space-y-2 text-[11.5px]">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2">
                             <div class="flex"><span class="w-28 text-gray-500">Parent Name</span><span class="text-gray-500 mr-2">:</span><span class="font-semibold text-gray-800" id="dParent">—</span></div>
-                            <div class="flex"><span class="w-28 text-gray-500">Class / Course</span><span class="text-gray-500 mr-2">:</span><span class="font-semibold text-gray-800" id="dClass">—</span></div>
-                            <div class="flex"><span class="w-28 text-gray-500">Section</span><span class="text-gray-500 mr-2">:</span><span class="font-semibold text-gray-800" id="dSection">—</span></div>
+                            <div class="flex"><span class="w-28 text-gray-500">Course</span><span class="text-gray-500 mr-2">:</span><span class="font-semibold text-gray-800" id="dClass">—</span></div>
+                            <div class="flex"><span class="w-28 text-gray-500">Batch</span><span class="text-gray-500 mr-2">:</span><span class="font-semibold text-gray-800" id="dBatch">—</span></div>
                             <div class="flex"><span class="w-28 text-gray-500">Reg. ID</span><span class="text-gray-500 mr-2">:</span><span class="font-semibold text-gray-800" id="dRegId">—</span></div>
                             <div class="flex"><span class="w-28 text-gray-500">APAAR ID</span><span class="text-gray-500 mr-2">:</span><span class="font-semibold text-gray-800" id="dApaar">—</span></div>
                             <div class="flex"><span class="w-28 text-gray-500">Date of Birth</span><span class="text-gray-500 mr-2">:</span><span class="font-semibold text-gray-800" id="dDob">—</span></div>
@@ -91,29 +97,13 @@
                         </div>
                     </div>
 
-                    <!-- Academic Year + Date of Issue -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Academic Year <span class="text-red-500">*</span></label>
-                            <div class="relative">
-                                <i class="fas fa-calendar-alt absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                <select id="academicYear"
-                                        class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
-                                    <option value="2024-2025">2024-2025</option>
-                                    <option value="2025-2026">2025-2026</option>
-                                    <option value="2026-2027" selected>2026-2027</option>
-                                    <option value="2027-2028">2027-2028</option>
-                                </select>
-                                <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Date of Issue <span class="text-red-500">*</span></label>
-                            <div class="relative">
-                                <i class="fas fa-calendar-check absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                <input type="date" id="dateOfIssue"
-                                       class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
-                            </div>
+                    <!-- Date of Issue -->
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Date of Issue <span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <i class="fas fa-calendar-check absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                            <input type="date" id="dateOfIssue"
+                                   class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
                         </div>
                     </div>
 
@@ -154,7 +144,7 @@
                         </button>
                         <button type="button" id="generateBtn"
                                 class="px-6 py-2 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition text-sm shadow-md flex items-center justify-center gap-2">
-                            <i class="fas fa-stamp text-xs"></i> Generate Bonafide
+                            <i class="fas fa-stamp text-xs"></i> Generate &amp; Issue Bonafide
                         </button>
                     </div>
                 </div>
@@ -164,7 +154,7 @@
             <div class="mt-4 bg-orange-50 border border-orange-200 rounded-lg p-3 text-[11px] text-orange-700 flex items-start gap-2">
                 <i class="fas fa-info-circle mt-0.5"></i>
                 <div>
-                    <b>Note:</b> Each certificate receives a unique certificate number. Once issued, changes to student details will not affect previously issued certificates.
+                    <b>Note:</b> Each certificate receives a unique sequence number via backend processing (`BON-YYYY-000X`). Once issued, historical records are locked.
                 </div>
             </div>
 
@@ -176,23 +166,16 @@
 
     <script>
         (function() {
-            // ============================================================
-            // DUMMY STUDENTS
-            // ============================================================
-            const students = [
-                { id: 'SGI00025', name: 'Nayanshree Ramteke', apaar: '1234 5678 9012', parent: 'Mr. Rajesh Ramteke', class: 'Front-End Development', section: 'Section A', dob: '2006-06-15', address: '123, Datada, Chandrapur - 442401' },
-                { id: 'SGI00026', name: 'Rohit Sharma', apaar: '2345 6789 0123', parent: 'Mr. Manoj Sharma', class: 'React Developer', section: 'Section B', dob: '2005-11-20', address: '45, Kothrud, Pune - 411038' },
-                { id: 'SGI00027', name: 'Priya Deshmukh', apaar: '3456 7890 1234', parent: 'Mr. Suresh Deshmukh', class: 'Software Testing', section: 'Section A', dob: '2005-09-05', address: '67, Dwarka Sector 12, Delhi - 110075' },
-                { id: 'SGI00028', name: 'Saurabh Jain', apaar: '4567 8901 2345', parent: 'Mr. Anil Jain', class: 'Python Development', section: 'Section C', dob: '2006-02-12', address: '22, Civil Lines, Nagpur - 440001' },
-                { id: 'SGI00029', name: 'Sneha Patil', apaar: '5678 9012 3456', parent: 'Mr. Vijay Patil', class: 'Data Science', section: 'Section A', dob: '2005-07-08', address: '78, Shivaji Nagar, Mumbai - 400001' }
-            ];
+            const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token');
+            if (!token) {
+                alert('Authentication token missing. Please log in again.');
+                window.location.href = 'login.php';
+                return;
+            }
 
-            const INSTITUTION_NAME = 'Softgrowth Infotech';
-            const CITY = 'Chandrapur';
+            const baseUrl = typeof url !== 'undefined' ? url : '';
+            const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
 
-            // ============================================================
-            // DOM REFS
-            // ============================================================
             const pickerWrapper  = document.getElementById('studentPickerWrapper');
             const pickerInput    = document.getElementById('studentPickerInput');
             const pickerDropdown = document.getElementById('studentPickerDropdown');
@@ -201,26 +184,24 @@
             const detailsBlock   = document.getElementById('detailsBlock');
             const dParent        = document.getElementById('dParent');
             const dClass         = document.getElementById('dClass');
-            const dSection       = document.getElementById('dSection');
+            const dBatch         = document.getElementById('dBatch');
             const dRegId         = document.getElementById('dRegId');
             const dApaar         = document.getElementById('dApaar');
             const dDob           = document.getElementById('dDob');
             const dAddress       = document.getElementById('dAddress');
 
-            const academicYear   = document.getElementById('academicYear');
             const dateOfIssue    = document.getElementById('dateOfIssue');
             const purpose        = document.getElementById('purpose');
             const customPurposeBlock = document.getElementById('customPurposeBlock');
             const customPurpose  = document.getElementById('customPurpose');
 
-            const generateBtn = document.getElementById('generateBtn');
-            const resetFormBtn = document.getElementById('resetFormBtn');
+            const generateBtn    = document.getElementById('generateBtn');
+            const resetFormBtn   = document.getElementById('resetFormBtn');
+            const globalBanner   = document.getElementById('globalErrorBanner');
+            const globalErrorMsg = document.getElementById('globalErrorMessage');
 
-            let highlightedIndex = -1;
+            let searchTimeout = null;
 
-            // ============================================================
-            // HELPERS
-            // ============================================================
             function todayISO() {
                 const d = new Date();
                 const yyyy = d.getFullYear();
@@ -231,151 +212,141 @@
 
             function formatDateDMY(iso) {
                 if (!iso) return '—';
-                const [y, m, d] = iso.split('-');
-                return `${d}/${m}/${y}`;
+                const parts = iso.split('T')[0].split('-');
+                if (parts.length !== 3) return iso;
+                return `${parts[2]}/${parts[1]}/${parts[0]}`;
             }
 
-            function generateCertNo() {
-                const year = new Date().getFullYear();
-                const rand = String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0');
-                return `BON-${year}-${rand}`;
+            function showError(msg) {
+                globalErrorMsg.textContent = msg;
+                globalBanner.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
 
-            function filterStudents(query) {
-                const q = query.trim().toLowerCase();
-                if (!q) return students;
-                return students.filter(s =>
-                    s.name.toLowerCase().includes(q) ||
-                    s.id.toLowerCase().includes(q) ||
-                    s.apaar.toLowerCase().replace(/\s/g, '').includes(q.replace(/\s/g, ''))
-                );
+            function clearError() {
+                globalBanner.classList.add('hidden');
             }
 
-            // ============================================================
-            // RENDER SUGGESTIONS
-            // ============================================================
-            function renderSuggestions(query) {
-                const list = filterStudents(query);
+            async function fetchStudentSuggestions(query) {
+                if (!query || query.trim().length < 1) {
+                    pickerDropdown.classList.add('hidden');
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`${cleanBase}/bonafide-certificates/students/search?q=${encodeURIComponent(query)}`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    const result = await response.json();
+                    if (response.ok && result.success) {
+                        renderDropdownItems(result.data);
+                    } else {
+                        pickerDropdown.innerHTML = `<div class="px-3 py-3 text-[11px] text-gray-500 text-center">No students found.</div>`;
+                        pickerDropdown.classList.remove('hidden');
+                    }
+                } catch (err) {
+                    console.error('Search error:', err);
+                }
+            }
+
+            function renderDropdownItems(students) {
                 pickerDropdown.innerHTML = '';
-                highlightedIndex = -1;
-
-                if (list.length === 0) {
-                    pickerDropdown.innerHTML = `
-                        <div class="px-3 py-3 text-[11px] text-gray-500 text-center">
-                            <i class="fas fa-search mr-1 text-orange-400"></i> No students found.
-                        </div>
-                    `;
+                if (!students || students.length === 0) {
+                    pickerDropdown.innerHTML = `<div class="px-3 py-3 text-[11px] text-gray-500 text-center">No students found.</div>`;
                     pickerDropdown.classList.remove('hidden');
                     return;
                 }
 
-                list.forEach((s, idx) => {
+                students.forEach(s => {
                     const item = document.createElement('div');
                     item.className = 'student-picker-item px-3 py-2 cursor-pointer text-[11.5px] hover:bg-orange-50 border-b border-gray-100 last:border-b-0';
-                    item.setAttribute('data-id', s.id);
-                    item.setAttribute('data-index', idx);
                     item.innerHTML = `
                         <div class="flex items-center gap-2">
                             <div class="w-7 h-7 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
                                 <i class="fas fa-user-graduate text-orange-500 text-[10px]"></i>
                             </div>
                             <div class="min-w-0 flex-1">
-                                <div class="font-semibold text-gray-800 truncate">${s.name}</div>
-                                <div class="text-[10px] text-gray-500 truncate">ID: ${s.id} · APAAR: ${s.apaar}</div>
+                                <div class="font-semibold text-gray-800 truncate">${s.student_name}</div>
+                                <div class="text-[10px] text-gray-500 truncate">Reg ID: ${s.registration_id || 'N/A'} · APAAR: ${s.abc_id || 'N/A'}</div>
                             </div>
                         </div>
                     `;
+                    item.addEventListener('click', () => loadStudentDetails(s.id));
                     pickerDropdown.appendChild(item);
                 });
 
                 pickerDropdown.classList.remove('hidden');
-
-                pickerDropdown.querySelectorAll('.student-picker-item').forEach(el => {
-                    el.addEventListener('click', function() {
-                        selectStudent(this.getAttribute('data-id'));
-                    });
-                });
             }
 
-            // ============================================================
-            // SELECT STUDENT
-            // ============================================================
-            function selectStudent(id) {
-                const s = students.find(x => x.id === id);
-                if (!s) return;
-
-                pickerInput.value = `${s.name} (${s.id})`;
-                studentSelect.innerHTML = `<option value="${s.id}" selected>${s.name}</option>`;
+            async function loadStudentDetails(studentId) {
                 pickerDropdown.classList.add('hidden');
+                clearError();
 
-                detailsBlock.classList.remove('hidden');
-                dParent.textContent  = s.parent;
-                dClass.textContent   = s.class;
-                dSection.textContent = s.section;
-                dRegId.textContent   = s.id;
-                dApaar.textContent   = s.apaar;
-                dDob.textContent     = formatDateDMY(s.dob);
-                dAddress.textContent = s.address;
+                try {
+                    const response = await fetch(`${cleanBase}/students/${studentId}`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Accept': 'application/json'
+                        }
+                    });
 
-                studentSelect.dispatchEvent(new Event('change', { bubbles: true }));
+                    const result = await response.json();
+                    if (response.ok && result.success) {
+                        const s = result.data;
+                        pickerInput.value = `${s.student_name} (${s.registration_id || s.id})`;
+                        studentSelect.innerHTML = `<option value="${s.id}" selected>${s.student_name}</option>`;
+
+                        detailsBlock.classList.remove('hidden');
+                        dParent.textContent  = s.parent_name || '—';
+                        dClass.textContent   = s.course || '—';
+                        dBatch.textContent   = s.student_batch || '—';
+                        dRegId.textContent   = s.registration_id || '—';
+                        dApaar.textContent   = s.abc_id || '—';
+                        dDob.textContent     = formatDateDMY(s.date_of_birth);
+                        
+                        const fullAddr = [s.full_address, s.tahsil, s.district, s.state, s.pincode].filter(Boolean).join(', ');
+                        dAddress.textContent = fullAddr || '—';
+                    } else {
+                        showError('Failed to load student details.');
+                    }
+                } catch (err) {
+                    console.error('Details fetch error:', err);
+                    showError('Network error while retrieving student details.');
+                }
             }
-
-            // ============================================================
-            // INPUT EVENTS
-            // ============================================================
-            pickerInput.addEventListener('focus', function() {
-                renderSuggestions(this.value);
-            });
 
             pickerInput.addEventListener('input', function() {
-                renderSuggestions(this.value);
-                studentSelect.innerHTML = `<option value="">Select or enter student name</option>`;
-                detailsBlock.classList.add('hidden');
-            });
-
-            pickerInput.addEventListener('keydown', function(e) {
-                const items = pickerDropdown.querySelectorAll('.student-picker-item');
-                if (items.length === 0) return;
-
-                if (e.key === 'ArrowDown') {
-                    e.preventDefault();
-                    highlightedIndex = Math.min(highlightedIndex + 1, items.length - 1);
-                    highlightItem(items);
-                } else if (e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    highlightedIndex = Math.max(highlightedIndex - 1, 0);
-                    highlightItem(items);
-                } else if (e.key === 'Enter') {
-                    if (highlightedIndex >= 0 && items[highlightedIndex]) {
-                        e.preventDefault();
-                        items[highlightedIndex].click();
-                    }
-                } else if (e.key === 'Escape') {
+                clearTimeout(searchTimeout);
+                const query = this.value;
+                if (!query.trim()) {
                     pickerDropdown.classList.add('hidden');
+                    detailsBlock.classList.add('hidden');
+                    studentSelect.innerHTML = `<option value="">Select student</option>`;
+                    return;
+                }
+                searchTimeout = setTimeout(() => {
+                    fetchStudentSuggestions(query);
+                }, 300);
+            });
+
+            pickerInput.addEventListener('focus', function() {
+                if (this.value.trim().length >= 1) {
+                    fetchStudentSuggestions(this.value);
                 }
             });
 
-            function highlightItem(items) {
-                items.forEach((el, i) => {
-                    el.classList.toggle('bg-orange-100', i === highlightedIndex);
-                });
-                if (items[highlightedIndex]) {
-                    items[highlightedIndex].scrollIntoView({ block: 'nearest' });
-                }
-            }
-
-            // ============================================================
-            // CLOSE ON OUTSIDE CLICK
-            // ============================================================
             document.addEventListener('click', function(e) {
                 if (!pickerWrapper.contains(e.target)) {
                     pickerDropdown.classList.add('hidden');
                 }
             });
 
-            // ============================================================
-            // PURPOSE → CUSTOM
-            // ============================================================
             purpose.addEventListener('change', function() {
                 if (this.value === 'Other') {
                     customPurposeBlock.classList.remove('hidden');
@@ -385,62 +356,91 @@
                 }
             });
 
-            // ============================================================
-            // INIT
-            // ============================================================
             dateOfIssue.value = todayISO();
 
-            // ============================================================
-            // RESET
-            // ============================================================
             resetFormBtn.addEventListener('click', function() {
                 pickerInput.value = '';
                 pickerDropdown.classList.add('hidden');
-                studentSelect.innerHTML = `<option value="">Select or enter student name</option>`;
+                studentSelect.innerHTML = `<option value="">Select student</option>`;
                 detailsBlock.classList.add('hidden');
-                academicYear.value = '2026-2027';
                 dateOfIssue.value = todayISO();
                 purpose.value = 'Scholarship';
                 customPurposeBlock.classList.add('hidden');
                 customPurpose.value = '';
+                clearError();
             });
 
-            // ============================================================
-            // GENERATE → OPEN CERTIFICATE PAGE IN NEW TAB
-            // ============================================================
-            generateBtn.addEventListener('click', function() {
-                const sid = studentSelect.value;
+            generateBtn.addEventListener('click', async function() {
+                clearError();
+                const studentId = studentSelect.value;
 
-                if (!sid) { alert('Please select a student.'); return; }
-                if (!academicYear.value) { alert('Please select an academic year.'); return; }
-                if (!dateOfIssue.value) { alert('Please select the date of issue.'); return; }
-                if (!purpose.value) { alert('Please select the purpose.'); return; }
+                if (!studentId) {
+                    showError('Please search and select a valid student from the dropdown list.');
+                    return;
+                }
+                if (!dateOfIssue.value) {
+                    showError('Please select the date of issue.');
+                    return;
+                }
+                if (!purpose.value) {
+                    showError('Please choose a purpose for the certificate.');
+                    return;
+                }
                 if (purpose.value === 'Other' && !customPurpose.value.trim()) {
-                    alert('Please specify the custom purpose.');
+                    showError('Please specify the custom purpose text.');
                     return;
                 }
 
-                const s = students.find(x => x.id === sid);
-                if (!s) { alert('Student not found.'); return; }
+                generateBtn.disabled = true;
+                generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1.5"></i> Issuing Certificate...';
 
-                const purposeText = purpose.value === 'Other' ? customPurpose.value.trim() : purpose.value;
-                const certNumber = generateCertNo();
+                // Derive academic year automatically from issue date year if needed or pass default
+                const issueYear = new Date(dateOfIssue.value).getFullYear();
+                const academicYearStr = `${issueYear}-${issueYear + 1}`;
 
-                const params = new URLSearchParams({
-                    cert_no: certNumber,
-                    name: s.name,
-                    parent: s.parent,
-                    institution: INSTITUTION_NAME,
-                    class: s.class,
-                    academic: academicYear.value,
-                    reg_id: s.id,
-                    dob: s.dob,
-                    purpose: purposeText,
+                const payload = {
+                    student_id: parseInt(studentId, 10),
+                    academic_year: academicYearStr,
                     issue_date: dateOfIssue.value,
-                    city: CITY
-                });
+                    purpose: purpose.value,
+                    custom_purpose: purpose.value === 'Other' ? customPurpose.value.trim() : null
+                };
 
-                window.open('bonafide_certificate.php?' + params.toString(), '_blank');
+                try {
+                    const response = await fetch(`${cleanBase}/bonafide-certificates`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok && result.success) {
+                        alert('Bonafide certificate issued successfully! Certificate No: ' + result.data.certificate_no);
+                        
+                        // Open final printable view in new tab using the returned certificate ID
+                        window.open(`bonafide_certificate.php?id=${result.data.id}`, '_blank');
+                        
+                        resetFormBtn.click();
+                    } else {
+                        if (result.errors) {
+                            const firstKey = Object.keys(result.errors)[0];
+                            showError(result.errors[firstKey][0]);
+                        } else {
+                            showError(result.message || 'Failed to issue bonafide certificate.');
+                        }
+                    }
+                } catch (err) {
+                    console.error('Issue error:', err);
+                    showError('A network or server error occurred while generating the certificate.');
+                } finally {
+                    generateBtn.disabled = false;
+                    generateBtn.innerHTML = '<i class="fas fa-stamp text-xs"></i> Generate &amp; Issue Bonafide';
+                }
             });
 
         })();

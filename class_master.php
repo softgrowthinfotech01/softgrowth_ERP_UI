@@ -19,6 +19,12 @@
         
         <div class="w-full max-w-3xl space-y-4">
 
+            <!-- Global Error Banner -->
+            <div id="globalErrorBanner" class="hidden mb-4 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl text-sm flex items-center gap-3">
+                <i class="fas fa-exclamation-circle text-red-500 text-lg"></i>
+                <span id="globalErrorMessage">Please correct the highlighted fields before proceeding.</span>
+            </div>
+
             <!-- Header -->
             <div class="bg-white rounded-xl shadow-md border border-gray-200 p-4 flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
@@ -27,7 +33,7 @@
                     </div>
                     <div>
                         <h1 class="text-lg font-bold text-gray-900 leading-tight">Add Class / Course</h1>
-                        <p class="text-[11px] text-gray-500 mt-0.5">Type a course name and press Enter to add it to the list.</p>
+                        <p class="text-[11px] text-gray-500 mt-0.5">Type a course name and press Enter to add it to the database.</p>
                     </div>
                 </div>
             </div>
@@ -68,10 +74,10 @@
                             </tr>
                         </thead>
                         <tbody id="tableBody">
-                            <!-- Empty state -->
+                            <!-- Empty state / Loading state -->
                             <tr id="emptyRow">
                                 <td colspan="3" class="text-center text-gray-500 py-6 text-[11px]">
-                                    <i class="fas fa-info-circle mr-1 text-orange-400"></i> No courses added yet.
+                                    <i class="fas fa-spinner fa-spin mr-1 text-orange-400"></i> Loading courses...
                                 </td>
                             </tr>
                         </tbody>
@@ -85,20 +91,68 @@
     <?php include 'footer.php' ?>
     <script src="url.js"></script>
 
-    <!-- Script for adding inputs to table -->
+    <!-- Script for API Integration -->
     <script>
         (function() {
+            const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token');
+            if (!token) {
+                alert('Authentication token missing. Please log in again.');
+                window.location.href = 'login.php';
+                return;
+            }
+
+            const baseUrl = typeof url !== 'undefined' ? url : '';
+            const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+
             const courseInput = document.getElementById('courseInput');
             const addBtn = document.getElementById('addBtn');
             const tableBody = document.getElementById('tableBody');
-            const emptyRow = document.getElementById('emptyRow');
             const countText = document.getElementById('countText');
+            const globalBanner = document.getElementById('globalErrorBanner');
+            const globalErrorMsg = document.getElementById('globalErrorMessage');
 
-            let courses = []; // Array to hold the data
+            let courses = [];
 
-            // Render the table based on the array
+            function showError(msg) {
+                globalErrorMsg.textContent = msg;
+                globalBanner.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            function clearError() {
+                globalBanner.classList.add('hidden');
+            }
+
+            // ============================================================
+            // 1. FETCH COURSES (GET /class-masters)
+            // ============================================================
+            async function fetchCourses() {
+                try {
+                    const response = await fetch(`${cleanBase}/class-masters`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    const result = await response.json();
+                    if (response.ok) {
+                        courses = result.data || [];
+                        renderTable();
+                    } else {
+                        showError(result.message || 'Failed to fetch classes.');
+                    }
+                } catch (err) {
+                    console.error('Fetch error:', err);
+                    showError('Network error while loading classes.');
+                }
+            }
+
+            // ============================================================
+            // RENDER TABLE
+            // ============================================================
             function renderTable() {
-                // Clear current rows except the empty state
                 tableBody.innerHTML = '';
                 
                 if (courses.length === 0) {
@@ -113,18 +167,16 @@
                     return;
                 }
 
-                // Update count
-                countText.textContent = courses.length + ' entry' + (courses.length === 1 ? '' : 'ies');
+                countText.textContent = courses.length + ' entr' + (courses.length === 1 ? 'y' : 'ies');
 
-                // Loop through array and create rows
                 courses.forEach((course, index) => {
                     const tr = document.createElement('tr');
                     tr.className = 'hover:bg-orange-50/40 transition';
                     tr.innerHTML = `
                         <td class="px-4 py-2 border-b border-gray-100 text-gray-500">${index + 1}</td>
-                        <td class="px-4 py-2 border-b border-gray-100 font-medium text-gray-800">${course}</td>
+                        <td class="px-4 py-2 border-b border-gray-100 font-medium text-gray-800">${escapeHtml(course.class_name)}</td>
                         <td class="px-4 py-2 border-b border-gray-100 text-center">
-                            <button type="button" class="delete-btn text-red-500 hover:text-red-700 hover:bg-red-50 rounded w-6 h-6 inline-flex items-center justify-center transition" data-index="${index}">
+                            <button type="button" class="delete-btn text-red-500 hover:text-red-700 hover:bg-red-50 rounded w-6 h-6 inline-flex items-center justify-center transition" data-id="${course.id}" title="Delete Class">
                                 <i class="fas fa-trash text-[10px]"></i>
                             </button>
                         </td>
@@ -135,44 +187,105 @@
                 // Attach delete event listeners
                 document.querySelectorAll('.delete-btn').forEach(btn => {
                     btn.addEventListener('click', function() {
-                        const idx = parseInt(this.getAttribute('data-index'), 10);
-                        courses.splice(idx, 1); // Remove item from array
-                        renderTable(); // Re-render
+                        const classId = this.getAttribute('data-id');
+                        deleteCourse(classId);
                     });
                 });
             }
 
-            // Function to handle adding
-            function addCourse() {
+            function escapeHtml(text) {
+                const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+                return text.replace(/[&<>"']/g, m => map[m]);
+            }
+
+            // ============================================================
+            // 2. ADD COURSE (POST /class-masters)
+            // ============================================================
+            async function addCourse() {
+                clearError();
                 const val = courseInput.value.trim();
                 
                 if (!val) {
-                    alert('Please enter a Class / Course name.');
+                    showError('Please enter a Class / Course name.');
                     return;
                 }
 
-                // Check for duplicates
-                if (courses.includes(val)) {
-                    alert('This course is already added.');
-                    return;
-                }
+                addBtn.disabled = true;
+                addBtn.innerHTML = '<i class="fas fa-spinner fa-spin text-xs"></i> Adding...';
 
-                courses.push(val); // Add to array
-                courseInput.value = ''; // Clear input
-                courseInput.focus(); // Keep focus for fast entry
-                renderTable(); // Update UI
+                try {
+                    const response = await fetch(`${cleanBase}/class-masters`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({ class_name: val })
+                    });
+
+                    const result = await response.json();
+
+                    if (response.status === 201 || response.ok) {
+                        courseInput.value = '';
+                        courseInput.focus();
+                        await fetchCourses(); // Refresh list from backend
+                    } else {
+                        if (result.errors && result.errors.class_name) {
+                            showError(result.errors.class_name[0]);
+                        } else {
+                            showError(result.message || 'Failed to add class.');
+                        }
+                    }
+                } catch (err) {
+                    console.error('Add error:', err);
+                    showError('A network error occurred while saving the course.');
+                } finally {
+                    addBtn.disabled = false;
+                    addBtn.innerHTML = '<i class="fas fa-plus text-xs"></i> Add';
+                }
             }
 
-            // Button click event
+            // ============================================================
+            // 3. DELETE COURSE (DELETE /class-masters/{id})
+            // ============================================================
+            async function deleteCourse(id) {
+                if (!confirm('Are you sure you want to delete this class?')) return;
+
+                clearError();
+                try {
+                    const response = await fetch(`${cleanBase}/class-masters/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    const result = await response.json();
+                    if (response.ok) {
+                        await fetchCourses(); // Refresh list from backend
+                    } else {
+                        showError(result.message || 'Failed to delete class.');
+                    }
+                } catch (err) {
+                    console.error('Delete error:', err);
+                    showError('A network error occurred while deleting the course.');
+                }
+            }
+
+            // Event Listeners
             addBtn.addEventListener('click', addCourse);
 
-            // Enter key event
             courseInput.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') {
                     e.preventDefault();
                     addCourse();
                 }
             });
+
+            // Initial load
+            fetchCourses();
 
         })();
     </script>

@@ -34,9 +34,6 @@
             <div id="formView">
                 <form id="studentRegistrationForm" enctype="multipart/form-data">
 
-                    <!-- Hidden input to satisfy backend validation requirement for student_year -->
-                    <input type="hidden" id="student_year" value="First Year">
-
                     <!-- SECTION 1: PERSONAL INFORMATION -->
                     <div class="bg-white rounded-xl shadow-md border border-gray-200 mb-4 overflow-hidden">
                         <button type="button" class="w-full flex items-center justify-between px-4 py-3 bg-orange-50 hover:bg-orange-100 transition-colors toggle-section" data-target="personal-body">
@@ -81,8 +78,11 @@
                                 <div>
                                     <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Course / Class <span class="text-red-500">*</span></label>
                                     <div class="relative">
-                                        <i class="fas fa-graduation-cap absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                        <input type="text" id="course" placeholder="e.g. BCA, Class 10" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                        <i class="fas fa-graduation-cap absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs z-10"></i>
+                                        <select id="course" class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                            <option value="">Select course / class</option>
+                                        </select>
+                                        <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
                                     </div>
                                     <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-course"></p>
                                 </div>
@@ -246,6 +246,16 @@
                                 </div>
 
                                 <div>
+                                    <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Admission Date <span class="text-red-500">*</span></label>
+                                    <div class="relative">
+                                        <i class="fas fa-calendar-check absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                        <input type="date" id="admission_date" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                    </div>
+                                    <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-admission_date"></p>
+                                </div>
+
+                                <!-- Course Fees & Discount Amount side-by-side -->
+                                <div>
                                     <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Course Fees <span class="text-red-500">*</span></label>
                                     <div class="relative">
                                         <i class="fas fa-rupee-sign absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
@@ -255,13 +265,14 @@
                                 </div>
 
                                 <div>
-                                    <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Admission Date <span class="text-red-500">*</span></label>
+                                    <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Discount Amount <span class="text-gray-400 font-normal">(Optional)</span></label>
                                     <div class="relative">
-                                        <i class="fas fa-calendar-check absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                        <input type="date" id="admission_date" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                        <i class="fas fa-tag absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                        <input type="number" step="0.01" id="discount_amount" placeholder="Enter discount amount" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
                                     </div>
-                                    <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-admission_date"></p>
+                                    <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-discount_amount"></p>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -462,6 +473,51 @@
 
 <script>
     (function() {
+        const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token');
+        if (!token) {
+            alert('Authentication token missing. Please log in again.');
+            window.location.href = 'login.php';
+            return;
+        }
+
+        const baseUrl = typeof url !== 'undefined' ? url : '';
+        const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+
+        // ============================================================
+        // FETCH CLASS MASTERS INTO DROPDOWN
+        // ============================================================
+        async function fetchClassMasters() {
+            const courseSelect = document.getElementById('course');
+            if (!courseSelect) return;
+
+            try {
+                const response = await fetch(`${cleanBase}/class-masters`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                const result = await response.json();
+                if (response.ok && result.data) {
+                    // Clear existing options except default placeholder
+                    courseSelect.innerHTML = '<option value="">Select course / class</option>';
+                    result.data.forEach(item => {
+                        const option = document.createElement('option');
+                        option.value = item.class_name; // Send the class name string or item.id depending on your backend
+                        option.textContent = item.class_name;
+                        courseSelect.appendChild(option);
+                    });
+                }
+            } catch (err) {
+                console.error('Failed to fetch class masters:', err);
+            }
+        }
+
+        // Run fetch on load
+        fetchClassMasters();
+
         // ============================================================
         // 1. ACCORDION
         // ============================================================
@@ -532,7 +588,7 @@
         }
 
         // ============================================================
-        // 3. OTHER DOCUMENTS — MULTIPLE UPLOADER (FIXED)
+        // 3. OTHER DOCUMENTS — MULTIPLE UPLOADER
         // ============================================================
         const otherDocsInput = document.getElementById('other_documents');
         const otherDocsList = document.getElementById('other_documents_list');
@@ -586,7 +642,6 @@
                     if (!isDuplicate) selectedOtherDocs.push(newFile);
                 });
                 renderOtherDocs();
-                // Clear input value so selecting the same file again triggers change if needed
                 this.value = '';
             });
         }
@@ -626,9 +681,6 @@
             if (banner) banner.classList.add('hidden');
         }
 
-        // ============================================================
-        // 5. COMPREHENSIVE CLIENT-SIDE VALIDATION
-        // ============================================================
         function getValue(id) {
             const el = document.getElementById(id);
             if (!el) return '—';
@@ -667,12 +719,14 @@
             }
         }
 
-       function validateForm() {
+        // ============================================================
+        // 5. CLIENT-SIDE VALIDATION
+        // ============================================================
+        function validateForm() {
             clearErrors();
             let isValid = true;
             let firstInvalidField = null;
 
-            // Required standard text/select/date fields
             const requiredFields = [
                 'student_name', 'course', 'student_phone', 'parent_phone',
                 'aadhaar_number', 'date_of_birth', 'gender', 'blood_group',
@@ -690,7 +744,7 @@
                 }
             });
 
-            // 1. Student Phone (Must be exactly 10 digits)
+            // Student Phone (10 digits)
             const studentPhoneEl = document.getElementById('student_phone');
             if (studentPhoneEl && studentPhoneEl.value.trim() !== '') {
                 const cleanVal = studentPhoneEl.value.trim();
@@ -701,7 +755,7 @@
                 }
             }
 
-            // 2. Parent Phone (Must be exactly 10 digits)
+            // Parent Phone (10 digits)
             const parentPhoneEl = document.getElementById('parent_phone');
             if (parentPhoneEl && parentPhoneEl.value.trim() !== '') {
                 const cleanVal = parentPhoneEl.value.trim();
@@ -712,7 +766,7 @@
                 }
             }
 
-            // 3. Aadhaar Number (Must be exactly 12 digits)
+            // Aadhaar Number (12 digits)
             const aadhaarEl = document.getElementById('aadhaar_number');
             if (aadhaarEl && aadhaarEl.value.trim() !== '') {
                 const cleanVal = aadhaarEl.value.trim();
@@ -723,7 +777,7 @@
                 }
             }
 
-            // 4. ABC ID / APAAR ID (Optional, but if filled must be exactly 12 digits)
+            // APAAR / ABC ID (Optional, 12 digits if provided)
             const abcEl = document.getElementById('abc_id');
             if (abcEl && abcEl.value.trim() !== '') {
                 const cleanVal = abcEl.value.trim();
@@ -734,7 +788,7 @@
                 }
             }
 
-            // 5. Passport Photo (Required)
+            // Passport Photo (Required)
             const passportPhoto = document.getElementById('passport_photo');
             const passportInputLabel = passportPhoto ? passportPhoto.closest('div') : null;
             if (passportPhoto && (!passportPhoto.files || passportPhoto.files.length === 0)) {
@@ -773,6 +827,7 @@
 
             return isValid;
         }
+
         function buildPreview() {
             const personalRows =
                 row('Registration ID', getValue('registration_id') || 'Auto-generated') +
@@ -795,6 +850,7 @@
                 row('Previous Class', getValue('previous_class')) +
                 row('Student Batch', getValue('student_batch')) +
                 row('Course Fees', getValue('full_fees')) +
+                row('Discount Amount', getValue('discount_amount') || '0') +
                 row('Admission Date', getValue('admission_date'));
 
             const addressRows =
@@ -823,9 +879,7 @@
         if (nextBtn) {
             nextBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                if (!validateForm()) {
-                    return; // Stops preview and shows errors on form
-                }
+                if (!validateForm()) return;
                 buildPreview();
                 showPreview();
             });
@@ -844,35 +898,30 @@
         }
 
         // ============================================================
-        // 6. SUBMIT BUTTON & API INTEGRATION WITH ERROR HANDLING
+        // 6. SUBMIT BUTTON & API INTEGRATION
         // ============================================================
+        let isSubmitting = false;
+
         if (submitBtn) {
             submitBtn.addEventListener('click', async function(e) {
                 e.preventDefault();
+
+                if (isSubmitting) return;
+
                 clearErrors();
 
-                const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token');
-                if (!token) {
-                    alert('Authentication token missing. Please log in again.');
-                    window.location.href = 'login.php';
-                    return;
-                }
-
-                const baseUrl = typeof url !== 'undefined' ? url : '';
-                const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
-
+                isSubmitting = true;
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1.5"></i> Submitting...';
 
                 const formData = new FormData();
 
-                // Standard form inputs to gather
                 const fields = [
                     'student_name', 'registration_id', 'abc_id', 'course',
                     'student_phone', 'parent_phone', 'parent_name', 'aadhaar_number',
                     'date_of_birth', 'gender', 'blood_group', 'place_of_birth',
                     'caste', 'sub_caste', 'board', 'previous_class',
-                    'student_batch', 'full_fees', 'admission_date',
+                    'student_batch', 'full_fees', 'discount_amount', 'admission_date',
                     'full_address', 'tahsil', 'district', 'state', 'pincode'
                 ];
 
@@ -883,17 +932,12 @@
                     }
                 });
 
-                // Append hidden default for student_year to satisfy controller validation
-                formData.append('student_year', 'First Year');
-
-                // Append single files
                 const passportPhoto = document.getElementById('passport_photo').files[0];
                 if (passportPhoto) formData.append('passport_photo', passportPhoto);
 
                 const aadharCard = document.getElementById('aadhar_card').files[0];
                 if (aadharCard) formData.append('aadhar_card', aadharCard);
 
-                // Append multiple files using array notation for Laravel
                 selectedOtherDocs.forEach(file => {
                     formData.append('other_documents[]', file);
                 });
@@ -911,27 +955,84 @@
                     const result = await response.json();
 
                     if (response.ok && result.success) {
-                        alert('Student registered successfully! Registration ID: ' + (result.registration_id || 'Generated'));
-                        window.location.reload();
+                        const regId = result.registration_id || result.data?.registration_id || 'Generated';
+                        
+                        document.getElementById('studentRegistrationForm').reset();
+                        selectedOtherDocs = [];
+                        renderOtherDocs();
+                        
+                        const passportLabel = document.getElementById('passport_photo_name');
+                        if (passportLabel) passportLabel.classList.add('hidden');
+                        
+                        const aadharLabel = document.getElementById('aadhar_card_name');
+                        if (aadharLabel) aadharLabel.classList.add('hidden');
+
+                        showForm();
+
+                        const banner = document.getElementById('globalErrorBanner');
+                        const errorMessageContainer = document.getElementById('globalErrorMessage');
+                        if (banner && errorMessageContainer) {
+                            banner.className = 'mb-4 p-4 bg-green-50 border border-green-200 text-green-800 rounded-xl text-sm flex items-center gap-3';
+                            banner.querySelector('i').className = 'fas fa-check-circle text-green-500 text-lg';
+                            errorMessageContainer.innerHTML = `<strong>Success!</strong> Student registered successfully. Registration ID: <span class="font-mono font-bold">${regId}</span>`;
+                            banner.classList.remove('hidden');
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }
                     } else {
                         showForm();
+                        
                         if (response.status === 422 && result.errors) {
-                            document.getElementById('globalErrorMessage').textContent = result.message || 'Please correct the highlighted fields.';
-                            document.getElementById('globalErrorBanner').classList.remove('hidden');
+                            const banner = document.getElementById('globalErrorBanner');
+                            const errorMessageContainer = document.getElementById('globalErrorMessage');
+                            
+                            banner.className = 'mb-4 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl text-sm flex items-center gap-3';
+                            banner.querySelector('i').className = 'fas fa-exclamation-circle text-red-500 text-lg';
+
+                            let errorListHtml = '<strong>Please correct the following fields before proceeding:</strong><ul class="list-disc ml-5 mt-1 space-y-0.5">';
+                            let firstInvalidField = null;
 
                             Object.keys(result.errors).forEach(key => {
                                 let cleanKey = key.replace(/\.\d+\$/, '').replace('[]', '');
+                                const errorMessage = result.errors[key][0];
+                                
+                                let readableFieldName = cleanKey.replace(/_/g, ' ');
+                                readableFieldName = readableFieldName.charAt(0).toUpperCase() + readableFieldName.slice(1);
+
+                                errorListHtml += `<li><span class="font-semibold">${readableFieldName}</span>: ${errorMessage}</li>`;
+
                                 const errEl = document.getElementById('err-' + cleanKey);
                                 const inputEl = document.getElementById(cleanKey);
                                 
                                 if (errEl) {
-                                    errEl.textContent = result.errors[key][0];
+                                    errEl.textContent = errorMessage;
                                     errEl.classList.remove('hidden');
                                 }
                                 if (inputEl) {
                                     inputEl.classList.add('border-red-500', 'bg-red-50');
+                                    if (!firstInvalidField) firstInvalidField = inputEl;
                                 }
                             });
+
+                            errorListHtml += '</ul>';
+                            errorMessageContainer.innerHTML = errorListHtml;
+                            banner.classList.remove('hidden');
+
+                            if (firstInvalidField) {
+                                let sectionBody = firstInvalidField.closest('.section-body');
+                                if (sectionBody && sectionBody.classList.contains('hidden')) {
+                                    sectionBody.classList.remove('hidden');
+                                    const toggleBtn = document.querySelector(`[data-target="${sectionBody.id}"]`);
+                                    if (toggleBtn) {
+                                        const chevron = toggleBtn.querySelector('.chevron-icon');
+                                        if (chevron) {
+                                            chevron.classList.remove('fa-chevron-down');
+                                            chevron.classList.add('fa-chevron-up');
+                                        }
+                                    }
+                                }
+                                firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                if (firstInvalidField.focus) firstInvalidField.focus();
+                            }
                         } else {
                             alert(result.message || 'Failed to register student.');
                         }
@@ -941,6 +1042,7 @@
                     showForm();
                     alert('Network or server error while submitting registration.');
                 } finally {
+                    isSubmitting = false;
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = '<i class="fas fa-paper-plane text-xs"></i> Submit Registration';
                 }
