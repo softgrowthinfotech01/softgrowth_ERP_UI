@@ -191,45 +191,152 @@
                 <!-- ============================================================ -->
                 <!-- SECTION 3: JOB DETAILS -->
                 <!-- ============================================================ -->
-                <div class="bg-orange-50 px-4 py-2.5 border-y border-orange-100 flex items-center gap-2">
-                    <i class="fas fa-briefcase text-orange-500 text-xs"></i>
-                    <h3 class="font-bold text-gray-800 text-[13px]">Job Details</h3>
-                </div>
+              <!-- ===== JOB DETAILS SECTION ===== -->
+<div class="bg-orange-50 px-4 py-2.5 border-y border-orange-100 flex items-center gap-2">
+    <i class="fas fa-briefcase text-orange-500 text-xs"></i>
+    <h3 class="font-bold text-gray-800 text-[13px]">Job Details</h3>
+</div>
 
-                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3">
-                    
-                    <!-- Designation -->
-                    <div>
-                        <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Designation <span class="text-red-500">*</span></label>
-                        <div class="relative">
-                            <i class="fas fa-user-tag absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                            <select id="designation" class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
-                                <option value="">Select Designation</option>
-                                <option value="Software Developer">Software Developer</option>
-                                <option value="Frontend Developer">Frontend Developer</option>
-                                <option value="Backend Developer">Backend Developer</option>
-                                <option value="UI/UX Designer">UI/UX Designer</option>
-                                <option value="Software Tester">Software Tester</option>
-                                <option value="Digital Marketing Executive">Digital Marketing Executive</option>
-                                <option value="HR Executive">HR Executive</option>
-                                <option value="Accountant">Accountant</option>
-                                <option value="Office Administrator">Office Administrator</option>
-                                <option value="Trainer">Trainer</option>
-                            </select>
-                            <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
-                        </div>
-                    </div>
+<div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3">
+    
+    <!-- Designation -->
+    <div>
+        <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Designation <span class="text-red-500">*</span></label>
+        <div class="relative">
+            <i class="fas fa-user-tag absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+            <select id="designation" class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                <option value="">Select Designation</option>
+                <option value="Software Developer">Software Developer</option>
+                <option value="Frontend Developer">Frontend Developer</option>
+                <option value="Backend Developer">Backend Developer</option>
+                <option value="UI/UX Designer">UI/UX Designer</option>
+                <option value="Software Tester">Software Tester</option>
+                <option value="Digital Marketing Executive">Digital Marketing Executive</option>
+                <option value="HR Executive">HR Executive</option>
+                <option value="Accountant">Accountant</option>
+                <option value="Office Administrator">Office Administrator</option>
+                <option value="Trainer">Trainer</option>
+            </select>
+            <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
+        </div>
+    </div>
 
-                    <!-- Date of Joining -->
-                    <div>
-                        <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Date of Joining <span class="text-red-500">*</span></label>
-                        <div class="relative">
-                            <i class="fas fa-calendar-check absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                            <input type="date" id="doj"
-                                class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
-                        </div>
-                    </div>
+    <!-- Date of Joining -->
+    <div>
+        <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Date of Joining <span class="text-red-500">*</span></label>
+        <div class="relative">
+            <i class="fas fa-calendar-check absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+            <input type="date" id="doj"
+                class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+        </div>
+    </div>
+</div>
+
+<!-- ===== CREATE NEW ROLE SECTION ===== -->
+<div class="px-4 pb-5">
+    
+    <!-- Default State: Text + Button -->
+    <div id="createRoleDefault" class="flex flex-col sm:flex-row items-center justify-between gap-3">
+        <span class="text-sm text-gray-500">Can't find the required role?</span>
+        <button type="button" onclick="toggleCreateRole()" 
+                class="w-full sm:w-auto px-4 py-2 bg-blue-50 text-blue-600 rounded-lg border border-blue-100 hover:bg-blue-100 hover:border-blue-200 transition-all duration-200 flex items-center justify-center gap-1.5 text-sm font-semibold shadow-sm">
+            <i class="fas fa-plus text-xs"></i>
+            Create New Designation 
+        </button>
+    </div>
+
+    <!-- Expanded State: Input Form (Hidden by default) -->
+    <div id="createRoleForm" class="hidden mt-3 bg-orange-50/50 border border-orange-100 rounded-xl p-4 transition-all duration-300">
+        <div class="flex flex-col sm:flex-row items-end gap-3">
+            
+            <!-- Input Field -->
+            <div class="flex-1 w-full">
+                <label class="block text-[11px] font-bold text-gray-700 mb-1">New Designation  <span class="text-red-500">*</span></label>
+                <div class="relative">
+                    <i class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                    <input type="text" id="newRoleInput" placeholder="Enter new Designation " 
+                           class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm bg-white">
                 </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+                <button type="button" onclick="toggleCreateRole()" 
+                        class="flex-1 sm:flex-none px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-semibold hover:bg-white transition-all duration-200">
+                    Cancel
+                </button>
+                <button type="button" onclick="saveNewRole()" 
+                        class="flex-1 sm:flex-none px-5 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-bold shadow-sm transition-all duration-200">
+                    Save Designation 
+                </button>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- ===== JAVASCRIPT LOGIC ===== -->
+<script>
+    // Toggle UI visibility
+    function toggleCreateRole() {
+        const defaultState = document.getElementById('createRoleDefault');
+        const formState = document.getElementById('createRoleForm');
+        const input = document.getElementById('newRoleInput');
+
+        if (formState.classList.contains('hidden')) {
+            // Open form
+            defaultState.classList.add('hidden');
+            formState.classList.remove('hidden');
+            input.focus();
+        } else {
+            // Close form
+            formState.classList.add('hidden');
+            defaultState.classList.remove('hidden');
+            input.value = ''; // clear input
+        }
+    }
+
+    // Save the new role
+    function saveNewRole() {
+        const input = document.getElementById('newRoleInput');
+        const newRole = input.value.trim();
+        const select = document.getElementById('designation');
+
+        if (newRole === "") {
+            alert("Please enter a role name.");
+            input.focus();
+            return;
+        }
+
+        // Check if it already exists
+        let exists = false;
+        for (let i = 0; i < select.options.length; i++) {
+            if (select.options[i].value.toLowerCase() === newRole.toLowerCase()) {
+                exists = true;
+                break;
+            }
+        }
+
+        if (exists) {
+            alert("This role already exists in the list!");
+            select.value = newRole; // Auto-select it
+            toggleCreateRole(); // Close form
+            return;
+        }
+
+        // Create new option and append
+        const newOption = document.createElement('option');
+        newOption.value = newRole;
+        newOption.text = newRole;
+        select.appendChild(newOption);
+        
+        // Select the newly added option
+        select.value = newRole;
+        
+        // Close form and reset
+        toggleCreateRole();
+    }
+</script>
 
                 <!-- ============================================================ -->
                 <!-- SECTION 4: ADDITIONAL DETAILS -->
