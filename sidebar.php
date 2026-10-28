@@ -65,6 +65,38 @@
             </div>
         </div>
 
+      <a href="employee-registration" data-slug="bonafide"
+    class="sidebar-menu-item sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-orange-50 hover:text-orange-700 transition-all duration-200">
+
+    <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-orange-400">
+        <svg xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2">
+
+            <!-- Employee Head -->
+            <circle cx="9" cy="7" r="3"
+                stroke-linecap="round"
+                stroke-linejoin="round" />
+
+            <!-- Employee Body -->
+            <path d="M3.5 19v-1.5a5.5 5.5 0 0 1 11 0V19h-11Z"
+                stroke-linecap="round"
+                stroke-linejoin="round" />
+
+            <!-- Registration Plus Icon -->
+            <path d="M18 10v8m-4-4h8"
+                stroke-linecap="round"
+                stroke-linejoin="round" />
+
+        </svg>
+    </span>
+
+    <span>Employee Registration</span>
+</a>
+
         <!-- Records Dropdown -->
         <div class="dropdown sidebar-menu-group" data-group-slug="records">
             <button onclick="toggleDropdown('recordMenu')" data-slug="records" class="sidebar-menu-item sidebar-dropdown-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-orange-50 hover:text-orange-700 transition-all duration-200">
@@ -139,6 +171,7 @@
             <span>Bonafide</span>
         </a>
 
+
         <!-- Cash Memo -->
         <a href="cash_memo" data-slug="cash-memo" class="sidebar-menu-item sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-orange-50 hover:text-orange-700 transition-all duration-200">
             <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-orange-400">
@@ -153,24 +186,53 @@
 
 
 
-        <a href="class_master.php" data-slug="cash-memo" class="sidebar-menu-item sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-orange-50 hover:text-orange-700 transition-all duration-200">
+        <a href="class_master" data-slug="cash-memo" class="sidebar-menu-item sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-orange-50 hover:text-orange-700 transition-all duration-200">
             <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-orange-400">
-               <svg xmlns="http://www.w3.org/2000/svg"
-     class="w-5 h-5"
-     fill="none"
-     viewBox="0 0 24 24"
-     stroke="currentColor"
-     stroke-width="2">
-    <rect x="3" y="6" width="18" height="12" rx="2"
-          stroke-linecap="round" stroke-linejoin="round" />
-    <circle cx="12" cy="12" r="3"
-            stroke-linecap="round" stroke-linejoin="round" />
-    <path stroke-linecap="round" stroke-linejoin="round"
-          d="M7 9h.01M17 15h.01M5 4h14" />
-</svg>
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2">
+                    <rect x="3" y="6" width="18" height="12" rx="2"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <circle cx="12" cy="12" r="3"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M7 9h.01M17 15h.01M5 4h14" />
+                </svg>
             </span>
             <span>Class Master</span>
         </a>
+
+
+        <a href="employee-master" data-slug="cash-memo"
+    class="sidebar-menu-item sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-orange-50 hover:text-orange-700 transition-all duration-200">
+
+    <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-orange-400">
+        <svg xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2">
+
+            <!-- Employee Head -->
+            <circle cx="12" cy="8" r="3.5"
+                stroke-linecap="round"
+                stroke-linejoin="round" />
+
+            <!-- Employee Body -->
+            <path d="M5 20v-1.5a7 7 0 0 1 14 0V20H5Z"
+                stroke-linecap="round"
+                stroke-linejoin="round" />
+
+        </svg>
+    </span>
+
+    <span>Employee Master</span>
+</a>
+
 
         <!-- Fees Structure Master -->
         <a href="fees_structure_master" data-slug="fees-structure-master" class="sidebar-menu-item sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-orange-50 hover:text-orange-700 transition-all duration-200">
@@ -199,7 +261,7 @@
         </a>
 
         <!-- Logout -->
-    <!-- Logout -->
+        <!-- Logout -->
         <a href="#" onclick="handleLogout(); return false;" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-600 font-semibold hover:bg-red-50 transition-all duration-200 mt-4 border-b border-gray-300 pt-4">
             <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-50 text-red-500">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -223,25 +285,34 @@
         overflow: hidden;
         transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
     .dropdown-menu.open {
         max-height: 500px;
     }
+
     .arrow.rotate-180 {
         transform: rotate(180deg);
     }
+
     .erp-side::-webkit-scrollbar {
         width: 5px;
     }
+
     .erp-side::-webkit-scrollbar-thumb {
         background: #d1d5db;
         border-radius: 20px;
     }
-    .sidebar-link.active, .sidebar-dropdown-btn.active, .sidebar-sub-link.active {
+
+    .sidebar-link.active,
+    .sidebar-dropdown-btn.active,
+    .sidebar-sub-link.active {
         background: #f0fdfa;
         color: #0f766e;
         padding-left: 11px;
     }
-    .sidebar-link.active .w-9, .sidebar-dropdown-btn.active .w-9 {
+
+    .sidebar-link.active .w-9,
+    .sidebar-dropdown-btn.active .w-9 {
         background: #0D9488;
         color: white;
     }
@@ -306,7 +377,10 @@
             };
 
             // Call your verified /my-menus endpoint
-            const res = await fetch(`${cleanBase}/my-menus`, { method: 'GET', headers });
+            const res = await fetch(`${cleanBase}/my-menus`, {
+                method: 'GET',
+                headers
+            });
             if (!res.ok) return;
 
             const json = await res.json();
@@ -315,6 +389,7 @@
             // If user is admin, /my-menus returns everything so we don't need to hide anything
             // Collect all allowed menu slugs from the returned structure recursively
             const allowedSlugs = [];
+
             function extractSlugs(menuList) {
                 menuList.forEach(m => {
                     if (m.slug) allowedSlugs.push(m.slug.toLowerCase());
@@ -339,7 +414,7 @@
             document.querySelectorAll('.sidebar-menu-group').forEach(group => {
                 const parentBtn = group.querySelector('.sidebar-dropdown-btn');
                 const visibleSubLinks = group.querySelectorAll('.sidebar-sub-link:not([style*="display: none"])');
-                
+
                 if (parentBtn && parentBtn.style.display === 'none' && visibleSubLinks.length === 0) {
                     group.style.display = 'none';
                 } else if (visibleSubLinks.length === 0) {

@@ -564,7 +564,7 @@
         const passportInput = document.getElementById('passport_photo');
         const passportLabel = document.getElementById('passport_photo_name');
         if (passportInput && passportLabel) {
-            passportInput.addEventListener('change', function() {
+            passportInput.addEventListener('change', function() {            
                 if (this.files && this.files[0]) {
                     passportLabel.textContent = '✓ ' + this.files[0].name;
                     passportLabel.classList.remove('hidden');
