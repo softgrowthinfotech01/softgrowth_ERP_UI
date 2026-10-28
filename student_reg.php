@@ -171,7 +171,8 @@
                                     <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Place of Birth <span class="text-red-500">*</span></label>
                                     <div class="relative">
                                         <i class="fas fa-globe absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                        <input type="text" id="place_of_birth" placeholder="Enter place of birth" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                        <input type="text" id="place_of_birth" list="placeOfBirthList" placeholder="Enter place of birth" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                        <datalist id="placeOfBirthList"></datalist>
                                     </div>
                                     <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-place_of_birth"></p>
                                 </div>
@@ -180,7 +181,8 @@
                                     <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Caste <span class="text-gray-400 font-normal">(Optional)</span></label>
                                     <div class="relative">
                                         <i class="fas fa-users absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                        <input type="text" id="caste" placeholder="Enter caste" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                        <input type="text" id="caste" list="casteList" placeholder="Enter caste" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                        <datalist id="casteList"></datalist>
                                     </div>
                                     <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-caste"></p>
                                 </div>
@@ -189,7 +191,8 @@
                                     <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Sub Caste <span class="text-gray-400 font-normal">(Optional)</span></label>
                                     <div class="relative">
                                         <i class="fas fa-user-friends absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                        <input type="text" id="sub_caste" placeholder="Enter sub caste" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                        <input type="text" id="sub_caste" list="subCasteList" placeholder="Enter sub caste" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                        <datalist id="subCasteList"></datalist>
                                     </div>
                                     <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-sub_caste"></p>
                                 </div>
@@ -239,8 +242,12 @@
                                 <div>
                                     <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Student Batch <span class="text-red-500">*</span></label>
                                     <div class="relative">
-                                        <i class="fas fa-calendar absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                        <input type="text" id="student_batch" placeholder="e.g. 2026 or 2025-26" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                        <i class="fas fa-calendar absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs z-10"></i>
+                                        <select id="student_batch" class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                            <option value="">Select Batch Year</option>
+                                            <!-- Dynamically generated 2025 to 2040 options -->
+                                        </select>
+                                        <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
                                     </div>
                                     <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-student_batch"></p>
                                 </div>
@@ -295,7 +302,8 @@
                                     <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Full Address <span class="text-red-500">*</span></label>
                                     <div class="relative">
                                         <i class="fas fa-map-pin absolute left-3 top-3 text-gray-400 text-xs"></i>
-                                        <textarea rows="2" id="full_address" placeholder="Enter complete address" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm"></textarea>
+                                        <textarea rows="2" id="full_address" list="addressList" placeholder="Enter complete address (e.g. Chandrapur)" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm"></textarea>
+                                        <datalist id="addressList"></datalist>
                                     </div>
                                     <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-full_address"></p>
                                 </div>
@@ -304,7 +312,8 @@
                                     <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Tahsil <span class="text-red-500">*</span></label>
                                     <div class="relative">
                                         <i class="fas fa-location-arrow absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                        <input type="text" id="tahsil" placeholder="Enter tahsil" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                        <input type="text" id="tahsil" list="tahsilList" placeholder="Enter tahsil" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                        <datalist id="tahsilList"></datalist>
                                     </div>
                                     <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-tahsil"></p>
                                 </div>
@@ -313,7 +322,8 @@
                                     <label class="block text-[11px] font-bold text-gray-700 mb-0.5">District <span class="text-red-500">*</span></label>
                                     <div class="relative">
                                         <i class="fas fa-city absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                        <input type="text" id="district" placeholder="Enter district" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                        <input type="text" id="district" list="districtList" placeholder="Enter district (e.g. Chandrapur)" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                        <datalist id="districtList"></datalist>
                                     </div>
                                     <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-district"></p>
                                 </div>
@@ -322,7 +332,8 @@
                                     <label class="block text-[11px] font-bold text-gray-700 mb-0.5">State <span class="text-red-500">*</span></label>
                                     <div class="relative">
                                         <i class="fas fa-flag absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                        <input type="text" id="state" placeholder="Enter state" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                        <input type="text" id="state" list="stateList" placeholder="Enter state" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                        <datalist id="stateList"></datalist>
                                     </div>
                                     <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-state"></p>
                                 </div>
@@ -484,7 +495,20 @@
         const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
 
         // ============================================================
-        // FETCH CLASS MASTERS INTO DROPDOWN
+        // POPULATE STATIC STUDENT BATCH DROPDOWN (2025 to 2040)
+        // ============================================================
+        const batchSelect = document.getElementById('student_batch');
+        if (batchSelect) {
+            for (let yr = 2025; yr <= 2040; yr++) {
+                const opt = document.createElement('option');
+                opt.value = `${yr}-${String(yr + 1).slice(-2)}`;
+                opt.textContent = `${yr}-${String(yr + 1).slice(-2)}`;
+                batchSelect.appendChild(opt);
+            }
+        }
+
+        // ============================================================
+        // FETCH CLASS MASTERS INTO DROPDOWN (Alphabetical Order)
         // ============================================================
         async function fetchClassMasters() {
             const courseSelect = document.getElementById('course');
@@ -501,11 +525,17 @@
 
                 const result = await response.json();
                 if (response.ok && result.data) {
-                    // Clear existing options except default placeholder
+                    // Sort alphabetically case-insensitively
+                    const sortedClasses = result.data.sort((a, b) => {
+                        const nameA = (a.class_name || '').trim().toLowerCase();
+                        const nameB = (b.class_name || '').trim().toLowerCase();
+                        return nameA.localeCompare(nameB);
+                    });
+
                     courseSelect.innerHTML = '<option value="">Select course / class</option>';
-                    result.data.forEach(item => {
+                    sortedClasses.forEach(item => {
                         const option = document.createElement('option');
-                        option.value = item.class_name; // Send the class name string or item.id depending on your backend
+                        option.value = item.class_name;
                         option.textContent = item.class_name;
                         courseSelect.appendChild(option);
                     });
@@ -515,8 +545,79 @@
             }
         }
 
-        // Run fetch on load
         fetchClassMasters();
+
+        // ============================================================
+        // FETCH PREVIOUS REGISTERED ADDRESSES/SUGGESTIONS FROM API
+        // ============================================================
+        async function fetchAddressSuggestions() {
+            try {
+                const response = await fetch(`${cleanBase}/students`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json'
+                    }
+                });
+                const result = await response.json();
+                if (response.ok && (result.data || result.students)) {
+                    const dataList = result.data || result.students;
+                    
+                    const addresses = new Set();
+                    const tehsils = new Set();
+                    const districts = new Set();
+                    const states = new Set();
+                    const birthPlaces = new Set();
+                    const castes = new Set();
+                    const subCastes = new Set();
+
+                    dataList.forEach(s => {
+                        if (s.full_address) addresses.add(s.full_address);
+                        if (s.tahsil) tehsils.add(s.tahsil);
+                        if (s.district) districts.add(s.district);
+                        if (s.state) states.add(s.state);
+                        if (s.place_of_birth) birthPlaces.add(s.place_of_birth);
+                        if (s.caste) castes.add(s.caste);
+                        if (s.sub_caste) subCastes.add(s.sub_caste);
+                    });
+
+                    populateDatalist('addressList', addresses);
+                    populateDatalist('tahsilList', tehsils);
+                    populateDatalist('districtList', districts);
+                    populateDatalist('stateList', states);
+                    populateDatalist('placeOfBirthList', birthPlaces);
+                    populateDatalist('casteList', castes);
+                    populateDatalist('subCasteList', subCastes);
+                }
+            } catch (err) {
+                console.warn('Could not load address suggestions:', err);
+            }
+        }
+
+        function populateDatalist(elementId, setValues) {
+            const listEl = document.getElementById(elementId);
+            if (!listEl) return;
+            listEl.innerHTML = '';
+            setValues.forEach(val => {
+                const opt = document.createElement('option');
+                opt.value = val;
+                listEl.appendChild(opt);
+            });
+        }
+
+        fetchAddressSuggestions();
+
+        // ============================================================
+        // CASE-INSENSITIVE TEXT FORMATTING HELPER
+        // ============================================================
+        document.querySelectorAll('input[type="text"], textarea').forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.id !== 'email' && this.value) {
+                    // Capitalize first letters or keep natural case while normalizing spaces
+                    this.value = this.value.trim().replace(/\s+/g, ' ');
+                }
+            });
+        });
 
         // ============================================================
         // 1. ACCORDION
@@ -968,6 +1069,7 @@
                         if (aadharLabel) aadharLabel.classList.add('hidden');
 
                         showForm();
+                        fetchAddressSuggestions(); // Refresh suggestion datalists
 
                         const banner = document.getElementById('globalErrorBanner');
                         const errorMessageContainer = document.getElementById('globalErrorMessage');
