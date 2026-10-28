@@ -19,6 +19,18 @@
     <main id="main" class="md:ml-[300px] px-4 sm:px-6 py-24 pb-10 mb-10 transition-all duration-200 flex flex-col items-center justify-center">
         <div class="w-full max-w-5xl space-y-4">
 
+            <!-- Global Error Banner -->
+            <div id="globalErrorBanner" class="hidden mb-4 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl text-sm flex items-center gap-3 shadow-sm">
+                <i class="fas fa-exclamation-circle text-red-500 text-lg flex-shrink-0"></i>
+                <div id="globalErrorMessage">Please correct the highlighted fields before proceeding.</div>
+            </div>
+
+            <!-- Global Success Banner -->
+            <div id="globalSuccessBanner" class="hidden mb-4 p-4 bg-green-50 border border-green-200 text-green-800 rounded-xl text-sm flex items-center gap-3 shadow-sm">
+                <i class="fas fa-check-circle text-green-500 text-lg flex-shrink-0"></i>
+                <div id="globalSuccessMessage">Employee registered successfully.</div>
+            </div>
+
             <!-- Header -->
             <div class="bg-white rounded-xl shadow-md border border-gray-200 p-4 flex items-center justify-between gap-3 flex-wrap">
                 <div class="flex items-center gap-3">
@@ -50,11 +62,11 @@
                     
                     <!-- Employee ID -->
                     <div>
-                        <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Employee ID <span class="text-red-500">*</span></label>
+                        <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Employee ID</label>
                         <div class="relative">
                             <i class="fas fa-hashtag absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                            <input type="text" id="employeeId" readonly
-                                class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 bg-gray-100 text-gray-600 cursor-not-allowed focus:outline-none font-mono font-semibold">
+                            <input type="text" id="employeeId" readonly value="Auto-generated on save"
+                                class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 bg-gray-100 text-gray-500 cursor-not-allowed focus:outline-none font-mono font-semibold">
                         </div>
                     </div>
 
@@ -66,12 +78,13 @@
                             <input type="text" id="employeeName" placeholder="Enter full name"
                                 class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
                         </div>
+                        <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-employee_name"></p>
                     </div>
 
                     <!-- Gender -->
                     <div class="md:col-span-2">
                         <label class="block text-[11px] font-bold text-gray-700 mb-1.5">Gender <span class="text-red-500">*</span></label>
-                        <div class="flex gap-4">
+                        <div class="flex gap-4" id="genderContainer">
                             <label class="inline-flex items-center gap-1.5 cursor-pointer">
                                 <input type="radio" name="gender" value="Male" class="w-3.5 h-3.5 text-orange-500 focus:ring-orange-400 accent-orange-500">
                                 <span class="text-[12px] text-gray-700">Male</span>
@@ -85,6 +98,7 @@
                                 <span class="text-[12px] text-gray-700">Other</span>
                             </label>
                         </div>
+                        <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-gender"></p>
                     </div>
 
                     <!-- Date of Birth -->
@@ -95,16 +109,17 @@
                             <input type="date" id="dob"
                                 class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
                         </div>
+                        <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-date_of_birth"></p>
                     </div>
 
                     <!-- Profile Photo -->
                     <div>
                         <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Profile Photo <span class="text-[10px] font-normal text-gray-400">(Optional, JPG/PNG max 2MB)</span></label>
                         <div class="relative">
-                            <input type="file" id="profilePhoto" accept="image/jpeg, image/png"
+                            <input type="file" id="profilePhoto" accept="image/jpeg,image/png"
                                 class="w-full px-3 py-1.5 text-[11px] rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm file:mr-3 file:py-1 file:px-2 file:rounded file:border-0 file:text-[10px] file:font-semibold file:bg-orange-100 file:text-orange-700 hover:file:bg-orange-200">
                         </div>
-                        <p id="photoError" class="text-[10px] text-red-500 mt-1 hidden"></p>
+                        <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-profile_photo"></p>
                     </div>
                 </div>
 
@@ -126,6 +141,7 @@
                             <input type="tel" id="mobileNumber" maxlength="10" placeholder="Enter 10-digit number"
                                 class="w-full pl-10 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
                         </div>
+                        <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-mobile_number"></p>
                     </div>
 
                     <!-- Email ID -->
@@ -136,6 +152,7 @@
                             <input type="email" id="email" placeholder="Enter valid email address"
                                 class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
                         </div>
+                        <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-email"></p>
                     </div>
 
                     <!-- Address -->
@@ -146,6 +163,7 @@
                             <textarea id="address" rows="2" placeholder="Enter complete residential address"
                                 class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm"></textarea>
                         </div>
+                        <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-address"></p>
                     </div>
 
                     <!-- City -->
@@ -156,25 +174,18 @@
                             <input type="text" id="city" placeholder="Enter city"
                                 class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
                         </div>
+                        <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-city"></p>
                     </div>
 
-                    <!-- State -->
+                    <!-- State (Input Box Entry) -->
                     <div>
                         <label class="block text-[11px] font-bold text-gray-700 mb-0.5">State <span class="text-red-500">*</span></label>
                         <div class="relative">
                             <i class="fas fa-map absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                            <select id="state" class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
-                                <option value="">Select State</option>
-                                <option value="Maharashtra">Maharashtra</option>
-                                <option value="Delhi">Delhi</option>
-                                <option value="Karnataka">Karnataka</option>
-                                <option value="Gujarat">Gujarat</option>
-                                <option value="Tamil Nadu">Tamil Nadu</option>
-                                <option value="Uttar Pradesh">Uttar Pradesh</option>
-                                <option value="West Bengal">West Bengal</option>
-                            </select>
-                            <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
+                            <input type="text" id="state" placeholder="Enter state name"
+                                class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
                         </div>
+                        <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-state"></p>
                     </div>
 
                     <!-- PIN Code -->
@@ -185,158 +196,44 @@
                             <input type="text" id="pinCode" maxlength="6" placeholder="6-digit PIN"
                                 class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
                         </div>
+                        <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-pin_code"></p>
                     </div>
                 </div>
 
                 <!-- ============================================================ -->
                 <!-- SECTION 3: JOB DETAILS -->
                 <!-- ============================================================ -->
-              <!-- ===== JOB DETAILS SECTION ===== -->
-<div class="bg-orange-50 px-4 py-2.5 border-y border-orange-100 flex items-center gap-2">
-    <i class="fas fa-briefcase text-orange-500 text-xs"></i>
-    <h3 class="font-bold text-gray-800 text-[13px]">Job Details</h3>
-</div>
-
-<div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3">
-    
-    <!-- Designation -->
-    <div>
-        <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Designation <span class="text-red-500">*</span></label>
-        <div class="relative">
-            <i class="fas fa-user-tag absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-            <select id="designation" class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
-                <option value="">Select Designation</option>
-                <option value="Software Developer">Software Developer</option>
-                <option value="Frontend Developer">Frontend Developer</option>
-                <option value="Backend Developer">Backend Developer</option>
-                <option value="UI/UX Designer">UI/UX Designer</option>
-                <option value="Software Tester">Software Tester</option>
-                <option value="Digital Marketing Executive">Digital Marketing Executive</option>
-                <option value="HR Executive">HR Executive</option>
-                <option value="Accountant">Accountant</option>
-                <option value="Office Administrator">Office Administrator</option>
-                <option value="Trainer">Trainer</option>
-            </select>
-            <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
-        </div>
-    </div>
-
-    <!-- Date of Joining -->
-    <div>
-        <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Date of Joining <span class="text-red-500">*</span></label>
-        <div class="relative">
-            <i class="fas fa-calendar-check absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-            <input type="date" id="doj"
-                class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
-        </div>
-    </div>
-</div>
-
-<!-- ===== CREATE NEW ROLE SECTION ===== -->
-<div class="px-4 pb-5">
-    
-    <!-- Default State: Text + Button -->
-    <div id="createRoleDefault" class="flex flex-col sm:flex-row items-center justify-between gap-3">
-        <span class="text-sm text-gray-500">Can't find the required role?</span>
-        <button type="button" onclick="toggleCreateRole()" 
-                class="w-full sm:w-auto px-4 py-2 bg-blue-50 text-blue-600 rounded-lg border border-blue-100 hover:bg-blue-100 hover:border-blue-200 transition-all duration-200 flex items-center justify-center gap-1.5 text-sm font-semibold shadow-sm">
-            <i class="fas fa-plus text-xs"></i>
-            Create New Designation 
-        </button>
-    </div>
-
-    <!-- Expanded State: Input Form (Hidden by default) -->
-    <div id="createRoleForm" class="hidden mt-3 bg-orange-50/50 border border-orange-100 rounded-xl p-4 transition-all duration-300">
-        <div class="flex flex-col sm:flex-row items-end gap-3">
-            
-            <!-- Input Field -->
-            <div class="flex-1 w-full">
-                <label class="block text-[11px] font-bold text-gray-700 mb-1">New Designation  <span class="text-red-500">*</span></label>
-                <div class="relative">
-                    <i class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                    <input type="text" id="newRoleInput" placeholder="Enter new Designation " 
-                           class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm bg-white">
+                <div class="bg-orange-50 px-4 py-2.5 border-y border-orange-100 flex items-center gap-2">
+                    <i class="fas fa-briefcase text-orange-500 text-xs"></i>
+                    <h3 class="font-bold text-gray-800 text-[13px]">Job Details</h3>
                 </div>
-            </div>
 
-            <!-- Action Buttons -->
-            <div class="flex items-center gap-2 w-full sm:w-auto">
-                <button type="button" onclick="toggleCreateRole()" 
-                        class="flex-1 sm:flex-none px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-semibold hover:bg-white transition-all duration-200">
-                    Cancel
-                </button>
-                <button type="button" onclick="saveNewRole()" 
-                        class="flex-1 sm:flex-none px-5 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-bold shadow-sm transition-all duration-200">
-                    Save Designation 
-                </button>
-            </div>
-            
-        </div>
-    </div>
-</div>
+                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3">
+                    
+                    <!-- Designation (API Fetched) -->
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Designation <span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <i class="fas fa-user-tag absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                            <select id="designation" class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                <option value="">Loading designations...</option>
+                            </select>
+                            <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
+                        </div>
+                        <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-designation_id"></p>
+                    </div>
 
-<!-- ===== JAVASCRIPT LOGIC ===== -->
-<script>
-    // Toggle UI visibility
-    function toggleCreateRole() {
-        const defaultState = document.getElementById('createRoleDefault');
-        const formState = document.getElementById('createRoleForm');
-        const input = document.getElementById('newRoleInput');
-
-        if (formState.classList.contains('hidden')) {
-            // Open form
-            defaultState.classList.add('hidden');
-            formState.classList.remove('hidden');
-            input.focus();
-        } else {
-            // Close form
-            formState.classList.add('hidden');
-            defaultState.classList.remove('hidden');
-            input.value = ''; // clear input
-        }
-    }
-
-    // Save the new role
-    function saveNewRole() {
-        const input = document.getElementById('newRoleInput');
-        const newRole = input.value.trim();
-        const select = document.getElementById('designation');
-
-        if (newRole === "") {
-            alert("Please enter a role name.");
-            input.focus();
-            return;
-        }
-
-        // Check if it already exists
-        let exists = false;
-        for (let i = 0; i < select.options.length; i++) {
-            if (select.options[i].value.toLowerCase() === newRole.toLowerCase()) {
-                exists = true;
-                break;
-            }
-        }
-
-        if (exists) {
-            alert("This role already exists in the list!");
-            select.value = newRole; // Auto-select it
-            toggleCreateRole(); // Close form
-            return;
-        }
-
-        // Create new option and append
-        const newOption = document.createElement('option');
-        newOption.value = newRole;
-        newOption.text = newRole;
-        select.appendChild(newOption);
-        
-        // Select the newly added option
-        select.value = newRole;
-        
-        // Close form and reset
-        toggleCreateRole();
-    }
-</script>
+                    <!-- Date of Joining -->
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Date of Joining <span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <i class="fas fa-calendar-check absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                            <input type="date" id="doj"
+                                class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                        </div>
+                        <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-date_of_joining"></p>
+                    </div>
+                </div>
 
                 <!-- ============================================================ -->
                 <!-- SECTION 4: ADDITIONAL DETAILS -->
@@ -352,13 +249,14 @@
                     <div>
                         <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Emergency Contact <span class="text-[10px] font-normal text-gray-400">(Optional)</span></label>
                         <div class="relative">
-                            <i class="fas fa-phone-alt absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs font-semibold">+91</span>
                             <input type="tel" id="emergencyContact" maxlength="10" placeholder="Enter 10-digit number"
-                                class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                class="w-full pl-10 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
                         </div>
+                        <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-emergency_contact"></p>
                     </div>
 
-                    <!-- Employee Status -->
+                    <!-- Employee Status (Active / Inactive) -->
                     <div>
                         <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Employee Status <span class="text-red-500">*</span></label>
                         <div class="relative">
@@ -369,6 +267,7 @@
                             </select>
                             <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
                         </div>
+                        <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-employee_status"></p>
                     </div>
                 </div>
 
@@ -386,10 +285,7 @@
                             class="w-full sm:w-auto px-4 py-2 bg-white border border-gray-300 text-red-600 font-semibold rounded-lg hover:bg-red-50 transition text-[12px] shadow-sm">
                             Reset
                         </button>
-                        <button type="button" id="saveAddNewBtn"
-                            class="w-full sm:w-auto px-4 py-2 bg-orange-100 text-orange-700 font-semibold rounded-lg hover:bg-orange-200 transition text-[12px] shadow-sm flex items-center justify-center gap-2">
-                            <i class="fas fa-plus-circle text-[10px]"></i> Save &amp; Add New
-                        </button>
+                        
                         <button type="submit" id="saveEmployeeBtn"
                             class="w-full sm:w-auto px-6 py-2 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition text-[12px] shadow-md flex items-center justify-center gap-2">
                             <i class="fas fa-save text-[10px]"></i> Save Employee
@@ -406,282 +302,297 @@
     <script src="url.js"></script>
 
     <!-- ============================================================ -->
-    <!-- SCRIPT -->
+    <!-- SCRIPT LOGIC & API INTEGRATION -->
     <!-- ============================================================ -->
     <script>
         (function() {
-            // ============================================================
-            // AUTO-GENERATE EMPLOYEE ID
-            // ============================================================
-            function generateEmployeeID() {
-                // In a real app, this would come from the backend to ensure uniqueness.
-                // We'll generate a dummy sequential one.
-                const randomNum = Math.floor(Math.random() * 9000) + 1000;
-                return 'EMP' + randomNum;
+            // Authentication Token Verification
+            const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token');
+            if (!token) {
+                alert('Authentication token missing. Please log in again.');
+                window.location.href = 'login.php';
+                return;
             }
 
-            const employeeIdInput = document.getElementById('employeeId');
-            
-            function resetFormWithNewId() {
-                employeeIdInput.value = generateEmployeeID();
-            }
+            const baseUrl = typeof url !== 'undefined' ? url : '';
+            const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
 
-            // Set initial ID
-            resetFormWithNewId();
-
-            // ============================================================
-            // DOM REFS
-            // ============================================================
+            // DOM Elements
             const form = document.getElementById('employeeForm');
             const employeeName = document.getElementById('employeeName');
             const profilePhoto = document.getElementById('profilePhoto');
-            const photoError = document.getElementById('photoError');
             const mobileNumber = document.getElementById('mobileNumber');
             const email = document.getElementById('email');
             const address = document.getElementById('address');
             const city = document.getElementById('city');
             const state = document.getElementById('state');
             const pinCode = document.getElementById('pinCode');
-            const designation = document.getElementById('designation');
+            const designationSelect = document.getElementById('designation');
             const dob = document.getElementById('dob');
             const doj = document.getElementById('doj');
             const emergencyContact = document.getElementById('emergencyContact');
             const employeeStatus = document.getElementById('employeeStatus');
 
-            const resetBtn = document.getElementById('resetBtn');
-            const saveAddNewBtn = document.getElementById('saveAddNewBtn');
-            const backToListBtn = document.getElementById('backToListBtn');
+            const globalErrorBanner = document.getElementById('globalErrorBanner');
+            const globalErrorMessage = document.getElementById('globalErrorMessage');
+            const globalSuccessBanner = document.getElementById('globalSuccessBanner');
+            const globalSuccessMessage = document.getElementById('globalSuccessMessage');
+
+            // Set max Date of Birth to today so future dates cannot be selected
+            const todayStr = new Date().toISOString().split('T')[0];
+            dob.setAttribute('max', todayStr);
 
             // ============================================================
-            // PHOTO VALIDATION
+            // 1. FETCH DESIGNATIONS FROM API
             // ============================================================
-            profilePhoto.addEventListener('change', function() {
-                photoError.classList.add('hidden');
-                if (this.files && this.files[0]) {
-                    const file = this.files[0];
-                    const validTypes = ['image/jpeg', 'image/png'];
-                    
-                    if (!validTypes.includes(file.type)) {
-                        photoError.textContent = 'Please upload a JPG or PNG file.';
-                        photoError.classList.remove('hidden');
-                        this.value = ''; // Clear input
-                        return;
+            async function fetchDesignations() {
+                try {
+                    const response = await fetch(`${cleanBase}/designations`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Accept': 'application/json'
+                        }
+                    });
+                    const result = await response.json();
+                    if (response.ok && result.data) {
+                        designationSelect.innerHTML = '<option value="">Select Designation</option>';
+                        result.data.forEach(item => {
+                            const opt = document.createElement('option');
+                            opt.value = item.id;
+                            opt.textContent = item.designation_name;
+                            designationSelect.appendChild(opt);
+                        });
+                    } else {
+                        designationSelect.innerHTML = '<option value="">Failed to load designations</option>';
                     }
-                    
-                    if (file.size > 2 * 1024 * 1024) { // 2MB in bytes
-                        photoError.textContent = 'Profile photo must not exceed 2 MB.';
-                        photoError.classList.remove('hidden');
-                        this.value = ''; // Clear input
-                        return;
-                    }
+                } catch (err) {
+                    console.error('Error fetching designations:', err);
+                    designationSelect.innerHTML = '<option value="">Error connecting to server</option>';
                 }
-            });
+            }
+
+            fetchDesignations();
 
             // ============================================================
-            // VALIDATION FUNCTION
+            // 2. ERROR CLEARING & UTILITIES
             // ============================================================
-            function validateForm() {
-                // Clear previous error borders
-                const inputs = form.querySelectorAll('input, select, textarea');
-                inputs.forEach(input => {
-                    input.classList.remove('border-red-500', 'ring-red-200');
+            function clearBanners() {
+                globalErrorBanner.classList.add('hidden');
+                globalSuccessBanner.classList.add('hidden');
+                document.querySelectorAll('.error-msg').forEach(el => {
+                    el.textContent = '';
+                    el.classList.add('hidden');
                 });
+                document.querySelectorAll('input, select, textarea').forEach(el => {
+                    el.classList.remove('border-red-500', 'ring-red-200');
+                });
+            }
 
-                let isValid = true;
+            function displayValidationError(errors) {
+                let htmlList = '<strong>Please correct the following errors:</strong><ul class="list-disc ml-4 mt-1 space-y-0.5">';
+                let firstElement = null;
 
-                // 1. Employee Name
-                if (!employeeName.value.trim()) {
-                    employeeName.classList.add('border-red-500', 'ring-red-200');
-                    isValid = false;
-                }
+                for (const [key, messages] of Object.entries(errors)) {
+                    const msg = Array.isArray(messages) ? messages[0] : messages;
+                    htmlList += `<li><span class="font-semibold">${key.replace(/_/g, ' ')}</span>: ${msg}</li>`;
 
-                // 2. Gender
-                const genderSelected = document.querySelector('input[name="gender"]:checked');
-                if (!genderSelected) {
-                    // Highlight the gender radio group
-                    document.querySelectorAll('input[name="gender"]').forEach(radio => {
-                        radio.parentElement.classList.add('text-red-500');
-                    });
-                    isValid = false;
-                } else {
-                    document.querySelectorAll('input[name="gender"]').forEach(radio => {
-                        radio.parentElement.classList.remove('text-red-500');
-                    });
-                }
+                    const errEl = document.getElementById('err-' + key);
+                    const inputEl = document.getElementById(key === 'designation_id' ? 'designation' : (key === 'pin_code' ? 'pinCode' : key));
 
-                // 3. Date of Birth
-                if (!dob.value) {
-                    dob.classList.add('border-red-500', 'ring-red-200');
-                    isValid = false;
-                } else {
-                    const dobDate = new Date(dob.value);
-                    const today = new Date();
-                    today.setHours(0,0,0,0);
-                    if (dobDate >= today) {
-                        alert('Date of Birth cannot be today or in the future.');
-                        dob.classList.add('border-red-500', 'ring-red-200');
-                        isValid = false;
+                    if (errEl) {
+                        errEl.textContent = msg;
+                        errEl.classList.remove('hidden');
+                    }
+                    if (inputEl) {
+                        inputEl.classList.add('border-red-500', 'ring-red-200');
+                        if (!firstElement) firstElement = inputEl;
                     }
                 }
+                htmlList += '</ul>';
+                globalErrorMessage.innerHTML = htmlList;
+                globalErrorBanner.classList.remove('hidden');
 
-                // 4. Mobile Number
-                if (!mobileNumber.value.match(/^\d{10}$/)) {
-                    mobileNumber.classList.add('border-red-500', 'ring-red-200');
-                    isValid = false;
+                if (firstElement) {
+                    firstElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    firstElement.focus();
                 }
-
-                // 5. Email
-                if (!email.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-                    email.classList.add('border-red-500', 'ring-red-200');
-                    isValid = false;
-                }
-
-                // 6. Address
-                if (!address.value.trim()) {
-                    address.classList.add('border-red-500', 'ring-red-200');
-                    isValid = false;
-                }
-
-                // 7. City
-                if (!city.value.trim()) {
-                    city.classList.add('border-red-500', 'ring-red-200');
-                    isValid = false;
-                }
-
-                // 8. State
-                if (!state.value) {
-                    state.classList.add('border-red-500', 'ring-red-200');
-                    isValid = false;
-                }
-
-                // 9. PIN Code
-                if (!pinCode.value.match(/^\d{6}$/)) {
-                    pinCode.classList.add('border-red-500', 'ring-red-200');
-                    isValid = false;
-                }
-
-                // 10. Designation
-                if (!designation.value) {
-                    designation.classList.add('border-red-500', 'ring-red-200');
-                    isValid = false;
-                }
-
-                // 11. Date of Joining
-                if (!doj.value) {
-                    doj.classList.add('border-red-500', 'ring-red-200');
-                    isValid = false;
-                }
-
-                // 12. Emergency Contact (Optional, but if filled, must be 10 digits)
-                if (emergencyContact.value && !emergencyContact.value.match(/^\d{10}$/)) {
-                    emergencyContact.classList.add('border-red-500', 'ring-red-200');
-                    isValid = false;
-                }
-
-                if (!isValid) {
-                    // Scroll to the first error
-                    const firstError = form.querySelector('.border-red-500');
-                    if (firstError) {
-                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        firstError.focus();
-                    }
-                    alert('Please fill in all mandatory fields correctly.');
-                    return false;
-                }
-
-                return true;
             }
 
             // ============================================================
-            // SUBMIT HANDLER
+            // 3. PROFILE PHOTO SIZE & TYPE VALIDATION (Max 2MB)
             // ============================================================
+            profilePhoto.addEventListener('change', function() {
+                const photoErrEl = document.getElementById('err-profile_photo');
+                photoErrEl.classList.add('hidden');
+                if (this.files && this.files[0]) {
+                    const file = this.files[0];
+                    const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+                    
+                    if (!validTypes.includes(file.type)) {
+                        photoErrEl.textContent = 'Please upload a valid JPG or PNG image.';
+                        photoErrEl.classList.remove('hidden');
+                        this.value = '';
+                        return;
+                    }
+                    
+                    if (file.size > 2 * 1024 * 1024) { // 2MB limit
+                        photoErrEl.textContent = 'Profile photo size must not exceed 2 MB.';
+                        photoErrEl.classList.remove('hidden');
+                        this.value = '';
+                        return;
+                    }
+                }
+            });
+
+            // ============================================================
+            // 4. SUBMISSION HANDLER (API POST /employees)
+            // ============================================================
+            async function submitEmployeeForm(isSaveAndAddNew = false) {
+                clearBanners();
+
+                // Client-side quick validations
+                let localErrors = {};
+                if (!employeeName.value.trim()) localErrors.employee_name = ['Employee name is required.'];
+                const genderChecked = document.querySelector('input[name="gender"]:checked');
+                if (!genderChecked) localErrors.gender = ['Gender selection is required.'];
+                
+                if (!dob.value) {
+                    localErrors.date_of_birth = ['Date of birth is required.'];
+                } else {
+                    const dobDate = new Date(dob.value);
+                    const todayDate = new Date();
+                    todayDate.setHours(0, 0, 0, 0);
+                    if (dobDate > todayDate) {
+                        localErrors.date_of_birth = ['Date of birth cannot be in the future.'];
+                    }
+                }
+
+                if (!mobileNumber.value.match(/^[0-9]{10}$/)) localErrors.mobile_number = ['Mobile number must be exactly 10 digits.'];
+                if (!email.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) localErrors.email = ['Enter a valid email address.'];
+                if (!address.value.trim()) localErrors.address = ['Residential address is required.'];
+                if (!city.value.trim()) localErrors.city = ['City is required.'];
+                if (!state.value.trim()) localErrors.state = ['State name is required.'];
+                if (!pinCode.value.match(/^[0-9]{6}$/)) localErrors.pin_code = ['PIN code must be exactly 6 digits.'];
+                if (!designationSelect.value) localErrors.designation_id = ['Designation selection is required.'];
+                if (!doj.value) localErrors.date_of_joining = ['Date of joining is required.'];
+                if (emergencyContact.value && !emergencyContact.value.match(/^[0-9]{10}$/)) {
+                    localErrors.emergency_contact = ['Emergency contact must be 10 digits.'];
+                }
+
+                if (Object.keys(localErrors).length > 0) {
+                    displayValidationError(localErrors);
+                    return;
+                }
+
+                // Prepare FormData matching backend requirements
+                const formData = new FormData();
+                formData.append('employee_name', employeeName.value.trim());
+                formData.append('gender', genderChecked.value);
+                formData.append('date_of_birth', dob.value);
+                formData.append('mobile_number', mobileNumber.value.trim());
+                formData.append('email', email.value.trim().toLowerCase());
+                formData.append('address', address.value.trim());
+                formData.append('city', city.value.trim());
+                formData.append('state', state.value.trim());
+                formData.append('pin_code', pinCode.value.trim());
+                formData.append('designation_id', designationSelect.value);
+                formData.append('date_of_joining', doj.value);
+                if (emergencyContact.value.trim()) {
+                    formData.append('emergency_contact', emergencyContact.value.trim());
+                }
+                formData.append('employee_status', employeeStatus.value);
+
+                if (profilePhoto.files && profilePhoto.files[0]) {
+                    formData.append('profile_photo', profilePhoto.files[0]);
+                }
+
+                const activeBtn = isSaveAndAddNew ? document.getElementById('saveAddNewBtn') : document.getElementById('saveEmployeeBtn');
+                const originalHTML = activeBtn.innerHTML;
+                activeBtn.disabled = true;
+                activeBtn.innerHTML = '<i class="fas fa-spinner fa-spin text-xs"></i> Saving...';
+
+                try {
+                    const response = await fetch(`${cleanBase}/employees`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Accept': 'application/json'
+                        },
+                        body: formData
+                    });
+
+                    const result = await response.json();
+
+                    if (response.status === 201 || response.ok) {
+                        globalSuccessMessage.innerHTML = `<strong>Success!</strong> Employee registered successfully with code: <span class="font-mono font-bold">${result.data?.employee_code || 'Generated'}</span>`;
+                        globalSuccessBanner.classList.remove('hidden');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                        form.reset();
+                        employeeStatus.value = 'Active';
+
+                        if (isSaveAndAddNew) {
+                            setTimeout(() => { globalSuccessBanner.classList.add('hidden'); }, 4000);
+                        } else {
+                            setTimeout(() => {
+                                // Optional redirect back to list
+                                // window.location.href = 'employee-list.php';
+                            }, 2000);
+                        }
+                    } else if (response.status === 422 && result.errors) {
+                        displayValidationError(result.errors);
+                    } else {
+                        globalErrorMessage.textContent = result.message || 'Failed to register employee. Please check inputs.';
+                        globalErrorBanner.classList.remove('hidden');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                } catch (err) {
+                    console.error('Submission network error:', err);
+                    globalErrorMessage.textContent = 'A network or server error occurred while saving employee details.';
+                    globalErrorBanner.classList.remove('hidden');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } finally {
+                    activeBtn.disabled = false;
+                    activeBtn.innerHTML = originalHTML;
+                }
+            }
+
+            // Event Listeners for submission buttons
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
-                
-                if (validateForm()) {
-                    // Simulate API Call
-                    const saveBtn = document.getElementById('saveEmployeeBtn');
-                    saveBtn.disabled = true;
-                    saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin text-[10px]"></i> Saving...';
-
-                    setTimeout(() => {
-                        alert('Employee registered successfully.');
-                        saveBtn.disabled = false;
-                        saveBtn.innerHTML = '<i class="fas fa-save text-[10px]"></i> Save Employee';
-                        
-                        // Redirect to Employee List (simulate)
-                        console.log('Redirecting to employee list...');
-                        // window.location.href = 'employee-list.php';
-                    }, 1000);
-                }
+                submitEmployeeForm(false);
             });
 
             // ============================================================
-            // SAVE & ADD NEW
+            // 5. RESET BUTTON HANDLER
             // ============================================================
-            saveAddNewBtn.addEventListener('click', function() {
-                if (validateForm()) {
-                    const originalText = saveAddNewBtn.innerHTML;
-                    saveAddNewBtn.disabled = true;
-                    saveAddNewBtn.innerHTML = '<i class="fas fa-spinner fa-spin text-[10px]"></i> Saving...';
-
-                    setTimeout(() => {
-                        alert('Employee registered successfully. Ready for next entry.');
-                        
-                        // Reset form
+            const resetBtn = document.getElementById('resetBtn');
+            if (resetBtn) {
+                resetBtn.addEventListener('click', function() {
+                    if (confirm('Are you sure you want to clear the entered details?')) {
                         form.reset();
-                        
-                        // Reset default values
                         employeeStatus.value = 'Active';
-                        
-                        // Clear error highlights
-                        document.querySelectorAll('input, select, textarea').forEach(el => {
-                            el.classList.remove('border-red-500', 'ring-red-200');
-                        });
-                        document.querySelectorAll('input[name="gender"]').forEach(radio => {
-                            radio.parentElement.classList.remove('text-red-500');
-                        });
-
-                        // Generate new ID
-                        resetFormWithNewId();
-                        
-                        saveAddNewBtn.disabled = false;
-                        saveAddNewBtn.innerHTML = originalText;
-
-                        // Scroll to top
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                        
-                    }, 1000);
-                }
-            });
+                        clearBanners();
+                    }
+                });
+            }
 
             // ============================================================
-            // RESET BUTTON
+            // 6. BACK TO LIST BUTTON HANDLER
             // ============================================================
-            resetBtn.addEventListener('click', function() {
-                if (confirm('Are you sure you want to clear the entered details?')) {
-                    form.reset();
-                    employeeStatus.value = 'Active';
-                    resetFormWithNewId();
-                    
-                    // Clear errors
-                    document.querySelectorAll('input, select, textarea').forEach(el => {
-                        el.classList.remove('border-red-500', 'ring-red-200');
-                    });
-                    document.querySelectorAll('input[name="gender"]').forEach(radio => {
-                        radio.parentElement.classList.remove('text-red-500');
-                    });
-                    photoError.classList.add('hidden');
-                }
-            });
-
-            // ============================================================
-            // BACK TO LIST
-            // ============================================================
-            backToListBtn.addEventListener('click', function() {
-                // In a real app: window.location.href = 'employee-list.php';
-                alert('Navigating back to Employee List...');
-            });
+            const backToListBtn = document.getElementById('backToListBtn');
+            if (backToListBtn) {
+                backToListBtn.addEventListener('click', function() {
+                    if (confirm('Are you sure you want to go back? Unsaved changes will be lost.')) {
+                        if (window.history.length > 1) {
+                            window.history.back();
+                        } else {
+                            window.location.href = 'employee-list.php';
+                        }
+                    }
+                });
+            }
 
         })();
     </script>

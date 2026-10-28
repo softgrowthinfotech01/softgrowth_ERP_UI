@@ -98,7 +98,8 @@
             const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token');
             if (!token) {
                 alert('Authentication token missing. Please log in again.');
-              f
+                window.location.href = 'login.php';
+                return;
             }
 
             // Base URL setup
@@ -115,7 +116,6 @@
 
             // Local state
             let designations = [];
-            let isDemoMode = false; // Set to true if you want to test without backend
 
             function showError(msg) {
                 globalErrorMsg.textContent = msg;
@@ -128,16 +128,10 @@
             }
 
             // ============================================================
-            // 1. FETCH DESIGNATIONS (GET)
+            // 1. FETCH DESIGNATIONS (GET /designations)
             // ============================================================
             async function fetchDesignations() {
-                if (isDemoMode) {
-                    renderTable();
-                    return;
-                }
-
                 try {
-                    // Adjust endpoint if necessary (e.g. /roles, /designation-master)
                     const response = await fetch(`${cleanBase}/designations`, {
                         method: 'GET',
                         headers: {
@@ -148,16 +142,14 @@
 
                     const result = await response.json();
                     if (response.ok) {
-                        designations = result.data || result || [];
+                        designations = result.data || [];
                         renderTable();
                     } else {
                         showError(result.message || 'Failed to fetch designations.');
                     }
                 } catch (err) {
                     console.error('Fetch error:', err);
-                    showError('Network error while loading designations. Switching to Demo mode.');
-                    isDemoMode = true;
-                    renderTable();
+                    showError('Network error while loading designations.');
                 }
             }
 
@@ -185,8 +177,7 @@
                     const tr = document.createElement('tr');
                     tr.className = 'hover:bg-orange-50/40 transition';
                     
-                    // Fallback logic for API field names (name, designation_name, role_name, title)
-                    const displayName = item.name || item.designation_name || item.role_name || item.title || 'Unknown';
+                    const displayName = item.designation_name || 'Unknown';
                     
                     tr.innerHTML = `
                         <td class="px-4 py-2 border-b border-gray-100 text-gray-500">${index + 1}</td>
@@ -216,7 +207,7 @@
             }
 
             // ============================================================
-            // 2. ADD DESIGNATION (POST)
+            // 2. ADD DESIGNATION (POST /designations)
             // ============================================================
             async function addDesignation() {
                 clearError();
@@ -231,23 +222,9 @@
                 addBtn.disabled = true;
                 addBtn.innerHTML = '<i class="fas fa-spinner fa-spin text-xs"></i> Adding...';
 
-                if (isDemoMode) {
-                    setTimeout(() => {
-                        designations.push({ id: Date.now(), name: val });
-                        designationInput.value = '';
-                        designationInput.focus();
-                        renderTable();
-                        addBtn.disabled = false;
-                        addBtn.innerHTML = '<i class="fas fa-plus text-xs"></i> Add';
-                    }, 500);
-                    return;
-                }
-
                 try {
-                    // Adjust payload key if API expects 'designation_name' or 'role_name'
-                    const payload = { name: val }; 
+                    const payload = { designation_name: val }; 
 
-                    // Adjust endpoint if necessary
                     const response = await fetch(`${cleanBase}/designations`, {
                         method: 'POST',
                         headers: {
@@ -258,13 +235,11 @@
                         body: JSON.stringify(payload)
                     });
 
-                    let result;
-                    const textData = await response.text();
+                    let result = {};
                     try {
-                        result = JSON.parse(textData);
+                        result = await response.json();
                     } catch(e) {
-                        console.warn("Response is not valid JSON:", textData);
-                        result = {};
+                        console.warn("Response parsing warning");
                     }
 
                     if (response.status === 201 || response.ok) {
@@ -272,8 +247,8 @@
                         designationInput.focus();
                         await fetchDesignations(); // Refresh list from backend
                     } else {
-                        if (result.errors && (result.errors.name || result.errors.designation_name)) {
-                            showError((result.errors.name || result.errors.designation_name)[0]);
+                        if (result.errors && result.errors.designation_name) {
+                            showError(result.errors.designation_name[0]);
                         } else {
                             showError(result.message || 'Failed to add designation.');
                         }
@@ -288,18 +263,12 @@
             }
 
             // ============================================================
-            // 3. DELETE DESIGNATION (DELETE)
+            // 3. DELETE DESIGNATION (DELETE /designations/{id})
             // ============================================================
             async function deleteDesignation(id) {
                 if (!confirm('Are you sure you want to delete this designation?')) return;
 
                 clearError();
-
-                if (isDemoMode) {
-                    designations = designations.filter(d => d.id != id);
-                    renderTable();
-                    return;
-                }
 
                 try {
                     const response = await fetch(`${cleanBase}/designations/${id}`, {
@@ -310,10 +279,10 @@
                         }
                     });
 
+                    const result = await response.json();
                     if (response.ok) {
                         await fetchDesignations(); // Refresh list
                     } else {
-                        const result = await response.json();
                         showError(result.message || 'Failed to delete designation.');
                     }
                 } catch (err) {
