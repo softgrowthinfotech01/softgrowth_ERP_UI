@@ -42,8 +42,9 @@
                         <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Class <span class="text-red-500">*</span></label>
                         <div class="relative">
                             <i class="fas fa-graduation-cap absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                            <input type="text" id="classInput" placeholder="e.g., Class 10"
-                                   class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                            <select id="classInput" class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                <option value="">Loading classes...</option>
+                            </select>
                         </div>
                     </div>
 
@@ -185,6 +186,8 @@
             // STATE
             // ============================================================
             let feeItems = [];
+            let feeStructures = [];
+            let editingStructureId = null;
 
             // ============================================================
             // DOM REFS
@@ -199,6 +202,67 @@
             const grandTotalEl = document.getElementById('grandTotal');
             const countText = document.getElementById('countText');
             const saveBtn = document.getElementById('saveBtn');
+            const apiRoot = (typeof url !== 'undefined' ? url : '').replace(/\/$/, '');
+            const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token');
+
+            async function apiRequest(path, options = {}) {
+                const response = await fetch(`${apiRoot}${path}`, { ...options, headers:{'Authorization':`Bearer ${token || ''}`,'Accept':'application/json','Content-Type':'application/json',...(options.headers || {})} });
+                const body = await response.json().catch(() => ({}));
+                if (response.status === 401) { alert('Your session has expired. Please log in again.'); window.location.href='login.php'; throw new Error('Session expired'); }
+                if (response.status === 403) throw new Error('You do not have permission to manage fee structures.');
+                if (response.status === 404) throw new Error(body.message || 'Fee structure was not found.');
+                if (response.status === 422) throw new Error(body.message || Object.values(body.errors || {}).flat().join('\n') || 'The fee structure data is invalid.');
+                if (!response.ok) throw new Error(body.message || 'Fee structure request failed.');
+                return body.data?.data ?? body.data ?? body;
+            }
+
+            function normalizeStructure(structure) {
+                const source = structure.fee_structure || structure;
+                const items = source.fee_items || source.items || source.fees || [];
+                return {
+                    id: source.id || source.fee_structure_id,
+                    classId: source.class_id || source.class?.id,
+                    className: source.class_name || source.class?.class_name || source.class?.name || classInput.querySelector(`option[value="${source.class_id}"]`)?.textContent || `Class ${source.class_id || ''}`,
+                    items: Array.isArray(items) ? items.map(item => ({category:item.fee_name || item.category || item.name || 'Fee', amount:Number(item.amount || 0)})) : [],
+                    grossFee: Number(source.gross_fee ?? source.total_fee ?? source.total_fees ?? 0)
+                };
+            }
+
+            async function loadFeeStructures() {
+                try {
+                    const payload = await apiRequest('/student-fee-structures');
+                    const rows = Array.isArray(payload) ? payload : (payload.data || payload.fee_structures || payload.student_fee_structures || []);
+                    feeStructures = rows.map(normalizeStructure);
+                    renderTable();
+                } catch (error) {
+                    tableBody.innerHTML = `<tr><td colspan="5" class="text-center text-red-600 py-6">${error.message}</td></tr>`;
+                }
+            }
+
+            async function loadClasses() {
+                classInput.innerHTML = '<option value="">Loading classes...</option>';
+                try {
+                    const response = await fetch(`${apiRoot}/student-classes`, {
+                        headers: { 'Authorization': `Bearer ${token || ''}`, 'Accept': 'application/json' }
+                    });
+                    const result = await response.json().catch(() => ({}));
+                    if (response.status === 401) { alert('Your session has expired. Please log in again.'); window.location.href = 'login.php'; return; }
+                    if (response.status === 403) throw new Error('You do not have permission to view classes.');
+                    if (!response.ok) throw new Error(result.message || 'Unable to load available classes.');
+                    const data = result.data?.data ?? result.data ?? result;
+                    classInput.innerHTML = '<option value="">Select class</option>';
+                    (Array.isArray(data) ? data : []).forEach(item => {
+                        const option = document.createElement('option');
+                        option.value = item.id;
+                        option.textContent = item.class_name || item.name || item.class || `Class ${item.id}`;
+                        classInput.appendChild(option);
+                    });
+                    if (!classInput.options.length || classInput.options.length === 1) classInput.innerHTML = '<option value="">No classes available</option>';
+                } catch (error) {
+                    classInput.innerHTML = '<option value="">Could not load classes</option>';
+                    showToast(error.message, 'error');
+                }
+            }
 
             // Modal Refs
             const addCategoryBtn = document.getElementById('addCategoryBtn');
@@ -260,7 +324,7 @@
             function renderTable() {
                 tableBody.innerHTML = '';
 
-                if (feeItems.length === 0) {
+                if (feeItems.length === 0 && feeStructures.length === 0) {
                     tableBody.innerHTML = `
                         <tr id="emptyRow">
                             <td colspan="5" class="text-center text-gray-500 py-6 text-[11px]">
@@ -273,23 +337,28 @@
                     return;
                 }
 
-                // Group items by class name
+                // Combine saved structures with unsaved fee items by class.
                 const groupedItems = {};
+                feeStructures.filter(structure => String(structure.id) !== String(editingStructureId)).forEach(structure => {
+                    const key = String(structure.classId || structure.id);
+                    groupedItems[key] = {className:structure.className, structureId:structure.id, items:[...structure.items]};
+                });
                 feeItems.forEach(item => {
-                    if (!groupedItems[item.className]) {
-                        groupedItems[item.className] = [];
-                    }
-                    groupedItems[item.className].push(item);
+                    const key = String(item.classId);
+                    if (!groupedItems[key]) groupedItems[key] = {className:item.className, structureId:null, items:[]};
+                    groupedItems[key].items.push(item);
                 });
 
                 // Convert to array for rendering
-                const classNames = Object.keys(groupedItems);
-                countText.textContent = classNames.length + ' class' + (classNames.length === 1 ? '' : 'es');
+                const classKeys = Object.keys(groupedItems);
+                countText.textContent = classKeys.length + ' class' + (classKeys.length === 1 ? '' : 'es');
 
                 let globalIndex = 0;
 
-                classNames.forEach((className, index) => {
-                    const items = groupedItems[className];
+                classKeys.forEach((key, index) => {
+                    const group = groupedItems[key];
+                    const className = group.className;
+                    const items = group.items;
                     
                     // Build the breakdown string
                     let breakdownHtml = '';
@@ -310,28 +379,17 @@
                         </td>
                         <td class="px-4 py-3 border-b border-gray-100 text-right font-bold text-orange-600 align-top">${formatCurrency(classTotal)}</td>
                         <td class="px-4 py-3 border-b border-gray-100 text-center align-top">
-                            <button type="button" class="remove-class-btn text-red-500 hover:text-red-700 hover:bg-red-50 rounded w-7 h-7 inline-flex items-center justify-center transition" data-class="${className}" title="Remove entire class">
-                                <i class="fas fa-trash text-[11px]"></i>
-                            </button>
+                            ${group.structureId ? `<button type="button" class="edit-structure-btn text-blue-500 hover:text-blue-700 rounded w-7 h-7" data-id="${group.structureId}" title="Edit structure"><i class="fas fa-edit"></i></button><button type="button" class="delete-structure-btn text-red-500 hover:text-red-700 rounded w-7 h-7" data-id="${group.structureId}" title="Delete structure"><i class="fas fa-trash text-[11px]"></i></button>` : '<span class="text-xs text-gray-400">Unsaved</span>'}
                         </td>
                     `;
                     tableBody.appendChild(tr);
                 });
 
-                // Attach remove handlers
-                tableBody.querySelectorAll('.remove-class-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const cls = this.getAttribute('data-class');
-                        if (confirm(`Are you sure you want to remove all fee items for "${cls}"?`)) {
-                            // Filter out all items of this class
-                            feeItems = feeItems.filter(item => item.className !== cls);
-                            renderTable();
-                        }
-                    });
-                });
+                tableBody.querySelectorAll('.edit-structure-btn').forEach(btn => btn.addEventListener('click', () => editStructure(btn.dataset.id)));
+                tableBody.querySelectorAll('.delete-structure-btn').forEach(btn => btn.addEventListener('click', () => deleteStructure(btn.dataset.id)));
 
                 // Update Grand total
-                const total = feeItems.reduce((sum, i) => sum + Number(i.amount), 0);
+                const total = feeStructures.filter(structure => String(structure.id) !== String(editingStructureId)).reduce((sum, structure) => sum + Number(structure.grossFee || structure.items.reduce((sub,item) => sub + Number(item.amount),0)), 0) + feeItems.reduce((sum, i) => sum + Number(i.amount), 0);
                 tableFooter.classList.remove('hidden');
                 grandTotalEl.textContent = formatCurrency(total);
             }
@@ -340,15 +398,19 @@
             // ADD ITEM
             // ============================================================
             function addItem() {
-                const cls = classInput.value.trim();
+                const classId = classInput.value;
+                const cls = classInput.selectedOptions[0]?.textContent || '';
                 const category = categoryInput.value;
                 const amount = parseFloat(amountInput.value);
 
-                if (!cls) { alert('Please enter a Class.'); classInput.focus(); return; }
+                if (!classId) { alert('Please select a Class.'); classInput.focus(); return; }
+                if (feeItems.length && feeItems.some(item => String(item.classId) !== String(classId))) { alert('Save fee items for one class at a time.'); return; }
+                if (!editingStructureId && feeStructures.some(structure => String(structure.classId) === String(classId))) { alert('This class already has a fee structure. Use its Edit action to change the fee items.'); return; }
                 if (!category) { alert('Please select a Category.'); categoryInput.focus(); return; }
                 if (!amount || amount <= 0) { alert('Please enter a valid Amount.'); amountInput.focus(); return; }
 
                 feeItems.push({
+                    classId: classId,
                     className: cls,
                     category: category,
                     amount: amount
@@ -378,38 +440,56 @@
             // ============================================================
             // SAVE ALL
             // ============================================================
-            saveBtn.addEventListener('click', function() {
-                if (feeItems.length === 0) {
-                    showToast('Please add at least one fee item.', 'error');
-                    return;
-                }
+            async function editStructure(id) {
+                try {
+                    const structure = normalizeStructure(await apiRequest(`/student-fee-structures/${encodeURIComponent(id)}`));
+                    editingStructureId = structure.id;
+                    classInput.value = structure.classId;
+                    classInput.disabled = true;
+                    feeItems = structure.items.map(item => ({classId:String(structure.classId), className:structure.className, category:item.category, amount:item.amount}));
+                    saveBtn.innerHTML = '<i class="fas fa-save text-xs"></i> Update Fees Structure';
+                    renderTable();
+                } catch (error) { showToast(error.message, 'error'); }
+            }
 
+            async function deleteStructure(id) {
+                if (!confirm('Delete this fee structure?')) return;
+                try {
+                    await apiRequest(`/student-fee-structures/${encodeURIComponent(id)}`, {method:'DELETE'});
+                    feeStructures = feeStructures.filter(structure => String(structure.id) !== String(id));
+                    if (String(editingStructureId) === String(id)) { editingStructureId = null; feeItems = []; classInput.disabled = false; saveBtn.innerHTML = '<i class="fas fa-save text-xs"></i> Save Fees Structure'; }
+                    showToast('Fee structure deleted.', 'success');
+                    renderTable();
+                } catch (error) { showToast(error.message, 'error'); }
+            }
+
+            saveBtn.addEventListener('click', async function() {
+                if (feeItems.length === 0) { showToast('Please add at least one fee item.', 'error'); return; }
+                const groups = {};
+                feeItems.forEach(item => {
+                    if (!groups[item.classId]) groups[item.classId] = {className:item.className, items:[]};
+                    groups[item.classId].items.push({fee_name:item.category, amount:Number(item.amount)});
+                });
                 saveBtn.disabled = true;
                 saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin text-xs"></i> Saving...';
-
-                setTimeout(() => {
-                    // Group data before saving to API (if needed)
-                    const groupedData = {};
-                    feeItems.forEach(item => {
-                        if (!groupedData[item.className]) groupedData[item.className] = [];
-                        groupedData[item.className].push({ category: item.category, amount: item.amount });
-                    });
-
-                    console.log('Saving grouped fees structure:', groupedData);
-                    
-                    const total = feeItems.reduce((sum, i) => sum + Number(i.amount), 0);
-                    showToast(`Saved successfully! Total: ${formatCurrency(total)}`, 'success');
-                    
-                    // Reset after save
+                try {
+                    for (const [classId, group] of Object.entries(groups)) {
+                        const existing = feeStructures.find(structure => String(structure.classId) === String(classId));
+                        const id = editingStructureId || existing?.id;
+                        const body = {class_id:Number(classId), items:group.items};
+                        await apiRequest(id ? `/student-fee-structures/${encodeURIComponent(id)}` : '/student-fee-structures', {method:id ? 'PUT' : 'POST', body:JSON.stringify(body)});
+                    }
                     feeItems = [];
-                    classInput.value = '';
+                    editingStructureId = null;
+                    classInput.disabled = false;
                     categoryInput.value = '';
                     amountInput.value = '';
-                    renderTable();
-
-                    saveBtn.disabled = false;
+                    classInput.value = '';
                     saveBtn.innerHTML = '<i class="fas fa-save text-xs"></i> Save Fees Structure';
-                }, 800);
+                    showToast('Fee structure saved successfully.', 'success');
+                    await loadFeeStructures();
+                } catch (error) { showToast(error.message, 'error'); }
+                finally { saveBtn.disabled = false; if (editingStructureId) saveBtn.innerHTML = '<i class="fas fa-save text-xs"></i> Update Fees Structure'; }
             });
 
             // ============================================================
@@ -439,7 +519,8 @@
             // ============================================================
             // INIT
             // ============================================================
-            renderTable();
+            loadClasses();
+            loadFeeStructures();
         })();
     </script>
 

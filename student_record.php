@@ -761,6 +761,40 @@ $('#studentTable').DataTable({
         // INITIAL LOAD
         // ==============================
 
+        // Replace the former demo table data with the protected student listing.
+        fetchStudents = async function() {
+            const body = document.getElementById('studentTableBody');
+            const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token') || '';
+            try {
+                const response = await fetch(`${url}students`, {headers:{'Authorization':`Bearer ${token}`,'Accept':'application/json'}});
+                const result = await response.json().catch(() => ({}));
+                if (response.status === 401) { alert('Your session has expired. Please log in again.'); window.location.href='login.php'; return; }
+                if (response.status === 403) throw new Error('You do not have permission to view students.');
+                if (response.status === 404) throw new Error(result.message || 'Student records were not found.');
+                if (!response.ok) throw new Error(result.message || 'Unable to load student records.');
+                const payload = result.data || result;
+                const students = Array.isArray(payload) ? payload : (payload.data || []);
+                body.innerHTML = '';
+                if (!students.length) { body.innerHTML='<tr><td colspan="8" class="text-center py-8 text-gray-400">No students found.</td></tr>'; return; }
+                students.forEach((student, index) => {
+                    const row = document.createElement('tr'); row.className='table-row-hover transition';
+                    row.innerHTML = `<td>${index+1}</td><td>${student.student_name || '—'}</td><td>${student.student_batch || '—'}</td><td>${student.class?.class_name || student.course || student.class_name || '—'}</td><td>${student.section || '—'}</td><td>${student.student_id || student.registration_id || '—'}</td><td>${student.parent_phone || '—'}</td><td><div class="flex gap-2"><button class="student-details-btn px-3 py-2 rounded-lg bg-cyan-600 text-white text-xs" type="button">Details</button><button class="px-3 py-2 rounded-lg bg-blue-500 text-white text-xs" type="button" onclick="window.location.href='student_reg_update.php?id=${student.id}'">Edit</button><button class="px-3 py-2 rounded-lg bg-red-500 text-white text-xs" type="button" onclick="deleteStudent(${Number(student.id)})">Delete</button></div></td>`;
+                    row.querySelector('.student-details-btn').addEventListener('click', async () => {
+                        try {
+                            const detailResponse = await fetch(`${url}students/${encodeURIComponent(student.id)}`, {headers:{'Authorization':`Bearer ${token}`,'Accept':'application/json'}});
+                            const detailBody = await detailResponse.json().catch(() => ({}));
+                            if (detailResponse.status === 401) { alert('Your session has expired. Please log in again.'); window.location.href='login.php'; return; }
+                            if (detailResponse.status === 403) throw new Error('You do not have permission to view this student.');
+                            if (detailResponse.status === 404) throw new Error(detailBody.message || 'Student was not found.');
+                            if (!detailResponse.ok) throw new Error(detailBody.message || 'Unable to load student details.');
+                            const details = detailBody.data?.student || detailBody.data || detailBody;
+                            openDetailsModal(details);
+                        } catch (error) { alert(error.message); }
+                    });
+                    body.appendChild(row);
+                });
+            } catch (error) { body.innerHTML=`<tr><td colspan="8" class="text-center py-8 text-red-600">${error.message}</td></tr>`; }
+        };
         fetchStudents();
 
 

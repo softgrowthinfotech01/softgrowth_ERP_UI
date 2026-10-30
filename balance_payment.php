@@ -155,19 +155,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script src="url.js"></script>
 
     <script>
         // ============================================================
         // API URL (adjust as needed)
         // ============================================================
-        const API_URL = 'your-api-url-here'; // replace with actual URL
+        const API_URL = (typeof url !== 'undefined' ? url : '') + 'student-balance-records';
+        const API_TOKEN = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token') || '';
 
         // ============================================================
         // DATA & STATE
         // ============================================================
         let allBalanceRecords = [];
         let currentPage = 1;
-        const rowsPerPage = 5;
+        let rowsPerPage = 10;
+        let balanceLastPage = 1;
         let filteredData = [];
 
         // DOM refs
@@ -184,21 +187,25 @@
                     `${API_URL}?page=${page}&search=${encodeURIComponent(search)}`,
                     {
                         headers: {
-                            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                            'Authorization': 'Bearer ' + API_TOKEN,
                             'Accept': 'application/json'
                         }
                     }
                 );
 
-                if (!response.ok) throw new Error('Network response was not ok');
+                if (response.status === 401) { alert('Your session has expired. Please log in again.'); window.location.href = 'login.php'; return; }
+                if (response.status === 403) throw new Error('You do not have permission to view student balances.');
+                if (response.status === 404) throw new Error('Student balance records were not found.');
+                if (!response.ok) throw new Error('Unable to load student balances.');
                 const result = await response.json();
-                console.log('API Response:', result);
-
-                // Handle different response structures
-                const data = result.data || result;
-                allBalanceRecords = data.data || data || [];
-                renderTable(allBalanceRecords);
-                updatePaginationInfo(allBalanceRecords.length, page);
+                const payload = result.data || result;
+                allBalanceRecords = Array.isArray(payload) ? payload : (payload.data || []);
+                const pageMeta = result.meta || payload.meta || payload;
+                rowsPerPage = Number(pageMeta.per_page || allBalanceRecords.length || rowsPerPage);
+                currentPage = Number(pageMeta.current_page || page);
+                balanceLastPage = Number(pageMeta.last_page || 1);
+                renderTable(allBalanceRecords, 1);
+                updatePaginationInfo(Number(pageMeta.total ?? allBalanceRecords.length), currentPage, balanceLastPage);
 
             } catch (error) {
                 console.error('Error loading students:', error);
@@ -210,8 +217,7 @@
                         </td>
                     </tr>
                 `;
-                // Fallback to sample data if API fails
-                loadSampleData();
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-red-500">${error.message}</td></tr>`;
             }
         }
 
@@ -263,7 +269,7 @@
                         </td>
                         <td class="px-3 py-3 whitespace-nowrap">${status}</td>
                         <td class="px-3 py-3 whitespace-nowrap text-center no-print">
-                            <button class="text-orange-400 hover:text-teal-800 transition" title="View Details">
+                            <button class="view-balance-btn text-orange-400 hover:text-teal-800 transition" data-student-id="${student.student_id || student.student?.id || student.id || ''}" title="View Fee Summary">
                                 <i class="fas fa-eye"></i>
                             </button>
                         </td>
@@ -271,13 +277,26 @@
                 `;
             });
             tbody.innerHTML = html;
+            tbody.querySelectorAll('.view-balance-btn').forEach(button => button.addEventListener('click', async () => {
+                if (!button.dataset.studentId) return;
+                try {
+                    const response = await fetch(`${url}students/${encodeURIComponent(button.dataset.studentId)}/fee-summary`, {headers:{'Authorization':`Bearer ${API_TOKEN}`,'Accept':'application/json'}});
+                    const body = await response.json().catch(() => ({}));
+                    if (response.status === 401) { alert('Your session has expired. Please log in again.'); window.location.href='login.php'; return; }
+                    if (response.status === 403) throw new Error('You do not have permission to view this fee summary.');
+                    if (response.status === 404) throw new Error(body.message || 'Student fee summary was not found.');
+                    if (!response.ok) throw new Error(body.message || 'Unable to load fee summary.');
+                    const summary = body.data?.data || body.data || body;
+                    alert([`Gross fee: ₹${summary.gross_fee ?? summary.full_fees ?? 0}`, `Discount: ₹${summary.discount_amount ?? 0}`, `Payable: ₹${summary.total_fee ?? summary.payable_total ?? 0}`, `Paid: ₹${summary.completed_payments ?? summary.total_paid ?? 0}`, `Remaining: ₹${summary.remaining_balance ?? summary.balance_amount ?? 0}`].join('\n'));
+                } catch (error) { alert(error.message); }
+            }));
         }
 
         // ============================================================
         // UPDATE PAGINATION INFO
         // ============================================================
-        function updatePaginationInfo(total, page) {
-            const totalPages = Math.ceil(total / rowsPerPage) || 1;
+        function updatePaginationInfo(total, page, knownPages) {
+            const totalPages = knownPages || Math.ceil(total / rowsPerPage) || 1;
             const start = (page - 1) * rowsPerPage + 1;
             const end = Math.min(page * rowsPerPage, total);
 
@@ -295,38 +314,24 @@
         document.getElementById('prevPage').addEventListener('click', function() {
             if (currentPage > 1) {
                 currentPage--;
-                renderTable(allBalanceRecords, currentPage);
-                updatePaginationInfo(allBalanceRecords.length, currentPage);
+                loadStudents(currentPage);
             }
         });
 
         document.getElementById('nextPage').addEventListener('click', function() {
-            const totalPages = Math.ceil(allBalanceRecords.length / rowsPerPage) || 1;
-            if (currentPage < totalPages) {
+            if (currentPage < balanceLastPage) {
                 currentPage++;
-                renderTable(allBalanceRecords, currentPage);
-                updatePaginationInfo(allBalanceRecords.length, currentPage);
+                loadStudents(currentPage);
             }
         });
 
         // ============================================================
         // SEARCH
         // ============================================================
+        let balanceSearchTimer;
         searchInput.addEventListener('input', function() {
-            const query = this.value.toLowerCase().trim();
-            if (query === '') {
-                loadStudents(1);
-            } else {
-                const filtered = allBalanceRecords.filter(item =>
-                    (item.student_name || '').toLowerCase().includes(query) ||
-                    (item.student_batch || '').toLowerCase().includes(query) ||
-                    String(item.total_fees).includes(query)
-                );
-                filteredData = filtered;
-                currentPage = 1;
-                renderTable(filtered, 1);
-                updatePaginationInfo(filtered.length, 1);
-            }
+            clearTimeout(balanceSearchTimer);
+            balanceSearchTimer = setTimeout(() => { currentPage = 1; loadStudents(1); }, 300);
         });
 
         // ============================================================

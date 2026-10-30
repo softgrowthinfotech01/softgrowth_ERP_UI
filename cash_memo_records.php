@@ -93,7 +93,7 @@
 
             <!-- Table -->
             <div class="table-wrap p-4 sm:p-6">
-                <table class="w-full text-sm text-left">
+                <table class="w-full text-sm text-left" id="cashMemoTable">
                     <thead>
                         <tr class="bg-orange-400 text-white text-xs font-semibold uppercase tracking-wider">
                             <th class="px-3 py-3 whitespace-nowrap">Sr No</th>
@@ -101,12 +101,13 @@
                             <th class="px-3 py-3 whitespace-nowrap">Amount</th>
                             <th class="px-3 py-3 whitespace-nowrap">Receipt Number</th>
                             <th class="px-3 py-3 whitespace-nowrap">Date</th>
+                            <th class="px-3 py-3 whitespace-nowrap">Action</th>
                         </tr>
                     </thead>
                     <tbody id="memoTableBody" class="divide-y divide-gray-100">
                         <!-- rows injected by JS -->
                         <tr>
-                            <td colspan="5" class="text-center py-8 text-gray-400">Loading...</td>
+                            <td colspan="6" class="text-center py-8 text-gray-400">Loading...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -307,8 +308,12 @@
 
 
 
-                const cashMemos =
-                    result.data;
+                if (response.status === 401) { alert('Your session has expired. Please log in again.'); window.location.href = 'login.php'; return; }
+                if (response.status === 403) throw new Error('You do not have permission to view cash memos.');
+                if (response.status === 404) throw new Error(result.message || 'Cash memo records were not found.');
+                if (!response.ok) throw new Error(result.message || 'Unable to load cash memo records.');
+                const payload = result.data || result;
+                const cashMemos = Array.isArray(payload) ? payload : (payload.data || []);
 
 
 
@@ -386,17 +391,30 @@
 
                     <td>
 
-                        ${item.date}
+                        ${item.date || item.cash_memo_date || item.created_at || '—'}
 
                     </td>
-
-                    
+                    <td><button type="button" class="view-cash-memo-btn text-orange-600 hover:text-orange-800" data-id="${item.id}" title="View cash memo"><i class="fas fa-eye"></i> View</button></td>
 
                 </tr>
 
             `;
 
                 });
+
+                tableBody.querySelectorAll('.view-cash-memo-btn').forEach(button => button.addEventListener('click', async () => {
+                    const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token') || '';
+                    try {
+                        const response = await fetch(url + 'cash-memos/show/' + encodeURIComponent(button.dataset.id), {headers:{'Authorization':'Bearer ' + token,'Accept':'application/json'}});
+                        const detail = await response.json().catch(() => ({}));
+                        if (response.status === 401) { alert('Your session has expired. Please log in again.'); window.location.href='login.php'; return; }
+                        if (response.status === 403) throw new Error('You do not have permission to view this cash memo.');
+                        if (response.status === 404) throw new Error(detail.message || 'Cash memo was not found.');
+                        if (!response.ok) throw new Error(detail.message || 'Unable to load cash memo details.');
+                        const memo = detail.data?.cash_memo || detail.data || detail;
+                        alert([`Memo: ${memo.cash_memo_no || '—'}`, `Amount: ₹${memo.amount || 0}`, `Receipt: ${memo.receipt_number || '—'}`, `Date: ${memo.date || memo.cash_memo_date || memo.created_at || '—'}`, `Transaction: ${memo.transaction_type || '—'}`].join('\n'));
+                    } catch (error) { alert(error.message); }
+                }));
 
               $('#cashMemoTable').DataTable({
 
@@ -422,9 +440,8 @@
 
             } catch (error) {
 
-                console.log(error);
-
-                alert("Failed To Fetch Data");
+                console.error(error);
+                document.getElementById('cashMemoTableBody').innerHTML = `<tr><td colspan="6" class="text-center py-8 text-red-600">${error.message}</td></tr>`;
 
             }
 

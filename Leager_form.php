@@ -116,6 +116,10 @@
                         <input type="text" id="receiptSearch" placeholder="Search Receipt No" 
                                class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" />
                     </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Transaction Type</label>
+                        <input type="text" id="transactionTypeFilter" placeholder="e.g. credit or debit" class="w-full rounded-xl border border-gray-300 bg-white py-2.5 px-4" />
+                    </div>
                     <div class="flex items-end">
                         <button onclick="loadLedger()" 
                                 class="w-full bg-orange-400 text-white font-bold py-2.5 px-4 rounded-xl hover:bg-teal-700 transition focus:ring-2 focus:ring-teal-300">
@@ -194,19 +198,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script src="url.js"></script>
 
     <script>
         // ============================================================
         // API URL (adjust as needed)
         // ============================================================
-        const API_URL = 'your-api-url-here'; // replace with actual URL
+        const API_URL = (typeof url !== 'undefined' ? url : '') + 'ledger';
+        const API_TOKEN = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token') || '';
 
         // ============================================================
         // DATA & STATE
         // ============================================================
         let allLedger = [];
         let currentPage = 1;
-        const rowsPerPage = 5;
+        const rowsPerPage = 10;
+        let lastPage = 1;
         let filteredData = [];
 
         // DOM refs
@@ -223,30 +230,34 @@
                 const from = fromDate.value;
                 const to = toDate.value;
                 const receipt = receiptSearch.value.trim();
+                const type = document.getElementById('transactionTypeFilter').value;
 
                 const response = await fetch(
-                    `${API_URL}?page=${page}&receipt_number=${encodeURIComponent(receipt)}&from_date=${from}&to_date=${to}`,
+                    `${API_URL}?page=${page}&receipt_number=${encodeURIComponent(receipt)}&from_date=${encodeURIComponent(from)}&to_date=${encodeURIComponent(to)}&transaction_type=${encodeURIComponent(type)}`,
                     {
                         headers: {
-                            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                            'Authorization': 'Bearer ' + API_TOKEN,
                             'Accept': 'application/json'
                         }
                     }
                 );
 
-                if (!response.ok) throw new Error('Network response was not ok');
+                if (response.status === 401) { alert('Your session has expired. Please log in again.'); window.location.href='login.php'; return; }
+                if (response.status === 403) throw new Error('You do not have permission to view ledger entries.');
+                if (response.status === 404) throw new Error('Ledger entries were not found.');
+                if (!response.ok) throw new Error('Unable to load ledger entries.');
                 const result = await response.json();
-                console.log('API Response:', result);
-
                 const data = result.data || result;
-                allLedger = data.data || data || [];
-                renderTable(allLedger, page);
-                updatePaginationInfo(allLedger.length, page);
+                allLedger = Array.isArray(data) ? data : (data.data || []);
+                const pageMeta = result.meta || data.meta || data;
+                currentPage = Number(pageMeta.current_page || page);
+                lastPage = Number(pageMeta.last_page || 1);
+                renderTable(allLedger, 1);
+                updatePaginationInfo(Number(pageMeta.total ?? allLedger.length), page);
 
             } catch (error) {
                 console.error('Error loading ledger:', error);
-                // Fallback to sample data
-                loadSampleData();
+                tbody.innerHTML = `<tr><td colspan="9" class="text-center py-8 text-red-600">${error.message}</td></tr>`;
             }
         }
 
@@ -289,7 +300,7 @@
                 html += `
                     <tr class="table-row-hover transition">
                         <td class="px-3 py-3 whitespace-nowrap">${rowNum}</td>
-                        <td class="px-3 py-3 whitespace-nowrap font-medium text-gray-900">${item.receipt_number || 'N/A'}</td>
+                        <td class="px-3 py-3 whitespace-nowrap font-medium text-gray-900">${item.receipt_number || 'N/A'} <button type="button" class="ledger-detail-btn ml-1 text-orange-600" data-id="${item.id || item.ledger_id || ''}" title="View ledger entry"><i class="fas fa-eye"></i></button></td>
                         <td class="px-3 py-3 whitespace-nowrap">${item.memo_details || 'N/A'}</td>
                         <td class="px-3 py-3 whitespace-nowrap">${item.student_batch || '-'}</td>
                         <td class="px-3 py-3 whitespace-nowrap">${item.branch || '-'}</td>
@@ -301,6 +312,19 @@
                 `;
             });
             tbody.innerHTML = html;
+            tbody.querySelectorAll('.ledger-detail-btn').forEach(button => button.addEventListener('click', async () => {
+                if (!button.dataset.id) return;
+                try {
+                    const response = await fetch(`${API_URL}/${encodeURIComponent(button.dataset.id)}`, {headers:{'Authorization':`Bearer ${API_TOKEN}`,'Accept':'application/json'}});
+                    const body = await response.json().catch(() => ({}));
+                    if (response.status === 401) { alert('Your session has expired. Please log in again.'); window.location.href='login.php'; return; }
+                    if (response.status === 403) throw new Error('You do not have permission to view this ledger entry.');
+                    if (response.status === 404) throw new Error(body.message || 'Ledger entry was not found.');
+                    if (!response.ok) throw new Error(body.message || 'Unable to load ledger entry.');
+                    const entry = body.data?.entry || body.data || body;
+                    alert([`Receipt: ${entry.receipt_number || '—'}`, `Transaction: ${entry.transaction_type || '—'}`, `Credit: ₹${entry.credit || 0}`, `Debit: ₹${entry.debit || 0}`, `Balance: ₹${entry.running_balance || 0}`, `Date: ${entry.transaction_date || '—'}`].join('\n'));
+                } catch (error) { alert(error.message); }
+            }));
         }
 
         // ============================================================
@@ -331,8 +355,7 @@
         });
 
         document.getElementById('nextPage').addEventListener('click', function() {
-            const totalPages = Math.ceil(allLedger.length / rowsPerPage) || 1;
-            if (currentPage < totalPages) {
+            if (currentPage < lastPage) {
                 currentPage++;
                 loadLedger(currentPage);
             }
@@ -344,6 +367,7 @@
         fromDate.addEventListener('change', () => { currentPage = 1; loadLedger(1); });
         toDate.addEventListener('change', () => { currentPage = 1; loadLedger(1); });
         receiptSearch.addEventListener('keyup', () => { currentPage = 1; loadLedger(1); });
+        document.getElementById('transactionTypeFilter').addEventListener('change', () => { currentPage = 1; loadLedger(1); });
 
         // ============================================================
         // TOAST NOTIFICATION

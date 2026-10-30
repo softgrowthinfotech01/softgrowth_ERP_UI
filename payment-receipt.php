@@ -58,12 +58,12 @@
                         <div class="flex">
                             <span class="w-20 text-gray-700 font-semibold">Receipt No.</span>
                             <span class="text-gray-700 mr-1">:</span>
-                            <span class="text-gray-900 font-bold">SGI-REC-0001</span>
+                            <span class="text-gray-900 font-bold" id="receiptNo">—</span>
                         </div>
                         <div class="flex">
                             <span class="w-20 text-gray-700 font-semibold">Date</span>
                             <span class="text-gray-700 mr-1">:</span>
-                            <span class="text-gray-900 font-bold">10-10-2026</span>
+                            <span class="text-gray-900 font-bold" id="receiptDate">—</span>
                         </div>
                     </div>
                 </div>
@@ -78,22 +78,22 @@
                     <div class="flex flex-wrap">
                         <span class="w-20 text-gray-600">Name</span>
                         <span class="text-gray-600 mr-2">:</span>
-                        <span class="text-gray-900 font-semibold">Nayanshree Ramteke</span>
+                        <span class="text-gray-900 font-semibold" id="studentName">—</span>
                     </div>
                     <div class="flex flex-wrap">
                         <span class="w-20 text-gray-600">Reg. ID</span>
                         <span class="text-gray-600 mr-2">:</span>
-                        <span class="text-gray-900 font-semibold">SGI00025</span>
+                        <span class="text-gray-900 font-semibold" id="studentId">—</span>
                     </div>
                     <div class="flex flex-wrap">
                         <span class="w-20 text-gray-600">Course</span>
                         <span class="text-gray-600 mr-2">:</span>
-                        <span class="text-gray-900 font-semibold">Front-End Development</span>
+                        <span class="text-gray-900 font-semibold" id="courseName">—</span>
                     </div>
                     <div class="flex flex-wrap">
                         <span class="w-20 text-gray-600">Batch</span>
                         <span class="text-gray-600 mr-2">:</span>
-                        <span class="text-gray-900 font-semibold">Oct 2026</span>
+                        <span class="text-gray-900 font-semibold" id="studentBatch">—</span>
                     </div>
                 </div>
 
@@ -106,7 +106,7 @@
                     <h3 class="text-[10px] font-bold text-gray-900">Fee Categories</h3>
                 </div>
                 <div class="px-4 py-2">
-                    <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-[10px]">
+                    <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-[10px]" id="feeCategories">
                         <div class="flex justify-between border-b border-gray-100 pb-0.5">
                             <span class="text-gray-600">Tuition Fee</span>
                             <span class="font-semibold text-gray-900">₹5,000</span>
@@ -150,28 +150,29 @@
                     <div class="flex flex-wrap">
                         <span class="w-28 text-gray-600">Payment Amount</span>
                         <span class="text-gray-600 mr-2">:</span>
-                        <span class="text-gray-900 font-semibold">5,000</span>
+                        <span class="text-gray-900 font-semibold" id="paymentAmount">—</span>
                     </div>
                     <div class="flex flex-wrap">
                         <span class="w-28 text-gray-600">Payment Type</span>
                         <span class="text-gray-600 mr-2">:</span>
-                        <span class="text-gray-900 font-semibold">Online</span>
+                        <span class="text-gray-900 font-semibold" id="paymentType">Cash</span>
                     </div>
                     <div class="flex flex-wrap">
                         <span class="w-28 text-gray-600">Transaction ID</span>
                         <span class="text-gray-600 mr-2">:</span>
-                        <span class="text-gray-900 font-semibold">TXN123456789</span>
+                        <span class="text-gray-900 font-semibold" id="transactionReference">—</span>
                     </div>
                     <div class="flex flex-wrap">
                         <span class="w-28 text-gray-600">Payment Date</span>
                         <span class="text-gray-600 mr-2">:</span>
-                        <span class="text-gray-900 font-semibold">10-10-2026</span>
+                        <span class="text-gray-900 font-semibold" id="paymentDate">—</span>
                     </div>
                     <div class="flex flex-wrap">
                         <span class="w-28 text-gray-600">Remarks</span>
                         <span class="text-gray-600 mr-2">:</span>
-                        <span class="text-gray-900 font-semibold">First installment</span>
+                        <span class="text-gray-900 font-semibold" id="paymentDescription">—</span>
                     </div>
+                    <div class="flex flex-wrap" id="installmentRow"><span class="w-28 text-gray-600">Installment</span><span class="text-gray-600 mr-2">:</span><span class="text-gray-900 font-semibold" id="installmentType">—</span></div>
                 </div>
 
                 <!-- FOOTER -->
@@ -201,6 +202,61 @@
     <!-- SCRIPT -->
     <script>
         (function() {
+            const params = new URLSearchParams(window.location.search);
+            const get = key => params.get(key) || '';
+            const set = (id, value) => { const el = document.getElementById(id); if (el) el.textContent = value || '—'; };
+            const currency = value => '₹' + Number(value || 0).toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
+            const formatDate = value => {
+                if (!value) return '—';
+                const parts = value.split('-');
+                return parts.length === 3 ? `${parts[2]}-${parts[1]}-${parts[0]}` : value;
+            };
+            set('receiptNo', get('receipt_no'));
+            set('receiptDate', formatDate(get('pay_date')));
+            set('studentName', get('name'));
+            set('studentId', get('reg_id'));
+            set('courseName', get('course'));
+            set('studentBatch', get('batch'));
+            set('paymentAmount', currency(get('pay_amount')));
+            set('paymentType', get('pay_type') || 'Cash');
+            set('transactionReference', get('txn'));
+            set('paymentDate', formatDate(get('pay_date')));
+            set('paymentDescription', get('remarks'));
+            set('installmentType', get('installment_type'));
+            if (!get('installment_type')) document.getElementById('installmentRow').classList.add('hidden');
+
+            const feeCategories = document.getElementById('feeCategories');
+            let feeItems = [];
+            try { feeItems = JSON.parse(get('fee_items') || '[]'); } catch (_) {}
+            feeCategories.replaceChildren();
+            feeItems.forEach(item => {
+                const row = document.createElement('div');
+                row.className = 'flex justify-between border-b border-gray-100 pb-0.5';
+                const name = document.createElement('span');
+                name.className = 'text-gray-600';
+                name.textContent = item.fee_name || item.name || 'Fee';
+                const amount = document.createElement('span');
+                amount.className = 'font-semibold text-gray-900';
+                amount.textContent = currency(item.amount);
+                row.append(name, amount);
+                feeCategories.appendChild(row);
+            });
+            if (!feeItems.length) feeCategories.classList.add('hidden');
+            const totalLabel = feeCategories.parentElement.querySelector('.mt-2 span:first-child');
+            const totalValue = feeCategories.parentElement.querySelector('.mt-2 span:last-child');
+            if (totalLabel) totalLabel.textContent = 'Gross Fee';
+            if (totalValue) totalValue.textContent = currency(get('gross_fee'));
+            const feeSummary = document.createElement('div');
+            feeSummary.className = 'mt-1 space-y-1 text-[11px]';
+            [['Discount','discount_amount'],['Payable Total','payable_total'],['Paid to Date','completed_payments'],['Remaining Balance','remaining_balance']].forEach(([label,key]) => {
+                const row = document.createElement('div');
+                row.className = 'flex justify-between';
+                const left = document.createElement('span'); left.className = 'font-semibold text-gray-700'; left.textContent = label;
+                const right = document.createElement('span'); right.className = 'font-semibold text-gray-900'; right.textContent = currency(get(key));
+                row.append(left,right); feeSummary.appendChild(row);
+            });
+            feeCategories.parentElement.appendChild(feeSummary);
+
             // PRINT
             document.getElementById('printBtn').addEventListener('click', function() {
                 window.print();
@@ -215,7 +271,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Payment Receipt - SGI-REC-0001</title>
+    <title>Payment Receipt - ${document.getElementById('receiptNo').textContent}</title>
     <script src="https://cdn.tailwindcss.com"><\/script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
@@ -238,7 +294,7 @@
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = 'Payment-Receipt-SGI-REC-0001.html';
+                a.download = `Payment-Receipt-${document.getElementById('receiptNo').textContent || 'receipt'}.html`;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);

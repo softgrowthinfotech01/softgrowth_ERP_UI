@@ -116,6 +116,9 @@
                     <input id="searchInput" type="text" placeholder="Search payment records..." 
                            class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 bg-white py-2.5 px-4 text-sm" />
                 </div>
+                <input id="paymentStudentFilter" type="number" min="1" placeholder="Student database ID" class="rounded-xl border border-gray-300 bg-white py-2.5 px-4 text-sm" />
+                <select id="paymentStatusFilter" class="rounded-xl border border-gray-300 bg-white py-2.5 px-4 text-sm"><option value="">All statuses</option><option value="Completed">Completed</option><option value="Pending">Pending</option><option value="Failed">Failed</option></select>
+                <select id="paymentPerPage" class="rounded-xl border border-gray-300 bg-white py-2.5 px-4 text-sm" aria-label="Payments per page"><option value="20">20 per page</option><option value="50">50 per page</option><option value="100">100 per page</option></select>
             </div>
 
             <!-- Table -->
@@ -164,6 +167,7 @@
 
     <!-- PHP footer include -->
     <?php include 'footer.php'; ?>
+    <script src="url.js"></script>
 
     <!-- ============================================================
     JAVASCRIPT – data, pagination, search, and exports
@@ -172,7 +176,7 @@
         document.addEventListener('DOMContentLoaded', function() {
 
             // ----- SAMPLE DATA -----
-            const allPayments = [
+            let allPayments = [
                 { id: 1, studentName: 'Rahul Sharma', studentId: 'S101', feesPaid: 'Admission Fee', amount: '₹15,000', receipt: 'RCP-001', mode: 'Cash', date: '2025-01-15' },
                 { id: 2, studentName: 'Priya Patel', studentId: 'S102', feesPaid: 'Tuition Fee', amount: '₹25,000', receipt: 'RCP-002', mode: 'Online', date: '2025-01-16' },
                 { id: 3, studentName: 'Amit Singh', studentId: 'S103', feesPaid: 'Exam Fee', amount: '₹5,000', receipt: 'RCP-003', mode: 'Bank Transfer', date: '2025-01-17' },
@@ -188,8 +192,9 @@
             ];
 
             let filteredData = [...allPayments];
-            const rowsPerPage = 5;
+            let rowsPerPage = 20;
             let currentPage = 1;
+            let apiLastPage = 1;
             const tbody = document.getElementById('paymentTableBody');
 
             function renderTable(page) {
@@ -221,15 +226,52 @@
                                 </td>
                                 <td class="px-3 py-3 whitespace-nowrap">${p.date}</td>
                                 <td class="px-3 py-3 whitespace-nowrap text-center no-print">
-                                    <button class="text-orange-600 hover:text-orange-800 transition" title="View Payment">
+                                    <button class="view-payment-btn text-orange-600 hover:text-orange-800 transition" data-payment-id="${p.id || ''}" title="View Payment">
                                         <i class="fas fa-eye"></i>
                                     </button>
+                                    <button class="payment-receipt-btn ml-2 text-blue-600 hover:text-blue-800" data-payment-id="${p.id || ''}" title="Get Receipt"><i class="fas fa-receipt"></i></button>
                                 </td>
                             </tr>
                         `;
                     });
                     tbody.innerHTML = html;
                 }
+
+                // Update footer info
+                tbody.querySelectorAll('.view-payment-btn').forEach(button => button.addEventListener('click', async () => {
+                    if (!button.dataset.paymentId) return;
+                    const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token') || '';
+                    try {
+                        const response = await fetch(`${url}student-payments/${button.dataset.paymentId}`, {headers:{'Authorization':`Bearer ${token}`,'Accept':'application/json'}});
+                        const body = await response.json().catch(() => ({}));
+                        if (response.status === 401) { alert('Your session has expired. Please log in again.'); window.location.href='login.php'; return; }
+                        if (response.status === 403) throw new Error('You do not have permission to view this payment.');
+                        if (response.status === 404) throw new Error(body.message || 'Payment was not found.');
+                        if (!response.ok) throw new Error(body.message || 'Unable to load payment details.');
+                        const payment = body.data?.payment || body.data || body;
+                        alert([`Student: ${payment.student?.student_name || payment.student_name || '—'}`, `Amount: ₹${payment.amount_paid || payment.amount || 0}`, `Method: ${payment.payment_method || '—'}`, `Date: ${payment.payment_date || '—'}`, `Status: ${payment.payment_status || payment.status || '—'}`, `Reference: ${payment.receipt_number || payment.transaction_reference || '—'}`].join('\n'));
+                    } catch (error) { alert(error.message); }
+                }));
+                tbody.querySelectorAll('.payment-receipt-btn').forEach(button => button.addEventListener('click', async () => {
+                    if (!button.dataset.paymentId) return;
+                    const receiptWindow = window.open('about:blank', '_blank');
+                    const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token') || '';
+                    try {
+                        const response = await fetch(`${url}student-payments/receipt/${button.dataset.paymentId}`, {headers:{'Authorization':`Bearer ${token}`,'Accept':'application/json, application/pdf'}});
+                        if (response.status === 401) { receiptWindow?.close(); alert('Your session has expired. Please log in again.'); window.location.href='login.php'; return; }
+                        if (response.status === 403) throw new Error('You do not have permission to view this receipt.');
+                        if (response.status === 404) throw new Error('Payment receipt was not found.');
+                        if (!response.ok) throw new Error('Unable to load payment receipt.');
+                        if ((response.headers.get('content-type') || '').includes('application/pdf')) {
+                            receiptWindow.location.href = URL.createObjectURL(await response.blob());
+                        } else {
+                            const body = await response.json();
+                            const receipt = body.data?.payment || body.data || body;
+                            const query = new URLSearchParams({receipt_no:receipt.receipt_number || receipt.payment_id || receipt.id || '', name:receipt.student?.student_name || receipt.student_name || '', reg_id:receipt.student?.student_id || receipt.student_id || '', course:receipt.student?.course || receipt.course || '', batch:receipt.student?.student_batch || receipt.student_batch || '', pay_amount:receipt.amount_paid || receipt.amount || 0, pay_type:receipt.payment_method || 'Cash', txn:receipt.transaction_reference || '', pay_date:receipt.payment_date || '', remarks:receipt.description || '', installment_type:receipt.installment_type || '', gross_fee:receipt.gross_fee || 0, discount_amount:receipt.discount_amount || 0, payable_total:receipt.total_fee || receipt.payable_total || 0, completed_payments:receipt.completed_payments || 0, remaining_balance:receipt.remaining_balance || 0, fee_items:JSON.stringify(receipt.fee_items || [])});
+                            receiptWindow.location.href = `payment-receipt.php?${query}`;
+                        }
+                    } catch (error) { receiptWindow?.close(); alert(error.message); }
+                }));
 
                 // Update footer info
                 const total = filteredData.length;
@@ -252,16 +294,13 @@
             // Pagination event listeners
             document.getElementById('prevPage').addEventListener('click', function() {
                 if (currentPage > 1) {
-                    currentPage--;
-                    renderTable(currentPage);
+                    loadPayments(currentPage - 1);
                 }
             });
 
             document.getElementById('nextPage').addEventListener('click', function() {
-                const totalPages = Math.ceil(filteredData.length / rowsPerPage) || 1;
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    renderTable(currentPage);
+                if (currentPage < apiLastPage) {
+                    loadPayments(currentPage + 1);
                 }
             });
 
@@ -284,8 +323,47 @@
                 updatePagination();
             });
 
-            // Initial render
-            updatePagination();
+            async function loadPayments(page = 1) {
+                const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token') || '';
+                const query = new URLSearchParams({per_page:document.getElementById('paymentPerPage').value, page:String(page)});
+                const search = searchInput.value.trim();
+                const status = document.getElementById('paymentStatusFilter').value;
+                const studentId = document.getElementById('paymentStudentFilter').value.trim();
+                if (search) query.set('search', search);
+                if (status) query.set('payment_status', status);
+                if (studentId) query.set('student_id', studentId);
+                try {
+                    const response = await fetch(`${url}student-payments?${query}`, {headers:{'Authorization':`Bearer ${token}`,'Accept':'application/json'}});
+                    const body = await response.json().catch(() => ({}));
+                    if (response.status === 401) { alert('Your session has expired. Please log in again.'); window.location.href='login.php'; return; }
+                    if (response.status === 403) throw new Error('You do not have permission to view payments.');
+                    if (response.status === 404) throw new Error(body.message || 'Payment records were not found.');
+                    if (!response.ok) throw new Error(body.message || 'Unable to load payment records.');
+                    const payload = body.data || body;
+                    const rows = Array.isArray(payload) ? payload : (payload.data || []);
+                    allPayments = rows.map(p => ({id:p.id || p.payment_id, studentName:p.student?.student_name || p.student_name || '—', studentId:p.student?.student_id || p.student_id || p.abc_id || '—', feesPaid:p.installment_type || p.description || 'Fee payment', amount:'₹' + Number(p.amount_paid || p.amount || 0).toLocaleString('en-IN'), receipt:p.receipt_number || p.transaction_reference || '—', mode:p.payment_method || '—', date:p.payment_date || p.created_at || '', status:p.payment_status || p.status || 'Completed'}));
+                    const pageMeta = body.meta || payload.meta || payload;
+                    rowsPerPage = Number(document.getElementById('paymentPerPage').value);
+                    filteredData = [...allPayments]; currentPage = Number(pageMeta.current_page || page); apiLastPage = Number(pageMeta.last_page || 1);
+                    renderTable(1);
+                    const total = Number(pageMeta.total ?? rows.length);
+                    const pageSize = Number(document.getElementById('paymentPerPage').value);
+                    document.getElementById('startEntry').textContent = total ? ((currentPage - 1) * pageSize + 1) : 0;
+                    document.getElementById('endEntry').textContent = Math.min(currentPage * pageSize, total);
+                    document.getElementById('totalEntries').textContent = total;
+                    document.getElementById('prevPage').disabled = currentPage <= 1;
+                    document.getElementById('nextPage').disabled = currentPage >= apiLastPage;
+                } catch (error) {
+                    tbody.innerHTML = `<tr><td colspan="9" class="text-center py-8 text-red-500">${error.message}</td></tr>`;
+                }
+            }
+            let paymentSearchTimer;
+            searchInput.addEventListener('input', () => { clearTimeout(paymentSearchTimer); paymentSearchTimer=setTimeout(loadPayments,300); });
+            document.getElementById('paymentStudentFilter').addEventListener('input', () => { clearTimeout(paymentSearchTimer); paymentSearchTimer=setTimeout(loadPayments,300); });
+            document.getElementById('paymentStatusFilter').addEventListener('change', loadPayments);
+            document.getElementById('paymentPerPage').addEventListener('change', loadPayments);
+            // Initial load uses protected API records.
+            loadPayments();
 
             // ============================================================
             // EXPORT FUNCTIONS

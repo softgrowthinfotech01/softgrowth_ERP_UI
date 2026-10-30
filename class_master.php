@@ -124,11 +124,11 @@
             }
 
             // ============================================================
-            // 1. FETCH COURSES (GET /class-masters)
+            // 1. FETCH COURSES (GET /student-classes)
             // ============================================================
             async function fetchCourses() {
                 try {
-                    const response = await fetch(`${cleanBase}/class-masters`, {
+                    const response = await fetch(`${cleanBase}/student-classes`, {
                         method: 'GET',
                         headers: {
                             'Authorization': `Bearer ${token}`,
@@ -138,8 +138,14 @@
 
                     const result = await response.json();
                     if (response.ok) {
-                        courses = result.data || [];
+                        const payload = result.data || result;
+                        courses = Array.isArray(payload) ? payload : (payload.data || payload.classes || []);
                         renderTable();
+                    } else if (response.status === 401) {
+                        alert('Your session has expired. Please log in again.');
+                        window.location.href = 'login.php';
+                    } else if (response.status === 403) {
+                        showError('You do not have permission to view classes.');
                     } else {
                         showError(result.message || 'Failed to fetch classes.');
                     }
@@ -199,7 +205,7 @@
             }
 
             // ============================================================
-            // 2. ADD COURSE (POST /class-masters)
+            // 2. ADD COURSE (POST /student-classes)
             // ============================================================
             async function addCourse() {
                 clearError();
@@ -214,7 +220,7 @@
                 addBtn.innerHTML = '<i class="fas fa-spinner fa-spin text-xs"></i> Adding...';
 
                 try {
-                    const response = await fetch(`${cleanBase}/class-masters`, {
+                    const response = await fetch(`${cleanBase}/student-classes`, {
                         method: 'POST',
                         headers: {
                             'Authorization': `Bearer ${token}`,
@@ -247,14 +253,14 @@
             }
 
             // ============================================================
-            // 3. DELETE COURSE (DELETE /class-masters/{id})
+            // 3. DELETE COURSE (DELETE /student-classes/{id})
             // ============================================================
             async function deleteCourse(id) {
                 if (!confirm('Are you sure you want to delete this class?')) return;
 
                 clearError();
                 try {
-                    const response = await fetch(`${cleanBase}/class-masters/${id}`, {
+                    const response = await fetch(`${cleanBase}/student-classes/${id}`, {
                         method: 'DELETE',
                         headers: {
                             'Authorization': `Bearer ${token}`,
