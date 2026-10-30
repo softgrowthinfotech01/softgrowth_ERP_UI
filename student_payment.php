@@ -33,7 +33,7 @@
                             </div>
                             <div>
                                 <h1 class="text-lg font-bold text-gray-900 leading-tight">Student Fee Payment</h1>
-                                <p class="text-[11px] text-gray-500 mt-0.5">Record student fee payments in installments using Online, Google Pay, or Cash.</p>
+                                 <p class="text-[11px] text-gray-500 mt-0.5">Record and manage cash/offline student fee payments.</p>
                             </div>
                         </div>
                         <nav class="flex items-center gap-1.5 text-[11px] text-gray-500">
@@ -158,7 +158,7 @@
                             </div>
 
                             <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Total Fees</label>
+                                    <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Payable Total</label>
                                 <input type="text" id="pTotalFees" readonly
                                     class="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 bg-gray-100 text-gray-600 cursor-not-allowed focus:outline-none">
                             </div>
@@ -191,14 +191,18 @@
                             <!-- Installment Number -->
                             <div>
                                 <label class="block text-[11px] font-bold text-gray-700 mb-0.5">
-                                    Installment Number <span class="text-red-500">*</span>
+                                    Installment Type <span class="text-gray-400 font-normal">(Optional)</span>
                                 </label>
                                 <div class="relative">
                                     <i class="fas fa-list-ol absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                    <input type="text" id="pInstallmentNo" maxlength="1" placeholder="e.g. 1"
-                                        class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                    <select id="pInstallmentNo" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 bg-white focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                        <option value="">Select installment (optional)</option>
+                                        <option value="1st Installment">1st Installment</option>
+                                        <option value="2nd Installment">2nd Installment</option>
+                                        <option value="Full Payment">Full Payment</option>
+                                    </select>
                                 </div>
-                                <p class="text-[10px] text-gray-400 mt-1">Enter a single digit (1, 2, 3…)</p>
+                                <p class="text-[10px] text-gray-400 mt-1">Must match one of the supported installment types.</p>
                             </div>
 
                             <!-- ============================================================ -->
@@ -252,7 +256,7 @@
                                 </label>
                                 <div class="relative">
                                     <i class="fas fa-rupee-sign absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                    <input type="number" id="pPaymentAmount" placeholder="Enter amount"
+                                    <input type="number" id="pPaymentAmount" step="0.01" min="0.01" placeholder="Enter amount"
                                         class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
                                 </div>
                                 <p class="text-[10px] text-gray-400 mt-1" id="pAmountHint">Amount cannot be more than pending fees.</p>
@@ -280,18 +284,18 @@
 
                             <div>
                                 <label class="block text-[11px] font-bold text-gray-700 mb-0.5">
-                                    Transaction ID / Reference No. <span class="text-red-500">*</span>
+                                    Transaction Reference <span class="text-gray-400 font-normal">(Optional)</span>
                                 </label>
                                 <div class="relative">
                                     <i class="fas fa-receipt absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
                                     <input type="text" id="pTransactionId" placeholder="TXN123456789"
                                         class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
                                 </div>
-                                <p class="text-[10px] text-gray-400 mt-1">Required for Online and Google Pay payments</p>
+                                <p class="text-[10px] text-gray-400 mt-1">Optional cash receipt reference</p>
                             </div>
 
                             <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">
+                                    <label class="block text-[11px] font-bold text-gray-700 mb-0.5">
                                     Payment Date <span class="text-red-500">*</span>
                                 </label>
                                 <div class="relative">
@@ -332,17 +336,19 @@
 
                         <div class="p-4 space-y-3 text-[12px]">
                             <div class="flex items-center justify-between border-b border-gray-100 pb-2">
-                                <span class="text-gray-500 font-medium">Total Course Fees</span>
+                                <span class="text-gray-500 font-medium">Gross Fee</span>
+                                <span class="font-bold text-gray-800" id="sGrossFee">₹0</span>
+                            </div>
+                            <div class="flex items-center justify-between border-b border-gray-100 pb-2">
+                                <span class="text-gray-500 font-medium">Discount</span>
+                                <span class="font-bold text-gray-800" id="sDiscount">₹0</span>
+                            </div>
+                            <div class="flex items-center justify-between border-b border-gray-100 pb-2">
+                                <span class="text-gray-500 font-medium">Payable Total</span>
                                 <span class="font-bold text-gray-800" id="sTotalFees">₹0</span>
                             </div>
-                            <div class="flex items-center justify-between border-b border-gray-100 pb-2">
-                                <span class="text-gray-500 font-medium">Total Paid Amount</span>
-                                <span class="font-bold text-green-600" id="sPaid">₹0</span>
-                            </div>
-                            <div class="flex items-center justify-between border-b border-gray-100 pb-2">
-                                <span class="text-gray-500 font-medium">Pending Amount</span>
-                                <span class="font-bold text-red-600" id="sPending">₹0</span>
-                            </div>
+                            <div class="flex items-center justify-between border-b border-gray-100 pb-2"><span class="text-gray-500 font-medium">Completed Payments</span><span class="font-bold text-green-600" id="sPaid">₹0</span></div>
+                            <div class="flex items-center justify-between border-b border-gray-100 pb-2"><span class="text-gray-500 font-medium">Remaining Balance</span><span class="font-bold text-red-600" id="sPending">₹0</span></div>
                             <div class="flex items-center justify-between border-b border-gray-100 pb-2">
                                 <span class="text-gray-500 font-medium">Number of Installments</span>
                                 <span class="font-bold text-gray-800" id="sInstallments">1</span>
@@ -404,9 +410,9 @@
     <script>
         (function() {
             // ============================================================
-            // DUMMY DATA
+            // Students and balances are loaded from the Laravel API.
             // ============================================================
-            const students = [{
+            let students = [{
                     id: 'SGI00025',
                     name: 'Nayanshree Ramteke',
                     apaar: '1234 5678 9012',
@@ -579,6 +585,8 @@
             const addPageStudentLine = document.getElementById('addPageStudentLine');
 
             const sTotalFees = document.getElementById('sTotalFees');
+            const sGrossFee = document.getElementById('sGrossFee');
+            const sDiscount = document.getElementById('sDiscount');
             const sPaid = document.getElementById('sPaid');
             const sPending = document.getElementById('sPending');
             const sInstallments = document.getElementById('sInstallments');
@@ -693,6 +701,7 @@
                 pInstallmentNo.value = '';
                 pTransactionId.value = '';
                 pPaymentDate.value = todayISO();
+                pPaymentDate.max = todayISO();
                 pRemarks.value = '';
                 pLateFees.value = '';
                 selectedPaymentType = '';
@@ -795,6 +804,7 @@
                         <button class="view-receipt-btn inline-flex items-center gap-1 px-2 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 text-[10px] font-semibold rounded-md transition" data-index="${i}">
                             <i class="fas fa-receipt text-[9px]"></i> View Receipt
                         </button>
+                        ${p.id ? `<button class="edit-payment-btn px-2 py-1 bg-amber-50 text-amber-700 rounded-md" data-id="${p.id}" data-index="${i}">Edit</button><button class="delete-payment-btn px-2 py-1 bg-red-50 text-red-700 rounded-md" data-id="${p.id}">Remove</button>` : ''}
                     </td>
                 `;
                     historyBody.appendChild(tr);
@@ -806,12 +816,29 @@
                         openReceipt(currentStudent.payments[idx], false);
                     });
                 });
+                historyBody.querySelectorAll('.edit-payment-btn').forEach(btn => btn.addEventListener('click', async () => {
+                    const payment = currentStudent.payments[Number(btn.dataset.index)];
+                    const amount = prompt('Correct payment amount', payment.amount);
+                    if (amount === null) return;
+                    if (!/^(?:\d+)(?:\.\d{1,2})?$/.test(amount) || Number(amount) <= 0) { alert('Enter a positive amount with at most two decimals.'); return; }
+                    const date = prompt('Correct payment date (YYYY-MM-DD)', payment.date);
+                    if (!date || date > todayISO()) { alert('Payment date cannot be in the future.'); return; }
+                    try { await apiRequest(`/student-payments/${btn.dataset.id}`, {method:'PUT', body:JSON.stringify({amount_paid:amount, payment_date:date, payment_method:'Cash', installment_type:payment.inst, description:payment.remarks, transaction_reference:payment.txn})}); await refreshSummary(); }
+                    catch (error) { alert(error.message); }
+                }));
+                historyBody.querySelectorAll('.delete-payment-btn').forEach(btn => btn.addEventListener('click', async () => {
+                    if (!confirm('Remove this payment? It will no longer count toward the active balance.')) return;
+                    try { await apiRequest(`/student-payments/${btn.dataset.id}`, {method:'DELETE'}); await refreshSummary(); }
+                    catch (error) { alert(error.message); }
+                }));
             }
 
             // ============================================================
             // SAVE PAYMENT → OPENS RECEIPT
             // ============================================================
             savePaymentBtn.addEventListener('click', function() {
+                saveCashPayment();
+                return;
                 if (!currentStudent) return;
 
                 const amount = parseFloat(pPaymentAmount.value);
@@ -906,10 +933,17 @@
                     pending: Math.max(currentStudent.totalFees - currentStudent.paid, 0),
                     pay_amount: payment.amount,
                     pay_type: payment.mode,
+                    installment_type: payment.inst || '',
                     txn: payment.txn || '—',
                     pay_date: payment.date,
                     remarks: payment.remarks || '—',
-                    late_fees: payment.lateFees || 0
+                    late_fees: payment.lateFees || 0,
+                    gross_fee: currentStudent.totalFees,
+                    discount_amount: currentStudent.discount || 0,
+                    payable_total: currentStudent.payable ?? currentStudent.totalFees,
+                    completed_payments: currentStudent.paid,
+                    remaining_balance: currentStudent.remaining ?? Math.max(0, currentStudent.payable - currentStudent.paid),
+                    fee_items: JSON.stringify(currentStudent.summary?.fee_items || [])
                 });
 
                 // Open receipt page in new tab
@@ -927,9 +961,79 @@
             });
 
             // ============================================================
+            const apiRoot = (typeof url !== 'undefined' ? url : '').replace(/\/$/, '');
+            const apiToken = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token');
+            document.querySelectorAll('.payment-type-option').forEach(option => { if (option.dataset.value !== 'Cash') option.remove(); });
+            const cashOption = document.querySelector('.payment-type-option[data-value="Cash"]');
+            if (cashOption) { cashOption.classList.add('border-orange-500', 'bg-orange-50', 'text-orange-700'); selectedPaymentType = 'Cash'; }
+            async function apiRequest(path, options = {}) {
+                const response = await fetch(`${apiRoot}${path}`, { ...options, headers: { 'Authorization': `Bearer ${apiToken}`, 'Accept': 'application/json', 'Content-Type': 'application/json', ...(options.headers || {}) } });
+                const body = await response.json().catch(() => ({}));
+                if (response.status === 401) { alert('Your session has expired. Please log in again.'); window.location.href = 'login.php'; throw new Error('Session expired'); }
+                if (response.status === 403) throw new Error('You do not have permission to perform this action.');
+                if (response.status === 404) throw new Error(body.message || 'Student, fee summary, or payment was not found.');
+                if (response.status === 422) throw new Error(body.message || Object.values(body.errors || {}).flat().join('\n') || 'Please check the payment details.');
+                if (!response.ok) throw new Error(body.message || 'The request failed.');
+                return body.data?.data ?? body.data ?? body;
+            }
+            function moneyValue(object, ...keys) { for (const key of keys) if (object?.[key] != null && Number.isFinite(Number(object[key]))) return Number(object[key]); return 0; }
+            async function refreshSummary() {
+                const summary = await apiRequest(`/students/${currentStudent.dbId}/fee-summary`);
+                currentStudent.summary = summary;
+                currentStudent.totalFees = moneyValue(summary, 'gross_fee', 'full_fees', 'total_fees');
+                currentStudent.discount = moneyValue(summary, 'discount_amount', 'discount');
+                currentStudent.payable = moneyValue(summary, 'payable_total', 'payable_fees', 'net_fees') || Math.max(0, currentStudent.totalFees - currentStudent.discount);
+                currentStudent.paid = moneyValue(summary, 'completed_payments', 'total_paid', 'paid_amount', 'paid_fees');
+                currentStudent.remaining = summary.remaining_balance != null || summary.balance_amount != null || summary.pending_fees != null ? moneyValue(summary, 'remaining_balance', 'balance_amount', 'pending_fees') : Math.max(0, currentStudent.payable - currentStudent.paid);
+                currentStudent.payments = (summary.payments || summary.payment_history || []).map(p => ({...p, id:p.id || p.payment_id, date:p.payment_date || p.date, amount:p.amount_paid ?? p.amount, mode:p.payment_method || p.mode || 'Cash', txn:p.transaction_reference || p.transaction_id || p.txn, remarks:p.description || p.remarks, inst:p.installment_type || p.inst}));
+                pTotalFees.value = formatCurrency(currentStudent.payable);
+                pAlreadyPaid.value = formatCurrency(currentStudent.paid);
+                pPendingFees.value = formatCurrency(currentStudent.remaining);
+                sTotalFees.textContent = formatCurrency(currentStudent.payable);
+                sGrossFee.textContent = formatCurrency(currentStudent.totalFees);
+                sDiscount.textContent = formatCurrency(currentStudent.discount);
+                sPaid.textContent = formatCurrency(currentStudent.paid);
+                sPending.textContent = formatCurrency(currentStudent.remaining);
+                pPaymentAmount.max = currentStudent.remaining;
+                pAmountHint.textContent = `Amount cannot exceed remaining balance (${formatCurrency(currentStudent.remaining)}).`;
+                renderHistory();
+                renderTable(students);
+            }
+            async function loadApiStudents() {
+                if (!apiToken) { alert('Authentication token missing. Please log in again.'); window.location.href = 'login.php'; return; }
+                try {
+                    const result = await apiRequest('/students');
+                    const rows = Array.isArray(result) ? result : (result.data || result.students || []);
+                    students = rows.map(s => ({ dbId: s.id, id: String(s.student_id || s.registration_id || s.id), name: s.student_name || s.name || 'Student', apaar: s.abc_id || '—', course: s.class?.class_name || s.course || s.class_name || '—', batch: s.student_batch || '—', totalFees: Number(s.total_fees || s.full_fees || 0), paid: 0, photo: s.passport_photo || '', payments: [] }));
+                    renderTable(students);
+                } catch (error) { alert(error.message); }
+            }
+            async function saveCashPayment() {
+                if (!currentStudent) return;
+                const amountText = pPaymentAmount.value.trim();
+                const amount = Number(amountText);
+                const date = pPaymentDate.value;
+                const today = todayISO();
+                if (!/^(?:\d+)(?:\.\d{1,2})?$/.test(amountText) || !Number.isFinite(amount) || amount <= 0) { alert('Enter a positive amount with at most two decimal places.'); return; }
+                if (amount > currentStudent.remaining) { alert(`Amount exceeds remaining balance (${formatCurrency(currentStudent.remaining)}).`); return; }
+                if (!date || date > today) { alert('Payment date is required and cannot be in the future.'); return; }
+                try {
+                    const payment = await apiRequest('/student-payments', {method:'POST', body:JSON.stringify({abc_id:currentStudent.dbId, amount_paid:amountText, payment_date:date, payment_method:'Cash', installment_type:pInstallmentNo.value.trim() || undefined, description:pRemarks.value.trim() || undefined, transaction_reference:pTransactionId.value.trim() || undefined})});
+                    const receipt = payment.payment || payment;
+                    await refreshSummary();
+                    openReceipt({amount:amount, mode:'Cash', date:date, txn:receipt.transaction_reference || pTransactionId.value.trim() || '—', remarks:pRemarks.value.trim(), inst:pInstallmentNo.value, lateFees:0}, true);
+                    clearFormBtn.click();
+                } catch (error) { alert(error.message); }
+            }
+            const originalOpenPaymentPage = openPaymentPage;
+            openPaymentPage = function(student) {
+                if (!student.dbId) { alert('Student database ID is not available.'); return; }
+                originalOpenPaymentPage(student);
+                refreshSummary().catch(error => alert(error.message));
+            };
             // INIT
             // ============================================================
-            renderTable(students);
+            loadApiStudents();
         })();
     </script>
 </body>

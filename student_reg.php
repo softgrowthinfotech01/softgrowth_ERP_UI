@@ -253,6 +253,20 @@
                                 </div>
 
                                 <div>
+                                    <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Student Year <span class="text-red-500">*</span></label>
+                                    <div class="relative">
+                                        <i class="fas fa-user-graduate absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                        <select id="student_year" class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                            <option value="">Select year</option>
+                                            <option value="First Year">1st Year</option>
+                                            <option value="Second Year">2nd Year</option>
+                                            <option value="Third Year">3rd Year</option>
+                                        </select>
+                                    </div>
+                                    <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-student_year"></p>
+                                </div>
+
+                                <div>
                                     <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Admission Date <span class="text-red-500">*</span></label>
                                     <div class="relative">
                                         <i class="fas fa-calendar-check absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
@@ -262,11 +276,11 @@
                                 </div>
 
                                 <!-- Course Fees & Discount Amount side-by-side -->
-                                <div>
-                                    <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Course Fees <span class="text-red-500">*</span></label>
+                <div>
+                    <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Gross Fee</label>
                                     <div class="relative">
                                         <i class="fas fa-rupee-sign absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                        <input type="number" step="0.01" id="full_fees" placeholder="Enter course fees" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                        <input type="number" step="0.01" id="full_fees" placeholder="Loaded from class fee" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
                                     </div>
                                     <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-full_fees"></p>
                                 </div>
@@ -278,6 +292,14 @@
                                         <input type="number" step="0.01" id="discount_amount" placeholder="Enter discount amount" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
                                     </div>
                                     <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-discount_amount"></p>
+                                </div>
+
+                                <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-3 rounded-lg bg-orange-50 p-3" id="feeBreakdown">
+                                    <div>Gross fee: <strong id="grossFeeDisplay">—</strong></div>
+                                    <div>Discount: <strong id="discountDisplay">₹0.00</strong></div>
+                                    <div>Payable total: <strong id="payableDisplay">—</strong></div>
+                                    <p id="classFeeMessage" class="sm:col-span-3 text-sm text-gray-600" role="status"></p>
+                                    <div id="classFeeItems" class="sm:col-span-3 hidden text-sm text-gray-600"></div>
                                 </div>
 
                             </div>
@@ -461,6 +483,13 @@
                     </div>
                 </div>
 
+                <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-3 rounded-lg bg-orange-50 p-3" id="feeBreakdown">
+                    <div>Gross fee: <strong id="grossFeeDisplay">—</strong></div>
+                    <div>Discount: <strong id="discountDisplay">₹0.00</strong></div>
+                    <div>Payable total: <strong id="payableDisplay">—</strong></div>
+                    <p id="classFeeMessage" class="sm:col-span-3 text-sm text-gray-600" role="status"></p>
+                </div>
+
                 <div id="previewContent" class="space-y-4"></div>
 
                 <div class="flex flex-col sm:flex-row justify-between items-center gap-3 mt-5">
@@ -495,27 +524,23 @@
         const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
 
         // ============================================================
-        // POPULATE STATIC STUDENT BATCH DROPDOWN (2025 to 2040)
+        // Load API classes and their fee structure
         // ============================================================
-        const batchSelect = document.getElementById('student_batch');
-        if (batchSelect) {
-            for (let yr = 2025; yr <= 2040; yr++) {
-                const opt = document.createElement('option');
-                opt.value = `${yr}-${String(yr + 1).slice(-2)}`;
-                opt.textContent = `${yr}-${String(yr + 1).slice(-2)}`;
-                batchSelect.appendChild(opt);
-            }
+        let selectedClassFee = null;
+        const money = value => '₹' + Number(value || 0).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        function apiPayload(json) { return json?.data?.data ?? json?.data ?? json; }
+        function displayFee(fee) {
+            const gross = document.getElementById('grossFeeDisplay');
+            const payable = document.getElementById('payableDisplay');
+            if (gross) gross.textContent = fee == null ? '—' : money(fee);
+            if (payable) payable.textContent = fee == null ? '—' : money(Math.max(0, Number(fee) - Number(document.getElementById('discount_amount').value || 0)));
         }
-
-        // ============================================================
-        // FETCH CLASS MASTERS INTO DROPDOWN (Alphabetical Order)
-        // ============================================================
         async function fetchClassMasters() {
             const courseSelect = document.getElementById('course');
             if (!courseSelect) return;
 
             try {
-                const response = await fetch(`${cleanBase}/class-masters`, {
+                const response = await fetch(`${cleanBase}/student-classes`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -524,28 +549,68 @@
                 });
 
                 const result = await response.json();
-                if (response.ok && result.data) {
-                    // Sort alphabetically case-insensitively
-                    const sortedClasses = result.data.sort((a, b) => {
-                        const nameA = (a.class_name || '').trim().toLowerCase();
-                        const nameB = (b.class_name || '').trim().toLowerCase();
-                        return nameA.localeCompare(nameB);
-                    });
-
+                if (response.ok) {
+                    const classes = apiPayload(result);
+                    // Clear existing options except default placeholder
                     courseSelect.innerHTML = '<option value="">Select course / class</option>';
-                    sortedClasses.forEach(item => {
+                    (Array.isArray(classes) ? classes : []).forEach(item => {
                         const option = document.createElement('option');
-                        option.value = item.class_name;
-                        option.textContent = item.class_name;
+                        option.value = item.id;
+                        option.textContent = item.class_name || item.name || item.class || `Class ${item.id}`;
                         courseSelect.appendChild(option);
                     });
+                } else {
+                    const message = response.status === 401 ? 'Your session has expired. Please log in again.' : response.status === 403 ? 'You do not have permission to view classes.' : result.message || 'Unable to load available classes.';
+                    document.getElementById('classFeeMessage').textContent = message;
+                    if (response.status === 401) window.location.href = 'login.php';
                 }
             } catch (err) {
-                console.error('Failed to fetch class masters:', err);
+                const message = err?.message || 'Unable to load available classes.';
+                document.getElementById('classFeeMessage').textContent = message;
+                console.error('Failed to fetch student classes:', err);
             }
         }
 
         fetchClassMasters();
+
+        document.getElementById('course').addEventListener('change', async function() {
+            selectedClassFee = null;
+            document.getElementById('classFeeMessage').textContent = '';
+            const feeItemsEl = document.getElementById('classFeeItems');
+            feeItemsEl.textContent = '';
+            feeItemsEl.classList.add('hidden');
+            document.getElementById('full_fees').value = '';
+            document.getElementById('full_fees').readOnly = false;
+            displayFee(null);
+            if (!this.value) return;
+            try {
+                const response = await fetch(`${cleanBase}/student-classes/${encodeURIComponent(this.value)}/fee-structure`, {headers:{'Authorization':`Bearer ${token}`,'Accept':'application/json'}});
+                const result = await response.json().catch(() => ({}));
+                const message = result.message || result.error;
+                if (response.status === 401) throw new Error('Your session has expired. Please log in again.');
+                if (response.status === 403) throw new Error('You do not have permission to view this class fee.');
+                if (response.status === 404) { document.getElementById('classFeeMessage').textContent = 'No fee structure is configured for this class. Enter the gross fee to continue.'; return; }
+                if (!response.ok) throw new Error(message || 'Could not load the class fee.');
+                const rawData = apiPayload(result);
+                const data = rawData?.fee_structure || rawData?.feeStructure || rawData;
+                const fee = Number(data?.gross_fee ?? data?.full_fees ?? data?.total_fee ?? data?.total_fees ?? data?.amount ?? data?.fee_amount ?? data?.fee);
+                if (!Number.isFinite(fee)) throw new Error(message || 'The class fee response did not include a fee amount.');
+                selectedClassFee = fee;
+                document.getElementById('full_fees').value = fee.toFixed(2);
+                document.getElementById('full_fees').readOnly = true;
+                document.getElementById('classFeeMessage').textContent = data.class_name || document.getElementById('course').selectedOptions[0].text;
+                if (Array.isArray(data.fee_items) && data.fee_items.length) {
+                    feeItemsEl.textContent = 'Fee items: ' + data.fee_items.map(item => `${item.fee_name}: ${money(item.amount)}`).join(' · ');
+                    feeItemsEl.classList.remove('hidden');
+                }
+                displayFee(fee);
+            } catch (error) { document.getElementById('classFeeMessage').textContent = error.message; }
+        });
+        document.getElementById('discount_amount').addEventListener('input', () => {
+            const amount = Number(document.getElementById('full_fees').value || selectedClassFee || 0);
+            document.getElementById('discountDisplay').textContent = money(document.getElementById('discount_amount').value || 0);
+            displayFee(amount || null);
+        });
 
         // ============================================================
         // FETCH PREVIOUS REGISTERED ADDRESSES/SUGGESTIONS FROM API
@@ -831,10 +896,20 @@
             const requiredFields = [
                 'student_name', 'course', 'student_phone', 'parent_phone',
                 'aadhaar_number', 'date_of_birth', 'gender', 'blood_group',
-                'place_of_birth', 'board', 'previous_class', 'student_batch',
+                'place_of_birth', 'board', 'previous_class', 'student_batch', 'student_year',
                 'full_fees', 'admission_date', 'full_address', 'tahsil',
                 'district', 'state', 'pincode'
             ];
+            if (selectedClassFee === null && !document.getElementById('full_fees').value.trim()) {
+                isValid = false;
+                setError('full_fees', 'Enter the gross fee because this class has no configured fee structure.');
+            }
+            const discount = Number(document.getElementById('discount_amount').value || 0);
+            const gross = Number(document.getElementById('full_fees').value || selectedClassFee || 0);
+            if (discount < 0 || discount > gross) {
+                isValid = false;
+                setError('discount_amount', 'Discount must be between zero and the gross fee.');
+            }
 
             requiredFields.forEach(fieldId => {
                 const el = document.getElementById(fieldId);
@@ -950,8 +1025,10 @@
                 row('Board', getValue('board')) +
                 row('Previous Class', getValue('previous_class')) +
                 row('Student Batch', getValue('student_batch')) +
-                row('Course Fees', getValue('full_fees')) +
-                row('Discount Amount', getValue('discount_amount') || '0') +
+                row('Student Year', getValue('student_year')) +
+                row('Gross Fee', money(document.getElementById('full_fees').value || selectedClassFee || 0)) +
+                row('Discount', money(document.getElementById('discount_amount').value || 0)) +
+                row('Payable Total', money(Math.max(0, Number(document.getElementById('full_fees').value || selectedClassFee || 0) - Number(document.getElementById('discount_amount').value || 0)))) +
                 row('Admission Date', getValue('admission_date'));
 
             const addressRows =
@@ -1018,11 +1095,11 @@
                 const formData = new FormData();
 
                 const fields = [
-                    'student_name', 'registration_id', 'abc_id', 'course',
+                    'student_name', 'registration_id', 'abc_id',
                     'student_phone', 'parent_phone', 'parent_name', 'aadhaar_number',
                     'date_of_birth', 'gender', 'blood_group', 'place_of_birth',
                     'caste', 'sub_caste', 'board', 'previous_class',
-                    'student_batch', 'full_fees', 'discount_amount', 'admission_date',
+                    'student_batch', 'student_year', 'discount_amount', 'admission_date',
                     'full_address', 'tahsil', 'district', 'state', 'pincode'
                 ];
 
@@ -1032,6 +1109,9 @@
                         formData.append(fieldId, el.value.trim());
                     }
                 });
+                formData.append('class_id', document.getElementById('course').value);
+                formData.append('course', document.getElementById('course').selectedOptions[0]?.textContent || '');
+                if (selectedClassFee === null) formData.append('full_fees', document.getElementById('full_fees').value.trim());
 
                 const passportPhoto = document.getElementById('passport_photo').files[0];
                 if (passportPhoto) formData.append('passport_photo', passportPhoto);
@@ -1055,7 +1135,7 @@
 
                     const result = await response.json();
 
-                    if (response.ok && result.success) {
+                    if (response.ok && (result.success || result.data || result.student)) {
                         const regId = result.registration_id || result.data?.registration_id || 'Generated';
                         
                         document.getElementById('studentRegistrationForm').reset();
@@ -1076,14 +1156,21 @@
                         if (banner && errorMessageContainer) {
                             banner.className = 'mb-4 p-4 bg-green-50 border border-green-200 text-green-800 rounded-xl text-sm flex items-center gap-3';
                             banner.querySelector('i').className = 'fas fa-check-circle text-green-500 text-lg';
-                            errorMessageContainer.innerHTML = `<strong>Success!</strong> Student registered successfully. Registration ID: <span class="font-mono font-bold">${regId}</span>`;
+                            const registered = result.data || result.student || result;
+                            const returnedGross = registered.full_fees ?? registered.gross_fee ?? selectedClassFee ?? document.getElementById('full_fees').value;
+                            const returnedDiscount = registered.discount_amount ?? document.getElementById('discount_amount').value ?? 0;
+                            const returnedPayable = registered.total_fee ?? registered.total_fees ?? registered.payable_total ?? (Number(returnedGross || 0) - Number(returnedDiscount || 0));
+                            errorMessageContainer.innerHTML = `<strong>Success!</strong> Student registered. Registration ID: <span class="font-mono font-bold">${regId}</span><br>Gross fee ${money(returnedGross)} · Discount ${money(returnedDiscount)} · Payable ${money(returnedPayable)}`;
                             banner.classList.remove('hidden');
                             window.scrollTo({ top: 0, behavior: 'smooth' });
                         }
                     } else {
                         showForm();
                         
-                        if (response.status === 422 && result.errors) {
+                        if (response.status === 401) { alert('Your session has expired. Please log in again.'); window.location.href = 'login.php'; }
+                        else if (response.status === 403) { alert('You do not have permission to register students.'); }
+                        else if (response.status === 404) { alert(result.message || 'Student, class, or fee structure was not found.'); }
+                        else if (response.status === 422) {
                             const banner = document.getElementById('globalErrorBanner');
                             const errorMessageContainer = document.getElementById('globalErrorMessage');
                             
@@ -1093,9 +1180,10 @@
                             let errorListHtml = '<strong>Please correct the following fields before proceeding:</strong><ul class="list-disc ml-5 mt-1 space-y-0.5">';
                             let firstInvalidField = null;
 
-                            Object.keys(result.errors).forEach(key => {
+                            const errors = result.errors || {};
+                            Object.keys(errors).forEach(key => {
                                 let cleanKey = key.replace(/\.\d+\$/, '').replace('[]', '');
-                                const errorMessage = result.errors[key][0];
+                                const errorMessage = Array.isArray(errors[key]) ? errors[key][0] : errors[key];
                                 
                                 let readableFieldName = cleanKey.replace(/_/g, ' ');
                                 readableFieldName = readableFieldName.charAt(0).toUpperCase() + readableFieldName.slice(1);
