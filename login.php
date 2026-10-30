@@ -118,6 +118,15 @@
         /* ===== BUTTON PRESS ===== */
         button { transition: transform 0.15s ease; }
         button:active { transform: scale(0.97); }
+
+        /* Fallback logo monogram styling */
+#logoFallback {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+}
     </style>
 </head>
 
@@ -142,10 +151,18 @@
             <div class="relative z-10 flex flex-col items-center text-center gap-5 w-full">
 
                 <!-- Organization Logo -->
-                <div class="bg-white rounded-2xl shadow-2xl p-0.5 ring-4 ring-white/20 transition-transform duration-500 hover:scale-105">
-                    <img id="brandLogo" src="images/default_logo.png" alt="Organization Logo"
-                         class="h-20 w-auto max-w-[180px] object-contain rounded-xl" />
-                </div>
+              <!-- Organization Logo with Fallback Support -->
+<div class="bg-white rounded-2xl shadow-2xl p-1 ring-4 ring-white/20 transition-transform duration-500 hover:scale-105 flex items-center justify-center w-20 h-20 overflow-hidden">
+    <!-- Image Logo -->
+    <img id="brandLogo" src="images/default_logo.png" alt="Organization Logo"
+         class="h-full w-full object-contain rounded-xl"
+         onerror="handleLogoError()" />
+    
+    <!-- Text Monogram Fallback (Shown if image fails) -->
+    <div id="logoFallback" class="w-full h-full rounded-xl bg-orange-600 text-white text-xl shadow-inner">
+        <!-- Dynamically populated initials -->
+    </div>
+</div>
 
                 <!-- Organization Name & Subtitle -->
                 <div class="space-y-1.5">
@@ -897,6 +914,64 @@
                 });
             }
         });
+
+
+
+
+        // ===== FALLBACK LOGO HANDLER =====
+function handleLogoError() {
+    const imgEl = document.getElementById('brandLogo');
+    const fallbackEl = document.getElementById('logoFallback');
+    const orgNameEl = document.getElementById('brandOrgName');
+
+    if (imgEl) imgEl.style.display = 'none';
+    if (fallbackEl) {
+        // Generate initials from organization name (e.g., "Softgrowth ERP" -> "SE")
+        const orgName = orgNameEl ? orgNameEl.textContent.trim() : 'ERP';
+        const words = orgName.split(' ').filter(Boolean);
+        let initials = 'ERP';
+        
+        if (words.length >= 2) {
+            initials = (words[0][0] + words[1][0]).toUpperCase();
+        } else if (words.length === 1 && words[0].length >= 2) {
+            initials = words[0].substring(0, 2).toUpperCase();
+        }
+
+        fallbackEl.textContent = initials;
+        fallbackEl.style.display = 'flex';
+    }
+}
+
+// ===== UPDATED DYNAMIC SCHOOL BRANDING =====
+function updateSchoolBranding(institute) {
+    if (institute) {
+        if (institute.org_name) {
+            document.getElementById('brandOrgName').textContent = institute.org_name;
+        }
+        
+        const imgEl = document.getElementById('brandLogo');
+        const fallbackEl = document.getElementById('logoFallback');
+
+        if (institute.logo && institute.logo.trim() !== '' && institute.logo !== 'null') {
+            let logoUrl = institute.logo;
+            if (!logoUrl.startsWith('http') && !logoUrl.startsWith('data:')) {
+                const baseDomain = typeof url !== 'undefined' ? url.replace(/\/api\/?\$/, '') : '';
+                logoUrl = baseDomain + (logoUrl.startsWith('/') ? '' : '/') + logoUrl;
+            }
+            
+            if (imgEl) {
+                imgEl.src = logoUrl;
+                imgEl.style.display = 'block';
+            }
+            if (fallbackEl) {
+                fallbackEl.style.display = 'none';
+            }
+        } else {
+            // If logo path is empty or null from backend, trigger fallback immediately
+            handleLogoError();
+        }
+    }
+}
     </script>
 </body>
 </html>
