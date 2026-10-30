@@ -156,7 +156,7 @@
             }
 
             // ============================================================
-            // RENDER TABLE
+            // RENDER TABLE (ALPHABETICAL ORDER & CASE UNIFORMITY)
             // ============================================================
             function renderTable() {
                 tableBody.innerHTML = '';
@@ -173,14 +173,25 @@
                     return;
                 }
 
-                countText.textContent = courses.length + ' entr' + (courses.length === 1 ? 'y' : 'ies');
+                // Sort courses alphabetically by class_name (case-insensitive)[cite: 16]
+                const sortedCourses = [...courses].sort((a, b) => {
+                    const nameA = (a.class_name || '').trim().toLowerCase();
+                    const nameB = (b.class_name || '').trim().toLowerCase();
+                    return nameA.localeCompare(nameB);
+                });
 
-                courses.forEach((course, index) => {
+                countText.textContent = sortedCourses.length + ' entr' + (sortedCourses.length === 1 ? 'y' : 'ies');
+
+                sortedCourses.forEach((course, index) => {
                     const tr = document.createElement('tr');
                     tr.className = 'hover:bg-orange-50/40 transition';
+
+                    // Auto-correct or standardise display case if needed (e.g., standardizing short names or keeping raw)
+                    let displayName = (course.class_name || '').trim();
+
                     tr.innerHTML = `
                         <td class="px-4 py-2 border-b border-gray-100 text-gray-500">${index + 1}</td>
-                        <td class="px-4 py-2 border-b border-gray-100 font-medium text-gray-800">${escapeHtml(course.class_name)}</td>
+                        <td class="px-4 py-2 border-b border-gray-100 font-medium text-gray-800">${escapeHtml(displayName)}</td>
                         <td class="px-4 py-2 border-b border-gray-100 text-center">
                             <button type="button" class="delete-btn text-red-500 hover:text-red-700 hover:bg-red-50 rounded w-6 h-6 inline-flex items-center justify-center transition" data-id="${course.id}" title="Delete Class">
                                 <i class="fas fa-trash text-[10px]"></i>
@@ -213,6 +224,14 @@
                 
                 if (!val) {
                     showError('Please enter a Class / Course name.');
+                    return;
+                }
+
+                // Client-side case-insensitive duplicate check (e.g., "bca" and "BCA" treated as same)[cite: 16]
+                const isDuplicate = courses.some(c => (c.class_name || '').trim().toLowerCase() === val.toLowerCase());
+                if (isDuplicate) {
+                    showError(`The course "${val}" already exists (case-insensitive match).`);
+                    courseInput.focus();
                     return;
                 }
 
