@@ -127,7 +127,7 @@
                         <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Reason for Leaving <span class="text-red-500">*</span></label>
                             <div class="relative">
                                 <i class="fas fa-comment-dots absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                <input type="text" id="remarks" placeholder="Reason for Leaving"
+                                <input type="text" id="reason" placeholder="Reason for Leaving"
                                        class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
                             </div>
                     </div>
@@ -204,348 +204,545 @@
     <script src="url.js"></script>
 
     <script>
-        (function () {
-            'use strict';
+        
+(function () {
+    'use strict';
 
-            // ============================================================
-            // 🔶 DUMMY DATA
-            // ============================================================
-            const DUMMY_STUDENTS = [
-                {
-                    id: 101,
-                    student_name: 'Aarav Sharma',
-                    parent_name: 'Rajesh Sharma',
-                    course: 'B.Tech Computer Science',
-                    student_batch: '2021-2025',
-                    registration_id: 'REG2021001',
-                    abc_id: 'APAAR-9988112233',
-                    date_of_birth: '2003-04-15',
-                    full_address: '12 MG Road',
-                    tahsil: 'Sadar',
-                    district: 'Jaipur',
-                    state: 'Rajasthan',
-                    pincode: '302001'
-                },
-                {
-                    id: 102,
-                    student_name: 'Priya Verma',
-                    parent_name: 'Suresh Verma',
-                    course: 'B.Com Honours',
-                    student_batch: '2020-2023',
-                    registration_id: 'REG2020054',
-                    abc_id: 'APAAR-7766554433',
-                    date_of_birth: '2002-08-22',
-                    full_address: '45 Nehru Nagar',
-                    tahsil: 'Civil Lines',
-                    district: 'Kanpur',
-                    state: 'Uttar Pradesh',
-                    pincode: '208001'
-                },
-                {
-                    id: 103,
-                    student_name: 'Rohan Mehta',
-                    parent_name: 'Anil Mehta',
-                    course: 'B.Sc Physics',
-                    student_batch: '2019-2022',
-                    registration_id: 'REG2019102',
-                    abc_id: 'APAAR-5544332211',
-                    date_of_birth: '2001-12-05',
-                    full_address: '78 Lake Gardens',
-                    tahsil: 'Behala',
-                    district: 'Kolkata',
-                    state: 'West Bengal',
-                    pincode: '700053'
-                },
-                {
-                    id: 104,
-                    student_name: 'Sneha Iyer',
-                    parent_name: 'Krishnan Iyer',
-                    course: 'M.Sc Biotechnology',
-                    student_batch: '2018-2020',
-                    registration_id: 'REG2018033',
-                    abc_id: 'APAAR-1122334455',
-                    date_of_birth: '1999-06-18',
-                    full_address: '23 Anna Salai',
-                    tahsil: 'Egmore',
-                    district: 'Chennai',
-                    state: 'Tamil Nadu',
-                    pincode: '600002'
-                },
-                {
-                    id: 105,
-                    student_name: 'Karan Singh',
-                    parent_name: 'Harpreet Singh',
-                    course: 'B.A English Literature',
-                    student_batch: '2021-2024',
-                    registration_id: 'REG2021110',
-                    abc_id: 'APAAR-6677889900',
-                    date_of_birth: '2003-02-11',
-                    full_address: '9 Sector 22',
-                    tahsil: 'Chandigarh',
-                    district: 'Chandigarh',
-                    state: 'Punjab',
-                    pincode: '160022'
-                },
-                {
-                    id: 106,
-                    student_name: 'Riya Kapoor',
-                    parent_name: 'Vikram Kapoor',
-                    course: 'BBA Marketing',
-                    student_batch: '2022-2025',
-                    registration_id: 'REG2022077',
-                    abc_id: 'APAAR-4455667788',
-                    date_of_birth: '2004-09-30',
-                    full_address: '56 Model Town',
-                    tahsil: 'Model Town',
-                    district: 'Ludhiana',
-                    state: 'Punjab',
-                    pincode: '141002'
-                }
-            ];
+    // ============================================================
+    // DUMMY STUDENT DATA
+    // ============================================================
 
-            // Simulated server latency
-            const FAKE_DELAY_MS = 250;
-            const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+    const DUMMY_STUDENTS = [
+        {
+            id: 101,
+            student_name: 'Aarav Sharma',
+            parent_name: 'Rajesh Sharma',
+            course: 'B.Tech Computer Science',
+            student_batch: '2021-2025',
+            registration_id: 'REG2021001',
+            abc_id: 'APAAR-9988112233',
+            date_of_birth: '2003-04-15',
+            full_address: '12 MG Road',
+            tahsil: 'Sadar',
+            district: 'Jaipur',
+            state: 'Rajasthan',
+            pincode: '302001'
+        },
+        {
+            id: 102,
+            student_name: 'Priya Verma',
+            parent_name: 'Suresh Verma',
+            course: 'B.Com Honours',
+            student_batch: '2020-2023',
+            registration_id: 'REG2020054',
+            abc_id: 'APAAR-7766554433',
+            date_of_birth: '2002-08-22',
+            full_address: '45 Nehru Nagar',
+            tahsil: 'Civil Lines',
+            district: 'Kanpur',
+            state: 'Uttar Pradesh',
+            pincode: '208001'
+        },
+        {
+            id: 103,
+            student_name: 'Rohan Mehta',
+            parent_name: 'Anil Mehta',
+            course: 'B.Sc Physics',
+            student_batch: '2019-2022',
+            registration_id: 'REG2019102',
+            abc_id: 'APAAR-5544332211',
+            date_of_birth: '2001-12-05',
+            full_address: '78 Lake Gardens',
+            tahsil: 'Behala',
+            district: 'Kolkata',
+            state: 'West Bengal',
+            pincode: '700053'
+        },
+        {
+            id: 104,
+            student_name: 'Sneha Iyer',
+            parent_name: 'Krishnan Iyer',
+            course: 'M.Sc Biotechnology',
+            student_batch: '2018-2020',
+            registration_id: 'REG2018033',
+            abc_id: 'APAAR-1122334455',
+            date_of_birth: '1999-06-18',
+            full_address: '23 Anna Salai',
+            tahsil: 'Egmore',
+            district: 'Chennai',
+            state: 'Tamil Nadu',
+            pincode: '600002'
+        },
+        {
+            id: 105,
+            student_name: 'Karan Singh',
+            parent_name: 'Harpreet Singh',
+            course: 'B.A English Literature',
+            student_batch: '2021-2024',
+            registration_id: 'REG2021110',
+            abc_id: 'APAAR-6677889900',
+            date_of_birth: '2003-02-11',
+            full_address: '9 Sector 22',
+            tahsil: 'Chandigarh',
+            district: 'Chandigarh',
+            state: 'Punjab',
+            pincode: '160022'
+        },
+        {
+            id: 106,
+            student_name: 'Riya Kapoor',
+            parent_name: 'Vikram Kapoor',
+            course: 'BBA Marketing',
+            student_batch: '2022-2025',
+            registration_id: 'REG2022077',
+            abc_id: 'APAAR-4455667788',
+            date_of_birth: '2004-09-30',
+            full_address: '56 Model Town',
+            tahsil: 'Model Town',
+            district: 'Ludhiana',
+            state: 'Punjab',
+            pincode: '141002'
+        }
+    ];
 
-            // Pretend the token check is fine
-            // const token = 'dummy-token';
+    // ============================================================
+    // HELPERS
+    // ============================================================
 
-            // ============================================================
-            // DOM refs
-            // ============================================================
-            const pickerWrapper  = document.getElementById('studentPickerWrapper');
-            const pickerInput    = document.getElementById('studentPickerInput');
-            const pickerDropdown = document.getElementById('studentPickerDropdown');
-            const studentSelect  = document.getElementById('studentSelect');
+    const FAKE_DELAY_MS = 250;
 
-            const detailsBlock = document.getElementById('detailsBlock');
-            const dParent      = document.getElementById('dParent');
-            const dClass       = document.getElementById('dClass');
-            const dBatch       = document.getElementById('dBatch');
-            const dRegId       = document.getElementById('dRegId');
-            const dApaar       = document.getElementById('dApaar');
-            const dDob         = document.getElementById('dDob');
-            const dAddress     = document.getElementById('dAddress');
+    const delay = (ms) =>
+        new Promise(resolve => setTimeout(resolve, ms));
 
-            const admissionDate = document.getElementById('admissionDate');
-            const leavingDate   = document.getElementById('leavingDate');
-            const dateOfIssue   = document.getElementById('dateOfIssue');
-            const reason        = document.getElementById('reason');
-            const customReasonBlock = document.getElementById('customReasonBlock');
-            const customReason  = document.getElementById('customReason');
-            const conduct       = document.getElementById('conduct');
-            const remarks       = document.getElementById('remarks');
+    function todayISO() {
+        const d = new Date();
 
-            const generateBtn    = document.getElementById('generateBtn');
-            const resetFormBtn   = document.getElementById('resetFormBtn');
-            const globalBanner   = document.getElementById('globalErrorBanner');
-            const globalErrorMsg = document.getElementById('globalErrorMessage');
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
 
-            let searchTimeout = null;
+    function formatDateDMY(iso) {
+        if (!iso) return '—';
 
-            // ============================================================
-            // Helpers
-            // ============================================================
-            function todayISO() {
-                const d = new Date();
-                return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-            }
-            function formatDateDMY(iso) {
-                if (!iso) return '—';
-                const parts = iso.split('T')[0].split('-');
-                return parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : iso;
-            }
-            function showError(msg) {
-                globalErrorMsg.textContent = msg;
-                globalBanner.classList.remove('hidden');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-            function clearError() { globalBanner.classList.add('hidden'); }
+        const parts = iso.split('T')[0].split('-');
 
-            // ============================================================
-            // 🔶 MOCK: search students
-            // ============================================================
-            async function fetchStudentSuggestions(query) {
-                const q = (query || '').trim().toLowerCase();
-                await delay(FAKE_DELAY_MS);
+        return parts.length === 3
+            ? `${parts[2]}/${parts[1]}/${parts[0]}`
+            : iso;
+    }
 
-                if (!q) {
-                    // empty query — return all
-                    renderDropdownItems(DUMMY_STUDENTS);
-                    return;
-                }
+    // ============================================================
+    // DOM REFERENCES
+    // ============================================================
 
-                const matches = DUMMY_STUDENTS.filter((s) =>
-                    s.student_name.toLowerCase().includes(q) ||
-                    (s.registration_id || '').toLowerCase().includes(q) ||
-                    (s.abc_id || '').toLowerCase().includes(q)
+    const pickerWrapper = document.getElementById('studentPickerWrapper');
+    const pickerInput = document.getElementById('studentPickerInput');
+    const pickerDropdown = document.getElementById('studentPickerDropdown');
+    const studentSelect = document.getElementById('studentSelect');
+
+    const detailsBlock = document.getElementById('detailsBlock');
+
+    const dParent = document.getElementById('dParent');
+    const dClass = document.getElementById('dClass');
+    const dBatch = document.getElementById('dBatch');
+    const dRegId = document.getElementById('dRegId');
+    const dApaar = document.getElementById('dApaar');
+    const dDob = document.getElementById('dDob');
+    const dAddress = document.getElementById('dAddress');
+
+    const admissionDate = document.getElementById('admissionDate');
+    const leavingDate = document.getElementById('leavingDate');
+    const dateOfIssue = document.getElementById('dateOfIssue');
+
+    // Reason is now a TEXT INPUT
+    const reason = document.getElementById('reason');
+
+    const conduct = document.getElementById('conduct');
+    const remarks = document.getElementById('remarks');
+
+    const generateBtn = document.getElementById('generateBtn');
+    const resetFormBtn = document.getElementById('resetFormBtn');
+
+    const globalBanner = document.getElementById('globalErrorBanner');
+    const globalErrorMsg = document.getElementById('globalErrorMessage');
+
+    let searchTimeout = null;
+
+    // ============================================================
+    // ERROR HANDLING
+    // ============================================================
+
+    function showError(msg) {
+        globalErrorMsg.textContent = msg;
+        globalBanner.classList.remove('hidden');
+
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+    function clearError() {
+        globalBanner.classList.add('hidden');
+    }
+
+    // ============================================================
+    // SEARCH STUDENTS
+    // ============================================================
+
+    async function fetchStudentSuggestions(query) {
+
+        const q = (query || '').trim().toLowerCase();
+
+        await delay(FAKE_DELAY_MS);
+
+        if (!q) {
+            renderDropdownItems(DUMMY_STUDENTS);
+            return;
+        }
+
+        const matches = DUMMY_STUDENTS.filter(s =>
+            s.student_name.toLowerCase().includes(q) ||
+            (s.registration_id || '').toLowerCase().includes(q) ||
+            (s.abc_id || '').toLowerCase().includes(q)
+        );
+
+        renderDropdownItems(matches);
+    }
+
+    function renderDropdownItems(students) {
+
+        pickerDropdown.innerHTML = '';
+
+        if (!students || students.length === 0) {
+
+            pickerDropdown.innerHTML = `
+                <div class="px-3 py-3 text-[11px] text-gray-500 text-center">
+                    No students found.
+                </div>
+            `;
+
+            pickerDropdown.classList.remove('hidden');
+            return;
+        }
+
+        students.forEach(s => {
+
+            const item = document.createElement('div');
+
+            item.className =
+                'student-picker-item px-3 py-2 cursor-pointer text-[11.5px] hover:bg-orange-50 border-b border-gray-100 last:border-b-0';
+
+            item.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-user-graduate text-orange-500 text-[10px]"></i>
+                    </div>
+
+                    <div class="min-w-0 flex-1">
+                        <div class="font-semibold text-gray-800 truncate">
+                            ${s.student_name}
+                        </div>
+
+                        <div class="text-[10px] text-gray-500 truncate">
+                            Reg ID: ${s.registration_id || 'N/A'}
+                            · APAAR: ${s.abc_id || 'N/A'}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            item.addEventListener('click', () => {
+                loadStudentDetails(s.id);
+            });
+
+            pickerDropdown.appendChild(item);
+        });
+
+        pickerDropdown.classList.remove('hidden');
+    }
+
+    // ============================================================
+    // LOAD STUDENT DETAILS
+    // ============================================================
+
+    async function loadStudentDetails(studentId) {
+
+        pickerDropdown.classList.add('hidden');
+        clearError();
+
+        await delay(FAKE_DELAY_MS);
+
+        const s = DUMMY_STUDENTS.find(
+            x => String(x.id) === String(studentId)
+        );
+
+        if (!s) {
+            showError('Failed to load student details.');
+            return;
+        }
+
+        pickerInput.value =
+            `${s.student_name} (${s.registration_id || s.id})`;
+
+        studentSelect.innerHTML = `
+            <option value="${s.id}" selected>
+                ${s.student_name}
+            </option>
+        `;
+
+        detailsBlock.classList.remove('hidden');
+
+        dParent.textContent = s.parent_name || '—';
+        dClass.textContent = s.course || '—';
+        dBatch.textContent = s.student_batch || '—';
+        dRegId.textContent = s.registration_id || '—';
+        dApaar.textContent = s.abc_id || '—';
+        dDob.textContent = formatDateDMY(s.date_of_birth);
+
+        const fullAddr = [
+            s.full_address,
+            s.tahsil,
+            s.district,
+            s.state,
+            s.pincode
+        ].filter(Boolean).join(', ');
+
+        dAddress.textContent = fullAddr || '—';
+    }
+
+    // ============================================================
+    // STUDENT SEARCH EVENTS
+    // ============================================================
+
+    pickerInput.addEventListener('input', function () {
+
+        clearTimeout(searchTimeout);
+
+        const query = this.value;
+
+        if (!query.trim()) {
+
+            fetchStudentSuggestions('');
+
+            detailsBlock.classList.add('hidden');
+
+            studentSelect.innerHTML = `
+                <option value="">Select student</option>
+            `;
+
+            return;
+        }
+
+        // Invalidate previous selection when search text changes
+        studentSelect.innerHTML = `
+            <option value="">Select student</option>
+        `;
+
+        detailsBlock.classList.add('hidden');
+
+        searchTimeout = setTimeout(() => {
+            fetchStudentSuggestions(query);
+        }, 250);
+    });
+
+    pickerInput.addEventListener('focus', function () {
+        fetchStudentSuggestions(this.value);
+    });
+
+    document.addEventListener('click', function (e) {
+
+        if (!pickerWrapper.contains(e.target)) {
+            pickerDropdown.classList.add('hidden');
+        }
+    });
+
+    // ============================================================
+    // DEFAULT ISSUE DATE
+    // ============================================================
+
+    dateOfIssue.value = todayISO();
+
+    // ============================================================
+    // RESET FORM
+    // ============================================================
+
+    resetFormBtn.addEventListener('click', function () {
+
+        pickerInput.value = '';
+
+        pickerDropdown.classList.add('hidden');
+
+        studentSelect.innerHTML = `
+            <option value="">Select student</option>
+        `;
+
+        detailsBlock.classList.add('hidden');
+
+        admissionDate.value = '';
+        leavingDate.value = '';
+        dateOfIssue.value = todayISO();
+
+        // Reason is now a normal text input
+        reason.value = '';
+
+        conduct.value = 'Good';
+
+        remarks.value = '';
+
+        clearError();
+    });
+
+    // ============================================================
+    // GENERATE & ISSUE LEAVING CERTIFICATE
+    // DUMMY MODE - NO API REQUEST
+    // ============================================================
+
+    generateBtn.addEventListener('click', async function () {
+
+        clearError();
+
+        const studentId = studentSelect.value;
+
+        // ----------------------------
+        // VALIDATION
+        // ----------------------------
+
+        if (!studentId) {
+            return showError(
+                'Please search and select a valid student from the dropdown list.'
+            );
+        }
+
+        if (!admissionDate.value) {
+            return showError('Please select the date of admission.');
+        }
+
+        if (!leavingDate.value) {
+            return showError('Please select the date of leaving.');
+        }
+
+        if (new Date(leavingDate.value) < new Date(admissionDate.value)) {
+            return showError(
+                'Date of leaving cannot be before date of admission.'
+            );
+        }
+
+        if (!dateOfIssue.value) {
+            return showError('Please select the date of issue.');
+        }
+
+        if (!reason.value.trim()) {
+            return showError('Please enter the reason for leaving.');
+        }
+
+        // ----------------------------
+        // OPEN PRINT WINDOW
+        // Open before await to avoid popup blockers
+        // ----------------------------
+
+        const printWindow = window.open('about:blank', '_blank');
+
+        // ----------------------------
+        // BUTTON LOADING STATE
+        // ----------------------------
+
+        generateBtn.disabled = true;
+
+        generateBtn.innerHTML = `
+            <i class="fas fa-spinner fa-spin mr-1.5"></i>
+            Issuing Certificate...
+        `;
+
+        try {
+
+            // ----------------------------
+            // BUILD PAYLOAD
+            // ----------------------------
+
+            const payload = {
+                student_id: parseInt(studentId, 10),
+                admission_date: admissionDate.value,
+                leaving_date: leavingDate.value,
+                issue_date: dateOfIssue.value,
+                reason: reason.value.trim(),
+                conduct: conduct.value,
+                remarks: remarks.value.trim() || null
+            };
+
+            await delay(600);
+
+            // ----------------------------
+            // MOCK CERTIFICATE GENERATION
+            // ----------------------------
+
+            const year = new Date().getFullYear();
+
+            const seq = String(
+                Math.floor(Math.random() * 9000) + 1000
+            );
+
+            const fake = {
+                id: Math.floor(Math.random() * 9000) + 1000,
+                certificate_no: `LC-${year}-${seq}`
+            };
+
+            alert(
+                'Leaving certificate issued successfully!\n' +
+                'Certificate No: ' + fake.certificate_no
+            );
+
+            // ----------------------------
+            // OPEN PRINT PAGE
+            // ----------------------------
+
+            if (printWindow && !printWindow.closed) {
+
+                printWindow.location.href =
+                    `leaving_certificate_print?id=${fake.id}`;
+
+            } else {
+
+                console.warn(
+                    'Print window was blocked or closed.'
                 );
-
-                renderDropdownItems(matches);
             }
 
-            function renderDropdownItems(students) {
-                pickerDropdown.innerHTML = '';
-                if (!students || students.length === 0) {
-                    pickerDropdown.innerHTML = `<div class="px-3 py-3 text-[11px] text-gray-500 text-center">No students found.</div>`;
-                    pickerDropdown.classList.remove('hidden');
-                    return;
-                }
-                students.forEach((s) => {
-                    const item = document.createElement('div');
-                    item.className = 'student-picker-item px-3 py-2 cursor-pointer text-[11.5px] hover:bg-orange-50 border-b border-gray-100 last:border-b-0';
-                    item.innerHTML = `
-                        <div class="flex items-center gap-2">
-                            <div class="w-7 h-7 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-user-graduate text-orange-500 text-[10px]"></i>
-                            </div>
-                            <div class="min-w-0 flex-1">
-                                <div class="font-semibold text-gray-800 truncate">${s.student_name}</div>
-                                <div class="text-[10px] text-gray-500 truncate">Reg ID: ${s.registration_id || 'N/A'} · APAAR: ${s.abc_id || 'N/A'}</div>
-                            </div>
-                        </div>`;
-                    item.addEventListener('click', () => loadStudentDetails(s.id));
-                    pickerDropdown.appendChild(item);
-                });
-                pickerDropdown.classList.remove('hidden');
+            console.log(
+                'Mock payload that would be sent to API:',
+                payload
+            );
+
+            // ----------------------------
+            // RESET FORM
+            // ----------------------------
+
+            resetFormBtn.click();
+
+        } catch (error) {
+
+            console.error('Certificate generation error:', error);
+
+            if (printWindow && !printWindow.closed) {
+                printWindow.close();
             }
 
-            // ============================================================
-            // 🔶 MOCK: load student details
-            // ============================================================
-            async function loadStudentDetails(studentId) {
-                pickerDropdown.classList.add('hidden');
-                clearError();
-                await delay(FAKE_DELAY_MS);
+            showError(
+                'Something went wrong while generating the certificate.'
+            );
 
-                const s = DUMMY_STUDENTS.find((x) => String(x.id) === String(studentId));
-                if (!s) {
-                    showError('Failed to load student details.');
-                    return;
-                }
+        } finally {
 
-                pickerInput.value = `${s.student_name} (${s.registration_id || s.id})`;
-                studentSelect.innerHTML = `<option value="${s.id}" selected>${s.student_name}</option>`;
+            generateBtn.disabled = false;
 
-                detailsBlock.classList.remove('hidden');
-                dParent.textContent = s.parent_name || '—';
-                dClass.textContent  = s.course || '—';
-                dBatch.textContent  = s.student_batch || '—';
-                dRegId.textContent  = s.registration_id || '—';
-                dApaar.textContent  = s.abc_id || '—';
-                dDob.textContent    = formatDateDMY(s.date_of_birth);
-                const fullAddr = [s.full_address, s.tahsil, s.district, s.state, s.pincode].filter(Boolean).join(', ');
-                dAddress.textContent = fullAddr || '—';
-            }
+            generateBtn.innerHTML = `
+                <i class="fas fa-stamp text-xs"></i>
+                Generate &amp; Issue Leaving Certificate
+            `;
+        }
+    });
 
-            // ============================================================
-            // Input events
-            // ============================================================
-            pickerInput.addEventListener('input', function () {
-                clearTimeout(searchTimeout);
-                const query = this.value;
+})();
 
-                if (!query.trim()) {
-                    // show all as a hint
-                    fetchStudentSuggestions('');
-                    detailsBlock.classList.add('hidden');
-                    studentSelect.innerHTML = `<option value="">Select student</option>`;
-                    return;
-                }
-
-                searchTimeout = setTimeout(() => fetchStudentSuggestions(query), 250);
-            });
-
-            pickerInput.addEventListener('focus', function () {
-                fetchStudentSuggestions(this.value);
-            });
-
-            document.addEventListener('click', function (e) {
-                if (!pickerWrapper.contains(e.target)) pickerDropdown.classList.add('hidden');
-            });
-
-            reason.addEventListener('change', function () {
-                if (this.value === 'Other') customReasonBlock.classList.remove('hidden');
-                else { customReasonBlock.classList.add('hidden'); customReason.value = ''; }
-            });
-
-            dateOfIssue.value = todayISO();
-
-            // ============================================================
-            // Reset
-            // ============================================================
-            resetFormBtn.addEventListener('click', function () {
-                pickerInput.value = '';
-                pickerDropdown.classList.add('hidden');
-                studentSelect.innerHTML = `<option value="">Select student</option>`;
-                detailsBlock.classList.add('hidden');
-                admissionDate.value = '';
-                leavingDate.value = '';
-                dateOfIssue.value = todayISO();
-                reason.value = 'Course Completed';
-                customReasonBlock.classList.add('hidden');
-                customReason.value = '';
-                conduct.value = 'Good';
-                remarks.value = '';
-                clearError();
-            });
-
-            // ============================================================
-            // 🔶 MOCK: generate certificate
-            // ============================================================
-            generateBtn.addEventListener('click', async function () {
-                clearError();
-
-                const studentId = studentSelect.value;
-                if (!studentId) return showError('Please search and select a valid student from the dropdown list.');
-                if (!admissionDate.value) return showError('Please select the date of admission.');
-                if (!leavingDate.value) return showError('Please select the date of leaving.');
-                if (new Date(leavingDate.value) < new Date(admissionDate.value)) return showError('Date of leaving cannot be before date of admission.');
-                if (!dateOfIssue.value) return showError('Please select the date of issue.');
-                if (!reason.value) return showError('Please choose a reason for leaving.');
-                if (reason.value === 'Other' && !customReason.value.trim()) return showError('Please specify the custom reason.');
-
-                generateBtn.disabled = true;
-                generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1.5"></i> Issuing Certificate...';
-
-                // Build the payload (kept for parity with real API)
-                const payload = {
-                    student_id: parseInt(studentId, 10),
-                    admission_date: admissionDate.value,
-                    leaving_date: leavingDate.value,
-                    issue_date: dateOfIssue.value,
-                    reason: reason.value,
-                    custom_reason: reason.value === 'Other' ? customReason.value.trim() : null,
-                    conduct: conduct.value,
-                    remarks: remarks.value.trim() || null
-                };
-
-                await delay(600);
-
-                // Fake generated certificate
-                const year = new Date().getFullYear();
-                const seq = String(Math.floor(Math.random() * 9000) + 1000); // 1000..9999
-                const fake = {
-                    id: Math.floor(Math.random() * 9000) + 1000,
-                    certificate_no: `LC-${year}-${seq}`
-                };
-
-                alert('Leaving certificate issued successfully!\nCertificate No: ' + fake.certificate_no);
-
-                // In dummy mode the certificate page may not exist yet — open anyway
-                const w = window.open(`leaving_certificate_print?id=${fake.id}`, '_blank');
-                if (!w) {
-                    console.warn('Popup blocked. In real mode this would open the certificate page.');
-                }
-
-                console.log('Mock payload that would be sent to API:', payload);
-
-                resetFormBtn.click();
-                generateBtn.disabled = false;
-                generateBtn.innerHTML = '<i class="fas fa-stamp text-xs"></i> Generate &amp; Issue Leaving Certificate';
-            });
-
-        })();
     </script>
 
 </body>
