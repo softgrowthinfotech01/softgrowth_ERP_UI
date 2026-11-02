@@ -182,7 +182,7 @@
 
 
 
-        <a href="leaving_certifiacate" data-slug="leaving-certifiacate" class="sidebar-menu-item sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-orange-50 hover:text-orange-700 transition-all duration-200">
+        <a href="leaving" data-slug="leaving-certifiacate" class="sidebar-menu-item sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-orange-50 hover:text-orange-700 transition-all duration-200">
             <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-orange-400">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M7 3h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-4l-3 4-3-4H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
