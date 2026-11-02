@@ -125,21 +125,11 @@
                     <!-- Reason / Purpose -->
                     <div>
                         <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Reason for Leaving <span class="text-red-500">*</span></label>
-                        <div class="relative">
-                            <i class="fas fa-bullseye absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                            <select id="reason"
-                                    class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
-                                <option value="">Select Reason</option>
-                                <option value="Course Completed" selected>Course Completed</option>
-                                <option value="Higher Studies">Higher Studies</option>
-                                <option value="Transfer / Relocation">Transfer / Relocation</option>
-                                <option value="Employment">Employment</option>
-                                <option value="Medical Reasons">Medical Reasons</option>
-                                <option value="Personal Reasons">Personal Reasons</option>
-                                <option value="Other">Other</option>
-                            </select>
-                            <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
-                        </div>
+                            <div class="relative">
+                                <i class="fas fa-comment-dots absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                <input type="text" id="remarks" placeholder="Reason for Leaving"
+                                       class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                            </div>
                     </div>
 
                     <!-- Custom Reason -->
