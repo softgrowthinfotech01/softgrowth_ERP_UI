@@ -7,53 +7,10 @@
     <title>Update Student - ERP</title>
     <!-- Tailwind via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome (optional) -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
-  /* Minimal custom styles for stepper and file uploads */
-        .step {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            font-size: 15px;
-            transition: all 0.3s ease;
-            background: #f1f5f9;
-            color: #94a3b8;
-            border: 2px solid #e2e8f0;
-        }
-        .step.active {
-            background: #0f766e;
-            color: #fff;
-            border-color: #0f766e;
-            transform: scale(1.05);
-            box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.2);
-        }
-        .line {
-            height: 3px;
-            flex: 1;
-            border-radius: 999px;
-            background: #e2e8f0;
-            transition: 0.3s ease;
-        }
-        .line.active {
-            background: #0f766e;
-        }
-        .step-box {
-            display: none;
-            opacity: 0;
-            transform: translateY(12px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-        .step-box.active {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-        /* file input styling – consistent across browsers */
+        /* Custom styles for file inputs and preview images */
         .file-input {
             width: 100%;
             padding: 0.5rem;
@@ -63,11 +20,11 @@
             transition: 0.2s;
         }
         .file-input:hover {
-            border-color: #0f766e;
-            background: #f0fdfa;
+            border-color: #f97316;
+            background: #fff7ed;
         }
         .file-input::file-selector-button {
-            background: #0f766e;
+            background: #f97316;
             color: white;
             padding: 0.4rem 1rem;
             border: none;
@@ -77,7 +34,7 @@
             transition: 0.2s;
         }
         .file-input::file-selector-button:hover {
-            background: #0d6b64;
+            background: #ea580c;
         }
         .preview-img {
             width: 50px;
@@ -87,953 +44,670 @@
             border: 1px solid #e2e8f0;
             margin-top: 6px;
         }
-        @media (max-width: 768px) {
-            .step {
-                width: 34px;
-                height: 34px;
-                font-size: 13px;
-            }
-            .line {
-                height: 2px;
-            }
+        /* Accordion transition */
+        .section-body {
+            transition: all 0.3s ease;
+        }
+        .chevron-icon {
+            transition: transform 0.3s ease;
         }
     </style>
-
 </head>
 
-<body class="bg-gray-300 text-gray-800 antialiased">
+<body class="bg-gray-200 text-gray-800 antialiased min-h-screen">
 
     <?php include 'header.php' ?>
     <?php include 'sidebar.php' ?>
 
-   <main id="main" class="md:ml-[300px] max-w-6xl mx-auto px-4 sm:px-6 py-28 pb-10 lg:mb-6 transition-all duration-200">
+    <!-- MAIN WRAPPER CENTERED -->
+    <main id="main" class="md:ml-[300px] px-4 sm:px-6 py-24 pb-8 mb-12 transition-all duration-200 flex flex-col items-center justify-center">
+        <div class="w-full max-w-5xl">
 
-        <!-- STEPPER -->
-        <div class="flex items-center gap-2 sm:gap-4 mb-8">
-                <button id="prev" class="px-6 py-2.5 bg-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-300 transition hidden sm:w-auto w-full">
-                <i class="fas fa-arrow-left mr-2"></i> Previous
-            </button>
-          
-            <div class="step active" id="s1">1</div>
-            <div class="line active" id="l1"></div>
-            <div class="step" id="s2">2</div>
-            <div class="line" id="l2"></div>
-            <div class="step" id="s3">3</div>
-              <button id="next" class="px-6 py-2.5 bg-teal-600 text-white font-bold rounded-xl hover:bg-teal-700 transition sm:w-auto w-full sm:ml-auto">
-                Next <i class="fas fa-arrow-right ml-2"></i>
-            </button>
-        </div>
-
-        <!-- ================= STEP 1 ================= -->
-        <div class="step-box active bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8" id="step1">
-            <h2 class="text-xl md:text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                <span class="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center text-sm">
-                    <i class="fas fa-user-graduate"></i>
-                </span>
-                Personal + Academic Details
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-                <!-- Student Batch -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Student Batch</label>
-                    <select class="w-full rounded-xl  border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="student_batch">
-                        <option value="">Select Batch</option>
-                        <option value="2024-25">2024-25</option>
-                        <option value="2025-26">2025-26</option>
-                    </select>
-                </div>
-
-                <!-- Student Year -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Student Year</label>
-                    <select class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="student_year">
-                        <option value="">Select Year</option>
-                        <option value="First Year">1st Year</option>
-                        <option value="Second Year">2nd Year</option>
-                        <option value="Third Year">3rd Year</option>
-                    </select>
-                </div>
-
-                <!-- Course -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Course</label>
-                    <select class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="course">
-                        <option value="">Select Course</option>
-                        <option value="BCA">BCA</option>
-                        <option value="BBA">BBA</option>
-                    </select>
-                </div>
-
-                <!-- Student Name -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Student Name</label>
-                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="student_name" placeholder="Enter student name" />
-                </div>
-
-                <!-- Parent Name -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Parent Name</label>
-                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="parent_name" placeholder="Enter parent name" />
-                </div>
-
-                <!-- Caste -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Caste</label>
-                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="caste" placeholder="Enter caste" />
-                </div>
-
-                <!-- Sub-Caste -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Sub-Caste</label>
-                    <input type="text" class="w-full rounded-xl border border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="sub_caste" placeholder="Enter sub-caste" />
-                </div>
-
-                <!-- Admission Date -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Admission Date</label>
-                    <input type="date" class="w-full rounded-xl border border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="admission_date" />
-                </div>
-
-                <!-- Aadhaar -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Aadhaar Number</label>
-                    <input type="text" class="w-full rounded-xl border border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="aadhaar_number" placeholder="XXXX-XXXX-XXXX" />
-                </div>
-
-                <!-- ABC ID -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">ABC ID</label>
-                    <input type="text" class="w-full rounded-xl border border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="abc_id" placeholder="Enter ABC ID" />
-                </div>
-
-                <!-- DOB -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Date of Birth</label>
-                    <input type="date" class="w-full rounded-xl border border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="date_of_birth" />
-                </div>
-
-                <!-- Place of Birth -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Place of Birth</label>
-                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="place_of_birth" placeholder="Enter place of birth" />
-                </div>
-
-                <!-- Gender -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Gender</label>
-                    <select class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="gender">
-                        <option value="">Select Gender</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-
-                <!-- Photo -->
-                <div class="md:col-span-2">
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Passport Photo</label>
-                    <input type="file" id="photo" class="file-input" accept="image/*" />
-                    <img id="photoPreview" class="preview-img hidden" src="#" alt="Preview" />
-                </div>
-
-            </div>
-        </div>
-
-        <!-- ================= STEP 2 ================= -->
-        <div class="step-box bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8" id="step2">
-            <h2 class="text-xl md:text-2xl font-extrabold text-gray-900 mb-6 flex items-center gap-3">
-                <span class="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center text-sm">
-                    <i class="fas fa-file-upload"></i>
-                </span>
-                Documents Upload
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-                <!-- TC Certificate -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">TC Certificate</label>
-                    <input type="file" id="tc_certificate" class="file-input" accept="image/*,application/pdf" />
-                    <img id="tcPreview" class="preview-img hidden" src="#" alt="Preview" />
-                </div>
-
-                <!-- 10th Marksheet -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">10th Marksheet</label>
-                    <input type="file" id="marksheet_10" class="file-input" accept="image/*,application/pdf" />
-                    <img id="marksheet10Preview" class="preview-img hidden" src="#" alt="Preview" />
-                </div>
-
-                <!-- 12th Marksheet -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">12th Marksheet</label>
-                    <input type="file" id="marksheet_12" class="file-input" accept="image/*,application/pdf" />
-                    <img id="marksheet12Preview" class="preview-img hidden" src="#" alt="Preview" />
-                </div>
-
-                <!-- Other Academic Docs -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Other Academic Documents</label>
-                    <input type="file" id="other_academic_docs" class="file-input" accept="image/*,application/pdf" />
-                    <img id="otherAcademicDocsPreview" class="preview-img hidden" src="#" alt="Preview" />
-                </div>
-
-                <!-- Caste Certificate -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Caste Certificate</label>
-                    <input type="file" id="caste_certificate" class="file-input" accept="image/*,application/pdf" />
-                    <img id="castePreview" class="preview-img hidden" src="#" alt="Preview" />
-                </div>
-
-                <!-- Domicile Certificate -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Domicile Certificate</label>
-                    <input type="file" id="domicile_certificate" class="file-input" accept="image/*,application/pdf" />
-                    <img id="domicilePreview" class="preview-img hidden" src="#" alt="Preview" />
-                </div>
-
-                <!-- Non-Creamy Layer -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Non-Creamy Layer Certificate</label>
-                    <input type="file" id="non_creamy_layer" class="file-input" accept="image/*,application/pdf" />
-                    <img id="nonCreamyLayerPreview" class="preview-img hidden" src="#" alt="Preview" />
-                </div>
-
-                <!-- Other Documents -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Other Documents</label>
-                    <input type="file" id="other_documents" class="file-input" accept="image/*,application/pdf" />
-                    <img id="otherDocumentsPreview" class="preview-img hidden" src="#" alt="Preview" />
-                </div>
-
-            </div>
-        </div>
-
-        <!-- ================= STEP 3 ================= -->
-        <div class="step-box bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8" id="step3">
-            <h2 class="text-xl md:text-2xl font-extrabold text-gray-900 mb-6 flex items-center gap-3">
-                <span class="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center text-sm">
-                    <i class="fas fa-coins"></i>
-                </span>
-                Fees + Contact Details
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-                <!-- Full Fees -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Full Fees</label>
-                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="full_fees" placeholder="Enter full fees" />
-                </div>
-
-                <!-- Admission Fees -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Admission Fees</label>
-                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="admission_fees" placeholder="Enter admission fees" />
-                </div>
-
-                <!-- Student Phone -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Student Phone</label>
-                    <input type="tel" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="student_phone" placeholder="Enter student phone" />
-                </div>
-
-                <!-- Parent Phone -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Parent Phone</label>
-                    <input type="tel" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="parent_phone" placeholder="Enter parent phone" />
-                </div>
-
-                <!-- Blood Group -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Blood Group</label>
-                    <select class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="blood_group">
-                        <option value="">Select Blood Group</option>
-                        <option value="A+">A+</option>
-                        <option value="A-">A-</option>
-                        <option value="B+">B+</option>
-                        <option value="B-">B-</option>
-                        <option value="O+">O+</option>
-                        <option value="O-">O-</option>
-                    </select>
-                </div>
-
-                <!-- Tahsil -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Tahsil</label>
-                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="tahsil" placeholder="Enter tahsil" />
-                </div>
-
-                <!-- District -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">District</label>
-                    <input type="text" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="district" placeholder="Enter district" />
-                </div>
-
-                <!-- Address -->
-                <div class="md:col-span-2">
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Full Address</label>
-                    <textarea rows="4" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4" id="full_address" placeholder="Enter full address"></textarea>
-                </div>
-
+            <!-- Global Error Banner (hidden by default, used for errors) -->
+            <div id="globalErrorBanner" class="hidden mb-4 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl text-sm flex items-center gap-3">
+                <i class="fas fa-exclamation-circle text-red-500 text-lg"></i>
+                <span id="globalErrorMessage">Please correct the highlighted fields before proceeding.</span>
             </div>
 
-            <!-- ================= SEMESTER PATTERN ================= -->
-            <div class="mt-8">
-                <h3 class="text-md font-extrabold text-gray-900 mb-4">Semester Pattern</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Update Student Form -->
+            <form id="updateStudentForm">
+                <!-- SECTION 1: PERSONAL INFORMATION (with Academic Details) -->
+                <div class="bg-white rounded-xl shadow-md border border-gray-200 mb-4 overflow-hidden">
+                    <button type="button" class="w-full flex items-center justify-between px-4 py-3 bg-orange-50 hover:bg-orange-100 transition-colors toggle-section" data-target="personal-body">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-lg bg-orange-500 text-white flex items-center justify-center text-xs shadow-sm">
+                                <i class="fas fa-user-graduate"></i>
+                            </span>
+                            <h2 class="text-base font-bold text-gray-900">Personal + Academic Details</h2>
+                        </div>
+                        <i class="fas fa-chevron-up text-orange-500 text-xs transition-transform duration-300 chevron-icon"></i>
+                    </button>
 
-                    <!-- First Year -->
-                    <div class="p-4 rounded-xl bg-gray-50 border border-gray-200">
-                        <p class="font-bold text-gray-800 mb-3">First Year</p>
-                        <label class="flex items-center gap-3 p-3 rounded-lg bg-white border border-gray-300 cursor-pointer hover:bg-gray-50 transition">
-                            <input type="radio" name="semester" value="FY Semester 1" class="w-4 h-4 text-teal-600 focus:ring-teal-500" />
-                            <span class="text-gray-700">Semester 1</span>
-                        </label>
-                        <label class="flex items-center gap-3 p-3 rounded-lg bg-white border border-gray-200 cursor-pointer hover:bg-gray-50 transition mt-2">
-                            <input type="radio" name="semester" value="FY Semester 2" class="w-4 h-4 text-teal-600 focus:ring-teal-500" />
-                            <span class="text-gray-700">Semester 2</span>
-                        </label>
+                    <div id="personal-body" class="section-body p-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <!-- Student Batch -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Student Batch <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <i class="fas fa-calendar absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs z-10"></i>
+                                    <select id="student_batch" class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                        <option value="">Select Batch</option>
+                                        <option value="2024-25">2024-25</option>
+                                        <option value="2025-26">2025-26</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
+                                </div>
+                            </div>
+                            <!-- Student Year -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Student Year <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <i class="fas fa-user-graduate absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <select id="student_year" class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                        <option value="">Select Year</option>
+                                        <option value="First Year">1st Year</option>
+                                        <option value="Second Year">2nd Year</option>
+                                        <option value="Third Year">3rd Year</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
+                                </div>
+                            </div>
+                            <!-- Course -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Course <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <i class="fas fa-graduation-cap absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs z-10"></i>
+                                    <select id="course" class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                        <option value="">Select Course</option>
+                                        <option value="BCA">BCA</option>
+                                        <option value="BBA">BBA</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
+                                </div>
+                            </div>
+                            <!-- Student Name -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Student Name <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <i class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="text" id="student_name" placeholder="Enter student name" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                </div>
+                            </div>
+                            <!-- Parent Name -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Parent Name</label>
+                                <div class="relative">
+                                    <i class="fas fa-user-tie absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="text" id="parent_name" placeholder="Enter parent name" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                </div>
+                            </div>
+                            <!-- Caste -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Caste</label>
+                                <div class="relative">
+                                    <i class="fas fa-users absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="text" id="caste" placeholder="Enter caste" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                </div>
+                            </div>
+                            <!-- Sub-Caste -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Sub-Caste</label>
+                                <div class="relative">
+                                    <i class="fas fa-user-friends absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="text" id="sub_caste" placeholder="Enter sub-caste" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                </div>
+                            </div>
+                            <!-- Admission Date -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Admission Date</label>
+                                <div class="relative">
+                                    <i class="fas fa-calendar-check absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="date" id="admission_date" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                </div>
+                            </div>
+                            <!-- Aadhaar -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Aadhaar Number</label>
+                                <div class="relative">
+                                    <i class="fas fa-id-card absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="text" id="aadhaar_number" placeholder="XXXX-XXXX-XXXX" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                </div>
+                            </div>
+                            <!-- ABC ID -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">ABC ID</label>
+                                <div class="relative">
+                                    <i class="fas fa-id-badge absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="text" id="abc_id" placeholder="Enter ABC ID" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                </div>
+                            </div>
+                            <!-- DOB -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Date of Birth</label>
+                                <div class="relative">
+                                    <i class="fas fa-calendar-alt absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="date" id="date_of_birth" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                </div>
+                            </div>
+                            <!-- Place of Birth -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Place of Birth</label>
+                                <div class="relative">
+                                    <i class="fas fa-globe absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="text" id="place_of_birth" placeholder="Enter place of birth" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                </div>
+                            </div>
+                            <!-- Gender -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Gender</label>
+                                <div class="relative">
+                                    <i class="fas fa-venus-mars absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <select id="gender" class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                        <option value="">Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
+                                </div>
+                            </div>
+                            <!-- Photo (full width) -->
+                            <div class="md:col-span-2">
+                                <label class="block text-[11px] font-bold text-gray-700 mb-1">Passport Photo</label>
+                                <input type="file" id="photo" class="file-input" accept="image/*" />
+                                <img id="photoPreview" class="preview-img hidden" src="#" alt="Preview" />
+                            </div>
+                        </div>
                     </div>
-
-                    <!-- Second Year -->
-                    <div class="p-4 rounded-xl bg-gray-50 border border-gray-200">
-                        <p class="font-bold text-gray-800 mb-3">Second Year</p>
-                        <label class="flex items-center gap-3 p-3 rounded-lg bg-white border border-gray-300 cursor-pointer hover:bg-gray-50 transition">
-                            <input type="radio" name="semester" value="SY Semester 3" class="w-4 h-4 text-teal-600 focus:ring-teal-500" />
-                            <span class="text-gray-700">Semester 3</span>
-                        </label>
-                        <label class="flex items-center gap-3 p-3 rounded-lg bg-white border border-gray-300 cursor-pointer hover:bg-gray-50 transition mt-2">
-                            <input type="radio" name="semester" value="SY Semester 4" class="w-4 h-4 text-teal-600 focus:ring-teal-500" />
-                            <span class="text-gray-700">Semester 4</span>
-                        </label>
-                    </div>
-
-                    <!-- Third Year -->
-                    <div class="p-4 rounded-xl bg-gray-50 border border-gray-200">
-                        <p class="font-bold text-gray-800 mb-3">Third Year</p>
-                        <label class="flex items-center gap-3 p-3 rounded-lg bg-white border border-gray-300 cursor-pointer hover:bg-gray-50 transition">
-                            <input type="radio" name="semester" value="TY Semester 5" class="w-4 h-4 text-teal-600 focus:ring-teal-500" />
-                            <span class="text-gray-700">Semester 5</span>
-                        </label>
-                        <label class="flex items-center gap-3 p-3 rounded-lg bg-white border border-gray-300 cursor-pointer hover:bg-gray-50 transition mt-2">
-                            <input type="radio" name="semester" value="TY Semester 6" class="w-4 h-4 text-teal-600 focus:ring-teal-500" />
-                            <span class="text-gray-700">Semester 6</span>
-                        </label>
-                    </div>
-
                 </div>
-            </div>
 
+                <!-- SECTION 2: DOCUMENTS UPLOAD -->
+                <div class="bg-white rounded-xl shadow-md border border-gray-200 mb-4 overflow-hidden">
+                    <button type="button" class="w-full flex items-center justify-between px-4 py-3 bg-orange-50 hover:bg-orange-100 transition-colors toggle-section" data-target="documents-body">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-lg bg-orange-500 text-white flex items-center justify-center text-xs shadow-sm">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </span>
+                            <h2 class="text-base font-bold text-gray-900">Documents Upload</h2>
+                        </div>
+                        <i class="fas fa-chevron-down text-orange-500 text-xs transition-transform duration-300 chevron-icon"></i>
+                    </button>
+
+                    <div id="documents-body" class="section-body p-4 hidden">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <!-- TC Certificate -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-1">TC Certificate</label>
+                                <input type="file" id="tc_certificate" class="file-input" accept="image/*,application/pdf" />
+                                <img id="tcPreview" class="preview-img hidden" src="#" alt="Preview" />
+                            </div>
+                            <!-- 10th Marksheet -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-1">10th Marksheet</label>
+                                <input type="file" id="marksheet_10" class="file-input" accept="image/*,application/pdf" />
+                                <img id="marksheet10Preview" class="preview-img hidden" src="#" alt="Preview" />
+                            </div>
+                            <!-- 12th Marksheet -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-1">12th Marksheet</label>
+                                <input type="file" id="marksheet_12" class="file-input" accept="image/*,application/pdf" />
+                                <img id="marksheet12Preview" class="preview-img hidden" src="#" alt="Preview" />
+                            </div>
+                            <!-- Other Academic Docs -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-1">Other Academic Documents</label>
+                                <input type="file" id="other_academic_docs" class="file-input" accept="image/*,application/pdf" />
+                                <img id="otherAcademicDocsPreview" class="preview-img hidden" src="#" alt="Preview" />
+                            </div>
+                            <!-- Caste Certificate -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-1">Caste Certificate</label>
+                                <input type="file" id="caste_certificate" class="file-input" accept="image/*,application/pdf" />
+                                <img id="castePreview" class="preview-img hidden" src="#" alt="Preview" />
+                            </div>
+                            <!-- Domicile Certificate -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-1">Domicile Certificate</label>
+                                <input type="file" id="domicile_certificate" class="file-input" accept="image/*,application/pdf" />
+                                <img id="domicilePreview" class="preview-img hidden" src="#" alt="Preview" />
+                            </div>
+                            <!-- Non-Creamy Layer -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-1">Non-Creamy Layer Certificate</label>
+                                <input type="file" id="non_creamy_layer" class="file-input" accept="image/*,application/pdf" />
+                                <img id="nonCreamyLayerPreview" class="preview-img hidden" src="#" alt="Preview" />
+                            </div>
+                            <!-- Other Documents -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-1">Other Documents</label>
+                                <input type="file" id="other_documents" class="file-input" accept="image/*,application/pdf" />
+                                <img id="otherDocumentsPreview" class="preview-img hidden" src="#" alt="Preview" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 3: FEES + CONTACT DETAILS -->
+                <div class="bg-white rounded-xl shadow-md border border-gray-200 mb-4 overflow-hidden">
+                    <button type="button" class="w-full flex items-center justify-between px-4 py-3 bg-orange-50 hover:bg-orange-100 transition-colors toggle-section" data-target="fees-body">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-lg bg-orange-500 text-white flex items-center justify-center text-xs shadow-sm">
+                                <i class="fas fa-coins"></i>
+                            </span>
+                            <h2 class="text-base font-bold text-gray-900">Fees + Contact Details</h2>
+                        </div>
+                        <i class="fas fa-chevron-down text-orange-500 text-xs transition-transform duration-300 chevron-icon"></i>
+                    </button>
+
+                    <div id="fees-body" class="section-body p-4 hidden">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <!-- Full Fees -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Full Fees</label>
+                                <div class="relative">
+                                    <i class="fas fa-rupee-sign absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="text" id="full_fees" placeholder="Enter full fees" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                </div>
+                            </div>
+                            <!-- Admission Fees -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Admission Fees</label>
+                                <div class="relative">
+                                    <i class="fas fa-money-bill-wave absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="text" id="admission_fees" placeholder="Enter admission fees" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                </div>
+                            </div>
+                            <!-- Student Phone -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Student Phone</label>
+                                <div class="relative">
+                                    <i class="fas fa-phone absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="tel" id="student_phone" placeholder="Enter student phone" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                </div>
+                            </div>
+                            <!-- Parent Phone -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Parent Phone</label>
+                                <div class="relative">
+                                    <i class="fas fa-phone-alt absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="tel" id="parent_phone" placeholder="Enter parent phone" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                </div>
+                            </div>
+                            <!-- Blood Group -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Blood Group</label>
+                                <div class="relative">
+                                    <i class="fas fa-tint absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <select id="blood_group" class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                        <option value="">Select Blood Group</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
+                                </div>
+                            </div>
+                            <!-- Tahsil -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Tahsil</label>
+                                <div class="relative">
+                                    <i class="fas fa-location-arrow absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="text" id="tahsil" placeholder="Enter tahsil" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                </div>
+                            </div>
+                            <!-- District -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">District</label>
+                                <div class="relative">
+                                    <i class="fas fa-city absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="text" id="district" placeholder="Enter district" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                </div>
+                            </div>
+                            <!-- Address (full width) -->
+                            <div class="md:col-span-2">
+                                <label class="block text-[11px] font-bold text-gray-700 mb-1">Full Address</label>
+                                <textarea rows="2" id="full_address" placeholder="Enter full address" class="w-full pl-3 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- SEMESTER PATTERN -->
+                        <div class="mt-5">
+                            <h3 class="text-sm font-bold text-gray-800 mb-3">Semester Pattern</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                <!-- First Year -->
+                                <div class="p-3 rounded-lg bg-orange-50 border border-orange-200">
+                                    <p class="font-semibold text-gray-800 text-xs mb-2">First Year</p>
+                                    <label class="flex items-center gap-2 p-2 rounded-md bg-white border border-gray-200 cursor-pointer hover:bg-orange-50 transition">
+                                        <input type="radio" name="semester" value="FY Semester 1" class="w-3 h-3 text-orange-600 focus:ring-orange-500" />
+                                        <span class="text-gray-700 text-xs">Semester 1</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 p-2 rounded-md bg-white border border-gray-200 cursor-pointer hover:bg-orange-50 transition mt-1.5">
+                                        <input type="radio" name="semester" value="FY Semester 2" class="w-3 h-3 text-orange-600 focus:ring-orange-500" />
+                                        <span class="text-gray-700 text-xs">Semester 2</span>
+                                    </label>
+                                </div>
+                                <!-- Second Year -->
+                                <div class="p-3 rounded-lg bg-orange-50 border border-orange-200">
+                                    <p class="font-semibold text-gray-800 text-xs mb-2">Second Year</p>
+                                    <label class="flex items-center gap-2 p-2 rounded-md bg-white border border-gray-200 cursor-pointer hover:bg-orange-50 transition">
+                                        <input type="radio" name="semester" value="SY Semester 3" class="w-3 h-3 text-orange-600 focus:ring-orange-500" />
+                                        <span class="text-gray-700 text-xs">Semester 3</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 p-2 rounded-md bg-white border border-gray-200 cursor-pointer hover:bg-orange-50 transition mt-1.5">
+                                        <input type="radio" name="semester" value="SY Semester 4" class="w-3 h-3 text-orange-600 focus:ring-orange-500" />
+                                        <span class="text-gray-700 text-xs">Semester 4</span>
+                                    </label>
+                                </div>
+                                <!-- Third Year -->
+                                <div class="p-3 rounded-lg bg-orange-50 border border-orange-200">
+                                    <p class="font-semibold text-gray-800 text-xs mb-2">Third Year</p>
+                                    <label class="flex items-center gap-2 p-2 rounded-md bg-white border border-gray-200 cursor-pointer hover:bg-orange-50 transition">
+                                        <input type="radio" name="semester" value="TY Semester 5" class="w-3 h-3 text-orange-600 focus:ring-orange-500" />
+                                        <span class="text-gray-700 text-xs">Semester 5</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 p-2 rounded-md bg-white border border-gray-200 cursor-pointer hover:bg-orange-50 transition mt-1.5">
+                                        <input type="radio" name="semester" value="TY Semester 6" class="w-3 h-3 text-orange-600 focus:ring-orange-500" />
+                                        <span class="text-gray-700 text-xs">Semester 6</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACTION BUTTONS -->
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-3 mt-5">
+                    <button type="button" id="backBtn" class="w-full sm:w-auto px-5 py-2.5 bg-white border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition text-sm shadow-sm flex items-center justify-center gap-2">
+                        <i class="fas fa-arrow-left text-xs"></i> Back
+                    </button>
+                    <button type="button" id="updateBtn" class="w-full sm:w-auto px-6 py-2.5 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition text-sm shadow-md flex items-center justify-center gap-2">
+                        <i class="fas fa-save text-xs"></i> Update Student
+                    </button>
+                </div>
+            </form>
         </div>
-
-        <!-- BUTTONS -->
-        <div class="flex flex-col sm:flex-row justify-between gap-4 mt-6">
-        
-        </div>
-
     </main>
 
-
     <?php include 'footer.php' ?>
-
-
     <script src="url.js"></script>
 
     <script>
-        window.onload = function() {
-
-            getStudent();
-
-        }
-
-
-
-        const params =
-            new URLSearchParams(window.location.search);
-
-        const studentId =
-            params.get("id");
-
-
-
-        async function getStudent() {
-
-            try {
-
-                const response = await fetch(
-
-                    url + "students/" + studentId,
-
-                    {
-
-                        headers: {
-
-                            "Authorization": "Bearer " + localStorage.getItem("token"),
-
-                            "Accept": "application/json"
-
-                        }
-
-                    }
-
-                );
-
-
-
-                const result = await response.json();
-
-                console.log(result);
-
-
-
-                const student = result.data;
-
-
-
-                console.log(student);
-
-                document.getElementById("student_batch").value =
-                    student.student_batch || "";
-
-                let yearValue = student.student_year;
-
-
-
-                if (yearValue === "1st Year") {
-
-                    yearValue = "First Year";
-
-                }
-
-
-
-                if (yearValue === "2nd Year") {
-
-                    yearValue = "Second Year";
-
-                }
-
-
-
-                if (yearValue === "3rd Year") {
-
-                    yearValue = "Third Year";
-
-                }
-
-
-
-                document.getElementById("student_year").value =
-                    yearValue;
-
-                document.getElementById("course").value =
-                    student.course || "";
-
-                document.getElementById("student_name").value =
-                    student.student_name || "";
-
-                document.getElementById("parent_name").value =
-                    student.parent_name || "";
-
-                document.getElementById("caste").value =
-                    student.caste || "";
-
-                document.getElementById("sub_caste").value =
-                    student.sub_caste || "";
-
-                document.getElementById("admission_date").value =
-                    student.admission_date || "";
-
-                document.getElementById("aadhaar_number").value =
-                    student.aadhaar_number || "";
-
-                document.getElementById("abc_id").value =
-                    student.abc_id || "";
-
-                document.getElementById("date_of_birth").value =
-                    student.date_of_birth || "";
-
-                document.getElementById("place_of_birth").value =
-                    student.place_of_birth || "";
-
-                document.getElementById("gender").value =
-                    student.gender || "";
-
-                document.getElementById("full_fees").value =
-                    student.full_fees || "";
-
-                document.getElementById("admission_fees").value =
-                    student.admission_fees || "";
-
-                document.getElementById("student_phone").value =
-                    student.student_phone || "";
-
-                document.getElementById("parent_phone").value =
-                    student.parent_phone || "";
-
-                document.getElementById("blood_group").value =
-                    student.blood_group || "";
-
-                document.getElementById("tahsil").value =
-                    student.tahsil || "";
-
-                document.getElementById("district").value =
-                    student.district || "";
-
-                document.getElementById("full_address").value =
-                    student.full_address || "";
-
-                const semesterRadios = document.getElementsByName("semester");
-
-                semesterRadios.forEach(radio => {
-
-                    if (radio.value === student.semester_pattern) {
-
-                        radio.checked = true;
-
-                    }
-                });
-
-                document.getElementById("photoPreview").src =
-                    baseUrl + "storage/" + student.passport_photo;
-
-                document.getElementById("tcPreview").src =
-                    baseUrl + "storage/" + student.tc_certificate;
-
-                document.getElementById("marksheet10Preview").src =
-                    baseUrl + "storage/" + student.marksheet_10;
-
-                document.getElementById("marksheet12Preview").src =
-                    baseUrl + "storage/" + student.marksheet_12;
-
-                document.getElementById("otherAcademicDocsPreview").src =
-                    baseUrl + "storage/" + student.other_academic_documents;
-
-                document.getElementById("castePreview").src =
-                    baseUrl + "storage/" + student.caste_certificate;
-
-                document.getElementById("domicilePreview").src =
-                    baseUrl + "storage/" + student.domicile_certificate;
-
-                document.getElementById("nonCreamyLayerPreview").src =
-                    baseUrl + "storage/" + student.non_creamy_layer_certificate;
-
-                document.getElementById("otherDocumentsPreview").src =
-                    baseUrl + "storage/" + student.other_documents;
-
-            } catch (error) {
-
-                console.log(error);
-
+        (function() {
+            // Auth check
+            const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token');
+            if (!token) {
+                alert('Authentication token missing. Please log in again.');
+                window.location.href = 'login.php';
+                return;
             }
 
-        }
-
-
-        async function updateStudent() {
-
-            try {
-
-                const formData = new FormData();
-
-
-
-                formData.append("_method", "PUT");
-
-
-
-                formData.append(
-                    "student_name",
-                    document.getElementById("student_name").value
-                );
-
-
-
-                formData.append(
-                    "student_batch",
-                    document.getElementById("student_batch").value
-                );
-
-
-
-                formData.append(
-                    "student_year",
-                    document.getElementById("student_year").value
-                );
-
-
-                formData.append(
-                    "course",
-                    document.getElementById("course").value
-                );
-
-
-
-                formData.append(
-                    "parent_name",
-                    document.getElementById("parent_name").value
-                );
-
-
-
-                formData.append(
-                    "gender",
-                    document.getElementById("gender").value
-                );
-
-
-
-                formData.append(
-                    "caste",
-                    document.getElementById("caste").value
-                );
-
-
-
-                formData.append(
-                    "sub_caste",
-                    document.getElementById("sub_caste").value
-                );
-
-
-
-                formData.append(
-                    "admission_date",
-                    document.getElementById("admission_date").value
-                );
-
-
-
-                formData.append(
-                    "aadhaar_number",
-                    document.getElementById("aadhaar_number").value
-                );
-
-
-
-                formData.append(
-                    "abc_id",
-                    document.getElementById("abc_id").value
-                );
-
-
-
-                formData.append(
-                    "date_of_birth",
-                    document.getElementById("date_of_birth").value
-                );
-
-
-
-                formData.append(
-                    "place_of_birth",
-                    document.getElementById("place_of_birth").value
-                );
-
-
-
-                formData.append(
-                    "full_fees",
-                    document.getElementById("full_fees").value
-                );
-
-
-
-                formData.append(
-                    "admission_fees",
-                    document.getElementById("admission_fees").value
-                );
-
-
-
-                formData.append(
-                    "student_phone",
-                    document.getElementById("student_phone").value
-                );
-
-
-
-                formData.append(
-                    "parent_phone",
-                    document.getElementById("parent_phone").value
-                );
-
-
-
-                formData.append(
-                    "blood_group",
-                    document.getElementById("blood_group").value
-                );
-
-
-
-                formData.append(
-                    "tahsil",
-                    document.getElementById("tahsil").value
-                );
-
-
-
-                formData.append(
-                    "district",
-                    document.getElementById("district").value
-                );
-
-
-
-                formData.append(
-                    "full_address",
-                    document.getElementById("full_address").value
-                );
-
-                const semesterRadios = document.getElementsByName("semester");
-                semesterRadios.forEach(radio => {
-
-                    if (radio.checked) {
-
-                        formData.append("semester_pattern", radio.value);
-
+            const baseUrl = typeof url !== 'undefined' ? url : '';
+            const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+
+            const params = new URLSearchParams(window.location.search);
+            const studentId = params.get("id");
+            if (!studentId) {
+                alert('Student ID is missing.');
+                window.location.href = 'student_record';
+                return;
+            }
+
+            // Accordion functionality
+            const toggleButtons = document.querySelectorAll('.toggle-section');
+
+            function closeAllSections() {
+                toggleButtons.forEach(btn => {
+                    const targetId = btn.getAttribute('data-target');
+                    const target = document.getElementById(targetId);
+                    const chevron = btn.querySelector('.chevron-icon');
+                    if (target) target.classList.add('hidden');
+                    if (chevron) {
+                        chevron.classList.remove('fa-chevron-up');
+                        chevron.classList.add('fa-chevron-down');
                     }
                 });
+            }
 
-
-                document.getElementById("photo").files[0] &&
-                    formData.append(
-                        "passport_photo",
-                        document.getElementById("photo").files[0]
-                    );
-
-                document.getElementById("tc_certificate").files[0] &&
-                    formData.append(
-                        "tc_certificate",
-                        document.getElementById("tc_certificate").files[0]
-                    );
-
-                document.getElementById("marksheet_10").files[0] &&
-                    formData.append(
-                        "marksheet_10",
-                        document.getElementById("marksheet_10").files[0]
-                    );
-
-                document.getElementById("marksheet_12").files[0] &&
-                    formData.append(
-                        "marksheet_12",
-                        document.getElementById("marksheet_12").files[0]
-                    );
-
-                document.getElementById("other_academic_docs").files[0] &&
-                    formData.append(
-                        "other_academic_documents",
-                        document.getElementById("other_academic_docs").files[0]
-                    );
-
-                document.getElementById("caste_certificate").files[0] &&
-                    formData.append(
-                        "caste_certificate",
-                        document.getElementById("caste_certificate").files[0]
-                    );
-
-                document.getElementById("domicile_certificate").files[0] &&
-                    formData.append(
-                        "domicile_certificate",
-                        document.getElementById("domicile_certificate").files[0]
-                    );
-
-
-                document.getElementById("non_creamy_layer").files[0] &&
-                    formData.append(
-                        "non_creamy_layer_certificate",
-                        document.getElementById("non_creamy_layer").files[0]
-                    );
-
-                document.getElementById("other_documents").files[0] &&
-                    formData.append(
-                        "other_documents",
-                        document.getElementById("other_documents").files[0]
-                    );
-
-
-
-
-                const response = await fetch(
-
-                    url + "students/" + studentId,
-
-                    {
-
-                        method: "POST",
-
-                        headers: {
-
-                            "Authorization": "Bearer " + localStorage.getItem("token"),
-
-                            "Accept": "application/json"
-
-                        },
-
-                        body: formData
-
-                    }
-
-                );
-
-
-                const result = await response.json();
-
-                console.log(result);
-
-
-
-                // ================= SUCCESS =================
-
-                if (response.ok) {
-
-                    alert("Student Updated Successfully ✅");
-
-                    window.location.href =
-                        "student_record";
-
+            function openSection(button) {
+                const targetId = button.getAttribute('data-target');
+                const target = document.getElementById(targetId);
+                const chevron = button.querySelector('.chevron-icon');
+                if (target) target.classList.remove('hidden');
+                if (chevron) {
+                    chevron.classList.remove('fa-chevron-down');
+                    chevron.classList.add('fa-chevron-up');
                 }
+            }
 
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const target = document.getElementById(targetId);
+                    if (!target) return;
+                    const isCurrentlyOpen = !target.classList.contains('hidden');
+                    closeAllSections();
+                    if (!isCurrentlyOpen) openSection(this);
+                });
+            });
 
+            // Preview image handling for file inputs
+            function setupPreview(inputId, previewId) {
+                const input = document.getElementById(inputId);
+                const preview = document.getElementById(previewId);
+                if (input && preview) {
+                    input.addEventListener('change', function() {
+                        if (this.files && this.files[0]) {
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                preview.src = e.target.result;
+                                preview.classList.remove('hidden');
+                            };
+                            reader.readAsDataURL(this.files[0]);
+                        } else {
+                            preview.classList.add('hidden');
+                        }
+                    });
+                }
+            }
 
-                // ================= VALIDATION ERRORS =================
-                else if (response.status === 422) {
+            // Setup previews for all file inputs that have previews
+            setupPreview('photo', 'photoPreview');
+            setupPreview('tc_certificate', 'tcPreview');
+            setupPreview('marksheet_10', 'marksheet10Preview');
+            setupPreview('marksheet_12', 'marksheet12Preview');
+            setupPreview('other_academic_docs', 'otherAcademicDocsPreview');
+            setupPreview('caste_certificate', 'castePreview');
+            setupPreview('domicile_certificate', 'domicilePreview');
+            setupPreview('non_creamy_layer', 'nonCreamyLayerPreview');
+            setupPreview('other_documents', 'otherDocumentsPreview');
 
-                    let errorMessage = "";
-
-
-
-                    // LOOP ALL ERRORS
-
-                    Object.keys(result.errors).forEach(key => {
-
-                        errorMessage +=
-                            result.errors[key][0] + "\n";
-
+            // Load student data
+            async function getStudent() {
+                try {
+                    const response = await fetch(`${cleanBase}/students/${studentId}`, {
+                        headers: {
+                            "Authorization": "Bearer " + token,
+                            "Accept": "application/json"
+                        }
                     });
 
+                    if (!response.ok) {
+                        if (response.status === 401) {
+                            alert('Session expired. Please log in again.');
+                            window.location.href = 'login.php';
+                            return;
+                        }
+                        throw new Error('Failed to fetch student data');
+                    }
 
+                    const result = await response.json();
+                    const student = result.data || result.student || result;
 
-                    alert(errorMessage);
+                    // Populate fields
+                    document.getElementById("student_batch").value = student.student_batch || "";
+                    let yearValue = student.student_year;
+                    if (yearValue === "1st Year") yearValue = "First Year";
+                    if (yearValue === "2nd Year") yearValue = "Second Year";
+                    if (yearValue === "3rd Year") yearValue = "Third Year";
+                    document.getElementById("student_year").value = yearValue || "";
+                    document.getElementById("course").value = student.course || "";
+                    document.getElementById("student_name").value = student.student_name || "";
+                    document.getElementById("parent_name").value = student.parent_name || "";
+                    document.getElementById("caste").value = student.caste || "";
+                    document.getElementById("sub_caste").value = student.sub_caste || "";
+                    document.getElementById("admission_date").value = student.admission_date || "";
+                    document.getElementById("aadhaar_number").value = student.aadhaar_number || "";
+                    document.getElementById("abc_id").value = student.abc_id || "";
+                    document.getElementById("date_of_birth").value = student.date_of_birth || "";
+                    document.getElementById("place_of_birth").value = student.place_of_birth || "";
+                    document.getElementById("gender").value = student.gender || "";
+                    document.getElementById("full_fees").value = student.full_fees || "";
+                    document.getElementById("admission_fees").value = student.admission_fees || "";
+                    document.getElementById("student_phone").value = student.student_phone || "";
+                    document.getElementById("parent_phone").value = student.parent_phone || "";
+                    document.getElementById("blood_group").value = student.blood_group || "";
+                    document.getElementById("tahsil").value = student.tahsil || "";
+                    document.getElementById("district").value = student.district || "";
+                    document.getElementById("full_address").value = student.full_address || "";
 
+                    // Semester radios
+                    const semesterRadios = document.getElementsByName("semester");
+                    semesterRadios.forEach(radio => {
+                        if (radio.value === student.semester_pattern) {
+                            radio.checked = true;
+                        }
+                    });
+
+                    // Set preview images from server
+                    const setPreview = (id, path) => {
+                        const img = document.getElementById(id);
+                        if (img && path) {
+                            img.src = cleanBase + "/storage/" + path;
+                            img.classList.remove('hidden');
+                        }
+                    };
+                    setPreview("photoPreview", student.passport_photo);
+                    setPreview("tcPreview", student.tc_certificate);
+                    setPreview("marksheet10Preview", student.marksheet_10);
+                    setPreview("marksheet12Preview", student.marksheet_12);
+                    setPreview("otherAcademicDocsPreview", student.other_academic_documents);
+                    setPreview("castePreview", student.caste_certificate);
+                    setPreview("domicilePreview", student.domicile_certificate);
+                    setPreview("nonCreamyLayerPreview", student.non_creamy_layer_certificate);
+                    setPreview("otherDocumentsPreview", student.other_documents);
+
+                } catch (error) {
+                    console.error('Error loading student:', error);
+                    alert('Could not load student data. ' + error.message);
                 }
+            }
 
+            // Update student
+            async function updateStudent() {
+                const updateBtn = document.getElementById('updateBtn');
+                const originalText = updateBtn.innerHTML;
+                updateBtn.disabled = true;
+                updateBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1.5"></i> Updating...';
 
+                try {
+                    const formData = new FormData();
+                    formData.append("_method", "PUT");
 
-                // ================= OTHER ERRORS =================
-                else {
+                    // Text fields
+                    const fields = [
+                        'student_batch', 'student_year', 'course', 'student_name', 'parent_name',
+                        'caste', 'sub_caste', 'admission_date', 'aadhaar_number', 'abc_id',
+                        'date_of_birth', 'place_of_birth', 'gender', 'full_fees', 'admission_fees',
+                        'student_phone', 'parent_phone', 'blood_group', 'tahsil', 'district',
+                        'full_address'
+                    ];
+                    fields.forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) formData.append(id, el.value);
+                    });
 
-                    alert(result.message || "Something went wrong");
+                    // Semester
+                    const semesterRadios = document.getElementsByName("semester");
+                    semesterRadios.forEach(radio => {
+                        if (radio.checked) formData.append("semester_pattern", radio.value);
+                    });
 
+                    // Files
+                    const fileFields = [
+                        ['photo', 'passport_photo'],
+                        ['tc_certificate', 'tc_certificate'],
+                        ['marksheet_10', 'marksheet_10'],
+                        ['marksheet_12', 'marksheet_12'],
+                        ['other_academic_docs', 'other_academic_documents'],
+                        ['caste_certificate', 'caste_certificate'],
+                        ['domicile_certificate', 'domicile_certificate'],
+                        ['non_creamy_layer', 'non_creamy_layer_certificate'],
+                        ['other_documents', 'other_documents']
+                    ];
+                    fileFields.forEach(([inputId, fieldName]) => {
+                        const input = document.getElementById(inputId);
+                        if (input && input.files[0]) {
+                            formData.append(fieldName, input.files[0]);
+                        }
+                    });
+
+                    const response = await fetch(`${cleanBase}/students/${studentId}`, {
+                        method: "POST",
+                        headers: {
+                            "Authorization": "Bearer " + token,
+                            "Accept": "application/json"
+                        },
+                        body: formData
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        alert("Student Updated Successfully ✅");
+                        window.location.href = "student_record";
+                    } else if (response.status === 422) {
+                        let errorMessage = "";
+                        Object.keys(result.errors).forEach(key => {
+                            errorMessage += result.errors[key][0] + "\n";
+                        });
+                        alert(errorMessage);
+                    } else if (response.status === 401) {
+                        alert('Session expired. Please log in again.');
+                        window.location.href = 'login.php';
+                    } else {
+                        alert(result.message || "Something went wrong");
+                    }
+                } catch (error) {
+                    console.error('Update error:', error);
+                    alert("Server Error ❌");
+                } finally {
+                    updateBtn.disabled = false;
+                    updateBtn.innerHTML = originalText;
                 }
-
-
-
-            } catch (error) {
-
-                console.log(error);
-
-                alert("Server Error ❌");
-
-            }
-        }
-        // ================= STEPER =================
-
-        let step = 1;
-
-        const next =
-            document.getElementById("next");
-
-        const prev =
-            document.getElementById("prev");
-
-
-
-        function show(n) {
-
-            document.querySelectorAll(".step-box")
-                .forEach(e => e.classList.remove("active"));
-
-
-
-            document.getElementById("step" + n)
-                .classList.add("active");
-
-
-
-            for (let i = 1; i <= 3; i++) {
-
-                document.getElementById("s" + i)
-                    .classList.remove("active");
-
             }
 
-
-
-            for (let i = 1; i < n; i++) {
-
-                document.getElementById("l" + i)
-                    .classList.add("active");
-
-            }
-
-
-
-            for (let i = 1; i <= n; i++) {
-
-                document.getElementById("s" + i)
-                    .classList.add("active");
-
-            }
-
-
-
-            prev.classList.toggle(
-                "hidden",
-                n === 1
-            );
-
-
-
-            next.innerText =
-                n === 3 ? "Update" : "Next";
-
-        }
-
-
-
-        next.onclick = () => {
-
-            if (step === 3) {
-
+            // Event listeners
+            document.getElementById('updateBtn').addEventListener('click', function(e) {
+                e.preventDefault();
                 updateStudent();
+            });
 
-                return;
+            document.getElementById('backBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('Are you sure you want to go back? Any unsaved changes will be lost.')) {
+                    window.location.href = 'student_record';
+                }
+            });
 
-            }
+            // Initialize
+            getStudent();
 
-
-
-            step++;
-
-            show(step);
-
-        }
-
-
-
-        prev.onclick = () => {
-
-            step--;
-
-            show(step);
-
-        }
-
-
-
-        show(step);
+            // Open first section by default
+            // The first section's body has no 'hidden' class initially (personal-body)
+        })();
     </script>
 </body>
 
