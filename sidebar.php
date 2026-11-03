@@ -327,6 +327,14 @@
                     </svg>
                     <span>Cash Memo Records</span>
                 </a>
+                <a href="employee_records" data-slug="employee-records" class="sidebar-menu-item sidebar-sub-link flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 font-semibold hover:bg-orange-50 hover:text-orange-700 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <rect x="4" y="3" width="16" height="18" rx="2" />
+                        <path stroke-linecap="round" d="M8 7h8M8 11h8M8 15h5" />
+                        <path stroke-linecap="round" d="M8 18h3" />
+                    </svg>
+                    <span>Employee Records</span>
+                </a>
             </div>
         </div>
 
