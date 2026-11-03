@@ -1,6 +1,6 @@
 <?php
 // ============================================================
-// Employee Records — List + View Popup + Edit Registration Form
+// Employee Records — List + View Popup + Edit Registration Form (Live API)
 // ============================================================
 ?>
 <!DOCTYPE html>
@@ -73,9 +73,9 @@
                 <h1 class="text-2xl font-bold text-gray-800">Employee Records</h1>
                 <p class="text-sm text-gray-500">Manage staff records, view details, or edit profiles.</p>
             </div>
-            <button onclick="openAddModal()" class="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2.5 rounded-lg font-semibold shadow-md flex items-center gap-2 transition">
+            <a href="employee-registration.php" class="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2.5 rounded-lg font-semibold shadow-md flex items-center gap-2 transition">
                 <i class="fas fa-plus"></i> Add Employee
-            </button>
+            </a>
         </div>
 
         <!-- Data Table Card -->
@@ -89,10 +89,8 @@
                         <input type="text" id="searchInput" placeholder="Search Name or ID..." class="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none">
                     </div>
                     <select id="roleFilter" class="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:border-orange-500 outline-none bg-white">
-                        <option value="">All Types</option>
-                        <option value="Teacher">Teacher</option>
-                        <option value="Admin">Admin</option>
-                        <option value="Staff">Staff</option>
+                        <option value="">All Designations</option>
+                        <!-- Populated dynamically -->
                     </select>
                 </div>
             </div>
@@ -105,7 +103,7 @@
                             <th class="px-4 py-4">PROFILE</th>
                             <th class="px-4 py-4">EMP ID</th>
                             <th class="px-4 py-4">NAME</th>
-                            <th class="px-4 py-4">TYPE</th>
+                            <th class="px-4 py-4">DESIGNATION</th>
                             <th class="px-4 py-4">MOBILE</th>
                             <th class="px-4 py-4">JOINING DATE</th>
                             <th class="px-4 py-4">STATUS</th>
@@ -113,7 +111,7 @@
                         </tr>
                     </thead>
                     <tbody id="employeeTableBody" class="divide-y divide-gray-100">
-                        <!-- Data injected via JS -->
+                        <tr><td colspan="8" class="text-center py-8 text-gray-400">Loading employee records...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -184,25 +182,13 @@
                         
                         <!-- Read-only Employee ID (Only shows on Edit) -->
                         <div id="empIdWrapper" class="hidden">
-                            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Employee ID</label>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Employee Code</label>
                             <div class="input-icon-wrapper">
                                 <i class="fas fa-hashtag"></i>
                                 <input type="text" id="m_employee_id" class="w-full py-2.5 text-sm rounded-lg border border-gray-300 outline-none" disabled>
                             </div>
                         </div>
 
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Employee Type <span class="text-red-500">*</span></label>
-                            <div class="input-icon-wrapper">
-                                <i class="fas fa-user-tag"></i>
-                                <select id="m_role" class="w-full py-2.5 text-sm rounded-lg border border-gray-300 focus:border-orange-500 outline-none bg-white">
-                                    <option value="">Select Employee Type</option>
-                                    <option value="Teacher">Teacher</option>
-                                    <option value="Admin">Admin</option>
-                                    <option value="Staff">Staff</option>
-                                </select>
-                            </div>
-                        </div>
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1.5">Employee Name <span class="text-red-500">*</span></label>
                             <div class="input-icon-wrapper">
@@ -212,10 +198,10 @@
                         </div>
                         
                         <div class="md:col-span-2">
-                            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Profile Photo</label>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Profile Photo <span class="text-xs text-gray-400">(JPG/PNG, max 2MB)</span></label>
                             <div class="flex items-center gap-4">
                                 <img id="m_photo_preview" src="https://ui-avatars.com/api/?name=New&background=f3f4f6&color=9ca3af" class="w-12 h-12 rounded-full object-cover border border-gray-200">
-                                <input type="file" id="m_photo" accept="image/*" class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100 cursor-pointer" onchange="previewImage(event)">
+                                <input type="file" id="m_photo" accept="image/jpeg,image/png,image/jpg" class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100 cursor-pointer" onchange="previewImage(event)">
                             </div>
                         </div>
 
@@ -224,13 +210,14 @@
                             <div class="flex gap-6 py-2">
                                 <label class="inline-flex items-center gap-2 text-sm cursor-pointer"><input type="radio" name="m_gender" value="Male" class="accent-orange-500 w-4 h-4"> Male</label>
                                 <label class="inline-flex items-center gap-2 text-sm cursor-pointer"><input type="radio" name="m_gender" value="Female" class="accent-orange-500 w-4 h-4"> Female</label>
+                                <label class="inline-flex items-center gap-2 text-sm cursor-pointer"><input type="radio" name="m_gender" value="Other" class="accent-orange-500 w-4 h-4"> Other</label>
                             </div>
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1.5">Date of Birth <span class="text-red-500">*</span></label>
                             <div class="input-icon-wrapper">
                                 <i class="fas fa-calendar-alt"></i>
-                                <input type="date" id="m_dob" class="w-full py-2.5 text-sm rounded-lg border border-gray-300 focus:border-orange-500 outline-none text-gray-500">
+                                <input type="date" id="m_dob" class="w-full py-2.5 text-sm rounded-lg border border-gray-300 focus:border-orange-500 outline-none text-gray-700">
                             </div>
                         </div>
                     </div>
@@ -255,21 +242,12 @@
                             </div>
                         </div>
                        <div class="md:col-span-2">
-    <label class="block text-sm font-semibold text-gray-700 mb-1.5">
-        Address <span class="text-red-500">*</span>
-    </label>
-
-    <div class="input-icon-wrapper relative">
-        <i class="fas fa-map-marker-alt absolute  text-gray-400"></i>
-
-        <textarea
-            id="m_address"
-            rows="2"
-            placeholder="Enter complete residential address"
-            class="w-full pl-8 mt-6 pr-3 py-2.5 text-sm rounded-lg border border-gray-300 focus:border-orange-500 outline-none resize-none"
-        ></textarea>
-    </div>
-</div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Address <span class="text-red-500">*</span></label>
+                            <div class="input-icon-wrapper relative">
+                                <i class="fas fa-map-marker-alt absolute text-gray-400" style="top: 20px;"></i>
+                                <textarea id="m_address" rows="2" placeholder="Enter complete residential address" class="w-full pl-9 pr-3 py-2.5 text-sm rounded-lg border border-gray-300 focus:border-orange-500 outline-none resize-none"></textarea>
+                            </div>
+                        </div>
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1.5">City <span class="text-red-500">*</span></label>
                             <div class="input-icon-wrapper">
@@ -304,10 +282,7 @@
                                 <i class="fas fa-user-tie"></i>
                                 <select id="m_designation" class="w-full py-2.5 text-sm rounded-lg border border-gray-300 focus:border-orange-500 outline-none bg-white">
                                     <option value="">Select Designation</option>
-                                    <option value="Senior Math Teacher">Senior Math Teacher</option>
-                                    <option value="Science Teacher">Science Teacher</option>
-                                    <option value="Admin Officer">Admin Officer</option>
-                                    <option value="Front Office Executive">Front Office Executive</option>
+                                    <!-- Populated dynamically -->
                                 </select>
                             </div>
                         </div>
@@ -315,7 +290,7 @@
                             <label class="block text-sm font-semibold text-gray-700 mb-1.5">Date of Joining <span class="text-red-500">*</span></label>
                             <div class="input-icon-wrapper">
                                 <i class="fas fa-calendar-check"></i>
-                                <input type="date" id="m_doj" class="w-full py-2.5 text-sm rounded-lg border border-gray-300 focus:border-orange-500 outline-none text-gray-500">
+                                <input type="date" id="m_doj" class="w-full py-2.5 text-sm rounded-lg border border-gray-300 focus:border-orange-500 outline-none text-gray-700">
                             </div>
                         </div>
                     </div>
@@ -341,7 +316,6 @@
                                 <select id="m_status" class="w-full py-2.5 text-sm rounded-lg border border-gray-300 focus:border-orange-500 outline-none bg-white">
                                     <option value="Active">Active</option>
                                     <option value="Inactive">Inactive</option>
-                                    <option value="On Leave">On Leave</option>
                                 </select>
                             </div>
                         </div>
@@ -353,7 +327,7 @@
                     <button type="button" onclick="closeEmployeeModal()" class="px-5 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 font-semibold transition shadow-sm">
                         Cancel
                     </button>
-                    <button type="button" onclick="saveEmployee()" class="px-6 py-2 bg-orange-500 text-white text-sm font-semibold rounded-lg hover:bg-orange-600 flex items-center gap-2 shadow-sm transition">
+                    <button type="button" id="saveEmployeeBtn" onclick="saveEmployee()" class="px-6 py-2 bg-orange-500 text-white text-sm font-semibold rounded-lg hover:bg-orange-600 flex items-center gap-2 shadow-sm transition">
                         <i class="fas fa-save"></i> Save
                     </button>
                 </div>
@@ -361,18 +335,28 @@
         </div>
     </div>
 <?php include 'footer.php'; ?>
+<script src="url.js"></script>
 
     <script>
     (function () {
-        // ============================================================
-        // DUMMY DATA (Added Profile Photo URLs)
-        // ============================================================
-        let employees = [
-            { id: 1, employee_id: 'EMP-1001', name: 'Aarav Sharma', role: 'Teacher', gender: 'Male', dob: '1985-04-15', mobile: '9812345601', email: 'aarav@school.edu', address: '12 MG Road', city: 'Jaipur', state: 'Rajasthan', pin: '302001', emergency: '9812345611', designation: 'Senior Math Teacher', doj: '2015-06-01', status: 'Active', photo: 'https://ui-avatars.com/api/?name=Aarav+Sharma&background=ffedd5&color=c2410c' },
-            { id: 2, employee_id: 'EMP-1002', name: 'Priya Verma', role: 'Teacher', gender: 'Female', dob: '1990-08-22', mobile: '9812345602', email: 'priya@school.edu', address: '45 Nehru Nagar', city: 'Kanpur', state: 'UP', pin: '208001', emergency: '', designation: 'Science Teacher', doj: '2017-04-10', status: 'Active', photo: 'https://ui-avatars.com/api/?name=Priya+Verma&background=e0f2fe&color=0369a1' }
-        ];
+        'use strict';
 
+        // Token & Base URL configuration
+        const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token');
+        if (!token) {
+            alert('Session expired. Please log in again.');
+            window.location.href = 'login.php';
+            return;
+        }
+
+        const baseUrl = typeof url !== 'undefined' ? url : '';
+        const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+        const storageRoot = cleanBase.replace(/\/api$/, '');
+
+        let employees = [];
+        let designations = [];
         let filtered = [];
+
         const tbody = document.getElementById('employeeTableBody');
         const roleFilter = document.getElementById('roleFilter');
         const searchInput = document.getElementById('searchInput');
@@ -380,40 +364,99 @@
         const employeeModal = document.getElementById('employeeModal');
         const viewModal = document.getElementById('viewModal');
 
+        // Helper to resolve profile photo URL
+        function resolvePhoto(path, name = 'Staff') {
+            if (!path) return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=f3f4f6&color=9ca3af`;
+            if (/^https?:\/\//i.test(path)) return path;
+            const clean = path.replace(/^\/+/, '');
+            return `${storageRoot}/storage/${clean}`;
+        }
+
         // ============================================================
-        // RENDER TABLE (Added Profile Photo Column)
+        // 1. FETCH DESIGNATIONS & EMPLOYEES FROM API
+        // ============================================================
+        async function fetchDesignations() {
+            try {
+                const res = await fetch(`${cleanBase}/designations`, {
+                    headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
+                });
+                const result = await res.json();
+                if (res.ok) {
+                    designations = result.data || result;
+                    
+                    // Populate modal dropdown
+                    const modalSelect = document.getElementById('m_designation');
+                    modalSelect.innerHTML = '<option value="">Select Designation</option>' + 
+                        designations.map(d => `<option value="${d.id}">${d.name || d.designation_name}</option>`).join('');
+
+                    // Populate filter dropdown
+                    roleFilter.innerHTML = '<option value="">All Designations</option>' + 
+                        designations.map(d => `<option value="${d.id}">${d.name || d.designation_name}</option>`).join('');
+                }
+            } catch (err) {
+                console.error('Failed to load designations:', err);
+            }
+        }
+
+        async function fetchEmployees() {
+            try {
+                const res = await fetch(`${cleanBase}/employees`, {
+                    headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
+                });
+
+                if (res.status === 401) {
+                    alert('Session expired. Please log in again.');
+                    window.location.href = 'login.php';
+                    return;
+                }
+
+                const result = await res.json();
+                if (res.ok) {
+                    employees = result.data || [];
+                    filtered = [...employees];
+                    renderTable();
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-red-500">${result.message || 'Failed to load records.'}</td></tr>`;
+                }
+            } catch (err) {
+                console.error('Fetch employees error:', err);
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-red-500">Network error while loading records.</td></tr>`;
+            }
+        }
+
+        // ============================================================
+        // 2. RENDER TABLE
         // ============================================================
         function renderTable() {
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-gray-500">No records found</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-gray-500">No employee records found</td></tr>`;
                 return;
             }
 
-            tbody.innerHTML = filtered.map((item, idx) => {
-                const statusColor = item.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600';
+            tbody.innerHTML = filtered.map(item => {
+                const statusColor = item.employee_status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600';
+                const designationName = item.designation?.name || item.designation?.designation_name || '—';
+                const photoUrl = resolvePhoto(item.profile_photo, item.employee_name);
                 
                 return `
                     <tr class="table-row-hover transition">
                         <td class="px-4 py-3">
-                            <img src="${item.photo || 'https://ui-avatars.com/api/?name='+item.name}" alt="${item.name}" class="w-10 h-10 rounded-full object-cover border border-gray-200 shadow-sm">
+                            <img src="${photoUrl}" alt="${item.employee_name}" class="w-10 h-10 rounded-full object-cover border border-gray-200 shadow-sm" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(item.employee_name)}'">
                         </td>
-                        <td class="px-4 py-3 font-mono font-semibold text-gray-800">${item.employee_id}</td>
-                        <td class="px-4 py-3 font-medium text-gray-900">${item.name}</td>
-                        <td class="px-4 py-3"><span class="bg-orange-100 text-orange-700 px-2.5 py-1 rounded-full text-xs font-semibold">${item.role}</span></td>
-                        <td class="px-4 py-3">${item.mobile}</td>
-                        <td class="px-4 py-3">${formatDate(item.doj)}</td>
-                        <td class="px-4 py-3"><span class="px-2.5 py-1 rounded-full text-xs font-semibold ${statusColor}">${item.status}</span></td>
+                        <td class="px-4 py-3 font-mono font-semibold text-gray-800">${item.employee_code || '—'}</td>
+                        <td class="px-4 py-3 font-medium text-gray-900">${item.employee_name}</td>
+                        <td class="px-4 py-3"><span class="bg-orange-100 text-orange-700 px-2.5 py-1 rounded-full text-xs font-semibold">${designationName}</span></td>
+                        <td class="px-4 py-3">${item.mobile_number}</td>
+                        <td class="px-4 py-3">${formatDate(item.date_of_joining)}</td>
+                        <td class="px-4 py-3"><span class="px-2.5 py-1 rounded-full text-xs font-semibold ${statusColor}">${item.employee_status}</span></td>
                         <td class="px-4 py-3 text-center">
                             <div class="flex items-center justify-center gap-2">
-                                <!-- VIEW BUTTON -->
                                 <button onclick="viewEmployee(${item.id})" class="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 hover:bg-teal-100 flex items-center justify-center transition" title="View Details">
                                     <i class="fas fa-eye"></i>
                                 </button>
-                                <!-- EDIT BUTTON -->
                                 <button onclick="editEmployee(${item.id})" class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center transition" title="Edit Full Details">
                                     <i class="fas fa-pen"></i>
                                 </button>
-                                <!-- DELETE BUTTON -->
                                 <button onclick="deleteEmployee(${item.id})" class="w-8 h-8 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 flex items-center justify-center transition" title="Delete">
                                     <i class="fas fa-trash"></i>
                                 </button>
@@ -425,16 +468,22 @@
         }
 
         // ============================================================
-        // FILTERING
+        // 3. ROBUST SEARCH & DESIGNATION FILTERING
         // ============================================================
         function applyFilters() {
-            const role = roleFilter.value;
-            const q = searchInput.value.toLowerCase();
+            const selectedDesigId = roleFilter.value;
+            const q = (searchInput.value || '').toLowerCase().trim();
             
             filtered = employees.filter(e => {
-                const matchRole = !role || e.role === role;
-                const matchSearch = e.name.toLowerCase().includes(q) || e.employee_id.toLowerCase().includes(q);
-                return matchRole && matchSearch;
+                const matchDesig = !selectedDesigId || String(e.designation_id) === String(selectedDesigId);
+                
+                const name = (e.employee_name || '').toLowerCase();
+                const code = (e.employee_code || '').toLowerCase();
+                const mobile = (e.mobile_number || '').toLowerCase();
+
+                const matchSearch = !q || name.includes(q) || code.includes(q) || mobile.includes(q);
+
+                return matchDesig && matchSearch;
             });
             renderTable();
         }
@@ -443,7 +492,7 @@
         searchInput.addEventListener('input', applyFilters);
 
         // ============================================================
-        // VIEW MODAL LOGIC
+        // 4. VIEW MODAL LOGIC
         // ============================================================
         function viewEmployee(id) {
             const emp = employees.find(e => e.id === id);
@@ -455,30 +504,31 @@
                     <span class="text-gray-900 w-2/3 text-right sm:text-left">${val || '—'}</span>
                 </div>`;
 
+            const designationName = emp.designation?.name || emp.designation?.designation_name || '—';
+
             document.getElementById('viewModalBody').innerHTML = `
                 <div class="flex items-center gap-4 bg-orange-50 p-4 rounded-xl mb-4 border border-orange-100">
-                    <img src="${emp.photo}" class="w-16 h-16 rounded-full object-cover border-2 border-white shadow-sm">
+                    <img src="${resolvePhoto(emp.profile_photo, emp.employee_name)}" class="w-16 h-16 rounded-full object-cover border-2 border-white shadow-sm">
                     <div>
-                        <h4 class="font-bold text-lg text-gray-900">${emp.name}</h4>
-                        <p class="text-sm text-gray-600">${emp.designation} • ${emp.employee_id}</p>
+                        <h4 class="font-bold text-lg text-gray-900">${emp.employee_name}</h4>
+                        <p class="text-sm text-gray-600">${designationName} • ${emp.employee_code}</p>
                     </div>
-                    <span class="ml-auto px-3 py-1 rounded-full text-xs font-bold ${emp.status === 'Active' ? 'bg-green-200 text-green-800' : 'bg-gray-200 text-gray-700'}">${emp.status}</span>
+                    <span class="ml-auto px-3 py-1 rounded-full text-xs font-bold ${emp.employee_status === 'Active' ? 'bg-green-200 text-green-800' : 'bg-gray-200 text-gray-700'}">${emp.employee_status}</span>
                 </div>
 
                 <h5 class="text-xs font-bold text-orange-600 uppercase tracking-wider mb-2">Contact Information</h5>
-                ${row('Mobile', emp.mobile)}
+                ${row('Mobile', emp.mobile_number)}
                 ${row('Email', emp.email)}
-                ${row('Emergency No.', emp.emergency)}
+                ${row('Emergency No.', emp.emergency_contact)}
                 ${row('Address', emp.address)}
                 ${row('City / State', `${emp.city}, ${emp.state}`)}
-                ${row('PIN Code', emp.pin)}
+                ${row('PIN Code', emp.pin_code)}
 
                 <h5 class="text-xs font-bold text-orange-600 uppercase tracking-wider mt-5 mb-2">Job Information</h5>
-                ${row('Employee Type', emp.role)}
-                ${row('Designation', emp.designation)}
-                ${row('Joining Date', formatDate(emp.doj))}
+                ${row('Designation', designationName)}
+                ${row('Joining Date', formatDate(emp.date_of_joining))}
                 ${row('Gender', emp.gender)}
-                ${row('Date of Birth', formatDate(emp.dob))}
+                ${row('Date of Birth', formatDate(emp.date_of_birth))}
             `;
 
             viewModal.classList.remove('hidden');
@@ -487,13 +537,13 @@
         function closeViewModal() { viewModal.classList.add('hidden'); }
 
         // ============================================================
-        // ADD / EDIT MODAL LOGIC
+        // 5. ADD / EDIT MODAL LOGIC
         // ============================================================
         function openAddModal() {
             document.getElementById('modalTitle').innerHTML = '<i class="fas fa-user-plus text-orange-500"></i> Employee Registration';
             document.getElementById('employeeModalForm').reset();
             document.getElementById('m_id').value = '';
-            document.getElementById('empIdWrapper').classList.add('hidden'); // Hide Emp ID on Add
+            document.getElementById('empIdWrapper').classList.add('hidden');
             document.querySelectorAll('input[name="m_gender"]').forEach(r => r.checked = false);
             document.getElementById('m_status').value = 'Active';
             document.getElementById('m_photo_preview').src = 'https://ui-avatars.com/api/?name=New&background=f3f4f6&color=9ca3af';
@@ -507,40 +557,36 @@
             
             document.getElementById('modalTitle').innerHTML = '<i class="fas fa-user-edit text-orange-500"></i> Edit Employee Details';
             
-            // Show and populate Read-only Employee ID
             document.getElementById('empIdWrapper').classList.remove('hidden');
-            document.getElementById('m_employee_id').value = emp.employee_id;
+            document.getElementById('m_employee_id').value = emp.employee_code || '';
 
             document.getElementById('m_id').value = emp.id;
-            document.getElementById('m_role').value = emp.role || '';
-            document.getElementById('m_name').value = emp.name || '';
+            document.getElementById('m_name').value = emp.employee_name || '';
             
             const genderRadio = document.querySelector(`input[name="m_gender"][value="${emp.gender}"]`);
             if (genderRadio) genderRadio.checked = true;
             
-            document.getElementById('m_dob').value = emp.dob || '';
-            document.getElementById('m_mobile').value = emp.mobile || '';
+            document.getElementById('m_dob').value = emp.date_of_birth ? emp.date_of_birth.split('T')[0] : '';
+            document.getElementById('m_mobile').value = emp.mobile_number || '';
             document.getElementById('m_email').value = emp.email || '';
             document.getElementById('m_address').value = emp.address || '';
             document.getElementById('m_city').value = emp.city || '';
             document.getElementById('m_state').value = emp.state || '';
-            document.getElementById('m_pin').value = emp.pin || '';
-            document.getElementById('m_emergency').value = emp.emergency || '';
-            document.getElementById('m_designation').value = emp.designation || '';
-            document.getElementById('m_doj').value = emp.doj || '';
-            document.getElementById('m_status').value = emp.status || 'Active';
+            document.getElementById('m_pin').value = emp.pin_code || '';
+            document.getElementById('m_emergency').value = emp.emergency_contact || '';
+            document.getElementById('m_designation').value = emp.designation_id || '';
+            document.getElementById('m_doj').value = emp.date_of_joining ? emp.date_of_joining.split('T')[0] : '';
+            document.getElementById('m_status').value = emp.employee_status || 'Active';
             
-            document.getElementById('m_photo_preview').src = emp.photo || 'https://ui-avatars.com/api/?name=' + emp.name;
+            document.getElementById('m_photo_preview').src = resolvePhoto(emp.profile_photo, emp.employee_name);
+            document.getElementById('m_photo').value = ''; 
             
             document.getElementById('m_errorBanner').classList.add('hidden');
             employeeModal.classList.remove('hidden');
         }
 
-        function closeEmployeeModal() { 
-            employeeModal.classList.add('hidden'); 
-        }
+        function closeEmployeeModal() { employeeModal.classList.add('hidden'); }
 
-        // Image Preview Handler
         function previewImage(event) {
             const file = event.target.files[0];
             if (file) {
@@ -549,70 +595,136 @@
         }
 
         // ============================================================
-        // SAVE / DELETE
+        // 6. SAVE (CREATE / UPDATE) VIA API
         // ============================================================
-        function saveEmployee() {
+        async function saveEmployee() {
             const idVal = document.getElementById('m_id').value;
-            const role = document.getElementById('m_role').value;
+            const banner = document.getElementById('m_errorBanner');
+            banner.classList.add('hidden');
+
             const name = document.getElementById('m_name').value.trim();
             const gender = document.querySelector('input[name="m_gender"]:checked')?.value || '';
+            const dob = document.getElementById('m_dob').value;
             const mobile = document.getElementById('m_mobile').value.trim();
+            const email = document.getElementById('m_email').value.trim();
+            const address = document.getElementById('m_address').value.trim();
+            const city = document.getElementById('m_city').value.trim();
+            const state = document.getElementById('m_state').value.trim();
+            const pin = document.getElementById('m_pin').value.trim();
+            const designation = document.getElementById('m_designation').value;
+            const doj = document.getElementById('m_doj').value;
+            const emergency = document.getElementById('m_emergency').value.trim();
+            const status = document.getElementById('m_status').value;
+            const photoFile = document.getElementById('m_photo').files[0];
 
-            if (!role || !name || !gender || !mobile) {
-                const banner = document.getElementById('m_errorBanner');
+            if (!name || !gender || !dob || !mobile || !email || !address || !city || !state || !pin || !designation || !doj) {
                 banner.textContent = 'Please fill all required (*) fields.';
                 banner.classList.remove('hidden');
                 return;
             }
 
-            // Gather form data
-            const data = {
-                role, name, gender, 
-                dob: document.getElementById('m_dob').value,
-                mobile, 
-                email: document.getElementById('m_email').value,
-                address: document.getElementById('m_address').value,
-                city: document.getElementById('m_city').value,
-                state: document.getElementById('m_state').value,
-                pin: document.getElementById('m_pin').value,
-                emergency: document.getElementById('m_emergency').value,
-                designation: document.getElementById('m_designation').value,
-                doj: document.getElementById('m_doj').value,
-                status: document.getElementById('m_status').value,
-                photo: document.getElementById('m_photo_preview').src // Store the preview image
-            };
+            const formData = new FormData();
+            formData.append('employee_name', name);
+            formData.append('gender', gender);
+            formData.append('date_of_birth', dob);
+            formData.append('mobile_number', mobile);
+            formData.append('email', email);
+            formData.append('address', address);
+            formData.append('city', city);
+            formData.append('state', state);
+            formData.append('pin_code', pin);
+            formData.append('designation_id', designation);
+            formData.append('date_of_joining', doj);
+            formData.append('employee_status', status);
+            
+            if (emergency) formData.append('emergency_contact', emergency);
+            if (photoFile) formData.append('profile_photo', photoFile);
 
-            if (idVal) {
-                // Update existing
-                const idx = employees.findIndex(e => e.id === parseInt(idVal));
-                employees[idx] = { ...employees[idx], ...data };
-            } else {
-                // Create new
-                const nextId = employees.length ? Math.max(...employees.map(e => e.id)) + 1 : 1;
-                employees.push({ id: nextId, employee_id: 'EMP-' + (1000 + nextId), ...data });
+            const saveBtn = document.getElementById('saveEmployeeBtn');
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Saving...`;
+
+            try {
+                let endpoint = `${cleanBase}/employees`;
+                let method = 'POST';
+
+                if (idVal) {
+                    endpoint = `${cleanBase}/employees/${idVal}`;
+                    formData.append('_method', 'PUT'); // Laravel method spoofing for multipart updates
+                }
+
+                const res = await fetch(endpoint, {
+                    method: method,
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                });
+
+                const result = await res.json();
+
+                if (!res.ok) {
+                    let errorMsg = result.message || 'Failed to save employee.';
+                    if (result.errors) {
+                        errorMsg = Object.values(result.errors).flat().join('\n');
+                    }
+                    throw new Error(errorMsg);
+                }
+
+                alert(result.message || 'Employee saved successfully!');
+                closeEmployeeModal();
+                fetchEmployees();
+
+            } catch (err) {
+                console.error('Save error:', err);
+                banner.textContent = err.message;
+                banner.classList.remove('hidden');
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = `<i class="fas fa-save"></i> Save`;
             }
-
-            closeEmployeeModal();
-            applyFilters();
         }
 
-        function deleteEmployee(id) {
-            if (!confirm('Are you sure you want to delete this record?')) return;
-            employees = employees.filter(e => e.id !== id);
-            applyFilters();
+        // ============================================================
+        // 7. DELETE VIA API
+        // ============================================================
+        async function deleteEmployee(id) {
+            if (!confirm('Are you sure you want to delete this employee record?')) return;
+
+            try {
+                const res = await fetch(`${cleanBase}/employees/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                const result = await res.json();
+                if (!res.ok) throw new Error(result.message || 'Failed to delete employee.');
+
+                alert(result.message || 'Employee deleted successfully.');
+                fetchEmployees();
+            } catch (err) {
+                console.error('Delete error:', err);
+                alert(err.message || 'Error deleting employee record.');
+            }
         }
 
-        // Helper
+        // Helper for Date Formatting
         function formatDate(d) {
             if (!d) return '—';
             const date = new Date(d);
+            if (isNaN(date)) return d;
             return `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${date.getFullYear()}`;
         }
 
-        // Init
-        applyFilters();
+        // Initialization
+        fetchDesignations();
+        fetchEmployees();
 
-        // Expose functions
+        // Expose functions globally
         window.viewEmployee = viewEmployee;
         window.editEmployee = editEmployee;
         window.deleteEmployee = deleteEmployee;
