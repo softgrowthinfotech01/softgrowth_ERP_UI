@@ -65,108 +65,108 @@
             </div>
         </div>
 
-      <a href="employee-registration" data-slug="bonafide"
-    class="sidebar-menu-item sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-orange-50 hover:text-orange-700 transition-all duration-200">
+        <a href="employee-registration" data-slug="employee-registration"
+            class="sidebar-menu-item sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-orange-50 hover:text-orange-700 transition-all duration-200">
 
-    <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-orange-400">
-        <svg xmlns="http://www.w3.org/2000/svg"
-            class="w-5 h-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2">
-
-            <!-- Employee Head -->
-            <circle cx="9" cy="7" r="3"
-                stroke-linecap="round"
-                stroke-linejoin="round" />
-
-            <!-- Employee Body -->
-            <path d="M3.5 19v-1.5a5.5 5.5 0 0 1 11 0V19h-11Z"
-                stroke-linecap="round"
-                stroke-linejoin="round" />
-
-            <!-- Registration Plus Icon -->
-            <path d="M18 10v8m-4-4h8"
-                stroke-linecap="round"
-                stroke-linejoin="round" />
-
-        </svg>
-    </span>
-
-    <span>Employee Registration</span>
-</a>
-
-
-
-
-<!-- Employee Master Dropdown -->
-<div class="dropdown sidebar-menu-group" data-group-slug="employee-master">
-    <button onclick="toggleDropdown('employeeMenu')" data-slug="employee-master" class="sidebar-menu-item sidebar-dropdown-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-orange-50 hover:text-orange-700 transition-all duration-200">
-        <span class="flex items-center gap-3">
             <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-orange-400">
-                <!-- Employee Master Directory SVG -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="4" width="18" height="16" rx="2" ry="2"></rect>
-                    <circle cx="9" cy="10" r="2"></circle>
-                    <path d="M15 8h3"></path>
-                    <path d="M15 12h3"></path>
-                    <path d="M5 16c0-1.5 1.5-2.5 4-2.5s4 1 4 2.5"></path>
-                    <path d="M15 15h3"></path>
-                    <path d="M15 18h3"></path>
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2">
+
+                    <!-- Employee Head -->
+                    <circle cx="9" cy="7" r="3"
+                        stroke-linecap="round"
+                        stroke-linejoin="round" />
+
+                    <!-- Employee Body -->
+                    <path d="M3.5 19v-1.5a5.5 5.5 0 0 1 11 0V19h-11Z"
+                        stroke-linecap="round"
+                        stroke-linejoin="round" />
+
+                    <!-- Registration Plus Icon -->
+                    <path d="M18 10v8m-4-4h8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round" />
+
                 </svg>
             </span>
-            <span>Master</span>
-        </span>
-        <span class="arrow transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] inline-flex items-center justify-center w-6 h-6 rounded-3xl bg-transparent backdrop-blur-md border border-white/30 hover:shadow-orange-400/20 rotate-0 group">
-            <svg class="w-4 h-4 text-gray-700 transition-all duration-500 group-hover:text-orange-400 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
-            </svg>
-        </span>
-    </button>
-    
-    <div id="employeeMenu" class="dropdown-menu overflow-hidden max-h-0 transition-all duration-300 ease-in-out ml-4 pl-4 border-l-2 border-orange-200 space-y-1 mt-1">
-        
-        <!-- Employee Registration (Add New) -->
-        <a href="class_master.php" data-slug="class-master" class="sidebar-menu-item sidebar-sub-link flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 font-semibold hover:bg-orange-50 hover:text-orange-700 transition">
-            <!-- Employee Registration Add User SVG -->
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                <circle cx="9" cy="7" r="4"></circle>
-                <line x1="19" y1="8" x2="19" y2="14"></line>
-                <line x1="16" y1="11" x2="22" y2="11"></line>
-            </svg>
-            <span>Class Master</span>
+
+            <span>Employee Registration</span>
         </a>
 
-        <!-- Employee Directory / List -->
-        <!-- <a href="employee_list" data-slug="employee-list" class="sidebar-menu-item sidebar-sub-link flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 font-semibold hover:bg-orange-50 hover:text-orange-700 transition">
+
+
+
+        <!-- Employee Master Dropdown -->
+        <div class="dropdown sidebar-menu-group" data-group-slug="master">
+            <button onclick="toggleDropdown('masterMenu')" data-slug="master" class="sidebar-menu-item sidebar-dropdown-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-orange-50 hover:text-orange-700 transition-all duration-200">
+                <span class="flex items-center gap-3">
+                    <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-orange-400">
+                        <!-- Employee Master Directory SVG -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="16" rx="2" ry="2"></rect>
+                            <circle cx="9" cy="10" r="2"></circle>
+                            <path d="M15 8h3"></path>
+                            <path d="M15 12h3"></path>
+                            <path d="M5 16c0-1.5 1.5-2.5 4-2.5s4 1 4 2.5"></path>
+                            <path d="M15 15h3"></path>
+                            <path d="M15 18h3"></path>
+                        </svg>
+                    </span>
+                    <span>Master</span>
+                </span>
+                <span class="arrow transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] inline-flex items-center justify-center w-6 h-6 rounded-3xl bg-transparent backdrop-blur-md border border-white/30 hover:shadow-orange-400/20 rotate-0 group">
+                    <svg class="w-4 h-4 text-gray-700 transition-all duration-500 group-hover:text-orange-400 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </span>
+            </button>
+
+            <div id="masterMenu" class="dropdown-menu overflow-hidden max-h-0 transition-all duration-300 ease-in-out ml-4 pl-4 border-l-2 border-orange-200 space-y-1 mt-1">
+
+                <!-- Employee Registration (Add New) -->
+                <a href="class_master.php" data-slug="class-master" class="sidebar-menu-item sidebar-sub-link flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 font-semibold hover:bg-orange-50 hover:text-orange-700 transition">
+                    <!-- Employee Registration Add User SVG -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <line x1="19" y1="8" x2="19" y2="14"></line>
+                        <line x1="16" y1="11" x2="22" y2="11"></line>
+                    </svg>
+                    <span>Class Master</span>
+                </a>
+
+                <!-- Employee Directory / List -->
+                <!-- <a href="employee_list" data-slug="employee-list" class="sidebar-menu-item sidebar-sub-link flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 font-semibold hover:bg-orange-50 hover:text-orange-700 transition">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
             <span>Employee Directory</span>
         </a> -->
 
-        <!-- Attendance / Time Tracking -->
-        <a href="employee-master.php" data-slug="employee-Master" class="sidebar-menu-item sidebar-sub-link flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 font-semibold hover:bg-orange-50 hover:text-orange-700 transition">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            <span>Designation Master</span>
-        </a>
+                <!-- Attendance / Time Tracking -->
+                <a href="employee-master.php" data-slug="designation-master" class="sidebar-menu-item sidebar-sub-link flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 font-semibold hover:bg-orange-50 hover:text-orange-700 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span>Designation Master</span>
+                </a>
 
-        <!-- Salary / Payroll -->
-        <a href="fees_structure_master" data-slug="fees-structure-master" class="sidebar-menu-item sidebar-sub-link flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 font-semibold hover:bg-orange-50 hover:text-orange-700 transition">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="5" width="18" height="14" rx="2" />
-                <path stroke-linecap="round" d="M3 10h18" />
-                <path stroke-linecap="round" d="M7 15h4" />
-            </svg>
-            <span>Fees Structure Master</span>
-        </a>
+                <!-- Salary / Payroll -->
+                <a href="fees_structure_master" data-slug="fees-structure-master" class="sidebar-menu-item sidebar-sub-link flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 font-semibold hover:bg-orange-50 hover:text-orange-700 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="5" width="18" height="14" rx="2" />
+                        <path stroke-linecap="round" d="M3 10h18" />
+                        <path stroke-linecap="round" d="M7 15h4" />
+                    </svg>
+                    <span>Fees Structure Master</span>
+                </a>
 
-    </div>
-</div>
+            </div>
+        </div>
 
 
         <!-- Bonafide -->
@@ -182,7 +182,7 @@
 
 
 
-        <a href="leaving" data-slug="leaving-certifiacate" class="sidebar-menu-item sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-orange-50 hover:text-orange-700 transition-all duration-200">
+        <a href="leaving" data-slug="leaving-certificate" class="sidebar-menu-item sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-orange-50 hover:text-orange-700 transition-all duration-200">
             <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-orange-400">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M7 3h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-4l-3 4-3-4H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
@@ -354,7 +354,7 @@
 
 
 
-        
+
 
         <!-- Logout -->
         <!-- Logout -->
@@ -498,12 +498,15 @@
 
             console.log("Allowed Slugs from /my-menus:", allowedSlugs);
 
-            // Hide menu items that are not in the allowed list
+            // Show or hide menu items based on API permissions
             document.querySelectorAll('.sidebar-menu-item').forEach(item => {
                 const slug = item.getAttribute('data-slug');
-                if (slug && !allowedSlugs.includes(slug.toLowerCase())) {
-                    item.style.display = 'none';
-                }
+
+                if (!slug) return;
+
+                item.style.display = allowedSlugs.includes(slug.toLowerCase()) ?
+                    '' :
+                    'none';
             });
 
             // Hide parent groups if all children are hidden
