@@ -273,180 +273,85 @@
         // =========================
 
         async function getCashMemos() {
+            // Robust token retrieval supporting all login key variations
+            const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || localStorage.getItem('accessToken') || sessionStorage.getItem('token') || '';
 
             try {
-
                 const response = await fetch(
-
                     url + "cash-memos/",
-
                     {
-
                         method: "GET",
-
                         headers: {
-
                             "Accept": "application/json",
-
-                            "Authorization": "Bearer " +
-                                localStorage.getItem("token")
-
+                            "Authorization": "Bearer " + token
                         }
-
                     }
-
                 );
 
-
-
-                const result =
-                    await response.json();
-
-
-
-                console.log(result);
-
-
+                const result = await response.json();
 
                 if (response.status === 401) { alert('Your session has expired. Please log in again.'); window.location.href = 'login.php'; return; }
                 if (response.status === 403) throw new Error('You do not have permission to view cash memos.');
                 if (response.status === 404) throw new Error(result.message || 'Cash memo records were not found.');
                 if (!response.ok) throw new Error(result.message || 'Unable to load cash memo records.');
+                
                 const payload = result.data || result;
                 const cashMemos = Array.isArray(payload) ? payload : (payload.data || []);
 
-
-
-                const tableBody =
-                    document.getElementById(
-                        "cashMemoTableBody"
-                    );
-
-
-
+                const tableBody = document.getElementById("cashMemoTableBody");
                 tableBody.innerHTML = "";
 
-
-
-                // =========================
-                // EMPTY DATA
-                // =========================
-
                 if (cashMemos.length === 0) {
-
                     tableBody.innerHTML = `
-
-                <tr>
-
-                    <td colspan="6"
-                    class="text-center py-10 text-slate-400">
-
-                        No Cash Memo Found
-
-                    </td>
-
-                </tr>
-
-            `;
-
+                        <tr>
+                            <td colspan="6" class="text-center py-10 text-slate-400">
+                                No Cash Memo Found
+                            </td>
+                        </tr>
+                    `;
                     return;
-
                 }
 
-
-
-                // =========================
-                // LOOP DATA
-                // =========================
-
                 cashMemos.forEach((item, index) => {
-
                     tableBody.innerHTML += `
-
-                <tr>
-
-                    <td>
-
-                        ${index + 1}
-
-                    </td>
-
-                    <td>
-
-                        ${item.cash_memo_no}
-
-                    </td>
-
-                    <td>
-
-                        ₹ ${item.amount}
-
-                    </td>
-
-                    <td>
-
-                        ${item.receipt_number}
-
-                    </td>
-
-                    <td>
-
-                        ${item.date || item.cash_memo_date || item.created_at || '—'}
-
-                    </td>
-                    <td><button type="button" class="view-cash-memo-btn text-orange-600 hover:text-orange-800" data-id="${item.id}" title="View cash memo"><i class="fas fa-eye"></i> View</button></td>
-
-                </tr>
-
-            `;
-
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${item.cash_memo_no}</td>
+                            <td>₹ ${item.amount}</td>
+                            <td>${item.receipt_number}</td>
+                            <td>${item.date || item.cash_memo_date || item.created_at || '—'}</td>
+                            <td><button type="button" class="view-cash-memo-btn text-orange-600 hover:text-orange-800" data-id="${item.id}" title="View cash memo"><i class="fas fa-eye"></i> View</button></td>
+                        </tr>
+                    `;
                 });
 
                 tableBody.querySelectorAll('.view-cash-memo-btn').forEach(button => button.addEventListener('click', async () => {
-                    const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token') || '';
                     try {
-                        const response = await fetch(url + 'cash-memos/show/' + encodeURIComponent(button.dataset.id), {headers:{'Authorization':'Bearer ' + token,'Accept':'application/json'}});
-                        const detail = await response.json().catch(() => ({}));
-                        if (response.status === 401) { alert('Your session has expired. Please log in again.'); window.location.href='login.php'; return; }
-                        if (response.status === 403) throw new Error('You do not have permission to view this cash memo.');
-                        if (response.status === 404) throw new Error(detail.message || 'Cash memo was not found.');
-                        if (!response.ok) throw new Error(detail.message || 'Unable to load cash memo details.');
+                        const detailRes = await fetch(url + 'cash-memos/show/' + encodeURIComponent(button.dataset.id), {headers:{'Authorization':'Bearer ' + token,'Accept':'application/json'}});
+                        const detail = await detailRes.json().catch(() => ({}));
+                        if (detailRes.status === 401) { alert('Your session has expired. Please log in again.'); window.location.href='login.php'; return; }
+                        if (detailRes.status === 403) throw new Error('You do not have permission to view this cash memo.');
+                        if (detailRes.status === 404) throw new Error(detail.message || 'Cash memo was not found.');
+                        if (!detailRes.ok) throw new Error(detail.message || 'Unable to load cash memo details.');
                         const memo = detail.data?.cash_memo || detail.data || detail;
                         alert([`Memo: ${memo.cash_memo_no || '—'}`, `Amount: ₹${memo.amount || 0}`, `Receipt: ${memo.receipt_number || '—'}`, `Date: ${memo.date || memo.cash_memo_date || memo.created_at || '—'}`, `Transaction: ${memo.transaction_type || '—'}`].join('\n'));
                     } catch (error) { alert(error.message); }
                 }));
 
-              $('#cashMemoTable').DataTable({
-
-    destroy: true,
-
-    responsive: true,
-
-    pageLength: 10,
-
-    lengthMenu: [[10,25,50,100],[10,25,50,100]],
-
-    dom:'Bfrtip',
-
-    buttons:[
-        'copy',
-        'csv',
-        'excel',
-        'pdf',
-        'print'
-    ]
-
-});
+                $('#cashMemoTable').DataTable({
+                    destroy: true,
+                    responsive: true,
+                    pageLength: 10,
+                    lengthMenu: [[10,25,50,100],[10,25,50,100]],
+                    dom:'Bfrtip',
+                    buttons:['copy','csv','excel','pdf','print']
+                });
 
             } catch (error) {
-
                 console.error(error);
                 document.getElementById('cashMemoTableBody').innerHTML = `<tr><td colspan="6" class="text-center py-8 text-red-600">${error.message}</td></tr>`;
-
             }
-
         }
-
         // =========================
         // FILTER DATE
         // =========================

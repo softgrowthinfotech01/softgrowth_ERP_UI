@@ -446,7 +446,7 @@
 
     window.innerWidth >= 1024 ? overlay.classList.add("hidden") : null;
 
-    // Filter sidebar using the working /my-menus endpoint
+    // Filter sidebar using the working /my-menus endpoint with safeguards
     document.addEventListener("DOMContentLoaded", async function() {
         function getToken() {
             return localStorage.getItem('auth_token') || localStorage.getItem('token') || localStorage.getItem('accessToken') || sessionStorage.getItem('token');
@@ -464,18 +464,23 @@
                 'Accept': 'application/json'
             };
 
-            // Call your verified /my-menus endpoint
             const res = await fetch(`${cleanBase}/my-menus`, {
                 method: 'GET',
                 headers
             });
+            
             if (!res.ok) return;
 
             const json = await res.json();
             const menus = json.data || [];
 
-            // If user is admin, /my-menus returns everything so we don't need to hide anything
-            // Collect all allowed menu slugs from the returned structure recursively
+            // SAFETY CHECK: If the API returns 0 menus (due to token sync issues or role misconfigurations), 
+            // do not hide everything so the UI doesn't completely vanish.
+            if (!menus || menus.length === 0) {
+                console.warn("API returned 0 menus; bypassing menu restriction to prevent total hiding.");
+                return;
+            }
+
             const allowedSlugs = [];
 
             function extractSlugs(menuList) {
@@ -493,12 +498,13 @@
             // Hide menu items that are not in the allowed list
             document.querySelectorAll('.sidebar-menu-item').forEach(item => {
                 const slug = item.getAttribute('data-slug');
+                // If a slug is defined and NOT found in allowedSlugs, hide it
                 if (slug && !allowedSlugs.includes(slug.toLowerCase())) {
                     item.style.display = 'none';
                 }
             });
 
-            // Hide parent groups if all children are hidden
+            // Hide parent groups if all children or the dropdown button are hidden
             document.querySelectorAll('.sidebar-menu-group').forEach(group => {
                 const parentBtn = group.querySelector('.sidebar-dropdown-btn');
                 const visibleSubLinks = group.querySelectorAll('.sidebar-sub-link:not([style*="display: none"])');

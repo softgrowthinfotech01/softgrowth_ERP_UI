@@ -245,26 +245,31 @@
                                         <i class="fas fa-calendar absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs z-10"></i>
                                         <select id="student_batch" class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
                                             <option value="">Select Batch Year</option>
-                                            <!-- Dynamically generated 2025 to 2040 options -->
+                                            <option value="2025-26">2025-26</option>
+                                            <option value="2026-27">2026-27</option>
+                                            <option value="2027-28">2027-28</option>
+                                            <option value="2028-29">2028-29</option>
+                                            <option value="2029-30">2029-30</option>
+                                            <option value="2030-31">2030-31</option>
+                                            <option value="2031-32">2031-32</option>
+                                            <option value="2032-33">2032-33</option>
+                                            <option value="2033-34">2033-34</option>
+                                            <option value="2034-35">2034-35</option>
+                                            <option value="2035-36">2035-36</option>
+                                            <option value="2036-37">2036-37</option>
+                                            <option value="2037-38">2037-38</option>
+                                            <option value="2038-39">2038-39</option>
+                                            <option value="2039-40">2039-40</option>
+                                            <option value="2040-41">2040-41</option>
+                                            <option value="2041-42">2041-42</option>
+                                        
                                         </select>
                                         <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
                                     </div>
                                     <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-student_batch"></p>
                                 </div>
 
-                                <div>
-                                    <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Student Year <span class="text-red-500">*</span></label>
-                                    <div class="relative">
-                                        <i class="fas fa-user-graduate absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                        <select id="student_year" class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
-                                            <option value="">Select year</option>
-                                            <option value="First Year">1st Year</option>
-                                            <option value="Second Year">2nd Year</option>
-                                            <option value="Third Year">3rd Year</option>
-                                        </select>
-                                    </div>
-                                    <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-student_year"></p>
-                                </div>
+                              
 
                                 <div>
                                     <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Admission Date <span class="text-red-500">*</span></label>
@@ -484,9 +489,9 @@
                 </div>
 
                 <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-3 rounded-lg bg-orange-50 p-3" id="feeBreakdown">
-                    <div>Gross fee: <strong id="grossFeeDisplay">—</strong></div>
-                    <div>Discount: <strong id="discountDisplay">₹0.00</strong></div>
-                    <div>Payable total: <strong id="payableDisplay">—</strong></div>
+                    <div>Gross fee: <strong id="previewGrossFee">—</strong></div>
+                    <div>Discount: <strong id="previewDiscount">₹0.00</strong></div>
+                    <div>Payable total: <strong id="previewPayable">—</strong></div>
                     <p id="classFeeMessage" class="sm:col-span-3 text-sm text-gray-600" role="status"></p>
                 </div>
 
@@ -896,7 +901,7 @@
             const requiredFields = [
                 'student_name', 'course', 'student_phone', 'parent_phone',
                 'aadhaar_number', 'date_of_birth', 'gender', 'blood_group',
-                'place_of_birth', 'board', 'previous_class', 'student_batch', 'student_year',
+                'place_of_birth', 'board', 'previous_class', 'student_batch',
                 'full_fees', 'admission_date', 'full_address', 'tahsil',
                 'district', 'state', 'pincode'
             ];
@@ -1005,6 +1010,20 @@
         }
 
         function buildPreview() {
+            // Get current values from form inputs
+            const grossVal = document.getElementById('full_fees').value || selectedClassFee || 0;
+            const discountVal = document.getElementById('discount_amount').value || 0;
+            const payableVal = Math.max(0, Number(grossVal) - Number(discountVal));
+
+            // Update the top header summary banner values directly
+            const headerGross = document.getElementById('previewGrossFee');
+            const headerDiscount = document.getElementById('previewDiscount');
+            const headerPayable = document.getElementById('previewPayable');
+
+            if (headerGross) headerGross.textContent = money(grossVal);
+            if (headerDiscount) headerDiscount.textContent = money(discountVal);
+            if (headerPayable) headerPayable.textContent = money(payableVal);
+
             const personalRows =
                 row('Registration ID', getValue('registration_id') || 'Auto-generated') +
                 row('APAAR / ABC ID', getValue('abc_id')) +
@@ -1025,7 +1044,6 @@
                 row('Board', getValue('board')) +
                 row('Previous Class', getValue('previous_class')) +
                 row('Student Batch', getValue('student_batch')) +
-                row('Student Year', getValue('student_year')) +
                 row('Gross Fee', money(document.getElementById('full_fees').value || selectedClassFee || 0)) +
                 row('Discount', money(document.getElementById('discount_amount').value || 0)) +
                 row('Payable Total', money(Math.max(0, Number(document.getElementById('full_fees').value || selectedClassFee || 0) - Number(document.getElementById('discount_amount').value || 0)))) +
@@ -1099,7 +1117,7 @@
                     'student_phone', 'parent_phone', 'parent_name', 'aadhaar_number',
                     'date_of_birth', 'gender', 'blood_group', 'place_of_birth',
                     'caste', 'sub_caste', 'board', 'previous_class',
-                    'student_batch', 'student_year', 'discount_amount', 'admission_date',
+                    'student_batch', 'discount_amount', 'admission_date',
                     'full_address', 'tahsil', 'district', 'state', 'pincode'
                 ];
 
