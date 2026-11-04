@@ -1,129 +1,143 @@
+<?php
+// ============================================================
+// Cash Memo Records — ERP with Custom Pagination & Add Button
+// ============================================================
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-   <meta charset="UTF-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cash Memo Records - ERP</title>
-    <!-- Tailwind via CDN -->
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
     <style>
-  /* Minimal custom styles – everything else is Tailwind */
-        .table-row-hover:hover {
-            background-color: #f8fafc;
-        }
         .memo-btn {
-            transition: background-color 0.2s, transform 0.1s;
+            transition: all 0.2s ease;
         }
         .memo-btn:hover {
             transform: translateY(-1px);
         }
-        .page-btn {
-            transition: background-color 0.2s;
+        .table-row-hover:hover {
+            background-color: #f8fafc;
         }
-        .page-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        /* responsive table wrapper */
         .table-wrap {
             overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        @media (max-width: 640px) {
-            .table-wrap table {
-                font-size: 0.85rem;
-            }
-            .table-wrap table th,
-            .table-wrap table td {
-                padding: 0.5rem 0.25rem;
-            }
         }
     </style>
 </head>
 
-<body class="bg-gray-300 text-gray-800 antialiased">
+<body class="bg-gray-100 text-gray-800 antialiased font-sans">
 
     <?php include 'header.php' ?>
     <?php include 'sidebar.php' ?>
 
- <main class="md:ml-[300px] max-w-7xl mx-auto px-4 sm:px-6 py-28 pb-10 mb-10 transition-all duration-200">
+    <main class="md:ml-[300px] max-w-7xl mx-auto px-4 sm:px-6 py-28 pb-10 mb-10 transition-all duration-200">
 
-        <!-- ===== CASH MEMO CARD ===== -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+        <!-- ===== HEADER WITH ADD BUTTON ===== -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Cash Memo Records</h1>
+                <p class="text-sm text-gray-500">Filter, search, view, and manage all cash memo transactions.</p>
+            </div>
+            <a href="cash_memo.php" class="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2.5 rounded-lg font-semibold shadow-md flex items-center gap-2 transition">
+                <i class="fas fa-plus"></i> Add Cash Memo
+            </a>
+        </div>
 
-            <!-- Heading -->
-            <div class="flex items-center gap-4 p-6 border-b border-gray-100">
-                <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-400 flex items-center justify-center text-2xl">
-                    <i class="fas fa-money-bill-wave"></i>
+        <!-- ===== CASH MEMO RECORDS CARD ===== -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+
+            <!-- Filters Section -->
+            <div class="p-4 sm:p-6 border-b border-gray-100 bg-gray-50/50">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 items-end">
+                    
+                    <!-- Filter Transaction Type -->
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Transaction Type</label>
+                        <select id="filterType" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 bg-white py-2 px-3 text-sm outline-none">
+                            <option value="">All Types</option>
+                            <option value="Income">Income</option>
+                            <option value="Expense">Expense</option>
+                        </select>
+                    </div>
+
+                    <!-- Filter Category -->
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Category</label>
+                        <select id="filterCategory" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 bg-white py-2 px-3 text-sm outline-none">
+                            <option value="">All Categories</option>
+                            <option value="Salary">Salary</option>
+                            <option value="Fees">Fees</option>
+                            <option value="Stationery">Stationery</option>
+                            <option value="Electric Bill">Electric Bill</option>
+                            <option value="Transportation">Transportation</option>
+                            <option value="Events">Events</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- From Date -->
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">From Date</label>
+                        <input type="date" id="fromDate" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 bg-white py-2 px-3 text-sm outline-none" />
+                    </div>
+
+                    <!-- To Date -->
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">To Date</label>
+                        <input type="date" id="toDate" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 bg-white py-2 px-3 text-sm outline-none" />
+                    </div>
+
                 </div>
-                <div>
-                    <h2 class="text-xl md:text-2xl font-bold text-gray-900">Cash Memo Records</h2>
-                    <p class="text-sm text-gray-500">Filter and view all cash memo records</p>
+
+                <div class="flex justify-end gap-2 mt-4">
+                    <button onclick="applyFilters()" class="memo-btn bg-orange-500 text-white font-bold py-2 px-5 rounded-xl hover:bg-orange-600 text-sm shadow-sm">
+                        <i class="fas fa-filter mr-1"></i> Apply Filters
+                    </button>
+                    <button onclick="resetFilters()" class="memo-btn bg-gray-200 text-gray-700 font-bold py-2 px-5 rounded-xl hover:bg-gray-300 text-sm">
+                        <i class="fas fa-undo mr-1"></i> Reset
+                    </button>
                 </div>
             </div>
 
-            <!-- Filters -->
-            <div class="p-4 sm:p-6 border-b border-gray-100">
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
-                    <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-1">From Date</label>
-                        <input type="date" id="fromDate" 
-                               class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 bg-white py-2.5 px-4" />
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-1">To Date</label>
-                        <input type="date" id="toDate" 
-                               class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 bg-white py-2.5 px-4" />
-                    </div>
-                    <div class="flex gap-3">
-                        <button onclick="filterByDate()" 
-                                class="memo-btn flex-1 bg-orange-400 text-white font-bold py-2.5 px-4 rounded-xl hover:bg-orange-700 focus:ring-2 focus:ring-orange-300">
-                            <i class="fas fa-filter mr-1"></i> Filter
-                        </button>
-                        <button onclick="resetFilter()" 
-                                class="memo-btn flex-1 bg-red-500 text-white font-bold py-2.5 px-4 rounded-xl hover:bg-red-600 focus:ring-2 focus:ring-red-300">
-                            <i class="fas fa-undo mr-1"></i> Reset
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Table -->
-            <div class="table-wrap p-4 sm:p-6">
-                <table class="w-full text-sm text-left" id="cashMemoTable">
+            <!-- Table Container -->
+            <div class="table-wrap">
+                <table class="w-full text-sm text-left border-collapse" id="cashMemoTable">
                     <thead>
-                        <tr class="bg-orange-400 text-white text-xs font-semibold uppercase tracking-wider">
-                            <th class="px-3 py-3 whitespace-nowrap">Sr No</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Cash Memo No</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Amount</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Receipt Number</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Date</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Action</th>
+                        <tr class="bg-gray-100 text-gray-600 font-semibold uppercase text-xs">
+                            <th class="px-4 py-4">SR NO</th>
+                            <th class="px-4 py-4">MEMO NO</th>
+                            <th class="px-4 py-4">TYPE</th>
+                            <th class="px-4 py-4">CATEGORY</th>
+                            <th class="px-4 py-4">AMOUNT</th>
+                            <th class="px-4 py-4">RECEIPT</th>
+                            <th class="px-4 py-4">DATE</th>
+                            <th class="px-4 py-4 text-center">ACTIONS</th>
                         </tr>
                     </thead>
-                    <tbody id="memoTableBody" class="divide-y divide-gray-100">
-                        <!-- rows injected by JS -->
+                    <tbody id="cashMemoTableBody" class="divide-y divide-gray-100">
                         <tr>
-                            <td colspan="6" class="text-center py-8 text-gray-400">Loading...</td>
+                            <td colspan="8" class="text-center py-8 text-gray-400">Loading cash memos...</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <!-- Footer / Pagination -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 border-t border-gray-100">
+            <!-- Footer / Pagination Bar (Matched to Employee Records Layout) -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 border-t border-gray-100 bg-gray-50/50">
                 <div class="text-sm text-gray-500 font-semibold">
                     Showing <span id="startEntry">0</span> to <span id="endEntry">0</span> of <span id="totalEntries">0</span> entries
                 </div>
                 <div class="flex items-center gap-2">
-                    <button id="prevPage" class="page-btn px-5 py-2 bg-orange-600 text-white font-bold rounded-xl hover:bg-orange-700 focus:ring-2 focus:ring-orange-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <button id="prevPage" onclick="changePage(-1)" class="px-5 py-2 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 focus:ring-2 focus:ring-orange-300 disabled:opacity-50 disabled:cursor-not-allowed transition">
                         <i class="fas fa-chevron-left mr-1"></i> Previous
                     </button>
                     <span id="currentPageDisplay" class="px-4 py-2 bg-orange-100 text-orange-800 font-bold rounded-xl">1</span>
-                    <button id="nextPage" class="page-btn px-5 py-2 bg-orange-400 text-white font-bold rounded-xl hover:bg-orange-700 focus:ring-2 focus:ring-orange-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <button id="nextPage" onclick="changePage(1)" class="px-5 py-2 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 focus:ring-2 focus:ring-orange-300 disabled:opacity-50 disabled:cursor-not-allowed transition">
                         Next <i class="fas fa-chevron-right ml-1"></i>
                     </button>
                 </div>
@@ -133,350 +147,474 @@
 
     </main>
 
+    <!-- ============================================================ -->
+    <!-- EDIT CASH MEMO POPUP MODAL -->
+    <!-- ============================================================ -->
+    <div id="editMemoModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-100">
+            <div class="flex items-center justify-between p-6 border-b border-gray-100">
+                <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+                    <i class="fas fa-edit text-orange-500"></i> Edit Cash Memo
+                </h3>
+                <button onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600 text-xl font-bold">&times;</button>
+            </div>
+
+            <form id="editMemoForm" class="p-6 space-y-4" onsubmit="updateCashMemo(event)">
+                <input type="hidden" id="edit_memo_id" />
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Transaction Type *</label>
+                        <select id="edit_transaction_type" onchange="handleEditCategoryDropdown()" class="w-full rounded-xl border border-gray-300 p-2.5 outline-none bg-white">
+                            <option value="income">Income</option>
+                            <option value="expense">Expense</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Category *</label>
+                        <select id="edit_category" onchange="handleEditCategoryChange()" class="w-full rounded-xl border border-gray-300 p-2.5 outline-none bg-white">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Cash Memo No *</label>
+                        <input type="text" id="edit_cash_memo_no" class="w-full rounded-xl border border-gray-300 p-2.5 outline-none" required />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Amount *</label>
+                        <input type="number" step="0.01" id="edit_amount" class="w-full rounded-xl border border-gray-300 p-2.5 outline-none" required />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">From Party</label>
+                        <input type="text" id="edit_from_party" class="w-full rounded-xl border border-gray-300 p-2.5 outline-none" />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">To Party</label>
+                        <input type="text" id="edit_to_party" class="w-full rounded-xl border border-gray-300 p-2.5 outline-none" />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Receipt Number</label>
+                        <input type="text" id="edit_receipt_number" class="w-full rounded-xl border border-gray-300 p-2.5 outline-none" />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Date *</label>
+                        <input type="date" id="edit_date" class="w-full rounded-xl border border-gray-300 p-2.5 outline-none" required />
+                    </div>
+                </div>
+
+                <!-- Conditional Employee Selector for Salary inside Edit Modal -->
+                <div id="editEmployeeSection" class="hidden bg-orange-50 p-4 rounded-xl border border-orange-200 space-y-2">
+                    <label class="block text-xs font-bold text-orange-700 uppercase">Select Employee for Salary *</label>
+                    <select id="edit_employee_id" class="w-full rounded-xl border border-orange-300 p-2.5 outline-none bg-white text-sm">
+                        <option value="">Select Employee</option>
+                    </select>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                    <button type="button" onclick="closeEditModal()" class="px-5 py-2.5 rounded-xl bg-gray-200 text-gray-700 font-bold text-sm">Cancel</button>
+                    <button type="submit" id="updateMemoBtn" class="px-6 py-2.5 rounded-xl bg-orange-500 text-white font-bold text-sm hover:bg-orange-600 shadow-sm">
+                        Update Cash Memo
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- VIEW SINGLE MEMO DETAILS POPUP MODAL -->
+    <!-- ============================================================ -->
+    <div id="viewMemoModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-gray-100">
+            <div class="flex items-center justify-between pb-4 border-b border-gray-100 mb-4">
+                <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+                    <i class="fas fa-eye text-orange-500"></i> Cash Memo Details
+                </h3>
+                <button onclick="closeViewModal()" class="text-gray-400 hover:text-gray-600 text-xl font-bold">&times;</button>
+            </div>
+            <div id="viewMemoBody" class="space-y-3 text-sm">
+                <!-- Dynamically populated -->
+            </div>
+            <div class="flex justify-end pt-4 border-t border-gray-100 mt-4">
+                <button onclick="closeViewModal()" class="px-5 py-2 rounded-xl bg-gray-200 text-gray-700 font-bold text-sm">Close</button>
+            </div>
+        </div>
+    </div>
+
     <?php include 'footer.php' ?>
     <script src="url.js"></script>
 
-<!-- ============================================================
-    JAVASCRIPT – data, pagination, filter, reset
-    ============================================================ -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token') || '';
+        const cleanBase = (typeof url !== 'undefined' && url) ? url.replace(/\/$/, '') : 'http://127.0.0.1:8000/api';
 
-            // ----- SAMPLE MEMO DATA -----
-            const memoData = [
-                { sr: 1, memoNo: 'CM-001', amount: '₹5,000', receipt: 'RCP-101', date: '2025-01-15' },
-                { sr: 2, memoNo: 'CM-002', amount: '₹3,200', receipt: 'RCP-102', date: '2025-01-16' },
-                { sr: 3, memoNo: 'CM-003', amount: '₹7,500', receipt: 'RCP-103', date: '2025-01-17' },
-                { sr: 4, memoNo: 'CM-004', amount: '₹2,100', receipt: 'RCP-104', date: '2025-01-18' },
-                { sr: 5, memoNo: 'CM-005', amount: '₹9,800', receipt: 'RCP-105', date: '2025-01-19' },
-                { sr: 6, memoNo: 'CM-006', amount: '₹4,400', receipt: 'RCP-106', date: '2025-01-20' },
-                { sr: 7, memoNo: 'CM-007', amount: '₹6,700', receipt: 'RCP-107', date: '2025-01-21' },
-                { sr: 8, memoNo: 'CM-008', amount: '₹3,900', receipt: 'RCP-108', date: '2025-01-22' },
-                { sr: 9, memoNo: 'CM-009', amount: '₹8,300', receipt: 'RCP-109', date: '2025-01-23' },
-                { sr: 10, memoNo: 'CM-010', amount: '₹1,800', receipt: 'RCP-110', date: '2025-01-24' },
-                { sr: 11, memoNo: 'CM-011', amount: '₹5,600', receipt: 'RCP-111', date: '2025-01-25' },
-                { sr: 12, memoNo: 'CM-012', amount: '₹2,950', receipt: 'RCP-112', date: '2025-01-26' }
-            ];
+        let allMemos = [];
+        let filteredMemos = [];
+        let currentPage = 1;
+        const rowsPerPage = 10;
+        let employeesList = [];
 
-            const rowsPerPage = 5;
-            let currentPage = 1;
-            let filteredData = [...memoData];
-            let totalPages = Math.ceil(filteredData.length / rowsPerPage);
-
-            const tbody = document.getElementById('memoTableBody');
-            const fromDate = document.getElementById('fromDate');
-            const toDate = document.getElementById('toDate');
-
-            function renderTable(page) {
-                const start = (page - 1) * rowsPerPage;
-                const end = Math.min(start + rowsPerPage, filteredData.length);
-                const pageItems = filteredData.slice(start, end);
-
-                if (pageItems.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="5" class="text-center py-8 text-gray-400">No records found</td></tr>`;
-                } else {
-                    let html = '';
-                    pageItems.forEach((item) => {
-                        html += `
-                            <tr class="table-row-hover transition">
-                                <td class="px-3 py-3 whitespace-nowrap">${item.sr}</td>
-                                <td class="px-3 py-3 whitespace-nowrap font-medium text-gray-900">${item.memoNo}</td>
-                                <td class="px-3 py-3 whitespace-nowrap font-semibold text-orange-700">${item.amount}</td>
-                                <td class="px-3 py-3 whitespace-nowrap">${item.receipt}</td>
-                                <td class="px-3 py-3 whitespace-nowrap">${item.date}</td>
-                            </tr>
-                        `;
-                    });
-                    tbody.innerHTML = html;
-                }
-
-                // Update footer info
-                document.getElementById('startEntry').textContent = filteredData.length ? start + 1 : 0;
-                document.getElementById('endEntry').textContent = end;
-                document.getElementById('totalEntries').textContent = filteredData.length;
-                document.getElementById('currentPageDisplay').textContent = page;
-
-                // Update pagination buttons
-                document.getElementById('prevPage').disabled = (page === 1);
-                document.getElementById('nextPage').disabled = (page === totalPages || filteredData.length === 0);
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!token) {
+                alert('Session expired. Please log in again.');
+                window.location.href = 'login.php';
+                return;
             }
-
-            function updatePagination() {
-                totalPages = Math.ceil(filteredData.length / rowsPerPage);
-                if (currentPage > totalPages) currentPage = totalPages || 1;
-                renderTable(currentPage);
-            }
-
-            // Pagination event listeners
-            document.getElementById('prevPage').addEventListener('click', function() {
-                if (currentPage > 1) {
-                    currentPage--;
-                    renderTable(currentPage);
-                }
-            });
-
-            document.getElementById('nextPage').addEventListener('click', function() {
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    renderTable(currentPage);
-                }
-            });
-
-            // ----- FILTER FUNCTION -----
-            window.filterByDate = function() {
-                const from = fromDate.value;
-                const to = toDate.value;
-
-                filteredData = memoData.filter(item => {
-                    let match = true;
-                    if (from && item.date < from) match = false;
-                    if (to && item.date > to) match = false;
-                    return match;
-                });
-
-                currentPage = 1;
-                updatePagination();
-            };
-
-            // ----- RESET FUNCTION -----
-            window.resetFilter = function() {
-                fromDate.value = '';
-                toDate.value = '';
-                filteredData = [...memoData];
-                currentPage = 1;
-                updatePagination();
-            };
-
-            // Initial render
-            updatePagination();
-
-            // Optional: auto-filter on date change? We'll keep manual.
+            fetchCashMemos();
+            fetchEmployeesForDropdown();
         });
-    </script>
 
+        // ============================================================
+        // FETCH ALL CASH MEMOS
+        // ============================================================
+        async function fetchCashMemos() {
+            try {
+                const res = await fetch(`${cleanBase}/cash-memos`, {
+                    headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' }
+                });
+                const result = await res.json();
 
-    <script>
-        // =========================
-        // LOAD DATA
-        // =========================
+                if (res.status === 401) {
+                    alert('Session expired. Please log in again.');
+                    window.location.href = 'login.php';
+                    return;
+                }
+                if (!res.ok) throw new Error(result.message || 'Failed to fetch cash memos.');
 
-        window.onload = function() {
+                allMemos = result.data || [];
+                filteredMemos = [...allMemos];
+                currentPage = 1;
+                renderTable();
 
-            getCashMemos();
-
+            } catch (err) {
+                console.error(err);
+                document.getElementById('cashMemoTableBody').innerHTML = `<tr><td colspan="8" class="text-center py-8 text-red-500">${err.message}</td></tr>`;
+            }
         }
 
-
-
-        // =========================
-        // GET CASH MEMOS
-        // =========================
-
-        async function getCashMemos() {
-            // Robust token retrieval supporting all login key variations
-            const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || localStorage.getItem('accessToken') || sessionStorage.getItem('token') || '';
-
+        // ============================================================
+        // FETCH EMPLOYEES FOR EDIT MODAL DROPDOWN
+        // ============================================================
+        async function fetchEmployeesForDropdown() {
             try {
-                const response = await fetch(
-                    url + "cash-memos/",
-                    {
-                        method: "GET",
-                        headers: {
-                            "Accept": "application/json",
-                            "Authorization": "Bearer " + token
-                        }
-                    }
-                );
+                const res = await fetch(`${cleanBase}/employees`, {
+                    headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' }
+                });
+                const result = await res.json();
+                if (res.ok) {
+                    employeesList = result.data || result;
+                    const editSelect = document.getElementById('edit_employee_id');
+                    editSelect.innerHTML = '<option value="">Select Employee</option>' + 
+                        employeesList.map(e => `<option value="${e.id}">${e.employee_code} — ${e.employee_name}</option>`).join('');
+                }
+            } catch (err) {
+                console.error('Error fetching employees:', err);
+            }
+        }
 
-                const result = await response.json();
+        // ============================================================
+        // RENDER TABLE WITH CUSTOM PAGINATION
+        // ============================================================
+        function renderTable() {
+            const tbody = document.getElementById('cashMemoTableBody');
+            const totalEntries = filteredMemos.length;
+            const totalPages = Math.ceil(totalEntries / rowsPerPage) || 1;
 
-                if (response.status === 401) { alert('Your session has expired. Please log in again.'); window.location.href = 'login.php'; return; }
-                if (response.status === 403) throw new Error('You do not have permission to view cash memos.');
-                if (response.status === 404) throw new Error(result.message || 'Cash memo records were not found.');
-                if (!response.ok) throw new Error(result.message || 'Unable to load cash memo records.');
-                
-                const payload = result.data || result;
-                const cashMemos = Array.isArray(payload) ? payload : (payload.data || []);
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
 
-                const tableBody = document.getElementById("cashMemoTableBody");
-                tableBody.innerHTML = "";
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = Math.min(start + rowsPerPage, totalEntries);
+            const pageItems = filteredMemos.slice(start, end);
 
-                if (cashMemos.length === 0) {
-                    tableBody.innerHTML = `
-                        <tr>
-                            <td colspan="6" class="text-center py-10 text-slate-400">
-                                No Cash Memo Found
+            if (totalEntries === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-gray-400">No cash memo records found</td></tr>`;
+            } else {
+                tbody.innerHTML = pageItems.map((item, index) => {
+                    const txType = item.transaction_type ? item.transaction_type.toString() : 'Expense';
+                    const typeColor = txType.toLowerCase() === 'income' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700';
+                    const employeeName = item.employee && item.employee.employee_name ? ` (${item.employee.employee_name})` : '';
+
+                    return `
+                        <tr class="table-row-hover transition text-sm">
+                            <td class="px-4 py-4 font-semibold text-gray-600">${start + index + 1}</td>
+                            <td class="px-4 py-4 font-mono font-bold text-gray-900">${item.cash_memo_no || '—'}</td>
+                            <td class="px-4 py-4"><span class="px-2.5 py-1 rounded-full text-xs font-bold uppercase ${typeColor}">${txType}</span></td>
+                            <td class="px-4 py-4 font-medium text-gray-800">${item.category || '—'}${employeeName}</td>
+                            <td class="px-4 py-4 font-bold text-orange-600">₹ ${parseFloat(item.amount || 0).toFixed(2)}</td>
+                            <td class="px-4 py-4 text-gray-600">${item.receipt_number || '—'}</td>
+                            <td class="px-4 py-4 text-gray-600">${item.date || '—'}</td>
+                            <td class="px-4 py-4 text-center">
+                                <div class="flex items-center justify-center gap-2">
+                                    <button onclick="viewMemo(${item.id})" class="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 hover:bg-teal-100 flex items-center justify-center transition" title="View Details">
+                                        <i class="fas fa-eye text-xs"></i>
+                                    </button>
+                                    <button onclick="openEditModal(${item.id})" class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center transition" title="Edit Memo">
+                                        <i class="fas fa-pen text-xs"></i>
+                                    </button>
+                                    <button onclick="deleteMemo(${item.id})" class="w-8 h-8 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 flex items-center justify-center transition" title="Delete Memo">
+                                        <i class="fas fa-trash text-xs"></i>
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     `;
-                    return;
-                }
+                }).join('');
+            }
 
-                cashMemos.forEach((item, index) => {
-                    tableBody.innerHTML += `
-                        <tr>
-                            <td>${index + 1}</td>
-                            <td>${item.cash_memo_no}</td>
-                            <td>₹ ${item.amount}</td>
-                            <td>${item.receipt_number}</td>
-                            <td>${item.date || item.cash_memo_date || item.created_at || '—'}</td>
-                            <td><button type="button" class="view-cash-memo-btn text-orange-600 hover:text-orange-800" data-id="${item.id}" title="View cash memo"><i class="fas fa-eye"></i> View</button></td>
-                        </tr>
-                    `;
+            // Update footer pagination info
+            document.getElementById('startEntry').textContent = totalEntries ? start + 1 : 0;
+            document.getElementById('endEntry').textContent = end;
+            document.getElementById('totalEntries').textContent = totalEntries;
+            document.getElementById('currentPageDisplay').textContent = currentPage;
+
+            document.getElementById('prevPage').disabled = (currentPage === 1);
+            document.getElementById('nextPage').disabled = (currentPage === totalPages || totalEntries === 0);
+        }
+
+        // Pagination Click Handler
+        function changePage(direction) {
+            const totalPages = Math.ceil(filteredMemos.length / rowsPerPage) || 1;
+            currentPage += direction;
+            if (currentPage < 1) currentPage = 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+            renderTable();
+        }
+
+        // ============================================================
+        // FILTERS LOGIC
+        // ============================================================
+        function applyFilters() {
+            const typeFilter = document.getElementById('filterType').value.toLowerCase();
+            const categoryFilter = document.getElementById('filterCategory').value;
+            const fromDate = document.getElementById('fromDate').value;
+            const toDate = document.getElementById('toDate').value;
+
+            filteredMemos = allMemos.filter(item => {
+                const itemType = item.transaction_type ? item.transaction_type.toLowerCase() : '';
+                if (typeFilter && itemType !== typeFilter) return false;
+                if (categoryFilter && item.category !== categoryFilter) return false;
+                if (fromDate && item.date < fromDate) return false;
+                if (toDate && item.date > toDate) return false;
+                return true;
+            });
+
+            currentPage = 1;
+            renderTable();
+        }
+
+        function resetFilters() {
+            document.getElementById('filterType').value = '';
+            document.getElementById('filterCategory').value = '';
+            document.getElementById('fromDate').value = '';
+            document.getElementById('toDate').value = '';
+            filteredMemos = [...allMemos];
+            currentPage = 1;
+            renderTable();
+        }
+
+        // ============================================================
+        // VIEW SINGLE CASH MEMO
+        // ============================================================
+        async function viewMemo(id) {
+            try {
+                const res = await fetch(`${cleanBase}/cash-memos/show/${id}`, {
+                    headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' }
                 });
+                const result = await res.json();
+                if (!res.ok) throw new Error(result.message || 'Failed to fetch details.');
 
-                tableBody.querySelectorAll('.view-cash-memo-btn').forEach(button => button.addEventListener('click', async () => {
-                    try {
-                        const detailRes = await fetch(url + 'cash-memos/show/' + encodeURIComponent(button.dataset.id), {headers:{'Authorization':'Bearer ' + token,'Accept':'application/json'}});
-                        const detail = await detailRes.json().catch(() => ({}));
-                        if (detailRes.status === 401) { alert('Your session has expired. Please log in again.'); window.location.href='login.php'; return; }
-                        if (detailRes.status === 403) throw new Error('You do not have permission to view this cash memo.');
-                        if (detailRes.status === 404) throw new Error(detail.message || 'Cash memo was not found.');
-                        if (!detailRes.ok) throw new Error(detail.message || 'Unable to load cash memo details.');
-                        const memo = detail.data?.cash_memo || detail.data || detail;
-                        alert([`Memo: ${memo.cash_memo_no || '—'}`, `Amount: ₹${memo.amount || 0}`, `Receipt: ${memo.receipt_number || '—'}`, `Date: ${memo.date || memo.cash_memo_date || memo.created_at || '—'}`, `Transaction: ${memo.transaction_type || '—'}`].join('\n'));
-                    } catch (error) { alert(error.message); }
-                }));
+                const memo = result.data;
+                const modalBody = document.getElementById('viewMemoBody');
+                
+                const row = (label, val) => `
+                    <div class="flex justify-between border-b border-gray-100 py-2">
+                        <span class="text-gray-500 font-semibold w-1/3">${label}</span>
+                        <span class="text-gray-900 w-2/3 text-right font-medium">${val || '—'}</span>
+                    </div>`;
 
-                $('#cashMemoTable').DataTable({
-                    destroy: true,
-                    responsive: true,
-                    pageLength: 10,
-                    lengthMenu: [[10,25,50,100],[10,25,50,100]],
-                    dom:'Bfrtip',
-                    buttons:['copy','csv','excel','pdf','print']
-                });
+                modalBody.innerHTML = `
+                    ${row('Memo Number', memo.cash_memo_no)}
+                    ${row('Transaction Type', memo.transaction_type)}
+                    ${row('Category', memo.category)}
+                    ${memo.employee ? row('Employee', `${memo.employee.employee_name} (${memo.employee.employee_code})`) : ''}
+                    ${row('Amount', '₹ ' + parseFloat(memo.amount).toFixed(2))}
+                    ${row('From Party', memo.from_party)}
+                    ${row('To Party', memo.to_party)}
+                    ${row('Receipt Number', memo.receipt_number)}
+                    ${row('Transaction Date', memo.date)}
+                `;
 
-            } catch (error) {
-                console.error(error);
-                document.getElementById('cashMemoTableBody').innerHTML = `<tr><td colspan="6" class="text-center py-8 text-red-600">${error.message}</td></tr>`;
+                document.getElementById('viewMemoModal').classList.remove('hidden');
+            } catch (err) {
+                alert(err.message);
             }
         }
-        // =========================
-        // FILTER DATE
-        // =========================
 
-        function filterByDate() {
+        function closeViewModal() {
+            document.getElementById('viewMemoModal').classList.add('hidden');
+        }
 
-            const fromDate =
-                document.getElementById(
-                    "fromDate"
-                ).value;
+        // ============================================================
+        // EDIT MODAL & DYNAMIC CATEGORIES
+        // ============================================================
+        async function openEditModal(id) {
+            try {
+                const res = await fetch(`${cleanBase}/cash-memos/show/${id}`, {
+                    headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' }
+                });
+                const result = await res.json();
+                if (!res.ok) throw new Error(result.message || 'Failed to load memo data.');
 
+                const memo = result.data;
+                document.getElementById('edit_memo_id').value = memo.id;
+                document.getElementById('edit_transaction_type').value = memo.transaction_type ? memo.transaction_type.toLowerCase() : 'expense';
+                
+                handleEditCategoryDropdown();
+                document.getElementById('edit_category').value = memo.category || '';
+                
+                document.getElementById('edit_cash_memo_no').value = memo.cash_memo_no || '';
+                document.getElementById('edit_amount').value = memo.amount || '';
+                document.getElementById('edit_from_party').value = memo.from_party || '';
+                document.getElementById('edit_to_party').value = memo.to_party || '';
+                document.getElementById('edit_receipt_number').value = memo.receipt_number || '';
+                document.getElementById('edit_date').value = memo.date || '';
 
-
-            const toDate =
-                document.getElementById(
-                    "toDate"
-                ).value;
-
-
-
-            const table =
-                $('#cashMemoTable')
-                .DataTable();
-
-
-
-            $.fn.dataTable.ext.search.push(
-
-                function(settings, data) {
-
-                    const rowDate =
-                        data[4];
-
-
-
-                    if (
-
-                        (!fromDate && !toDate)
-
-                    ) {
-
-                        return true;
-
-                    }
-
-
-
-                    if (
-
-                        fromDate &&
-                        rowDate < fromDate
-
-                    ) {
-
-                        return false;
-
-                    }
-
-
-
-                    if (
-
-                        toDate &&
-                        rowDate > toDate
-
-                    ) {
-
-                        return false;
-
-                    }
-
-
-
-                    return true;
-
+                handleEditCategoryChange();
+                if (memo.employee_id) {
+                    document.getElementById('edit_employee_id').value = memo.employee_id;
                 }
 
-            );
-
-
-
-            table.draw();
-
+                document.getElementById('editMemoModal').classList.remove('hidden');
+            } catch (err) {
+                alert(err.message);
+            }
         }
 
-        function resetFilter() {
+        function closeEditModal() {
+            document.getElementById('editMemoModal').classList.add('hidden');
+        }
 
-            document.getElementById(
-                "fromDate"
-            ).value = "";
+        function handleEditCategoryDropdown() {
+            const type = document.getElementById('edit_transaction_type').value;
+            const categorySelect = document.getElementById('edit_category');
+            categorySelect.innerHTML = '';
 
+            let cats = [];
+            if (type === 'income') {
+                cats = ['Fees', 'Events', 'Other'];
+            } else {
+                cats = ['Salary', 'Stationery', 'Electric Bill', 'Transportation', 'Events', 'Other'];
+            }
 
+            cats.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c;
+                opt.textContent = c;
+                categorySelect.appendChild(opt);
+            });
+            handleEditCategoryChange();
+        }
 
-            document.getElementById(
-                "toDate"
-            ).value = "";
+        function handleEditCategoryChange() {
+            const category = document.getElementById('edit_category').value;
+            const empSection = document.getElementById('editEmployeeSection');
+            if (category === 'Salary') {
+                empSection.classList.remove('hidden');
+            } else {
+                empSection.classList.add('hidden');
+                document.getElementById('edit_employee_id').value = '';
+            }
+        }
 
+        // ============================================================
+        // UPDATE CASH MEMO API SUBMISSION
+        // ============================================================
+        async function updateCashMemo(event) {
+            event.preventDefault();
+            const id = document.getElementById('edit_memo_id').value;
+            const category = document.getElementById('edit_category').value;
+            const employeeId = document.getElementById('edit_employee_id').value;
+            const updateBtn = document.getElementById('updateMemoBtn');
 
+            if (category === 'Salary' && !employeeId) {
+                alert('Please select an employee for Salary payment.');
+                return;
+            }
 
-            $.fn.dataTable.ext.search = [];
+            const payload = {
+                transaction_type: document.getElementById('edit_transaction_type').value.toLowerCase(),
+                category: category,
+                cash_memo_no: document.getElementById('edit_cash_memo_no').value.trim(),
+                amount: document.getElementById('edit_amount').value,
+                from_party: document.getElementById('edit_from_party').value.trim(),
+                to_party: document.getElementById('edit_to_party').value.trim(),
+                receipt_number: document.getElementById('edit_receipt_number').value.trim(),
+                date: document.getElementById('edit_date').value,
+                employee_id: (category === 'Salary' && employeeId) ? parseInt(employeeId) : null
+            };
 
+            try {
+                updateBtn.disabled = true;
+                updateBtn.textContent = 'Updating...';
 
+                const res = await fetch(`${cleanBase}/cash-memos/update/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
 
-            $('#cashMemoTable')
-                .DataTable()
-                .draw();
+                const result = await res.json();
+                if (!res.ok) {
+                    let msg = result.message || 'Failed to update cash memo.';
+                    if (result.errors) msg = Object.values(result.errors).flat().join('\n');
+                    throw new Error(msg);
+                }
 
+                alert(result.message || 'Cash memo updated successfully ✅');
+                closeEditModal();
+                fetchCashMemos();
+
+            } catch (err) {
+                alert(err.message);
+            } finally {
+                updateBtn.disabled = false;
+                updateBtn.textContent = 'Update Cash Memo';
+            }
+        }
+
+        // ============================================================
+        // DELETE CASH MEMO API
+        // ============================================================
+        async function deleteMemo(id) {
+            if (!confirm('Are you sure you want to delete this cash memo record?')) return;
+
+            try {
+                const res = await fetch(`${cleanBase}/cash-memos/delete/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' }
+                });
+
+                const result = await res.json();
+                if (!res.ok) throw new Error(result.message || 'Failed to delete cash memo.');
+
+                alert(result.message || 'Cash memo deleted successfully.');
+                fetchCashMemos();
+            } catch (err) {
+                alert(err.message);
+            }
         }
     </script>
-
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
-    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
-
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 </body>
 
 </html>

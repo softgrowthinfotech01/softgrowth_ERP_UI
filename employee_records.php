@@ -1,6 +1,6 @@
 <?php
 // ============================================================
-// Employee Records — List + View Popup + Edit Registration Form (Live API)
+// Employee Records — List + View Popup + Edit Registration Form (Live API with Pagination)
 // ============================================================
 ?>
 <!DOCTYPE html>
@@ -86,7 +86,8 @@
                 <div class="flex gap-4 w-full md:w-auto">
                     <div class="relative w-full md:w-64">
                         <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-<input type="text" id="searchInput" oninput="triggerSearch(this.value)" placeholder="Search Name or ID..." class="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none">                    </div>
+                        <input type="text" id="searchInput" oninput="triggerSearch(this.value)" placeholder="Search Name or ID..." class="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none">
+                    </div>
                     <select id="roleFilter" class="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:border-orange-500 outline-none bg-white">
                         <option value="">All Designations</option>
                         <!-- Populated dynamically -->
@@ -114,6 +115,23 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- Footer / Pagination -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 border-t border-gray-100 bg-gray-50/50">
+                <div class="text-sm text-gray-500 font-semibold">
+                    Showing <span id="startEntry">0</span> to <span id="endEntry">0</span> of <span id="totalEntries">0</span> entries
+                </div>
+                <div class="flex items-center gap-2">
+                    <button id="prevPage" onclick="changePage(-1)" class="px-5 py-2 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 focus:ring-2 focus:ring-orange-300 disabled:opacity-50 disabled:cursor-not-allowed transition">
+                        <i class="fas fa-chevron-left mr-1"></i> Previous
+                    </button>
+                    <span id="currentPageDisplay" class="px-4 py-2 bg-orange-100 text-orange-800 font-bold rounded-xl">1</span>
+                    <button id="nextPage" onclick="changePage(1)" class="px-5 py-2 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 focus:ring-2 focus:ring-orange-300 disabled:opacity-50 disabled:cursor-not-allowed transition">
+                        Next <i class="fas fa-chevron-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+
         </div>
     </main>
 
@@ -339,20 +357,20 @@
 <script>
     'use strict';
 
-    // 1. Token & Base URL Configuration with fallback
     const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token');
     if (!token) {
         alert('Session expired. Please log in again.');
         window.location.href = 'login.php';
     }
 
-    // Fallback to direct URL if url.js hasn't loaded properly
     const cleanBase = (typeof url !== 'undefined' && url) ? url.replace(/\/$/, '') : 'http://127.0.0.1:8000/api';
     const storageRoot = cleanBase.replace(/\/api$/, '');
 
-    console.log("ERP Loaded. API Base URL:", cleanBase);
-
     let designations = [];
+    let allEmployees = [];
+    let currentPage = 1;
+    const rowsPerPage = 10;
+
     const tbody = document.getElementById('employeeTableBody');
     const employeeModal = document.getElementById('employeeModal');
     const viewModal = document.getElementById('viewModal');
@@ -364,17 +382,20 @@
         return `${storageRoot}/storage/${clean}`;
     }
 
-    // 2. Direct Search Trigger (Connected via oninput in HTML)
+    // ============================================================
+    // GLOBAL SEARCH TRIGGER
+    // ============================================================
     let searchTimer;
     function triggerSearch(val) {
-        console.log("Search input triggered with value:", val);
+        console.log("🔍 Search typing detected:", val);
         clearTimeout(searchTimer);
         searchTimer = setTimeout(() => {
-            fetchEmployees();
-        }, 300); // 300ms debounce
+            currentPage = 1; // Reset to first page on search
+            fetchEmployees(val);
+        }, 300);
     }
 
-    // 3. Fetch Designations for dropdowns
+    // Fetch Designations for dropdowns
     async function fetchDesignations() {
         try {
             const res = await fetch(`${cleanBase}/designations`, {
@@ -401,12 +422,14 @@
         }
     }
 
-    // 4. Fetch or Search Employees via Backend API
-    async function fetchEmployees() {
-        const searchInput = document.getElementById('searchInput');
-        const roleFilter = document.getElementById('roleFilter');
+    // Fetch or Search Employees via Backend API
+    async function fetchEmployees(queryVal = '') {
+        if (queryVal === '') {
+            const searchInput = document.getElementById('searchInput');
+            queryVal = searchInput ? searchInput.value.trim() : '';
+        }
 
-        const queryVal = searchInput ? searchInput.value.trim() : '';
+        const roleFilter = document.getElementById('roleFilter');
         const desigVal = roleFilter ? roleFilter.value : '';
 
         const params = new URLSearchParams();
@@ -414,14 +437,15 @@
         if (desigVal) params.append('designation_id', desigVal);
 
         const endpoint = `${cleanBase}/employees/search${params.toString() ? '?' + params.toString() : ''}`;
-        console.log("Fetching from endpoint:", endpoint);
+        console.log("🚀 Hitting Search Endpoint:", endpoint);
 
         try {
             const res = await fetch(endpoint, {
-                headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
+                headers: { 
+                    'Authorization': `Bearer ${token}`, 
+                    'Accept': 'application/json' 
+                }
             });
-
-            console.log("Response status:", res.status);
 
             if (res.status === 401) {
                 alert('Session expired. Please log in again.');
@@ -430,66 +454,98 @@
             }
 
             const result = await res.json();
-            console.log("API Response Data:", result);
+            console.log("📦 Response Data:", result);
 
             if (res.ok) {
-                renderTable(result.data || []);
+                allEmployees = result.data || [];
+                renderTable();
             } else {
                 if (tbody) tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-red-500">${result.message || 'Failed to load records.'}</td></tr>`;
             }
         } catch (err) {
-            console.error('Fetch employees network error:', err);
-            if (tbody) tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-red-500">Network error while loading records. Check console.</td></tr>`;
+            console.error('❌ Network or Fetch Error:', err);
+            if (tbody) tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-red-500">Network error while loading records.</td></tr>`;
         }
     }
 
-    // 5. Render Table
-    function renderTable(employees) {
+    // Render Table with Pagination Support
+    function renderTable() {
         if (!tbody) return;
-        if (employees.length === 0) {
+
+        const totalEntries = allEmployees.length;
+        const totalPages = Math.ceil(totalEntries / rowsPerPage) || 1;
+
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
+
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = Math.min(start + rowsPerPage, totalEntries);
+        const pageItems = allEmployees.slice(start, end);
+
+        if (totalEntries === 0) {
             tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-gray-500">No employee records found</td></tr>`;
-            return;
+        } else {
+            tbody.innerHTML = pageItems.map(item => {
+                const statusColor = item.employee_status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600';
+                const designationName = item.designation?.name || item.designation?.designation_name || '—';
+                const photoUrl = resolvePhoto(item.profile_photo, item.employee_name);
+                
+                return `
+                    <tr class="table-row-hover transition">
+                        <td class="px-4 py-3">
+                            <img src="${photoUrl}" alt="${item.employee_name}" class="w-10 h-10 rounded-full object-cover border border-gray-200 shadow-sm" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(item.employee_name)}'">
+                        </td>
+                        <td class="px-4 py-3 font-mono font-semibold text-gray-800">${item.employee_code || '—'}</td>
+                        <td class="px-4 py-3 font-medium text-gray-900">${item.employee_name}</td>
+                        <td class="px-4 py-3"><span class="bg-orange-100 text-orange-700 px-2.5 py-1 rounded-full text-xs font-semibold">${designationName}</span></td>
+                        <td class="px-4 py-3">${item.mobile_number}</td>
+                        <td class="px-4 py-3">${formatDate(item.date_of_joining)}</td>
+                        <td class="px-4 py-3"><span class="px-2.5 py-1 rounded-full text-xs font-semibold ${statusColor}">${item.employee_status}</span></td>
+                        <td class="px-4 py-3 text-center">
+                            <div class="flex items-center justify-center gap-2">
+                                <button onclick="viewEmployee(${item.id})" class="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 hover:bg-teal-100 flex items-center justify-center transition" title="View Details">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button onclick="editEmployee(${item.id})" class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center transition" title="Edit Full Details">
+                                    <i class="fas fa-pen"></i>
+                                </button>
+                                <button onclick="deleteEmployee(${item.id})" class="w-8 h-8 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 flex items-center justify-center transition" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
         }
 
-        tbody.innerHTML = employees.map(item => {
-            const statusColor = item.employee_status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600';
-            const designationName = item.designation?.name || item.designation?.designation_name || '—';
-            const photoUrl = resolvePhoto(item.profile_photo, item.employee_name);
-            
-            return `
-                <tr class="table-row-hover transition">
-                    <td class="px-4 py-3">
-                        <img src="${photoUrl}" alt="${item.employee_name}" class="w-10 h-10 rounded-full object-cover border border-gray-200 shadow-sm" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(item.employee_name)}'">
-                    </td>
-                    <td class="px-4 py-3 font-mono font-semibold text-gray-800">${item.employee_code || '—'}</td>
-                    <td class="px-4 py-3 font-medium text-gray-900">${item.employee_name}</td>
-                    <td class="px-4 py-3"><span class="bg-orange-100 text-orange-700 px-2.5 py-1 rounded-full text-xs font-semibold">${designationName}</span></td>
-                    <td class="px-4 py-3">${item.mobile_number}</td>
-                    <td class="px-4 py-3">${formatDate(item.date_of_joining)}</td>
-                    <td class="px-4 py-3"><span class="px-2.5 py-1 rounded-full text-xs font-semibold ${statusColor}">${item.employee_status}</span></td>
-                    <td class="px-4 py-3 text-center">
-                        <div class="flex items-center justify-center gap-2">
-                            <button onclick="viewEmployee(${item.id})" class="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 hover:bg-teal-100 flex items-center justify-center transition" title="View Details">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button onclick="editEmployee(${item.id})" class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center transition" title="Edit Full Details">
-                                <i class="fas fa-pen"></i>
-                            </button>
-                            <button onclick="deleteEmployee(${item.id})" class="w-8 h-8 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 flex items-center justify-center transition" title="Delete">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            `;
-        }).join('');
+        // Update footer pagination info
+        document.getElementById('startEntry').textContent = totalEntries ? start + 1 : 0;
+        document.getElementById('endEntry').textContent = end;
+        document.getElementById('totalEntries').textContent = totalEntries;
+        document.getElementById('currentPageDisplay').textContent = currentPage;
+
+        document.getElementById('prevPage').disabled = (currentPage === 1);
+        document.getElementById('nextPage').disabled = (currentPage === totalPages || totalEntries === 0);
     }
 
-    // 6. Initial Load on DOMContentLoaded
+    // Pagination Click Handler
+    function changePage(direction) {
+        const totalPages = Math.ceil(allEmployees.length / rowsPerPage) || 1;
+        currentPage += direction;
+        if (currentPage < 1) currentPage = 1;
+        if (currentPage > totalPages) currentPage = totalPages;
+        renderTable();
+    }
+
+    // Initial Load & Filter Setup
     document.addEventListener('DOMContentLoaded', () => {
         const roleFilter = document.getElementById('roleFilter');
         if (roleFilter) {
-            roleFilter.addEventListener('change', fetchEmployees);
+            roleFilter.addEventListener('change', () => {
+                currentPage = 1;
+                fetchEmployees();
+            });
         }
 
         fetchDesignations();
@@ -686,7 +742,7 @@
         } catch (err) {
             console.error('Save error:', err);
             banner.textContent = err.message;
-            banner.classList.remove('hidden'); // Fixed: was classList.add('hidden')
+            banner.classList.remove('hidden');
         } finally {
             saveBtn.disabled = false;
             saveBtn.innerHTML = `<i class="fas fa-save"></i> Save`;
@@ -731,6 +787,7 @@
     window.closeEmployeeModal = closeEmployeeModal;
     window.saveEmployee = saveEmployee;
     window.previewImage = previewImage;
+    window.changePage = changePage;
 </script>
 </body>
 </html>
