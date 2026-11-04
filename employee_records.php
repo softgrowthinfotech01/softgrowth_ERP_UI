@@ -86,8 +86,7 @@
                 <div class="flex gap-4 w-full md:w-auto">
                     <div class="relative w-full md:w-64">
                         <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" id="searchInput" placeholder="Search Name or ID..." class="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none">
-                    </div>
+<input type="text" id="searchInput" oninput="triggerSearch(this.value)" placeholder="Search Name or ID..." class="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none">                    </div>
                     <select id="roleFilter" class="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:border-orange-500 outline-none bg-white">
                         <option value="">All Designations</option>
                         <!-- Populated dynamically -->
@@ -337,167 +336,175 @@
 <?php include 'footer.php'; ?>
 <script src="url.js"></script>
 
-    <script>
-    (function () {
-        'use strict';
+<script>
+    'use strict';
 
-        // Token & Base URL configuration
-        const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token');
-        if (!token) {
-            alert('Session expired. Please log in again.');
-            window.location.href = 'login.php';
-            return;
-        }
+    // 1. Token & Base URL Configuration with fallback
+    const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token');
+    if (!token) {
+        alert('Session expired. Please log in again.');
+        window.location.href = 'login.php';
+    }
 
-        const baseUrl = typeof url !== 'undefined' ? url : '';
-        const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
-        const storageRoot = cleanBase.replace(/\/api$/, '');
+    // Fallback to direct URL if url.js hasn't loaded properly
+    const cleanBase = (typeof url !== 'undefined' && url) ? url.replace(/\/$/, '') : 'http://127.0.0.1:8000/api';
+    const storageRoot = cleanBase.replace(/\/api$/, '');
 
-        let employees = [];
-        let designations = [];
-        let filtered = [];
+    console.log("ERP Loaded. API Base URL:", cleanBase);
 
-        const tbody = document.getElementById('employeeTableBody');
-        const roleFilter = document.getElementById('roleFilter');
-        const searchInput = document.getElementById('searchInput');
-        
-        const employeeModal = document.getElementById('employeeModal');
-        const viewModal = document.getElementById('viewModal');
+    let designations = [];
+    const tbody = document.getElementById('employeeTableBody');
+    const employeeModal = document.getElementById('employeeModal');
+    const viewModal = document.getElementById('viewModal');
 
-        // Helper to resolve profile photo URL
-        function resolvePhoto(path, name = 'Staff') {
-            if (!path) return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=f3f4f6&color=9ca3af`;
-            if (/^https?:\/\//i.test(path)) return path;
-            const clean = path.replace(/^\/+/, '');
-            return `${storageRoot}/storage/${clean}`;
-        }
+    function resolvePhoto(path, name = 'Staff') {
+        if (!path) return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=f3f4f6&color=9ca3af`;
+        if (/^https?:\/\//i.test(path)) return path;
+        const clean = path.replace(/^\/+/, '');
+        return `${storageRoot}/storage/${clean}`;
+    }
 
-        // ============================================================
-        // 1. FETCH DESIGNATIONS & EMPLOYEES FROM API
-        // ============================================================
-        async function fetchDesignations() {
-            try {
-                const res = await fetch(`${cleanBase}/designations`, {
-                    headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
-                });
-                const result = await res.json();
-                if (res.ok) {
-                    designations = result.data || result;
-                    
-                    // Populate modal dropdown
-                    const modalSelect = document.getElementById('m_designation');
+    // 2. Direct Search Trigger (Connected via oninput in HTML)
+    let searchTimer;
+    function triggerSearch(val) {
+        console.log("Search input triggered with value:", val);
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => {
+            fetchEmployees();
+        }, 300); // 300ms debounce
+    }
+
+    // 3. Fetch Designations for dropdowns
+    async function fetchDesignations() {
+        try {
+            const res = await fetch(`${cleanBase}/designations`, {
+                headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
+            });
+            const result = await res.json();
+            if (res.ok) {
+                designations = result.data || result;
+                
+                const modalSelect = document.getElementById('m_designation');
+                if (modalSelect) {
                     modalSelect.innerHTML = '<option value="">Select Designation</option>' + 
                         designations.map(d => `<option value="${d.id}">${d.name || d.designation_name}</option>`).join('');
+                }
 
-                    // Populate filter dropdown
+                const roleFilter = document.getElementById('roleFilter');
+                if (roleFilter) {
                     roleFilter.innerHTML = '<option value="">All Designations</option>' + 
                         designations.map(d => `<option value="${d.id}">${d.name || d.designation_name}</option>`).join('');
                 }
-            } catch (err) {
-                console.error('Failed to load designations:', err);
             }
+        } catch (err) {
+            console.error('Failed to load designations:', err);
         }
+    }
 
-        async function fetchEmployees() {
-            try {
-                const res = await fetch(`${cleanBase}/employees`, {
-                    headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
-                });
+    // 4. Fetch or Search Employees via Backend API
+    async function fetchEmployees() {
+        const searchInput = document.getElementById('searchInput');
+        const roleFilter = document.getElementById('roleFilter');
 
-                if (res.status === 401) {
-                    alert('Session expired. Please log in again.');
-                    window.location.href = 'login.php';
-                    return;
-                }
+        const queryVal = searchInput ? searchInput.value.trim() : '';
+        const desigVal = roleFilter ? roleFilter.value : '';
 
-                const result = await res.json();
-                if (res.ok) {
-                    employees = result.data || [];
-                    filtered = [...employees];
-                    renderTable();
-                } else {
-                    tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-red-500">${result.message || 'Failed to load records.'}</td></tr>`;
-                }
-            } catch (err) {
-                console.error('Fetch employees error:', err);
-                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-red-500">Network error while loading records.</td></tr>`;
-            }
-        }
+        const params = new URLSearchParams();
+        if (queryVal) params.append('q', queryVal);
+        if (desigVal) params.append('designation_id', desigVal);
 
-        // ============================================================
-        // 2. RENDER TABLE
-        // ============================================================
-        function renderTable() {
-            if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-gray-500">No employee records found</td></tr>`;
+        const endpoint = `${cleanBase}/employees/search${params.toString() ? '?' + params.toString() : ''}`;
+        console.log("Fetching from endpoint:", endpoint);
+
+        try {
+            const res = await fetch(endpoint, {
+                headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
+            });
+
+            console.log("Response status:", res.status);
+
+            if (res.status === 401) {
+                alert('Session expired. Please log in again.');
+                window.location.href = 'login.php';
                 return;
             }
 
-            tbody.innerHTML = filtered.map(item => {
-                const statusColor = item.employee_status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600';
-                const designationName = item.designation?.name || item.designation?.designation_name || '—';
-                const photoUrl = resolvePhoto(item.profile_photo, item.employee_name);
-                
-                return `
-                    <tr class="table-row-hover transition">
-                        <td class="px-4 py-3">
-                            <img src="${photoUrl}" alt="${item.employee_name}" class="w-10 h-10 rounded-full object-cover border border-gray-200 shadow-sm" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(item.employee_name)}'">
-                        </td>
-                        <td class="px-4 py-3 font-mono font-semibold text-gray-800">${item.employee_code || '—'}</td>
-                        <td class="px-4 py-3 font-medium text-gray-900">${item.employee_name}</td>
-                        <td class="px-4 py-3"><span class="bg-orange-100 text-orange-700 px-2.5 py-1 rounded-full text-xs font-semibold">${designationName}</span></td>
-                        <td class="px-4 py-3">${item.mobile_number}</td>
-                        <td class="px-4 py-3">${formatDate(item.date_of_joining)}</td>
-                        <td class="px-4 py-3"><span class="px-2.5 py-1 rounded-full text-xs font-semibold ${statusColor}">${item.employee_status}</span></td>
-                        <td class="px-4 py-3 text-center">
-                            <div class="flex items-center justify-center gap-2">
-                                <button onclick="viewEmployee(${item.id})" class="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 hover:bg-teal-100 flex items-center justify-center transition" title="View Details">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button onclick="editEmployee(${item.id})" class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center transition" title="Edit Full Details">
-                                    <i class="fas fa-pen"></i>
-                                </button>
-                                <button onclick="deleteEmployee(${item.id})" class="w-8 h-8 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 flex items-center justify-center transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
+            const result = await res.json();
+            console.log("API Response Data:", result);
+
+            if (res.ok) {
+                renderTable(result.data || []);
+            } else {
+                if (tbody) tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-red-500">${result.message || 'Failed to load records.'}</td></tr>`;
+            }
+        } catch (err) {
+            console.error('Fetch employees network error:', err);
+            if (tbody) tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-red-500">Network error while loading records. Check console.</td></tr>`;
+        }
+    }
+
+    // 5. Render Table
+    function renderTable(employees) {
+        if (!tbody) return;
+        if (employees.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-gray-500">No employee records found</td></tr>`;
+            return;
         }
 
-        // ============================================================
-        // 3. ROBUST SEARCH & DESIGNATION FILTERING
-        // ============================================================
-        function applyFilters() {
-            const selectedDesigId = roleFilter.value;
-            const q = (searchInput.value || '').toLowerCase().trim();
+        tbody.innerHTML = employees.map(item => {
+            const statusColor = item.employee_status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600';
+            const designationName = item.designation?.name || item.designation?.designation_name || '—';
+            const photoUrl = resolvePhoto(item.profile_photo, item.employee_name);
             
-            filtered = employees.filter(e => {
-                const matchDesig = !selectedDesigId || String(e.designation_id) === String(selectedDesigId);
-                
-                const name = (e.employee_name || '').toLowerCase();
-                const code = (e.employee_code || '').toLowerCase();
-                const mobile = (e.mobile_number || '').toLowerCase();
+            return `
+                <tr class="table-row-hover transition">
+                    <td class="px-4 py-3">
+                        <img src="${photoUrl}" alt="${item.employee_name}" class="w-10 h-10 rounded-full object-cover border border-gray-200 shadow-sm" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(item.employee_name)}'">
+                    </td>
+                    <td class="px-4 py-3 font-mono font-semibold text-gray-800">${item.employee_code || '—'}</td>
+                    <td class="px-4 py-3 font-medium text-gray-900">${item.employee_name}</td>
+                    <td class="px-4 py-3"><span class="bg-orange-100 text-orange-700 px-2.5 py-1 rounded-full text-xs font-semibold">${designationName}</span></td>
+                    <td class="px-4 py-3">${item.mobile_number}</td>
+                    <td class="px-4 py-3">${formatDate(item.date_of_joining)}</td>
+                    <td class="px-4 py-3"><span class="px-2.5 py-1 rounded-full text-xs font-semibold ${statusColor}">${item.employee_status}</span></td>
+                    <td class="px-4 py-3 text-center">
+                        <div class="flex items-center justify-center gap-2">
+                            <button onclick="viewEmployee(${item.id})" class="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 hover:bg-teal-100 flex items-center justify-center transition" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button onclick="editEmployee(${item.id})" class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center transition" title="Edit Full Details">
+                                <i class="fas fa-pen"></i>
+                            </button>
+                            <button onclick="deleteEmployee(${item.id})" class="w-8 h-8 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 flex items-center justify-center transition" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
 
-                const matchSearch = !q || name.includes(q) || code.includes(q) || mobile.includes(q);
-
-                return matchDesig && matchSearch;
-            });
-            renderTable();
+    // 6. Initial Load on DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', () => {
+        const roleFilter = document.getElementById('roleFilter');
+        if (roleFilter) {
+            roleFilter.addEventListener('change', fetchEmployees);
         }
 
-        roleFilter.addEventListener('change', applyFilters);
-        searchInput.addEventListener('input', applyFilters);
+        fetchDesignations();
+        fetchEmployees();
+    });
 
-        // ============================================================
-        // 4. VIEW MODAL LOGIC
-        // ============================================================
-        function viewEmployee(id) {
-            const emp = employees.find(e => e.id === id);
-            if (!emp) return;
-
+    // View Modal Logic
+    function viewEmployee(id) {
+        fetch(`${cleanBase}/employees/${id}`, {
+            headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
+        })
+        .then(res => res.json())
+        .then(result => {
+            if (!result.data) return;
+            const emp = result.data;
             const row = (label, val) => `
                 <div class="flex justify-between border-b border-gray-100 py-2.5">
                     <span class="text-gray-500 font-semibold w-1/3">${label}</span>
@@ -532,31 +539,33 @@
             `;
 
             viewModal.classList.remove('hidden');
-        }
+        });
+    }
 
-        function closeViewModal() { viewModal.classList.add('hidden'); }
+    function closeViewModal() { viewModal.classList.add('hidden'); }
 
-        // ============================================================
-        // 5. ADD / EDIT MODAL LOGIC
-        // ============================================================
-        function openAddModal() {
-            document.getElementById('modalTitle').innerHTML = '<i class="fas fa-user-plus text-orange-500"></i> Employee Registration';
-            document.getElementById('employeeModalForm').reset();
-            document.getElementById('m_id').value = '';
-            document.getElementById('empIdWrapper').classList.add('hidden');
-            document.querySelectorAll('input[name="m_gender"]').forEach(r => r.checked = false);
-            document.getElementById('m_status').value = 'Active';
-            document.getElementById('m_photo_preview').src = 'https://ui-avatars.com/api/?name=New&background=f3f4f6&color=9ca3af';
-            document.getElementById('m_errorBanner').classList.add('hidden');
-            employeeModal.classList.remove('hidden');
-        }
+    function openAddModal() {
+        document.getElementById('modalTitle').innerHTML = '<i class="fas fa-user-plus text-orange-500"></i> Employee Registration';
+        document.getElementById('employeeModalForm').reset();
+        document.getElementById('m_id').value = '';
+        document.getElementById('empIdWrapper').classList.add('hidden');
+        document.querySelectorAll('input[name="m_gender"]').forEach(r => r.checked = false);
+        document.getElementById('m_status').value = 'Active';
+        document.getElementById('m_photo_preview').src = 'https://ui-avatars.com/api/?name=New&background=f3f4f6&color=9ca3af';
+        document.getElementById('m_errorBanner').classList.add('hidden');
+        employeeModal.classList.remove('hidden');
+    }
 
-        function editEmployee(id) {
-            const emp = employees.find(e => e.id === id);
-            if (!emp) return;
+    function editEmployee(id) {
+        fetch(`${cleanBase}/employees/${id}`, {
+            headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
+        })
+        .then(res => res.json())
+        .then(result => {
+            if (!result.data) return;
+            const emp = result.data;
             
             document.getElementById('modalTitle').innerHTML = '<i class="fas fa-user-edit text-orange-500"></i> Edit Employee Details';
-            
             document.getElementById('empIdWrapper').classList.remove('hidden');
             document.getElementById('m_employee_id').value = emp.employee_code || '';
 
@@ -583,158 +592,145 @@
             
             document.getElementById('m_errorBanner').classList.add('hidden');
             employeeModal.classList.remove('hidden');
+        });
+    }
+
+    function closeEmployeeModal() { employeeModal.classList.add('hidden'); }
+
+    function previewImage(event) {
+        const file = event.target.files[0];
+        if (file) {
+            document.getElementById('m_photo_preview').src = URL.createObjectURL(file);
+        }
+    }
+
+    async function saveEmployee() {
+        const idVal = document.getElementById('m_id').value;
+        const banner = document.getElementById('m_errorBanner');
+        banner.classList.add('hidden');
+
+        const name = document.getElementById('m_name').value.trim();
+        const gender = document.querySelector('input[name="m_gender"]:checked')?.value || '';
+        const dob = document.getElementById('m_dob').value;
+        const mobile = document.getElementById('m_mobile').value.trim();
+        const email = document.getElementById('m_email').value.trim();
+        const address = document.getElementById('m_address').value.trim();
+        const city = document.getElementById('m_city').value.trim();
+        const state = document.getElementById('m_state').value.trim();
+        const pin = document.getElementById('m_pin').value.trim();
+        const designation = document.getElementById('m_designation').value;
+        const doj = document.getElementById('m_doj').value;
+        const emergency = document.getElementById('m_emergency').value.trim();
+        const status = document.getElementById('m_status').value;
+        const photoFile = document.getElementById('m_photo').files[0];
+
+        if (!name || !gender || !dob || !mobile || !email || !address || !city || !state || !pin || !designation || !doj) {
+            banner.textContent = 'Please fill all required (*) fields.';
+            banner.classList.remove('hidden');
+            return;
         }
 
-        function closeEmployeeModal() { employeeModal.classList.add('hidden'); }
+        const formData = new FormData();
+        formData.append('employee_name', name);
+        formData.append('gender', gender);
+        formData.append('date_of_birth', dob);
+        formData.append('mobile_number', mobile);
+        formData.append('email', email);
+        formData.append('address', address);
+        formData.append('city', city);
+        formData.append('state', state);
+        formData.append('pin_code', pin);
+        formData.append('designation_id', designation);
+        formData.append('date_of_joining', doj);
+        formData.append('employee_status', status);
+        
+        if (emergency) formData.append('emergency_contact', emergency);
+        if (photoFile) formData.append('profile_photo', photoFile);
 
-        function previewImage(event) {
-            const file = event.target.files[0];
-            if (file) {
-                document.getElementById('m_photo_preview').src = URL.createObjectURL(file);
-            }
-        }
+        const saveBtn = document.getElementById('saveEmployeeBtn');
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Saving...`;
 
-        // ============================================================
-        // 6. SAVE (CREATE / UPDATE) VIA API
-        // ============================================================
-        async function saveEmployee() {
-            const idVal = document.getElementById('m_id').value;
-            const banner = document.getElementById('m_errorBanner');
-            banner.classList.add('hidden');
+        try {
+            let endpoint = `${cleanBase}/employees`;
+            let method = 'POST';
 
-            const name = document.getElementById('m_name').value.trim();
-            const gender = document.querySelector('input[name="m_gender"]:checked')?.value || '';
-            const dob = document.getElementById('m_dob').value;
-            const mobile = document.getElementById('m_mobile').value.trim();
-            const email = document.getElementById('m_email').value.trim();
-            const address = document.getElementById('m_address').value.trim();
-            const city = document.getElementById('m_city').value.trim();
-            const state = document.getElementById('m_state').value.trim();
-            const pin = document.getElementById('m_pin').value.trim();
-            const designation = document.getElementById('m_designation').value;
-            const doj = document.getElementById('m_doj').value;
-            const emergency = document.getElementById('m_emergency').value.trim();
-            const status = document.getElementById('m_status').value;
-            const photoFile = document.getElementById('m_photo').files[0];
-
-            if (!name || !gender || !dob || !mobile || !email || !address || !city || !state || !pin || !designation || !doj) {
-                banner.textContent = 'Please fill all required (*) fields.';
-                banner.classList.remove('hidden');
-                return;
+            if (idVal) {
+                endpoint = `${cleanBase}/employees/${idVal}`;
+                formData.append('_method', 'PUT'); 
             }
 
-            const formData = new FormData();
-            formData.append('employee_name', name);
-            formData.append('gender', gender);
-            formData.append('date_of_birth', dob);
-            formData.append('mobile_number', mobile);
-            formData.append('email', email);
-            formData.append('address', address);
-            formData.append('city', city);
-            formData.append('state', state);
-            formData.append('pin_code', pin);
-            formData.append('designation_id', designation);
-            formData.append('date_of_joining', doj);
-            formData.append('employee_status', status);
-            
-            if (emergency) formData.append('emergency_contact', emergency);
-            if (photoFile) formData.append('profile_photo', photoFile);
+            const res = await fetch(endpoint, {
+                method: method,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/json'
+                },
+                body: formData
+            });
 
-            const saveBtn = document.getElementById('saveEmployeeBtn');
-            saveBtn.disabled = true;
-            saveBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Saving...`;
+            const result = await res.json();
 
-            try {
-                let endpoint = `${cleanBase}/employees`;
-                let method = 'POST';
-
-                if (idVal) {
-                    endpoint = `${cleanBase}/employees/${idVal}`;
-                    formData.append('_method', 'PUT'); // Laravel method spoofing for multipart updates
+            if (!res.ok) {
+                let errorMsg = result.message || 'Failed to save employee.';
+                if (result.errors) {
+                    errorMsg = Object.values(result.errors).flat().join('\n');
                 }
+                throw new Error(errorMsg);
+            }
 
-                const res = await fetch(endpoint, {
-                    method: method,
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Accept': 'application/json'
-                    },
-                    body: formData
-                });
+            alert(result.message || 'Employee saved successfully!');
+            closeEmployeeModal();
+            fetchEmployees();
 
-                const result = await res.json();
+        } catch (err) {
+            console.error('Save error:', err);
+            banner.textContent = err.message;
+            banner.classList.remove('hidden'); // Fixed: was classList.add('hidden')
+        } finally {
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = `<i class="fas fa-save"></i> Save`;
+        }
+    }
 
-                if (!res.ok) {
-                    let errorMsg = result.message || 'Failed to save employee.';
-                    if (result.errors) {
-                        errorMsg = Object.values(result.errors).flat().join('\n');
-                    }
-                    throw new Error(errorMsg);
+    async function deleteEmployee(id) {
+        if (!confirm('Are you sure you want to delete this employee record?')) return;
+
+        try {
+            const res = await fetch(`${cleanBase}/employees/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/json'
                 }
+            });
 
-                alert(result.message || 'Employee saved successfully!');
-                closeEmployeeModal();
-                fetchEmployees();
+            const result = await res.json();
+            if (!res.ok) throw new Error(result.message || 'Failed to delete employee.');
 
-            } catch (err) {
-                console.error('Save error:', err);
-                banner.textContent = err.message;
-                banner.classList.remove('hidden');
-            } finally {
-                saveBtn.disabled = false;
-                saveBtn.innerHTML = `<i class="fas fa-save"></i> Save`;
-            }
+            alert(result.message || 'Employee deleted successfully.');
+            fetchEmployees();
+        } catch (err) {
+            console.error('Delete error:', err);
+            alert(err.message || 'Error deleting employee record.');
         }
+    }
 
-        // ============================================================
-        // 7. DELETE VIA API
-        // ============================================================
-        async function deleteEmployee(id) {
-            if (!confirm('Are you sure you want to delete this employee record?')) return;
+    function formatDate(d) {
+        if (!d) return '—';
+        const date = new Date(d);
+        if (isNaN(date)) return d;
+        return `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${date.getFullYear()}`;
+    }
 
-            try {
-                const res = await fetch(`${cleanBase}/employees/${id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Accept': 'application/json'
-                    }
-                });
-
-                const result = await res.json();
-                if (!res.ok) throw new Error(result.message || 'Failed to delete employee.');
-
-                alert(result.message || 'Employee deleted successfully.');
-                fetchEmployees();
-            } catch (err) {
-                console.error('Delete error:', err);
-                alert(err.message || 'Error deleting employee record.');
-            }
-        }
-
-        // Helper for Date Formatting
-        function formatDate(d) {
-            if (!d) return '—';
-            const date = new Date(d);
-            if (isNaN(date)) return d;
-            return `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${date.getFullYear()}`;
-        }
-
-        // Initialization
-        fetchDesignations();
-        fetchEmployees();
-
-        // Expose functions globally
-        window.viewEmployee = viewEmployee;
-        window.editEmployee = editEmployee;
-        window.deleteEmployee = deleteEmployee;
-        window.openAddModal = openAddModal;
-        window.closeViewModal = closeViewModal;
-        window.closeEmployeeModal = closeEmployeeModal;
-        window.saveEmployee = saveEmployee;
-        window.previewImage = previewImage;
-
-    })();
-    </script>
+    window.viewEmployee = viewEmployee;
+    window.editEmployee = editEmployee;
+    window.deleteEmployee = deleteEmployee;
+    window.openAddModal = openAddModal;
+    window.closeViewModal = closeViewModal;
+    window.closeEmployeeModal = closeEmployeeModal;
+    window.saveEmployee = saveEmployee;
+    window.previewImage = previewImage;
+</script>
 </body>
 </html>

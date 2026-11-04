@@ -414,7 +414,6 @@
     }
 </style>
 
-<script src="url.js"></script>
 <script>
     const sidebar = document.getElementById("sidebar");
     const overlay = document.getElementById("overlay");
