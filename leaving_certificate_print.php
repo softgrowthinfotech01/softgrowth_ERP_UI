@@ -1,8 +1,3 @@
-<?php
-// ============================================================
-// Leaving Certificate — Standalone Printable (DUMMY DATA MODE)
-// ============================================================
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -108,13 +103,11 @@
 
                     <div class="border-t border-gray-300 my-6"></div>
 
-
                     <h2 class="text-center text-[14px] font-bold text-gray-900 mb-5">
                         TO WHOM IT MAY CONCERN
                     </h2>
 
                     <div class="space-y-4 text-[13px] leading-relaxed text-gray-800 text-justify">
-
                         <p>
                             This is to certify that
                             <span id="cName" class="font-bold">—</span>,
@@ -156,12 +149,9 @@
                         </p>
 
                         <p>
-                            This Leaving Certificate is issued upon request for
-                            official purposes and future reference.
+                            This Leaving Certificate is issued upon request for official purposes and future reference.
                         </p>
-
                     </div>
-
 
                     <div class="flex items-end justify-between mt-12 text-[12px] text-gray-700">
                         <div class="space-y-1">
@@ -186,76 +176,13 @@
         (function() {
             'use strict';
 
-            // ============================================================
-            // 🔶 DUMMY DATA (mirrors the generator's mock students)
-            // ============================================================
-            const DUMMY_STUDENTS = {
-                '101': {
-                    student_name: 'Aarav Sharma',
-                    parent_name: 'Rajesh Sharma',
-                    course: 'B.Tech Computer Science',
-                    student_batch: '2021-2025',
-                    registration_id: 'REG2021001',
-                    abc_id: 'APAAR-9988112233',
-                    date_of_birth: '2003-04-15'
-                },
-                '102': {
-                    student_name: 'Priya Verma',
-                    parent_name: 'Suresh Verma',
-                    course: 'B.Com Honours',
-                    student_batch: '2020-2023',
-                    registration_id: 'REG2020054',
-                    abc_id: 'APAAR-7766554433',
-                    date_of_birth: '2002-08-22'
-                },
-                '103': {
-                    student_name: 'Rohan Mehta',
-                    parent_name: 'Anil Mehta',
-                    course: 'B.Sc Physics',
-                    student_batch: '2019-2022',
-                    registration_id: 'REG2019102',
-                    abc_id: 'APAAR-5544332211',
-                    date_of_birth: '2001-12-05'
-                },
-                '104': {
-                    student_name: 'Sneha Iyer',
-                    parent_name: 'Krishnan Iyer',
-                    course: 'M.Sc Biotechnology',
-                    student_batch: '2018-2020',
-                    registration_id: 'REG2018033',
-                    abc_id: 'APAAR-1122334455',
-                    date_of_birth: '1999-06-18'
-                },
-                '105': {
-                    student_name: 'Karan Singh',
-                    parent_name: 'Harpreet Singh',
-                    course: 'B.A English Literature',
-                    student_batch: '2021-2024',
-                    registration_id: 'REG2021110',
-                    abc_id: 'APAAR-6677889900',
-                    date_of_birth: '2003-02-11'
-                },
-                '106': {
-                    student_name: 'Riya Kapoor',
-                    parent_name: 'Vikram Kapoor',
-                    course: 'BBA Marketing',
-                    student_batch: '2022-2025',
-                    registration_id: 'REG2022077',
-                    abc_id: 'APAAR-4455667788',
-                    date_of_birth: '2004-09-30'
-                }
-            };
+            const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token');
+            if (!token) {
+                alert('Authentication token missing. Please log in again.');
+                window.location.href = 'login.php';
+                return;
+            }
 
-            const DUMMY_INSTITUTE = {
-                org_name: 'Sunrise Institute of Technology',
-                district: 'Jaipur',
-                address: 'Sector 12, Malviya Nagar',
-                logo: '' // leave blank to show the default graduation-cap icon
-            };
-
-            // ============================================================
-            // CONFIG / PARAMS
-            // ============================================================
             const urlParams = new URLSearchParams(window.location.search);
             const certificateId = urlParams.get('id');
 
@@ -263,9 +190,6 @@
             const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
             const storageRoot = cleanBase.replace(/\/api$/, '');
 
-            // ============================================================
-            // DOM REFS
-            // ============================================================
             const loadingState = document.getElementById('loadingState');
             const errorState = document.getElementById('errorState');
             const errorMessage = document.getElementById('errorMessage');
@@ -275,9 +199,6 @@
             const downloadBtn = document.getElementById('downloadBtn');
             const certificateCard = document.getElementById('certificateCard');
 
-            // ============================================================
-            // HELPERS
-            // ============================================================
             function formatDateDMY(iso) {
                 if (!iso) return '—';
                 const parts = String(iso).split('T')[0].split('-');
@@ -306,55 +227,7 @@
                 return `${storageRoot}/storage/${clean}`;
             }
 
-            const delay = (ms) => new Promise((res) => setTimeout(res, ms));
-
-            // ============================================================
-            // 🔶 MOCK: build a certificate from an id
-            //   id 101..106 → matching student from DUMMY_STUDENTS
-            //   any other id → generic fallback (so links never break)
-            // ============================================================
-            function buildDummyCertificate(id) {
-                const student = DUMMY_STUDENTS[String(id)] || {
-                    student_name: 'Sample Student',
-                    parent_name: 'Sample Parent',
-                    course: 'B.Tech Computer Science',
-                    student_batch: '2021-2025',
-                    registration_id: 'REG2021001',
-                    abc_id: 'APAAR-9988112233',
-                    date_of_birth: '2003-04-15'
-                };
-
-                const year = new Date().getFullYear();
-                const paddedId = String(id || '0000').padStart(4, '0');
-
-                return {
-                    id: id,
-                    certificate_no: `LC-${year}-${paddedId}`,
-                    student_snapshot: {
-                        name: student.student_name,
-                        parent_name: student.parent_name,
-                        class: student.course,
-                        batch: student.student_batch,
-                        registration_no: student.registration_id,
-                        dob: student.date_of_birth,
-                        apaar_id: student.abc_id,
-                        admission_date: '2021-07-01',
-                        leaving_date: '2025-05-31'
-                    },
-                    institute_snapshot: {
-                        ...DUMMY_INSTITUTE
-                    },
-                    reason: 'Course Completed',
-                    conduct: 'Very Good',
-                    remarks: 'Consistently performed well in academics and co-curricular activities.',
-                    issue_date: new Date().toISOString().split('T')[0],
-                    place: DUMMY_INSTITUTE.district
-                };
-            }
-
-            // ============================================================
-            // FETCH CERTIFICATE (dummy)
-            // ============================================================
+            // Fetch certificate from Laravel API endpoint: GET /api/leaving-certificates/{id}
             async function fetchCertificate() {
                 if (!certificateId) {
                     showError('No certificate ID provided in the URL query string.');
@@ -362,25 +235,35 @@
                 }
 
                 try {
-                    // Simulate a short network delay so the loader is visible
-                    await delay(400);
+                    const response = await fetch(`${cleanBase}/leaving-certificates/${certificateId}`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Accept': 'application/json'
+                        }
+                    });
 
-                    const cert = buildDummyCertificate(certificateId);
+                    const result = await response.json();
+                    if (!response.ok) {
+                        if (response.status === 401) {
+                            alert('Session expired. Please log in again.');
+                            window.location.href = 'login.php';
+                            return;
+                        }
+                        throw new Error(result.message || 'Could not load the certificate.');
+                    }
 
-                    renderCertificate(cert);
+                    renderCertificate(result.data);
                     loadingState.classList.add('hidden');
                     errorState.classList.add('hidden');
                     certificateContainer.classList.remove('hidden');
 
                 } catch (err) {
                     console.error('Fetch error:', err);
-                    showError('Could not build the certificate.');
+                    showError(err.message || 'Could not load certificate from the database.');
                 }
             }
 
-            // ============================================================
-            // RENDER
-            // ============================================================
             function renderCertificate(cert) {
                 const student = cert.student_snapshot || {};
                 const institute = cert.institute_snapshot || {};
@@ -390,7 +273,7 @@
                 text('headerCertNo', certNo);
                 text('cardCertNo', certNo);
 
-                // Institute
+                // Institute Details
                 const instName = institute.org_name || institute.name || 'Institute';
                 text('instituteName', instName);
                 text('cInstitution', instName);
@@ -399,27 +282,25 @@
                     const logoUrl = resolveAssetUrl(institute.logo);
                     const container = document.getElementById('instituteLogoContainer');
                     if (container) {
-                        container.innerHTML =
-                            `<img src="${logoUrl}" alt="Institute Logo" class="h-14 mx-auto object-contain" ` +
-                            `onerror="this.style.display='none'" />`;
+                        container.innerHTML = `<img src="${logoUrl}" alt="Institute Logo" class="h-14 mx-auto object-contain" onerror="this.style.display='none'" />`;
                     }
                 }
 
-                // Student fields
-                text('cName', student.name || student.full_name || student.student_name);
-                text('cParent', student.parent_name || student.father_name || student.guardian_name);
-                text('cClass', student.class || student.grade || student.standard);
-                text('cBatch', student.batch || student.session || student.academic_year);
-                text('cRegId', student.registration_no || student.reg_id || student.registration_number);
-                text('cDob', formatDateDMY(student.dob || student.date_of_birth));
-                text('cApaar', student.apaar_id || student.apaar);
-                text('cAdmissionDate', formatDateDMY(student.admission_date || cert.admission_date));
-                text('cLeavingDate', formatDateDMY(student.leaving_date || cert.leaving_date || cert.issue_date));
-                text('cReason', cert.reason || student.leaving_reason);
-                text('cConduct', cert.conduct || student.conduct);
+                // Student Snapshot Details
+                text('cName', student.student_name || student.name);
+                text('cParent', student.parent_name);
+                text('cClass', student.course);
+                text('cBatch', student.student_batch || student.batch);
+                text('cRegId', student.registration_id || student.registration_no);
+                text('cDob', formatDateDMY(student.date_of_birth || student.dob));
+                text('cApaar', student.abc_id || student.apaar_id);
+                text('cAdmissionDate', formatDateDMY(cert.admission_date));
+                text('cLeavingDate', formatDateDMY(cert.leaving_date));
+                text('cReason', cert.reason);
+                text('cConduct', cert.conduct);
 
-                // Remarks paragraph
-                const remarks = cert.remarks || student.remarks;
+                // Remarks
+                const remarks = cert.remarks;
                 const remarksPara = document.getElementById('cRemarksParagraph');
                 if (remarks && remarksPara) {
                     text('cRemarks', remarks);
@@ -428,14 +309,11 @@
                     remarksPara.classList.add('hidden');
                 }
 
-                // Issue details
-                text('cIssueDate', formatDateDMY(cert.issue_date || cert.created_at));
-                text('cCity', cert.place || institute.district || institute.address || institute.city);
+                // Issue Info
+                text('cIssueDate', formatDateDMY(cert.issue_date));
+                text('cCity', cert.place || institute.address || institute.district);
             }
 
-            // ============================================================
-            // ACTIONS
-            // ============================================================
             if (backBtn) {
                 backBtn.addEventListener('click', function() {
                     if (window.history.length > 1) {
@@ -452,7 +330,6 @@
                 });
             }
 
-            // Download as PNG
             if (downloadBtn) {
                 downloadBtn.addEventListener('click', async function() {
                     const certNo = document.getElementById('cardCertNo')?.textContent || 'certificate';
@@ -497,12 +374,8 @@
                 });
             }
 
-            // ============================================================
-            // INIT
-            // ============================================================
             fetchCertificate();
         })();
     </script>
 </body>
-
 </html>

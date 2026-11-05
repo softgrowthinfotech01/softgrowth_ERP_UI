@@ -10,7 +10,6 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
-        /* Custom styles for file inputs and preview images */
         .file-input {
             width: 100%;
             padding: 0.5rem;
@@ -36,15 +35,6 @@
         .file-input::file-selector-button:hover {
             background: #ea580c;
         }
-        .preview-img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-            margin-top: 6px;
-        }
-        /* Accordion transition */
         .section-body {
             transition: all 0.3s ease;
         }
@@ -63,147 +53,110 @@
     <main id="main" class="md:ml-[300px] px-4 sm:px-6 py-24 pb-8 mb-12 transition-all duration-200 flex flex-col items-center justify-center">
         <div class="w-full max-w-5xl">
 
-            <!-- Global Error Banner (hidden by default, used for errors) -->
+            <!-- Global Error Banner -->
             <div id="globalErrorBanner" class="hidden mb-4 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl text-sm flex items-center gap-3">
                 <i class="fas fa-exclamation-circle text-red-500 text-lg"></i>
                 <span id="globalErrorMessage">Please correct the highlighted fields before proceeding.</span>
             </div>
 
             <!-- Update Student Form -->
-            <form id="updateStudentForm">
-                <!-- SECTION 1: PERSONAL INFORMATION (with Academic Details) -->
+            <form id="updateStudentForm" enctype="multipart/form-data">
+
+                <!-- SECTION 1: PERSONAL INFORMATION -->
                 <div class="bg-white rounded-xl shadow-md border border-gray-200 mb-4 overflow-hidden">
                     <button type="button" class="w-full flex items-center justify-between px-4 py-3 bg-orange-50 hover:bg-orange-100 transition-colors toggle-section" data-target="personal-body">
                         <div class="flex items-center gap-2.5">
                             <span class="w-8 h-8 rounded-lg bg-orange-500 text-white flex items-center justify-center text-xs shadow-sm">
-                                <i class="fas fa-user-graduate"></i>
+                                <i class="fas fa-user"></i>
                             </span>
-                            <h2 class="text-base font-bold text-gray-900">Personal + Academic Details</h2>
+                            <h2 class="text-base font-bold text-gray-900">Personal Information</h2>
                         </div>
                         <i class="fas fa-chevron-up text-orange-500 text-xs transition-transform duration-300 chevron-icon"></i>
                     </button>
 
                     <div id="personal-body" class="section-body p-4">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <!-- Student Batch -->
                             <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Student Batch <span class="text-red-500">*</span></label>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Registration ID <span class="text-gray-400 font-normal">(Read-only)</span></label>
                                 <div class="relative">
-                                    <i class="fas fa-calendar absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs z-10"></i>
-                                    <select id="student_batch" class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
-                                        <option value="">Select Batch</option>
-                                        <option value="2024-25">2024-25</option>
-                                        <option value="2025-26">2025-26</option>
-                                    </select>
-                                    <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
+                                    <i class="fas fa-id-badge absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="text" id="registration_id" readonly class="bg-gray-100 w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none shadow-sm">
                                 </div>
                             </div>
-                            <!-- Student Year -->
+
                             <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Student Year <span class="text-red-500">*</span></label>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">APAAR ID / ABC ID <span class="text-gray-400 font-normal">(Optional, 12 digits)</span></label>
                                 <div class="relative">
-                                    <i class="fas fa-user-graduate absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                    <select id="student_year" class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
-                                        <option value="">Select Year</option>
-                                        <option value="First Year">1st Year</option>
-                                        <option value="Second Year">2nd Year</option>
-                                        <option value="Third Year">3rd Year</option>
-                                    </select>
-                                    <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
+                                    <i class="fas fa-id-card absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="text" id="abc_id" maxlength="12" placeholder="Enter 12-digit APAAR/ABC ID" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
                                 </div>
                             </div>
-                            <!-- Course -->
+
                             <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Course <span class="text-red-500">*</span></label>
-                                <div class="relative">
-                                    <i class="fas fa-graduation-cap absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs z-10"></i>
-                                    <select id="course" class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
-                                        <option value="">Select Course</option>
-                                        <option value="BCA">BCA</option>
-                                        <option value="BBA">BBA</option>
-                                    </select>
-                                    <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
-                                </div>
-                            </div>
-                            <!-- Student Name -->
-                            <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Student Name <span class="text-red-500">*</span></label>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Full Name <span class="text-red-500">*</span></label>
                                 <div class="relative">
                                     <i class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
                                     <input type="text" id="student_name" placeholder="Enter student name" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
                                 </div>
                             </div>
-                            <!-- Parent Name -->
+
                             <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Parent Name</label>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Course / Class <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <i class="fas fa-graduation-cap absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs z-10"></i>
+                                    <select id="course" class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                        <option value="">Select course / class</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Phone Number <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <i class="fas fa-phone absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="text" id="student_phone" maxlength="10" placeholder="10-digit mobile number" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Parent / Guardian Number <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <i class="fas fa-phone-alt absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="text" id="parent_phone" maxlength="10" placeholder="10-digit parent mobile number" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Parent Name <span class="text-gray-400 font-normal">(Optional)</span></label>
                                 <div class="relative">
                                     <i class="fas fa-user-tie absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
                                     <input type="text" id="parent_name" placeholder="Enter parent name" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
                                 </div>
                             </div>
-                            <!-- Caste -->
+
                             <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Caste</label>
-                                <div class="relative">
-                                    <i class="fas fa-users absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                    <input type="text" id="caste" placeholder="Enter caste" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
-                                </div>
-                            </div>
-                            <!-- Sub-Caste -->
-                            <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Sub-Caste</label>
-                                <div class="relative">
-                                    <i class="fas fa-user-friends absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                    <input type="text" id="sub_caste" placeholder="Enter sub-caste" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
-                                </div>
-                            </div>
-                            <!-- Admission Date -->
-                            <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Admission Date</label>
-                                <div class="relative">
-                                    <i class="fas fa-calendar-check absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                    <input type="date" id="admission_date" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
-                                </div>
-                            </div>
-                            <!-- Aadhaar -->
-                            <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Aadhaar Number</label>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Aadhaar Number <span class="text-red-500">*</span></label>
                                 <div class="relative">
                                     <i class="fas fa-id-card absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                    <input type="text" id="aadhaar_number" placeholder="XXXX-XXXX-XXXX" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                    <input type="text" id="aadhaar_number" maxlength="12" placeholder="12-digit Aadhaar Number" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
                                 </div>
                             </div>
-                            <!-- ABC ID -->
+
                             <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">ABC ID</label>
-                                <div class="relative">
-                                    <i class="fas fa-id-badge absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                    <input type="text" id="abc_id" placeholder="Enter ABC ID" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
-                                </div>
-                            </div>
-                            <!-- DOB -->
-                            <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Date of Birth</label>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Date of Birth <span class="text-red-500">*</span></label>
                                 <div class="relative">
                                     <i class="fas fa-calendar-alt absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
                                     <input type="date" id="date_of_birth" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
                                 </div>
                             </div>
-                            <!-- Place of Birth -->
+
                             <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Place of Birth</label>
-                                <div class="relative">
-                                    <i class="fas fa-globe absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                    <input type="text" id="place_of_birth" placeholder="Enter place of birth" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
-                                </div>
-                            </div>
-                            <!-- Gender -->
-                            <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Gender</label>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Gender <span class="text-red-500">*</span></label>
                                 <div class="relative">
                                     <i class="fas fa-venus-mars absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
                                     <select id="gender" class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
-                                        <option value="">Select Gender</option>
+                                        <option value="">Select gender</option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
                                         <option value="Other">Other</option>
@@ -211,208 +164,225 @@
                                     <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
                                 </div>
                             </div>
-                            <!-- Photo (full width) -->
-                            <div class="md:col-span-2">
-                                <label class="block text-[11px] font-bold text-gray-700 mb-1">Passport Photo</label>
-                                <input type="file" id="photo" class="file-input" accept="image/*" />
-                                <img id="photoPreview" class="preview-img hidden" src="#" alt="Preview" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- SECTION 2: DOCUMENTS UPLOAD -->
-                <div class="bg-white rounded-xl shadow-md border border-gray-200 mb-4 overflow-hidden">
-                    <button type="button" class="w-full flex items-center justify-between px-4 py-3 bg-orange-50 hover:bg-orange-100 transition-colors toggle-section" data-target="documents-body">
-                        <div class="flex items-center gap-2.5">
-                            <span class="w-8 h-8 rounded-lg bg-orange-500 text-white flex items-center justify-center text-xs shadow-sm">
-                                <i class="fas fa-cloud-upload-alt"></i>
-                            </span>
-                            <h2 class="text-base font-bold text-gray-900">Documents Upload</h2>
-                        </div>
-                        <i class="fas fa-chevron-down text-orange-500 text-xs transition-transform duration-300 chevron-icon"></i>
-                    </button>
-
-                    <div id="documents-body" class="section-body p-4 hidden">
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                            <!-- TC Certificate -->
                             <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-1">TC Certificate</label>
-                                <input type="file" id="tc_certificate" class="file-input" accept="image/*,application/pdf" />
-                                <img id="tcPreview" class="preview-img hidden" src="#" alt="Preview" />
-                            </div>
-                            <!-- 10th Marksheet -->
-                            <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-1">10th Marksheet</label>
-                                <input type="file" id="marksheet_10" class="file-input" accept="image/*,application/pdf" />
-                                <img id="marksheet10Preview" class="preview-img hidden" src="#" alt="Preview" />
-                            </div>
-                            <!-- 12th Marksheet -->
-                            <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-1">12th Marksheet</label>
-                                <input type="file" id="marksheet_12" class="file-input" accept="image/*,application/pdf" />
-                                <img id="marksheet12Preview" class="preview-img hidden" src="#" alt="Preview" />
-                            </div>
-                            <!-- Other Academic Docs -->
-                            <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-1">Other Academic Documents</label>
-                                <input type="file" id="other_academic_docs" class="file-input" accept="image/*,application/pdf" />
-                                <img id="otherAcademicDocsPreview" class="preview-img hidden" src="#" alt="Preview" />
-                            </div>
-                            <!-- Caste Certificate -->
-                            <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-1">Caste Certificate</label>
-                                <input type="file" id="caste_certificate" class="file-input" accept="image/*,application/pdf" />
-                                <img id="castePreview" class="preview-img hidden" src="#" alt="Preview" />
-                            </div>
-                            <!-- Domicile Certificate -->
-                            <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-1">Domicile Certificate</label>
-                                <input type="file" id="domicile_certificate" class="file-input" accept="image/*,application/pdf" />
-                                <img id="domicilePreview" class="preview-img hidden" src="#" alt="Preview" />
-                            </div>
-                            <!-- Non-Creamy Layer -->
-                            <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-1">Non-Creamy Layer Certificate</label>
-                                <input type="file" id="non_creamy_layer" class="file-input" accept="image/*,application/pdf" />
-                                <img id="nonCreamyLayerPreview" class="preview-img hidden" src="#" alt="Preview" />
-                            </div>
-                            <!-- Other Documents -->
-                            <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-1">Other Documents</label>
-                                <input type="file" id="other_documents" class="file-input" accept="image/*,application/pdf" />
-                                <img id="otherDocumentsPreview" class="preview-img hidden" src="#" alt="Preview" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SECTION 3: FEES + CONTACT DETAILS -->
-                <div class="bg-white rounded-xl shadow-md border border-gray-200 mb-4 overflow-hidden">
-                    <button type="button" class="w-full flex items-center justify-between px-4 py-3 bg-orange-50 hover:bg-orange-100 transition-colors toggle-section" data-target="fees-body">
-                        <div class="flex items-center gap-2.5">
-                            <span class="w-8 h-8 rounded-lg bg-orange-500 text-white flex items-center justify-center text-xs shadow-sm">
-                                <i class="fas fa-coins"></i>
-                            </span>
-                            <h2 class="text-base font-bold text-gray-900">Fees + Contact Details</h2>
-                        </div>
-                        <i class="fas fa-chevron-down text-orange-500 text-xs transition-transform duration-300 chevron-icon"></i>
-                    </button>
-
-                    <div id="fees-body" class="section-body p-4 hidden">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <!-- Full Fees -->
-                            <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Full Fees</label>
-                                <div class="relative">
-                                    <i class="fas fa-rupee-sign absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                    <input type="text" id="full_fees" placeholder="Enter full fees" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
-                                </div>
-                            </div>
-                            <!-- Admission Fees -->
-                            <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Admission Fees</label>
-                                <div class="relative">
-                                    <i class="fas fa-money-bill-wave absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                    <input type="text" id="admission_fees" placeholder="Enter admission fees" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
-                                </div>
-                            </div>
-                            <!-- Student Phone -->
-                            <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Student Phone</label>
-                                <div class="relative">
-                                    <i class="fas fa-phone absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                    <input type="tel" id="student_phone" placeholder="Enter student phone" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
-                                </div>
-                            </div>
-                            <!-- Parent Phone -->
-                            <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Parent Phone</label>
-                                <div class="relative">
-                                    <i class="fas fa-phone-alt absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                    <input type="tel" id="parent_phone" placeholder="Enter parent phone" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
-                                </div>
-                            </div>
-                            <!-- Blood Group -->
-                            <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Blood Group</label>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Blood Group <span class="text-red-500">*</span></label>
                                 <div class="relative">
                                     <i class="fas fa-tint absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
                                     <select id="blood_group" class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
-                                        <option value="">Select Blood Group</option>
+                                        <option value="">Select blood group</option>
                                         <option value="A+">A+</option>
                                         <option value="A-">A-</option>
                                         <option value="B+">B+</option>
                                         <option value="B-">B-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
                                         <option value="O+">O+</option>
                                         <option value="O-">O-</option>
                                     </select>
                                     <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
                                 </div>
                             </div>
-                            <!-- Tahsil -->
+
                             <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Tahsil</label>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Place of Birth <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <i class="fas fa-globe absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="text" id="place_of_birth" placeholder="Enter place of birth" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Caste <span class="text-gray-400 font-normal">(Optional)</span></label>
+                                <div class="relative">
+                                    <i class="fas fa-users absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="text" id="caste" placeholder="Enter caste" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Sub Caste <span class="text-gray-400 font-normal">(Optional)</span></label>
+                                <div class="relative">
+                                    <i class="fas fa-user-friends absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="text" id="sub_caste" placeholder="Enter sub caste" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 2: ACADEMIC INFORMATION -->
+                <div class="bg-white rounded-xl shadow-md border border-gray-200 mb-4 overflow-hidden">
+                    <button type="button" class="w-full flex items-center justify-between px-4 py-3 bg-orange-50 hover:bg-orange-100 transition-colors toggle-section" data-target="academic-body">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-lg bg-orange-500 text-white flex items-center justify-center text-xs shadow-sm">
+                                <i class="fas fa-book"></i>
+                            </span>
+                            <h2 class="text-base font-bold text-gray-900">Academic Information</h2>
+                        </div>
+                        <i class="fas fa-chevron-down text-orange-500 text-xs transition-transform duration-300 chevron-icon"></i>
+                    </button>
+
+                    <div id="academic-body" class="section-body p-4 hidden">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Board <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <i class="fas fa-university absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <select id="board" class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                        <option value="">Select board</option>
+                                        <option value="CBSE">CBSE</option>
+                                        <option value="ICSE">ICSE</option>
+                                        <option value="State Board">State Board</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Previous Class <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <i class="fas fa-history absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="text" id="previous_class" placeholder="Enter previous class" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Student Batch <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <i class="fas fa-calendar absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs z-10"></i>
+                                    <select id="student_batch" class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                        <option value="">Select Batch Year</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Admission Date <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <i class="fas fa-calendar-check absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="date" id="admission_date" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Gross Fee</label>
+                                <div class="relative">
+                                    <i class="fas fa-rupee-sign absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="number" step="0.01" id="full_fees" placeholder="Gross fee" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Discount Amount <span class="text-gray-400 font-normal">(Optional)</span></label>
+                                <div class="relative">
+                                    <i class="fas fa-tag absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="number" step="0.01" id="discount_amount" placeholder="Enter discount amount" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 3: ADDRESS INFORMATION -->
+                <div class="bg-white rounded-xl shadow-md border border-gray-200 mb-4 overflow-hidden">
+                    <button type="button" class="w-full flex items-center justify-between px-4 py-3 bg-orange-50 hover:bg-orange-100 transition-colors toggle-section" data-target="address-body">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-lg bg-orange-500 text-white flex items-center justify-center text-xs shadow-sm">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </span>
+                            <h2 class="text-base font-bold text-gray-900">Address Information</h2>
+                        </div>
+                        <i class="fas fa-chevron-down text-orange-500 text-xs transition-transform duration-300 chevron-icon"></i>
+                    </button>
+
+                    <div id="address-body" class="section-body p-4 hidden">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div class="md:col-span-2">
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Full Address <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <i class="fas fa-map-pin absolute left-3 top-3 text-gray-400 text-xs"></i>
+                                    <textarea rows="2" id="full_address" placeholder="Enter complete address" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm"></textarea>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Tahsil <span class="text-red-500">*</span></label>
                                 <div class="relative">
                                     <i class="fas fa-location-arrow absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
                                     <input type="text" id="tahsil" placeholder="Enter tahsil" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
                                 </div>
                             </div>
-                            <!-- District -->
+
                             <div>
-                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">District</label>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">District <span class="text-red-500">*</span></label>
                                 <div class="relative">
                                     <i class="fas fa-city absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
                                     <input type="text" id="district" placeholder="Enter district" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
                                 </div>
                             </div>
-                            <!-- Address (full width) -->
-                            <div class="md:col-span-2">
-                                <label class="block text-[11px] font-bold text-gray-700 mb-1">Full Address</label>
-                                <textarea rows="2" id="full_address" placeholder="Enter full address" class="w-full pl-3 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm"></textarea>
+
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">State <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <i class="fas fa-flag absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="text" id="state" placeholder="Enter state" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Pincode <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <i class="fas fa-map-marked-alt absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                    <input type="text" id="pincode" maxlength="6" placeholder="6-digit pincode" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                </div>
                             </div>
                         </div>
+                    </div>
+                </div>
 
-                        <!-- SEMESTER PATTERN -->
-                        <div class="mt-5">
-                            <h3 class="text-sm font-bold text-gray-800 mb-3">Semester Pattern</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                                <!-- First Year -->
-                                <div class="p-3 rounded-lg bg-orange-50 border border-orange-200">
-                                    <p class="font-semibold text-gray-800 text-xs mb-2">First Year</p>
-                                    <label class="flex items-center gap-2 p-2 rounded-md bg-white border border-gray-200 cursor-pointer hover:bg-orange-50 transition">
-                                        <input type="radio" name="semester" value="FY Semester 1" class="w-3 h-3 text-orange-600 focus:ring-orange-500" />
-                                        <span class="text-gray-700 text-xs">Semester 1</span>
-                                    </label>
-                                    <label class="flex items-center gap-2 p-2 rounded-md bg-white border border-gray-200 cursor-pointer hover:bg-orange-50 transition mt-1.5">
-                                        <input type="radio" name="semester" value="FY Semester 2" class="w-3 h-3 text-orange-600 focus:ring-orange-500" />
-                                        <span class="text-gray-700 text-xs">Semester 2</span>
-                                    </label>
-                                </div>
-                                <!-- Second Year -->
-                                <div class="p-3 rounded-lg bg-orange-50 border border-orange-200">
-                                    <p class="font-semibold text-gray-800 text-xs mb-2">Second Year</p>
-                                    <label class="flex items-center gap-2 p-2 rounded-md bg-white border border-gray-200 cursor-pointer hover:bg-orange-50 transition">
-                                        <input type="radio" name="semester" value="SY Semester 3" class="w-3 h-3 text-orange-600 focus:ring-orange-500" />
-                                        <span class="text-gray-700 text-xs">Semester 3</span>
-                                    </label>
-                                    <label class="flex items-center gap-2 p-2 rounded-md bg-white border border-gray-200 cursor-pointer hover:bg-orange-50 transition mt-1.5">
-                                        <input type="radio" name="semester" value="SY Semester 4" class="w-3 h-3 text-orange-600 focus:ring-orange-500" />
-                                        <span class="text-gray-700 text-xs">Semester 4</span>
-                                    </label>
-                                </div>
-                                <!-- Third Year -->
-                                <div class="p-3 rounded-lg bg-orange-50 border border-orange-200">
-                                    <p class="font-semibold text-gray-800 text-xs mb-2">Third Year</p>
-                                    <label class="flex items-center gap-2 p-2 rounded-md bg-white border border-gray-200 cursor-pointer hover:bg-orange-50 transition">
-                                        <input type="radio" name="semester" value="TY Semester 5" class="w-3 h-3 text-orange-600 focus:ring-orange-500" />
-                                        <span class="text-gray-700 text-xs">Semester 5</span>
-                                    </label>
-                                    <label class="flex items-center gap-2 p-2 rounded-md bg-white border border-gray-200 cursor-pointer hover:bg-orange-50 transition mt-1.5">
-                                        <input type="radio" name="semester" value="TY Semester 6" class="w-3 h-3 text-orange-600 focus:ring-orange-500" />
-                                        <span class="text-gray-700 text-xs">Semester 6</span>
-                                    </label>
-                                </div>
+                <!-- SECTION 4: DOCUMENT UPLOADS -->
+                <div class="bg-white rounded-xl shadow-md border border-gray-200 mb-4 overflow-hidden">
+                    <button type="button" class="w-full flex items-center justify-between px-4 py-3 bg-orange-50 hover:bg-orange-100 transition-colors toggle-section" data-target="documents-body">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-lg bg-orange-500 text-white flex items-center justify-center text-xs shadow-sm">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </span>
+                            <h2 class="text-base font-bold text-gray-900">Document Uploads</h2>
+                        </div>
+                        <i class="fas fa-chevron-down text-orange-500 text-xs transition-transform duration-300 chevron-icon"></i>
+                    </button>
+
+                    <div id="documents-body" class="section-body p-4 hidden">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <!-- 1. Passport Photo -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-1">
+                                    <i class="fas fa-camera text-orange-500 mr-1"></i> Passport Photo
+                                </label>
+                                <input type="file" id="passport_photo" class="file-input" accept="image/jpeg,image/png,image/jpg" />
+                                <p id="passport_photo_name" class="text-[10px] text-green-600 mt-0.5 hidden"></p>
+                            </div>
+
+                            <!-- 2. Aadhaar Card -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-1">
+                                    <i class="fas fa-id-card text-orange-500 mr-1"></i> Aadhaar Card
+                                </label>
+                                <input type="file" id="aadhar_card" class="file-input" accept="image/*,application/pdf" />
+                                <p id="aadhar_card_name" class="text-[10px] text-green-600 mt-0.5 hidden"></p>
+                            </div>
+
+                            <!-- 3. Other Documents (Existing + New Files) -->
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-700 mb-1">
+                                    <i class="fas fa-folder-open text-orange-500 mr-1"></i> Other Documents
+                                    <span id="other_documents_count" class="ml-1 text-[9px] font-semibold text-orange-500"></span>
+                                </label>
+                                <input type="file" id="other_documents" class="file-input" accept="image/*,application/pdf" multiple />
+                                <div id="other_documents_list" class="mt-1.5 space-y-1"></div>
                             </div>
                         </div>
                     </div>
@@ -436,7 +406,6 @@
 
     <script>
         (function() {
-            // Auth check
             const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token');
             if (!token) {
                 alert('Authentication token missing. Please log in again.');
@@ -446,13 +415,47 @@
 
             const baseUrl = typeof url !== 'undefined' ? url : '';
             const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+            const storageBase = cleanBase.replace(/\/api$/, '');
 
             const params = new URLSearchParams(window.location.search);
             const studentId = params.get("id");
             if (!studentId) {
                 alert('Student ID is missing.');
-                window.location.href = 'student_record';
+                window.location.href = 'student_record.php';
                 return;
+            }
+
+            // Holds existing files fetched from DB and newly selected files
+            let existingOtherDocs = [];
+            let selectedOtherDocs = [];
+
+            // Fetch Classes and Academic Years dropdowns
+            async function fetchDropdownData() {
+                try {
+                    const classRes = await fetch(`${cleanBase}/student-classes`, {
+                        headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
+                    });
+                    const classResult = await classRes.json();
+                    if (classRes.ok) {
+                        const classes = classResult.data?.data || classResult.data || classResult;
+                        const classSelect = document.getElementById('course');
+                        classSelect.innerHTML = '<option value="">Select course / class</option>' + 
+                            (Array.isArray(classes) ? classes : []).map(c => `<option value="${c.id}">${c.class_name}</option>`).join('');
+                    }
+
+                    const yearRes = await fetch(`${cleanBase}/academic-years`, {
+                        headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
+                    });
+                    const yearResult = await yearRes.json();
+                    if (yearRes.ok) {
+                        const years = yearResult.data?.data || yearResult.data || yearResult;
+                        const yearSelect = document.getElementById('student_batch');
+                        yearSelect.innerHTML = '<option value="">Select Batch Year</option>' + 
+                            (Array.isArray(years) ? years : []).map(y => `<option value="${y.academic_year}">${y.academic_year}</option>`).join('');
+                    }
+                } catch (err) {
+                    console.error('Error loading dropdowns:', err);
+                }
             }
 
             // Accordion functionality
@@ -493,40 +496,132 @@
                 });
             });
 
-            // Preview image handling for file inputs
-            function setupPreview(inputId, previewId) {
-                const input = document.getElementById(inputId);
-                const preview = document.getElementById(previewId);
-                if (input && preview) {
-                    input.addEventListener('change', function() {
-                        if (this.files && this.files[0]) {
-                            const reader = new FileReader();
-                            reader.onload = function(e) {
-                                preview.src = e.target.result;
-                                preview.classList.remove('hidden');
-                            };
-                            reader.readAsDataURL(this.files[0]);
-                        } else {
-                            preview.classList.add('hidden');
-                        }
-                    });
-                }
+            // File input name displays
+            const passportInput = document.getElementById('passport_photo');
+            const passportLabel = document.getElementById('passport_photo_name');
+            if (passportInput && passportLabel) {
+                passportInput.addEventListener('change', function() {            
+                    if (this.files && this.files[0]) {
+                        passportLabel.textContent = '✓ ' + this.files[0].name;
+                        passportLabel.classList.remove('hidden');
+                    } else {
+                        passportLabel.classList.add('hidden');
+                    }
+                });
             }
 
-            // Setup previews for all file inputs that have previews
-            setupPreview('photo', 'photoPreview');
-            setupPreview('tc_certificate', 'tcPreview');
-            setupPreview('marksheet_10', 'marksheet10Preview');
-            setupPreview('marksheet_12', 'marksheet12Preview');
-            setupPreview('other_academic_docs', 'otherAcademicDocsPreview');
-            setupPreview('caste_certificate', 'castePreview');
-            setupPreview('domicile_certificate', 'domicilePreview');
-            setupPreview('non_creamy_layer', 'nonCreamyLayerPreview');
-            setupPreview('other_documents', 'otherDocumentsPreview');
+            const aadharInput = document.getElementById('aadhar_card');
+            const aadharLabel = document.getElementById('aadhar_card_name');
+            if (aadharInput && aadharLabel) {
+                aadharInput.addEventListener('change', function() {
+                    if (this.files && this.files[0]) {
+                        aadharLabel.textContent = '✓ ' + this.files[0].name;
+                        aadharLabel.classList.remove('hidden');
+                    } else {
+                        aadharLabel.classList.add('hidden');
+                    }
+                });
+            }
+
+            // ==============================
+            // RENDER COMBINED OTHER DOCUMENTS
+            // ==============================
+            const otherDocsInput = document.getElementById('other_documents');
+            const otherDocsList = document.getElementById('other_documents_list');
+            const otherDocsCount = document.getElementById('other_documents_count');
+
+            function renderOtherDocs() {
+                if (!otherDocsList) return;
+                otherDocsList.innerHTML = '';
+                
+                const totalCount = existingOtherDocs.length + selectedOtherDocs.length;
+                if (totalCount === 0) {
+                    otherDocsCount.textContent = '';
+                    return;
+                }
+                otherDocsCount.textContent = `(${totalCount} total)`;
+
+                // 1. Render Existing DB Files (with download links)
+                existingOtherDocs.forEach((filePath, index) => {
+                    const fileName = filePath.split('/').pop() || `Document ${index + 1}`;
+                    const chip = document.createElement('div');
+                    chip.className = 'flex items-center justify-between gap-2 bg-blue-50 border border-blue-200 rounded-md px-2 py-1 text-[10px]';
+                    chip.innerHTML = `
+                        <div class="flex items-center gap-1.5 min-w-0 flex-1">
+                            <i class="fas fa-file-pdf text-blue-500 text-[10px] flex-shrink-0"></i>
+                            <span class="text-gray-700 truncate">${fileName}</span>
+                            <span class="text-blue-600 text-[9px] font-semibold flex-shrink-0">(Existing)</span>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <a href="${storageBase}/storage/${filePath}" target="_blank" title="View/Download" class="text-blue-500 hover:text-blue-700 hover:bg-blue-100 rounded w-5 h-5 flex items-center justify-center flex-shrink-0 transition">
+                                <i class="fas fa-download text-[9px]"></i>
+                            </a>
+                            <button type="button" data-index="${index}" class="remove-existing-doc text-red-500 hover:text-red-700 hover:bg-red-50 rounded w-5 h-5 flex items-center justify-center flex-shrink-0 transition" title="Remove">
+                                <i class="fas fa-times text-[9px]"></i>
+                            </button>
+                        </div>
+                    `;
+                    otherDocsList.appendChild(chip);
+                });
+
+                // 2. Render Newly Selected Local Files
+                selectedOtherDocs.forEach((file, index) => {
+                    const chip = document.createElement('div');
+                    chip.className = 'flex items-center justify-between gap-2 bg-orange-50 border border-orange-200 rounded-md px-2 py-1 text-[10px]';
+                    const sizeKB = (file.size / 1024).toFixed(0);
+                    chip.innerHTML = `
+                        <div class="flex items-center gap-1.5 min-w-0 flex-1">
+                            <i class="fas fa-file-alt text-orange-500 text-[10px] flex-shrink-0"></i>
+                            <span class="text-gray-700 truncate">${file.name}</span>
+                            <span class="text-gray-400 text-[9px] flex-shrink-0">(${sizeKB} KB)</span>
+                        </div>
+                        <button type="button" data-index="${index}" class="remove-new-doc text-red-500 hover:text-red-700 hover:bg-red-50 rounded w-5 h-5 flex items-center justify-center flex-shrink-0 transition" title="Remove">
+                            <i class="fas fa-times text-[9px]"></i>
+                        </button>
+                    `;
+                    otherDocsList.appendChild(chip);
+                });
+
+                // Bind delete events for existing DB files
+                otherDocsList.querySelectorAll('.remove-existing-doc').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const idx = parseInt(this.getAttribute('data-index'), 10);
+                        existingOtherDocs.splice(idx, 1);
+                        renderOtherDocs();
+                    });
+                });
+
+                // Bind delete events for newly selected local files
+                otherDocsList.querySelectorAll('.remove-new-doc').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const idx = parseInt(this.getAttribute('data-index'), 10);
+                        selectedOtherDocs.splice(idx, 1);
+                        renderOtherDocs();
+                    });
+                });
+            }
+
+            if (otherDocsInput) {
+                otherDocsInput.addEventListener('change', function() {
+                    const newFiles = Array.from(this.files);
+                    newFiles.forEach(newFile => {
+                        const isDuplicate = selectedOtherDocs.some(
+                            f => f.name === newFile.name && f.size === newFile.size
+                        );
+                        if (!isDuplicate) selectedOtherDocs.push(newFile);
+                    });
+                    renderOtherDocs();
+                    this.value = '';
+                });
+            }
 
             // Load student data
             async function getStudent() {
                 try {
+                    await fetchDropdownData();
+
                     const response = await fetch(`${cleanBase}/students/${studentId}`, {
                         headers: {
                             "Authorization": "Bearer " + token,
@@ -544,60 +639,68 @@
                     }
 
                     const result = await response.json();
-                    const student = result.data || result.student || result;
+                    const student = result.data?.student || result.data || result;
 
                     // Populate fields
-                    document.getElementById("student_batch").value = student.student_batch || "";
-                    let yearValue = student.student_year;
-                    if (yearValue === "1st Year") yearValue = "First Year";
-                    if (yearValue === "2nd Year") yearValue = "Second Year";
-                    if (yearValue === "3rd Year") yearValue = "Third Year";
-                    document.getElementById("student_year").value = yearValue || "";
-                    document.getElementById("course").value = student.course || "";
-                    document.getElementById("student_name").value = student.student_name || "";
-                    document.getElementById("parent_name").value = student.parent_name || "";
-                    document.getElementById("caste").value = student.caste || "";
-                    document.getElementById("sub_caste").value = student.sub_caste || "";
-                    document.getElementById("admission_date").value = student.admission_date || "";
-                    document.getElementById("aadhaar_number").value = student.aadhaar_number || "";
+                    document.getElementById("registration_id").value = student.registration_id || student.student_id || "";
                     document.getElementById("abc_id").value = student.abc_id || "";
-                    document.getElementById("date_of_birth").value = student.date_of_birth || "";
-                    document.getElementById("place_of_birth").value = student.place_of_birth || "";
-                    document.getElementById("gender").value = student.gender || "";
-                    document.getElementById("full_fees").value = student.full_fees || "";
-                    document.getElementById("admission_fees").value = student.admission_fees || "";
+                    document.getElementById("student_name").value = student.student_name || "";
+                    document.getElementById("course").value = student.class_id || student.course || "";
                     document.getElementById("student_phone").value = student.student_phone || "";
                     document.getElementById("parent_phone").value = student.parent_phone || "";
+                    document.getElementById("parent_name").value = student.parent_name || "";
+                    document.getElementById("aadhaar_number").value = student.aadhaar_number || "";
+                    document.getElementById("date_of_birth").value = student.date_of_birth || "";
+                    document.getElementById("gender").value = student.gender || "";
                     document.getElementById("blood_group").value = student.blood_group || "";
+                    document.getElementById("place_of_birth").value = student.place_of_birth || "";
+                    document.getElementById("caste").value = student.caste || "";
+                    document.getElementById("sub_caste").value = student.sub_caste || "";
+
+                    document.getElementById("board").value = student.board || "";
+                    document.getElementById("previous_class").value = student.previous_class || "";
+                    document.getElementById("student_batch").value = student.student_batch || student.academic_year || "";
+                    document.getElementById("admission_date").value = student.admission_date || "";
+                    document.getElementById("full_fees").value = student.full_fees || "";
+                    document.getElementById("discount_amount").value = student.discount_amount || "";
+
+                    document.getElementById("full_address").value = student.full_address || "";
                     document.getElementById("tahsil").value = student.tahsil || "";
                     document.getElementById("district").value = student.district || "";
-                    document.getElementById("full_address").value = student.full_address || "";
+                    document.getElementById("state").value = student.state || "";
+                    document.getElementById("pincode").value = student.pincode || "";
 
-                    // Semester radios
-                    const semesterRadios = document.getElementsByName("semester");
-                    semesterRadios.forEach(radio => {
-                        if (radio.value === student.semester_pattern) {
-                            radio.checked = true;
-                        }
-                    });
+                    if (student.passport_photo) {
+                        const pLabel = document.getElementById('passport_photo_name');
+                        pLabel.textContent = '✓ Current file uploaded';
+                        pLabel.classList.remove('hidden');
+                    }
+                    if (student.aadhar_card || student.aadhaar_card) {
+                        const aLabel = document.getElementById('aadhar_card_name');
+                        aLabel.textContent = '✓ Current file uploaded';
+                        aLabel.classList.remove('hidden');
+                    }
 
-                    // Set preview images from server
-                    const setPreview = (id, path) => {
-                        const img = document.getElementById(id);
-                        if (img && path) {
-                            img.src = cleanBase + "/storage/" + path;
-                            img.classList.remove('hidden');
+                    // Parse and load existing Other Documents from DB
+                    // Parse and load existing Other Documents from DB robustly
+                    if (student.other_documents) {
+                        try {
+                            if (typeof student.other_documents === 'string') {
+                                if (student.other_documents.trim().startsWith('[')) {
+                                    existingOtherDocs = JSON.parse(student.other_documents);
+                                } else if (student.other_documents.includes(',')) {
+                                    existingOtherDocs = student.other_documents.split(',').map(s => s.trim());
+                                } else {
+                                    existingOtherDocs = [student.other_documents.trim()];
+                                }
+                            } else if (Array.isArray(student.other_documents)) {
+                                existingOtherDocs = student.other_documents;
+                            }
+                        } catch(e) {
+                            existingOtherDocs = [student.other_documents];
                         }
-                    };
-                    setPreview("photoPreview", student.passport_photo);
-                    setPreview("tcPreview", student.tc_certificate);
-                    setPreview("marksheet10Preview", student.marksheet_10);
-                    setPreview("marksheet12Preview", student.marksheet_12);
-                    setPreview("otherAcademicDocsPreview", student.other_academic_documents);
-                    setPreview("castePreview", student.caste_certificate);
-                    setPreview("domicilePreview", student.domicile_certificate);
-                    setPreview("nonCreamyLayerPreview", student.non_creamy_layer_certificate);
-                    setPreview("otherDocumentsPreview", student.other_documents);
+                    }
+                    renderOtherDocs();
 
                 } catch (error) {
                     console.error('Error loading student:', error);
@@ -616,42 +719,38 @@
                     const formData = new FormData();
                     formData.append("_method", "PUT");
 
-                    // Text fields
                     const fields = [
-                        'student_batch', 'student_year', 'course', 'student_name', 'parent_name',
-                        'caste', 'sub_caste', 'admission_date', 'aadhaar_number', 'abc_id',
-                        'date_of_birth', 'place_of_birth', 'gender', 'full_fees', 'admission_fees',
-                        'student_phone', 'parent_phone', 'blood_group', 'tahsil', 'district',
-                        'full_address'
+                        'student_name', 'abc_id', 'student_phone', 'parent_phone', 'parent_name',
+                        'aadhaar_number', 'date_of_birth', 'gender', 'blood_group', 'place_of_birth',
+                        'caste', 'sub_caste', 'board', 'previous_class', 'student_batch',
+                        'admission_date', 'full_fees', 'discount_amount', 'full_address',
+                        'tahsil', 'district', 'state', 'pincode'
                     ];
+
                     fields.forEach(id => {
                         const el = document.getElementById(id);
-                        if (el) formData.append(id, el.value);
-                    });
-
-                    // Semester
-                    const semesterRadios = document.getElementsByName("semester");
-                    semesterRadios.forEach(radio => {
-                        if (radio.checked) formData.append("semester_pattern", radio.value);
-                    });
-
-                    // Files
-                    const fileFields = [
-                        ['photo', 'passport_photo'],
-                        ['tc_certificate', 'tc_certificate'],
-                        ['marksheet_10', 'marksheet_10'],
-                        ['marksheet_12', 'marksheet_12'],
-                        ['other_academic_docs', 'other_academic_documents'],
-                        ['caste_certificate', 'caste_certificate'],
-                        ['domicile_certificate', 'domicile_certificate'],
-                        ['non_creamy_layer', 'non_creamy_layer_certificate'],
-                        ['other_documents', 'other_documents']
-                    ];
-                    fileFields.forEach(([inputId, fieldName]) => {
-                        const input = document.getElementById(inputId);
-                        if (input && input.files[0]) {
-                            formData.append(fieldName, input.files[0]);
+                        if (el && el.value.trim() !== '') {
+                            formData.append(id, el.value.trim());
                         }
+                    });
+
+                    formData.append('class_id', document.getElementById('course').value);
+                    formData.append('course', document.getElementById('course').selectedOptions[0]?.textContent || '');
+
+                    const passportPhoto = document.getElementById('passport_photo').files[0];
+                    if (passportPhoto) formData.append('passport_photo', passportPhoto);
+
+                    const aadharCard = document.getElementById('aadhar_card').files[0];
+                    if (aadharCard) formData.append('aadhar_card', aadharCard);
+
+                    // 1. Send remaining retained existing files so backend doesn't delete them
+                    existingOtherDocs.forEach(filePath => {
+                        formData.append('retained_other_documents[]', filePath);
+                    });
+
+                    // 2. Send newly selected local files
+                    selectedOtherDocs.forEach(file => {
+                        formData.append('other_documents[]', file);
                     });
 
                     const response = await fetch(`${cleanBase}/students/${studentId}`, {
@@ -663,16 +762,20 @@
                         body: formData
                     });
 
-                    const result = await response.json();
+                    const result = await response.json().catch(() => ({}));
 
                     if (response.ok) {
                         alert("Student Updated Successfully ✅");
-                        window.location.href = "student_record";
+                        window.location.href = "student_record.php";
                     } else if (response.status === 422) {
-                        let errorMessage = "";
-                        Object.keys(result.errors).forEach(key => {
-                            errorMessage += result.errors[key][0] + "\n";
-                        });
+                        let errorMessage = "Please correct the following:\n";
+                        if (result.errors) {
+                            Object.keys(result.errors).forEach(key => {
+                                errorMessage += `- ${result.errors[key][0]}\n`;
+                            });
+                        } else {
+                            errorMessage += result.message || "Validation error";
+                        }
                         alert(errorMessage);
                     } else if (response.status === 401) {
                         alert('Session expired. Please log in again.');
@@ -689,7 +792,6 @@
                 }
             }
 
-            // Event listeners
             document.getElementById('updateBtn').addEventListener('click', function(e) {
                 e.preventDefault();
                 updateStudent();
@@ -698,15 +800,11 @@
             document.getElementById('backBtn').addEventListener('click', function(e) {
                 e.preventDefault();
                 if (confirm('Are you sure you want to go back? Any unsaved changes will be lost.')) {
-                    window.location.href = 'student_record';
+                    window.location.href = 'student_record.php';
                 }
             });
 
-            // Initialize
             getStudent();
-
-            // Open first section by default
-            // The first section's body has no 'hidden' class initially (personal-body)
         })();
     </script>
 </body>
