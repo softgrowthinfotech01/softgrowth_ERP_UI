@@ -12,7 +12,7 @@
     <!-- ECharts -->
     <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
 
-    <!-- Font Awesome (optional icons) -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
     <style>
@@ -48,7 +48,6 @@
             }
         }
 
-        /* small touch for cards */
         .stat-card {
             transition: transform 0.2s, box-shadow 0.2s;
         }
@@ -150,14 +149,65 @@
 
     </main>
 
-    <!-- FOOTER (PHP include) -->
+    <!-- FOOTER -->
     <?php include 'footer.php'; ?>
+    <script src="url.js"></script>
 
     <!-- ============================================================
-    CHARTS INIT
+    CHARTS INIT & HEADER SYNCHRONIZATION
     ============================================================ -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
+
+            // ---- AUTHENTICATION CHECK ----
+            const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token') || '';
+            if (!token) {
+                alert('Session expired or unauthorized. Please log in again.');
+                window.location.href = 'login.php';
+                return;
+            }
+
+            // ---- SYNC HEADER PROFILE & ADMIN MENU ----
+            const baseUrl = typeof url !== 'undefined' ? url : '';
+            const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+
+            try {
+                const userRes = await fetch(`${cleanBase}/user`, {
+                    method: 'GET',
+                    headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
+                });
+                if (userRes.ok) {
+                    const userData = await userRes.json();
+                    const user = userData.data || userData;
+
+                    const roleEl = document.getElementById('headerUserRole');
+                    const initialEl = document.getElementById('headerUserInitial');
+                    const registerLink = document.getElementById('registerUserLink');
+
+                    if (user.role) {
+                        const formattedRole = user.role.charAt(0).toUpperCase() + user.role.slice(1);
+                        if (roleEl) roleEl.textContent = formattedRole;
+                        if (initialEl) initialEl.textContent = user.role.charAt(0).toUpperCase();
+
+                        const roleLower = user.role.toLowerCase();
+                        if (roleLower === 'admin' || roleLower === 'super admin') {
+                            if (registerLink) registerLink.classList.remove('hidden');
+                        }
+                    }
+                } else {
+                    // Fallback display if fetch fails
+                    const roleEl = document.getElementById('headerUserRole');
+                    if (roleEl) roleEl.textContent = 'Admin';
+                    const registerLink = document.getElementById('registerUserLink');
+                    if (registerLink) registerLink.classList.remove('hidden');
+                }
+            } catch (err) {
+                console.error('Header sync error:', err);
+                const roleEl = document.getElementById('headerUserRole');
+                if (roleEl) roleEl.textContent = 'Admin';
+                const registerLink = document.getElementById('registerUserLink');
+                if (registerLink) registerLink.classList.remove('hidden');
+            }
 
             // ---- BAR CHART ----
             const barChart = echarts.init(document.getElementById('barChart'));
@@ -194,8 +244,8 @@
                     itemStyle: {
                         borderRadius: [8, 8, 0, 0],
                         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                            { offset: 0, color: '#f97316' }, // Replaced Teal with Orange 500
-                            { offset: 1, color: '#f97316' }  // Replaced Teal with Orange 500
+                            { offset: 0, color: '#f97316' }, 
+                            { offset: 1, color: '#f97316' }  
                         ])
                     }
                 }]
@@ -257,12 +307,11 @@
                         scale: true,
                         scaleSize: 8
                     },
-                    // Replaced Teal colors with Orange shades
                     data: [
-                        { value: 60, name: 'Students', itemStyle: { color: '#d05513' } }, // Orange 600
-                        { value: 10, name: 'Expenses', itemStyle: { color: '#9a3412' } }, // Orange 800 (Dark)
-                        { value: 20, name: 'Courses', itemStyle: { color: '#f97316' } },  // Orange 500
-                        { value: 10, name: 'Revenue', itemStyle: { color: '#fdba74' } }   // Orange 300 (Light)
+                        { value: 60, name: 'Students', itemStyle: { color: '#d05513' } },
+                        { value: 10, name: 'Expenses', itemStyle: { color: '#9a3412' } },
+                        { value: 20, name: 'Courses', itemStyle: { color: '#f97316' } },
+                        { value: 10, name: 'Revenue', itemStyle: { color: '#fdba74' } }
                     ]
                 }]
             });
