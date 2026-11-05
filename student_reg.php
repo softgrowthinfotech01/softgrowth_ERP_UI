@@ -245,31 +245,11 @@
                                         <i class="fas fa-calendar absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs z-10"></i>
                                         <select id="student_batch" class="w-full pl-8 pr-8 py-2 text-sm rounded-lg border border-gray-300 bg-white appearance-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
                                             <option value="">Select Batch Year</option>
-                                            <option value="2025-26">2025-26</option>
-                                            <option value="2026-27">2026-27</option>
-                                            <option value="2027-28">2027-28</option>
-                                            <option value="2028-29">2028-29</option>
-                                            <option value="2029-30">2029-30</option>
-                                            <option value="2030-31">2030-31</option>
-                                            <option value="2031-32">2031-32</option>
-                                            <option value="2032-33">2032-33</option>
-                                            <option value="2033-34">2033-34</option>
-                                            <option value="2034-35">2034-35</option>
-                                            <option value="2035-36">2035-36</option>
-                                            <option value="2036-37">2036-37</option>
-                                            <option value="2037-38">2037-38</option>
-                                            <option value="2038-39">2038-39</option>
-                                            <option value="2039-40">2039-40</option>
-                                            <option value="2040-41">2040-41</option>
-                                            <option value="2041-42">2041-42</option>
-                                        
                                         </select>
                                         <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none"></i>
                                     </div>
                                     <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-student_batch"></p>
                                 </div>
-
-                              
 
                                 <div>
                                     <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Admission Date <span class="text-red-500">*</span></label>
@@ -281,11 +261,11 @@
                                 </div>
 
                                 <!-- Course Fees & Discount Amount side-by-side -->
-                <div>
-                    <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Gross Fee</label>
+                                <div>
+                                    <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Gross Fee</label>
                                     <div class="relative">
                                         <i class="fas fa-rupee-sign absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                        <input type="number" step="0.01" id="full_fees" placeholder="Loaded from class fee" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
+                                        <input type="number" step="0.01" id="full_fees" placeholder="Loaded from class fee" class="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none shadow-sm">
                                     </div>
                                     <p class="error-msg text-red-500 text-[10px] mt-0.5 hidden" id="err-full_fees"></p>
                                 </div>
@@ -578,6 +558,45 @@
 
         fetchClassMasters();
 
+        // ============================================================
+        // Load Academic Years from API for Student Batch
+        // ============================================================
+        async function fetchAcademicYears() {
+            const batchSelect = document.getElementById('student_batch');
+            if (!batchSelect) return;
+
+            try {
+                const response = await fetch(`${cleanBase}/academic-years`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    const years = apiPayload(result);
+                    batchSelect.innerHTML = '<option value="">Select Batch Year</option>';
+                    (Array.isArray(years) ? years : []).forEach(item => {
+                        const option = document.createElement('option');
+                        option.value = item.academic_year || item.id;
+                        option.textContent = item.academic_year || item.name || item.year || `Batch ${item.id}`;
+                        batchSelect.appendChild(option);
+                    });
+                } else {
+                    if (response.status === 401) {
+                        alert('Your session has expired. Please log in again.');
+                        window.location.href = 'login.php';
+                    }
+                }
+            } catch (err) {
+                console.error('Failed to fetch academic years:', err);
+            }
+        }
+
+        fetchAcademicYears();
+
         document.getElementById('course').addEventListener('change', async function() {
             selectedClassFee = null;
             document.getElementById('classFeeMessage').textContent = '';
@@ -683,7 +702,6 @@
         document.querySelectorAll('input[type="text"], textarea').forEach(input => {
             input.addEventListener('blur', function() {
                 if (this.id !== 'email' && this.value) {
-                    // Capitalize first letters or keep natural case while normalizing spaces
                     this.value = this.value.trim().replace(/\s+/g, ' ');
                 }
             });
@@ -1010,12 +1028,10 @@
         }
 
         function buildPreview() {
-            // Get current values from form inputs
             const grossVal = document.getElementById('full_fees').value || selectedClassFee || 0;
             const discountVal = document.getElementById('discount_amount').value || 0;
             const payableVal = Math.max(0, Number(grossVal) - Number(discountVal));
 
-            // Update the top header summary banner values directly
             const headerGross = document.getElementById('previewGrossFee');
             const headerDiscount = document.getElementById('previewDiscount');
             const headerPayable = document.getElementById('previewPayable');
@@ -1167,7 +1183,7 @@
                         if (aadharLabel) aadharLabel.classList.add('hidden');
 
                         showForm();
-                        fetchAddressSuggestions(); // Refresh suggestion datalists
+                        fetchAddressSuggestions();
 
                         const banner = document.getElementById('globalErrorBanner');
                         const errorMessageContainer = document.getElementById('globalErrorMessage');
