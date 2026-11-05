@@ -1,15 +1,15 @@
 <!-- MOBILE OVERLAY -->
-<div id="overlay" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-30 hidden lg:hidden transition-all duration-300"></div>
+<div id="overlay" class="fixed inset-0 bg-transparent backdrop-blur-sm z-30 hidden md:hidden transition-all duration-300"></div>
 
 <!-- SIDEBAR -->
-<aside id="sidebar" class="fixed top-0 left-0 w-72 h-screen z-40 transform -translate-x-full lg:translate-x-0 transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] overflow-y-auto bg-white shadow-2xl border-r border-gray-200 erp-side">
+<aside id="sidebar" class="fixed top-0 left-0 w-72 h-screen z-40 transform -translate-x-full md:translate-x-0 transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] overflow-y-auto bg-white shadow-2xl border-r border-gray-200 erp-side">
 
     <!-- LOGO -->
     <div class="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-gray-200 h-16 flex items-center justify-between px-5">
         <h1 class="text-2xl font-black text-gray-800 tracking-tight">
             ERP <span class="text-orange-400">Pro</span>
         </h1>
-        <button onclick="closeSidebar()" class="lg:hidden text-gray-500 hover:text-orange-400 text-2xl transition">
+        <button onclick="closeSidebar()" class="md:hidden text-gray-500 hover:text-orange-400 text-2xl transition">
             ✕
         </button>
     </div>
@@ -371,7 +371,7 @@
 </aside>
 
 <!-- TOGGLE BUTTON -->
-<button onclick="toggleSidebar()" class="fixed top-4 left-4 z-50 lg:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-orange-600 text-white text-2xl font-semibold shadow-lg hover:bg-orange-700 transition-all duration-200 hover:scale-105">
+<button onclick="toggleSidebar()" class="fixed top-3.5 left-4 z-50 md:hidden w-9 h-9 flex items-center justify-center rounded-xl bg-orange-400 text-white text-2xl font-semibold shadow-lg hover:bg-orange-400 transition-all duration-200 hover:scale-105">
     ☰
 </button>
 
@@ -419,18 +419,21 @@
     const sidebar = document.getElementById("sidebar");
     const overlay = document.getElementById("overlay");
 
-    function toggleSidebar() {
+  function toggleSidebar() {
+    if (window.innerWidth < 768) {
         sidebar.classList.toggle("-translate-x-full");
-        overlay.classList.toggle("hidden");
+        if (overlay) overlay.classList.toggle("hidden");
     }
-
-    function closeSidebar() {
+}
+  function closeSidebar() {
+    if (window.innerWidth < 768) {
         sidebar.classList.add("-translate-x-full");
-        overlay.classList.add("hidden");
+        if (overlay) overlay.classList.add("hidden");
     }
-
+}
+if (overlay) {
     overlay.addEventListener("click", closeSidebar);
-
+}
     function toggleDropdown(id) {
         const menu = document.getElementById(id);
         const arrow = menu.closest(".dropdown").querySelector(".arrow");
@@ -452,7 +455,25 @@
         }
     }
 
-    window.innerWidth >= 1024 ? overlay.classList.add("hidden") : null;
+window.addEventListener("resize", () => {
+    if (window.innerWidth >= 768) {
+        if (overlay) overlay.classList.add("hidden");
+        sidebar.classList.add("-translate-x-full");
+    }
+});
+
+
+
+document.querySelectorAll(".sidebar-link, .sidebar-sub-link").forEach(link => {
+    link.addEventListener("click", () => {
+        if (window.innerWidth < 768) {
+            closeSidebar();
+        }
+    });
+});
+
+
+
 
     // Filter sidebar using the working /my-menus endpoint
     document.addEventListener("DOMContentLoaded", async function() {

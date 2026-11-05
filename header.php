@@ -1,8 +1,8 @@
 <header class="fixed top-0 left-0 w-full z-50 bg-white shadow-sm border-b border-gray-100">
     <div class="flex items-center justify-between h-16 px-4 sm:px-6 md:px-8">
 
-        <!-- Brand -->
-        <div class="flex items-center gap-3">
+        <!-- Brand --> 
+        <div class="flex items-center gap-3 ml-24 md:ml-0">
             <div class="w-9 h-9 rounded-xl bg-orange-400 text-white flex items-center justify-center font-semibold text-lg shadow-md">
                 E
             </div>
