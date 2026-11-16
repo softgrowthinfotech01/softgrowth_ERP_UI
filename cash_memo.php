@@ -196,10 +196,21 @@
     <script src="url.js"></script>
 
   <script>
-    const token = localStorage.getItem('token') || localStorage.getItem('auth_token');
+    function getToken() {
+        return localStorage.getItem('token') || localStorage.getItem('auth_token') || localStorage.getItem('accessToken') || sessionStorage.getItem('token');
+    }
+
     const cleanBase = (typeof url !== 'undefined' && url) ? url.replace(/\/$/, '') : 'http://127.0.0.1:8000/api';
 
     document.addEventListener('DOMContentLoaded', function () {
+        // Mandatory Authentication & Session Guard Check
+        const token = getToken();
+        if (!token) {
+            alert('Your session has expired or you are not logged in. Please log in again.');
+            window.location.href = 'login.php';
+            return;
+        }
+
         const dateInput = document.getElementById('date');
         if (dateInput) {
             dateInput.value = new Date().toISOString().split('T')[0];
@@ -276,6 +287,7 @@
     async function searchEmployeesDropdown(query) {
         clearTimeout(searchTimeout);
         const dropdown = document.getElementById('employeeDropdownList');
+        const token = getToken();
 
         if (!query || query.trim().length === 0) {
             dropdown.classList.add('hidden');
@@ -290,6 +302,13 @@
                         'Accept': 'application/json'
                     }
                 });
+
+                if (res.status === 401) {
+                    alert('Session expired. Please log in again.');
+                    window.location.href = 'login.php';
+                    return;
+                }
+
                 const result = await res.json();
 
                 if (res.ok && result.data && result.data.length > 0) {
@@ -342,6 +361,13 @@
     async function saveCashMemo(event) {
         event.preventDefault();
         const submitBtn = document.getElementById('submitMemoBtn');
+        const token = getToken();
+
+        if (!token) {
+            alert('Session expired. Please log in again.');
+            window.location.href = 'login.php';
+            return;
+        }
 
         try {
             const category = document.getElementById("category").value;
@@ -387,6 +413,12 @@
                 },
                 body: JSON.stringify(data)
             });
+
+            if (response.status === 401) {
+                alert('Session expired. Please log in again.');
+                window.location.href = 'login.php';
+                return;
+            }
 
             const result = await response.json();
 

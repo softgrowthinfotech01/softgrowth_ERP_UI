@@ -36,14 +36,7 @@
                                  <p class="text-[11px] text-gray-500 mt-0.5">Record and manage cash/offline student fee payments.</p>
                             </div>
                         </div>
-                        <nav class="flex items-center gap-1.5 text-[11px] text-gray-500">
-                            <i class="fas fa-home text-orange-500"></i>
-                            <span>Dashboard</span>
-                            <i class="fas fa-chevron-right text-[9px] text-gray-400"></i>
-                            <span>Students</span>
-                            <i class="fas fa-chevron-right text-[9px] text-gray-400"></i>
-                            <span class="text-orange-600 font-semibold">Fee Payment</span>
-                        </nav>
+                        
                     </div>
                 </div>
 
@@ -407,113 +400,12 @@
     <!-- ============================================================ -->
     <!-- SCRIPT -->
     <!-- ============================================================ -->
-    <script>
+<script>
         (function() {
             // ============================================================
             // Students and balances are loaded from the Laravel API.
             // ============================================================
-            let students = [{
-                    id: 'SGI00025',
-                    name: 'Nayanshree Ramteke',
-                    apaar: '1234 5678 9012',
-                    course: 'Front-End Development',
-                    batch: 'Oct 2026',
-                    totalFees: 15000,
-                    paid: 5000,
-                    photo: 'https://i.pravatar.cc/80?img=47',
-                    payments: [{
-                        inst: 1,
-                        date: '2026-10-10',
-                        amount: 5000,
-                        mode: 'Online',
-                        txn: 'TXN123456789',
-                        remarks: 'First installment'
-                    }]
-                },
-                {
-                    id: 'SGI00026',
-                    name: 'Rohit Sharma',
-                    apaar: '2345 6789 0123',
-                    course: 'React Developer',
-                    batch: 'Aug 2026',
-                    totalFees: 20000,
-                    paid: 20000,
-                    photo: 'https://i.pravatar.cc/80?img=12',
-                    payments: [{
-                            inst: 1,
-                            date: '2026-08-15',
-                            amount: 10000,
-                            mode: 'Online',
-                            txn: 'TXN223456789',
-                            remarks: 'First installment'
-                        },
-                        {
-                            inst: 2,
-                            date: '2026-09-20',
-                            amount: 10000,
-                            mode: 'Google Pay',
-                            txn: 'GPAY99887766',
-                            remarks: 'Second installment'
-                        }
-                    ]
-                },
-                {
-                    id: 'SGI00027',
-                    name: 'Priya Deshmukh',
-                    apaar: '3456 7890 1234',
-                    course: 'Software Testing',
-                    batch: 'Oct 2026',
-                    totalFees: 18000,
-                    paid: 8000,
-                    photo: 'https://i.pravatar.cc/80?img=45',
-                    payments: [{
-                        inst: 1,
-                        date: '2026-10-01',
-                        amount: 8000,
-                        mode: 'Cash',
-                        txn: '—',
-                        remarks: 'First installment'
-                    }]
-                },
-                {
-                    id: 'SGI00028',
-                    name: 'Saurabh Jain',
-                    apaar: '4567 8901 2345',
-                    course: 'Python Development',
-                    batch: 'Sep 2026',
-                    totalFees: 12000,
-                    paid: 0,
-                    photo: 'https://i.pravatar.cc/80?img=68',
-                    payments: []
-                },
-                {
-                    id: 'SGI00029',
-                    name: 'Sneha Patil',
-                    apaar: '5678 9012 3456',
-                    course: 'Data Science',
-                    batch: 'Jul 2026',
-                    totalFees: 45000,
-                    paid: 25000,
-                    photo: 'https://i.pravatar.cc/80?img=32',
-                    payments: [{
-                            inst: 1,
-                            date: '2026-07-05',
-                            amount: 15000,
-                            mode: 'Online',
-                            txn: 'TXN445566778',
-                            remarks: 'First installment'
-                        },
-                        {
-                            inst: 2,
-                            date: '2026-09-10',
-                            amount: 10000,
-                            mode: 'Google Pay',
-                            txn: 'GPAY11223344',
-                            remarks: 'Second installment'
-                        }
-                    ]
-                }
-            ];
+            let students = [];
 
             // ============================================================
             // HELPERS
@@ -542,11 +434,12 @@
             }
 
             function statusOf(s) {
+                const pending = Math.max((s.totalFees || 0) - (s.paid || 0), 0);
                 if (s.paid <= 0) return {
                     label: 'Unpaid',
                     cls: 'bg-red-100 text-red-700'
                 };
-                if (s.paid >= s.totalFees) return {
+                if (pending <= 0) return {
                     label: 'Fully Paid',
                     cls: 'bg-green-100 text-green-700'
                 };
@@ -613,20 +506,22 @@
                 }
                 list.forEach((s, idx) => {
                     const st = statusOf(s);
-                    const pending = Math.max(s.totalFees - s.paid, 0);
+                    const total = s.totalFees || 0;
+                    const paid = s.paid || 0;
+                    const pending = Math.max(total - paid, 0);
                     const tr = document.createElement('tr');
                     tr.className = 'hover:bg-orange-50/40 transition';
                     tr.innerHTML = `
                     <td class="px-3 py-2 border-b border-gray-100 text-gray-500">${idx + 1}</td>
                     <td class="px-3 py-2 border-b border-gray-100">
-                        <img src="${s.photo}" alt="${s.name}" class="w-9 h-9 rounded-full object-cover border border-gray-200">
+                        <img src="${s.photo || 'https://i.pravatar.cc/80'}" alt="${s.name}" class="w-9 h-9 rounded-full object-cover border border-gray-200">
                     </td>
                     <td class="px-3 py-2 border-b border-gray-100 font-medium text-gray-800">${s.name}</td>
                     <td class="px-3 py-2 border-b border-gray-100 text-gray-700">${s.id}</td>
                     <td class="px-3 py-2 border-b border-gray-100 text-gray-700">${s.apaar}</td>
                     <td class="px-3 py-2 border-b border-gray-100 text-gray-700">${s.course}</td>
-                    <td class="px-3 py-2 border-b border-gray-100 text-right font-semibold text-gray-800">${s.totalFees.toLocaleString('en-IN')}</td>
-                    <td class="px-3 py-2 border-b border-gray-100 text-right font-semibold text-green-600">${s.paid.toLocaleString('en-IN')}</td>
+                    <td class="px-3 py-2 border-b border-gray-100 text-right font-semibold text-gray-800">${total.toLocaleString('en-IN')}</td>
+                    <td class="px-3 py-2 border-b border-gray-100 text-right font-semibold text-green-600">${paid.toLocaleString('en-IN')}</td>
                     <td class="px-3 py-2 border-b border-gray-100 text-right font-semibold text-red-600">${pending.toLocaleString('en-IN')}</td>
                     <td class="px-3 py-2 border-b border-gray-100 text-center">
                         <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold ${st.cls}">${st.label}</span>
@@ -704,18 +599,14 @@
                 pPaymentDate.max = todayISO();
                 pRemarks.value = '';
                 pLateFees.value = '';
-                selectedPaymentType = '';
-                document.querySelectorAll('.payment-type-option').forEach(el => {
-                    el.classList.remove('border-orange-500', 'bg-orange-50', 'text-orange-700');
-                    el.classList.add('border-gray-200', 'text-gray-700');
-                });
+                selectedPaymentType = 'Cash';
 
                 // Summary
                 sTotalFees.textContent = formatCurrency(student.totalFees);
                 sPaid.textContent = formatCurrency(student.paid);
                 sPending.textContent = formatCurrency(pending);
-                const installmentCount = student.payments.length > 0 ?
-                    Math.max(...student.payments.map(p => p.inst || 0)) :
+                const installmentCount = student.payments && student.payments.length > 0 ?
+                    Math.max(...student.payments.map(p => Number(p.inst) || 0)) :
                     0;
                 sInstallments.textContent = installmentCount === 0 ? '0' : String(installmentCount);
                 sLateFees.textContent = formatCurrency(0);
@@ -756,11 +647,6 @@
                 pPaymentDate.value = todayISO();
                 pRemarks.value = '';
                 pLateFees.value = '';
-                selectedPaymentType = '';
-                document.querySelectorAll('.payment-type-option').forEach(el => {
-                    el.classList.remove('border-orange-500', 'bg-orange-50', 'text-orange-700');
-                    el.classList.add('border-gray-200', 'text-gray-700');
-                });
             });
 
             // ============================================================
@@ -768,7 +654,7 @@
             // ============================================================
             function renderHistory() {
                 historyBody.innerHTML = '';
-                if (!currentStudent || currentStudent.payments.length === 0) {
+                if (!currentStudent || !currentStudent.payments || currentStudent.payments.length === 0) {
                     historyBody.innerHTML = `<tr><td colspan="7" class="text-center text-gray-500 py-4 text-[11px]">
                     <i class="fas fa-info-circle mr-1"></i> No payments recorded yet.
                 </td></tr>`;
@@ -785,17 +671,8 @@
                     <td class="px-3 py-2 border-b border-gray-100 text-gray-700">${formatDate(p.date)}</td>
                     <td class="px-3 py-2 border-b border-gray-100 text-right font-semibold text-gray-800">${formatCurrency(p.amount)}</td>
                     <td class="px-3 py-2 border-b border-gray-100">
-                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium ${
-                            p.mode === 'Cash' ? 'bg-yellow-100 text-yellow-800' :
-                            p.mode === 'Google Pay' ? 'bg-blue-100 text-blue-800' :
-                            'bg-green-100 text-green-800'
-                        }">
-                            <i class="fas ${
-                                p.mode === 'Cash' ? 'fa-money-bill-wave' :
-                                p.mode === 'Google Pay' ? 'fa-mobile-alt' :
-                                'fa-globe'
-                            } text-[9px]"></i>
-                            ${p.mode}
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-emerald-100 text-emerald-800">
+                            <i class="fas fa-money-bill-wave text-[9px]"></i> ${p.mode}
                         </span>
                     </td>
                     <td class="px-3 py-2 border-b border-gray-100 text-gray-600 font-mono text-[10px]">${p.txn || '—'}</td>
@@ -804,7 +681,6 @@
                         <button class="view-receipt-btn inline-flex items-center gap-1 px-2 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 text-[10px] font-semibold rounded-md transition" data-index="${i}">
                             <i class="fas fa-receipt text-[9px]"></i> View Receipt
                         </button>
-                        ${p.id ? `<button class="edit-payment-btn px-2 py-1 bg-amber-50 text-amber-700 rounded-md" data-id="${p.id}" data-index="${i}">Edit</button><button class="delete-payment-btn px-2 py-1 bg-red-50 text-red-700 rounded-md" data-id="${p.id}">Remove</button>` : ''}
                     </td>
                 `;
                     historyBody.appendChild(tr);
@@ -816,138 +692,6 @@
                         openReceipt(currentStudent.payments[idx], false);
                     });
                 });
-                historyBody.querySelectorAll('.edit-payment-btn').forEach(btn => btn.addEventListener('click', async () => {
-                    const payment = currentStudent.payments[Number(btn.dataset.index)];
-                    const amount = prompt('Correct payment amount', payment.amount);
-                    if (amount === null) return;
-                    if (!/^(?:\d+)(?:\.\d{1,2})?$/.test(amount) || Number(amount) <= 0) { alert('Enter a positive amount with at most two decimals.'); return; }
-                    const date = prompt('Correct payment date (YYYY-MM-DD)', payment.date);
-                    if (!date || date > todayISO()) { alert('Payment date cannot be in the future.'); return; }
-                    try { await apiRequest(`/student-payments/${btn.dataset.id}`, {method:'PUT', body:JSON.stringify({amount_paid:amount, payment_date:date, payment_method:'Cash', installment_type:payment.inst, description:payment.remarks, transaction_reference:payment.txn})}); await refreshSummary(); }
-                    catch (error) { alert(error.message); }
-                }));
-                historyBody.querySelectorAll('.delete-payment-btn').forEach(btn => btn.addEventListener('click', async () => {
-                    if (!confirm('Remove this payment? It will no longer count toward the active balance.')) return;
-                    try { await apiRequest(`/student-payments/${btn.dataset.id}`, {method:'DELETE'}); await refreshSummary(); }
-                    catch (error) { alert(error.message); }
-                }));
-            }
-
-            // ============================================================
-            // SAVE PAYMENT → OPENS RECEIPT
-            // ============================================================
-            savePaymentBtn.addEventListener('click', function() {
-                saveCashPayment();
-                return;
-                if (!currentStudent) return;
-
-                const amount = parseFloat(pPaymentAmount.value);
-                const instDigit = (pInstallmentNo.value || '').trim();
-                const mode = selectedPaymentType;
-                const date = pPaymentDate.value;
-                const txn = pTransactionId.value.trim();
-                const remarks = pRemarks.value.trim();
-                const lateFees = parseFloat(pLateFees.value) || 0;
-
-                // Validations
-                if (!amount || amount <= 0) {
-                    alert('Please enter a valid payment amount.');
-                    return;
-                }
-                const pending = currentStudent.totalFees - currentStudent.paid;
-                if (amount > pending) {
-                    alert(`Amount exceeds pending fees (₹ ${pending.toLocaleString('en-IN')}).`);
-                    return;
-                }
-                if (!instDigit || !/^\d$/.test(instDigit) || Number(instDigit) < 1) {
-                    alert('Please enter a valid installment number (single digit like 1, 2, 3).');
-                    return;
-                }
-                if (!mode) {
-                    alert('Please select a payment type.');
-                    return;
-                }
-                if (!date) {
-                    alert('Please select a payment date.');
-                    return;
-                }
-                if ((mode === 'Online' || mode === 'Google Pay') && !txn) {
-                    alert('Transaction ID is required for Online and Google Pay payments.');
-                    return;
-                }
-
-                // Save payment
-                const payment = {
-                    inst: Number(instDigit),
-                    date: date,
-                    amount: amount,
-                    mode: mode,
-                    txn: txn || '—',
-                    remarks: remarks,
-                    lateFees: lateFees
-                };
-                currentStudent.payments.push(payment);
-                currentStudent.paid += amount;
-
-                // Reset form
-                clearFormBtn.click();
-
-                // Update summary
-                const newPending = Math.max(currentStudent.totalFees - currentStudent.paid, 0);
-                sPaid.textContent = formatCurrency(currentStudent.paid);
-                sPending.textContent = formatCurrency(newPending);
-                sInstallments.textContent = String(Math.max(...currentStudent.payments.map(p => p.inst || 0)));
-                sLateFees.textContent = formatCurrency(lateFees);
-                pAlreadyPaid.value = currentStudent.paid.toLocaleString('en-IN');
-                pPendingFees.value = newPending.toLocaleString('en-IN');
-                pAmountHint.textContent = `Amount cannot be more than pending fees (₹ ${newPending.toLocaleString('en-IN')})`;
-
-                const st = statusOf(currentStudent);
-                sStatus.textContent = st.label;
-                sStatus.className = 'text-[10px] font-semibold px-2 py-0.5 rounded-full ' + st.cls;
-
-                renderHistory();
-
-                // ============================================================
-                // OPEN PAYMENT RECEIPT IN NEW TAB
-                // ============================================================
-                openReceipt(payment, true);
-            });
-
-            // ============================================================
-            // OPEN RECEIPT IN NEW TAB
-            // ============================================================
-            function openReceipt(payment, isNew) {
-                const receiptNo = 'SGI-REC-' + String(receiptCounter).padStart(4, '0');
-                if (isNew) receiptCounter++;
-
-                const params = new URLSearchParams({
-                    receipt_no: receiptNo,
-                    name: currentStudent.name,
-                    reg_id: currentStudent.id,
-                    apaar: currentStudent.apaar,
-                    course: currentStudent.course,
-                    batch: currentStudent.batch || '—',
-                    total_fees: currentStudent.totalFees,
-                    paid: currentStudent.paid,
-                    pending: Math.max(currentStudent.totalFees - currentStudent.paid, 0),
-                    pay_amount: payment.amount,
-                    pay_type: payment.mode,
-                    installment_type: payment.inst || '',
-                    txn: payment.txn || '—',
-                    pay_date: payment.date,
-                    remarks: payment.remarks || '—',
-                    late_fees: payment.lateFees || 0,
-                    gross_fee: currentStudent.totalFees,
-                    discount_amount: currentStudent.discount || 0,
-                    payable_total: currentStudent.payable ?? currentStudent.totalFees,
-                    completed_payments: currentStudent.paid,
-                    remaining_balance: currentStudent.remaining ?? Math.max(0, currentStudent.payable - currentStudent.paid),
-                    fee_items: JSON.stringify(currentStudent.summary?.fee_items || [])
-                });
-
-                // Open receipt page in new tab
-                window.open('payment-receipt.php?' + params.toString(), '_blank');
             }
 
             // ============================================================
@@ -961,11 +705,15 @@
             });
 
             // ============================================================
+            // API INTEGRATION & SUMMARY REFRESH
+            // ============================================================
             const apiRoot = (typeof url !== 'undefined' ? url : '').replace(/\/$/, '');
             const apiToken = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token');
+            
             document.querySelectorAll('.payment-type-option').forEach(option => { if (option.dataset.value !== 'Cash') option.remove(); });
             const cashOption = document.querySelector('.payment-type-option[data-value="Cash"]');
             if (cashOption) { cashOption.classList.add('border-orange-500', 'bg-orange-50', 'text-orange-700'); selectedPaymentType = 'Cash'; }
+
             async function apiRequest(path, options = {}) {
                 const response = await fetch(`${apiRoot}${path}`, { ...options, headers: { 'Authorization': `Bearer ${apiToken}`, 'Accept': 'application/json', 'Content-Type': 'application/json', ...(options.headers || {}) } });
                 const body = await response.json().catch(() => ({}));
@@ -976,63 +724,143 @@
                 if (!response.ok) throw new Error(body.message || 'The request failed.');
                 return body.data?.data ?? body.data ?? body;
             }
-            function moneyValue(object, ...keys) { for (const key of keys) if (object?.[key] != null && Number.isFinite(Number(object[key]))) return Number(object[key]); return 0; }
-            async function refreshSummary() {
-                const summary = await apiRequest(`/students/${currentStudent.dbId}/fee-summary`);
-                currentStudent.summary = summary;
-                currentStudent.totalFees = moneyValue(summary, 'gross_fee', 'full_fees', 'total_fees');
-                currentStudent.discount = moneyValue(summary, 'discount_amount', 'discount');
-                currentStudent.payable = moneyValue(summary, 'payable_total', 'payable_fees', 'net_fees') || Math.max(0, currentStudent.totalFees - currentStudent.discount);
-                currentStudent.paid = moneyValue(summary, 'completed_payments', 'total_paid', 'paid_amount', 'paid_fees');
-                currentStudent.remaining = summary.remaining_balance != null || summary.balance_amount != null || summary.pending_fees != null ? moneyValue(summary, 'remaining_balance', 'balance_amount', 'pending_fees') : Math.max(0, currentStudent.payable - currentStudent.paid);
-                currentStudent.payments = (summary.payments || summary.payment_history || []).map(p => ({...p, id:p.id || p.payment_id, date:p.payment_date || p.date, amount:p.amount_paid ?? p.amount, mode:p.payment_method || p.mode || 'Cash', txn:p.transaction_reference || p.transaction_id || p.txn, remarks:p.description || p.remarks, inst:p.installment_type || p.inst}));
-                pTotalFees.value = formatCurrency(currentStudent.payable);
-                pAlreadyPaid.value = formatCurrency(currentStudent.paid);
-                pPendingFees.value = formatCurrency(currentStudent.remaining);
-                sTotalFees.textContent = formatCurrency(currentStudent.payable);
-                sGrossFee.textContent = formatCurrency(currentStudent.totalFees);
-                sDiscount.textContent = formatCurrency(currentStudent.discount);
-                sPaid.textContent = formatCurrency(currentStudent.paid);
-                sPending.textContent = formatCurrency(currentStudent.remaining);
-                pPaymentAmount.max = currentStudent.remaining;
-                pAmountHint.textContent = `Amount cannot exceed remaining balance (${formatCurrency(currentStudent.remaining)}).`;
-                renderHistory();
-                renderTable(students);
+
+            function moneyValue(object, ...keys) { 
+                for (const key of keys) if (object?.[key] != null && Number.isFinite(Number(object[key]))) return Number(object[key]); 
+                return 0; 
             }
+
+            async function refreshSummary() {
+                if (!currentStudent || !currentStudent.dbId) return;
+                try {
+                    const summary = await apiRequest(`/students/${currentStudent.dbId}/fee-summary`);
+                    currentStudent.summary = summary;
+                    currentStudent.totalFees = moneyValue(summary, 'payable_total', 'payable_fees', 'gross_fee', 'full_fees', 'total_fees');
+                    currentStudent.paid = moneyValue(summary, 'completed_payments', 'total_paid', 'paid_amount', 'paid_fees');
+                    currentStudent.remaining = moneyValue(summary, 'remaining_balance', 'balance_amount', 'pending_fees') || Math.max(0, currentStudent.totalFees - currentStudent.paid);
+                    currentStudent.payments = (summary.payments || summary.payment_history || []).map(p => ({
+                        ...p, 
+                        id: p.id || p.payment_id, 
+                        date: p.payment_date || p.date, 
+                        amount: p.amount_paid ?? p.amount, 
+                        mode: p.payment_method || p.mode || 'Cash', 
+                        txn: p.transaction_reference || p.transaction_id || p.txn, 
+                        remarks: p.description || p.remarks, 
+                        inst: p.installment_type || p.inst
+                    }));
+
+                    pTotalFees.value = formatCurrency(currentStudent.totalFees);
+                    pAlreadyPaid.value = formatCurrency(currentStudent.paid);
+                    pPendingFees.value = formatCurrency(currentStudent.remaining);
+                    sTotalFees.textContent = formatCurrency(currentStudent.totalFees);
+                    sGrossFee.textContent = formatCurrency(moneyValue(summary, 'gross_fee', 'full_fees'));
+                    sDiscount.textContent = formatCurrency(moneyValue(summary, 'discount_amount', 'discount'));
+                    sPaid.textContent = formatCurrency(currentStudent.paid);
+                    sPending.textContent = formatCurrency(currentStudent.remaining);
+                    pPaymentAmount.max = currentStudent.remaining;
+                    pAmountHint.textContent = `Amount cannot exceed remaining balance (${formatCurrency(currentStudent.remaining)}).`;
+                    renderHistory();
+                    renderTable(students);
+                } catch (error) {
+                    console.error('Error refreshing summary:', error);
+                }
+            }
+
             async function loadApiStudents() {
                 if (!apiToken) { alert('Authentication token missing. Please log in again.'); window.location.href = 'login.php'; return; }
                 try {
                     const result = await apiRequest('/students');
                     const rows = Array.isArray(result) ? result : (result.data || result.students || []);
-                    students = rows.map(s => ({ dbId: s.id, id: String(s.student_id || s.registration_id || s.id), name: s.student_name || s.name || 'Student', apaar: s.abc_id || '—', course: s.class?.class_name || s.course || s.class_name || '—', batch: s.student_batch || '—', totalFees: Number(s.total_fees || s.full_fees || 0), paid: 0, photo: s.passport_photo || '', payments: [] }));
+                    
+                    // Map students initially
+                    students = rows.map(s => ({ 
+                        dbId: s.id, 
+                        id: String(s.student_id || s.registration_id || s.id), 
+                        name: s.student_name || s.name || 'Student', 
+                        apaar: s.abc_id || '—', 
+                        course: s.class?.class_name || s.course || s.class_name || '—', 
+                        batch: s.student_batch || '—', 
+                        totalFees: Number(s.total_fees || s.full_fees || 0), 
+                        paid: Number(s.paid || 0), 
+                        photo: s.passport_photo || '', 
+                        payments: [] 
+                    }));
+
                     renderTable(students);
-                } catch (error) { alert(error.message); }
+
+                    // Fetch fee summaries for each student concurrently so paid/pending show immediately on load
+                    await Promise.all(students.map(async (student) => {
+                        if (!student.dbId) return;
+                        try {
+                            const summary = await apiRequest(`/students/${student.dbId}/fee-summary`);
+                            student.totalFees = moneyValue(summary, 'payable_total', 'payable_fees', 'gross_fee', 'full_fees', 'total_fees');
+                            student.paid = moneyValue(summary, 'completed_payments', 'total_paid', 'paid_amount', 'paid_fees');
+                        } catch (e) {
+                            // fallback gracefully if individual summary fails
+                        }
+                    }));
+
+                    // Re-render table with updated fee data
+                    renderTable(students);
+
+                } catch (error) { 
+                    alert(error.message); 
+                }
             }
+
             async function saveCashPayment() {
                 if (!currentStudent) return;
                 const amountText = pPaymentAmount.value.trim();
                 const amount = Number(amountText);
                 const date = pPaymentDate.value;
                 const today = todayISO();
+                
                 if (!/^(?:\d+)(?:\.\d{1,2})?$/.test(amountText) || !Number.isFinite(amount) || amount <= 0) { alert('Enter a positive amount with at most two decimal places.'); return; }
                 if (amount > currentStudent.remaining) { alert(`Amount exceeds remaining balance (${formatCurrency(currentStudent.remaining)}).`); return; }
                 if (!date || date > today) { alert('Payment date is required and cannot be in the future.'); return; }
+                
                 try {
-                    const payment = await apiRequest('/student-payments', {method:'POST', body:JSON.stringify({abc_id:currentStudent.dbId, amount_paid:amountText, payment_date:date, payment_method:'Cash', installment_type:pInstallmentNo.value.trim() || undefined, description:pRemarks.value.trim() || undefined, transaction_reference:pTransactionId.value.trim() || undefined})});
+                    const payment = await apiRequest('/student-payments', {
+                        method: 'POST', 
+                        body: JSON.stringify({
+                            abc_id: currentStudent.dbId, 
+                            amount_paid: amountText, 
+                            payment_date: date, 
+                            payment_method: 'Cash', 
+                            installment_type: pInstallmentNo.value.trim() || undefined, 
+                            description: pRemarks.value.trim() || undefined, 
+                            transaction_reference: pTransactionId.value.trim() || undefined
+                        })
+                    });
                     const receipt = payment.payment || payment;
                     await refreshSummary();
-                    openReceipt({amount:amount, mode:'Cash', date:date, txn:receipt.transaction_reference || pTransactionId.value.trim() || '—', remarks:pRemarks.value.trim(), inst:pInstallmentNo.value, lateFees:0}, true);
+                    openReceipt({
+                        amount: amount, 
+                        mode: 'Cash', 
+                        date: date, 
+                        txn: receipt.transaction_reference || pTransactionId.value.trim() || '—', 
+                        remarks: pRemarks.value.trim(), 
+                        inst: pInstallmentNo.value, 
+                        lateFees: 0
+                    }, true);
                     clearFormBtn.click();
-                } catch (error) { alert(error.message); }
+                } catch (error) { 
+                    alert(error.message); 
+                }
             }
+
+            savePaymentBtn.addEventListener('click', function() {
+                saveCashPayment();
+            });
+
             const originalOpenPaymentPage = openPaymentPage;
             openPaymentPage = function(student) {
                 if (!student.dbId) { alert('Student database ID is not available.'); return; }
                 originalOpenPaymentPage(student);
                 refreshSummary().catch(error => alert(error.message));
             };
+
             // INIT
-            // ============================================================
             loadApiStudents();
         })();
     </script>

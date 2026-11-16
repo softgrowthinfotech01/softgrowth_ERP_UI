@@ -12,260 +12,297 @@
     <style>
         html { scroll-behavior: smooth; }
         @media print {
-            body { background: #fff !important; padding: 0 !important; margin: 0 !important; }
+            body { background: #fff !important; padding: 0 !important; margin: 0 !important; color: #000 !important; }
             .no-print { display: none !important; }
+            #receiptCard {
+                box-shadow: none !important;
+                border: 1px solid #000 !important;
+                border-radius: 0 !important;
+                padding: 30px !important;
+            }
         }
     </style>
 </head>
 
-<body class="bg-gray-100 text-gray-800 antialiased min-h-screen w-full overflow-x-hidden">
+<body class="bg-gray-100 text-gray-800 antialiased min-h-screen w-full overflow-x-hidden flex flex-col justify-between">
 
     <!-- SCROLLABLE WRAPPER -->
-    <div class="min-h-screen w-full flex justify-center px-3 sm:px-5 py-4 sm:py-6">
-        <div class="w-full max-w-md my-auto">
+    <div class="w-full flex justify-center px-3 sm:px-6 py-8">
+        <div class="w-full max-w-xl">
 
-            <!-- ============================================================ -->
-            <!-- RECEIPT CARD -->
-            <!-- ============================================================ -->
-            <div id="receiptCard" class="bg-white w-full shadow-sm border border-gray-200 rounded-sm overflow-hidden">
-
-                <!-- Top label bar -->
-                <div class="px-4 pt-3">
-                    <h1 class="text-[12px] font-bold text-gray-900">Payment Receipt</h1>
+            <!-- ACTION BAR (Hidden on print) -->
+            <div class="no-print mb-4 flex items-center justify-between bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+                <a href="javascript:history.back()" class="text-xs font-semibold text-gray-600 hover:text-orange-600 flex items-center gap-1.5 transition">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+                <div class="flex items-center gap-2">
+                    <button type="button" id="printBtn"
+                            class="px-4 py-2 bg-white border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition text-xs shadow-sm flex items-center gap-1.5">
+                        <i class="fas fa-print"></i> Print
+                    </button>
+                    <button type="button" id="downloadBtn"
+                            class="px-4 py-2 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition text-xs shadow-md flex items-center gap-1.5">
+                        <i class="fas fa-download"></i> Download HTML
+                    </button>
                 </div>
+            </div>
 
-                <!-- HEADER: Logo + Company + Badge -->
-                <div class="px-4 pt-2 pb-2 flex items-start justify-between gap-2 flex-wrap">
-                    <div class="flex items-start gap-2">
-                        <div class="w-10 h-10 rounded-full border-2 border-orange-500 flex items-center justify-center flex-shrink-0 bg-white">
-                            <i class="fas fa-cubes text-orange-500 text-sm"></i>
-                        </div>
-                        <div class="pt-0">
-                            <h2 class="text-[12px] font-bold text-gray-900 leading-tight">Softgrowth Infotech</h2>
-                            <p class="text-[9px] text-gray-600 mt-0.5">Datada, Chandrapur | 7447755280</p>
-                        </div>
+            <!-- ============================================================ -->
+            <!-- BLACK & WHITE PROFESSIONAL RECEIPT CARD -->
+            <!-- ============================================================ -->
+            <div id="receiptCard" class="bg-white w-full shadow-sm border border-gray-300 rounded-xl p-8 sm:p-10 space-y-6">
+
+                <!-- INSTITUTE HEADER (API Driven) -->
+                <div class="flex items-center gap-4 border-b-2 border-black pb-5">
+                    <div id="instituteLogoContainer" class="w-14 h-14 rounded-lg border-2 border-black flex items-center justify-center bg-gray-50 overflow-hidden flex-shrink-0">
+                        <i class="fas fa-graduation-cap text-black text-xl"></i>
                     </div>
-                    <div class="flex-shrink-0 pt-0.5">
-                        <span class="inline-block bg-orange-500 text-white text-[9px] font-bold px-2 py-1 rounded-sm">
-                            Payment Receipt
+                    <div class="flex-1">
+                        <h1 id="instituteName" class="text-base sm:text-lg font-bold text-black uppercase tracking-wide leading-tight">Loading Institute...</h1>
+                        <p id="instituteMeta" class="text-xs text-gray-600 mt-0.5">Fetching institutional details...</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="inline-block border border-black text-black text-[10px] font-bold px-3 py-1 uppercase tracking-wider">
+                            Fee Receipt
                         </span>
                     </div>
                 </div>
 
-                <!-- Receipt No. & Date -->
-                <div class="px-4 pb-2 flex justify-end">
-                    <div class="text-[10px] space-y-0.5">
-                        <div class="flex">
-                            <span class="w-20 text-gray-700 font-semibold">Receipt No.</span>
-                            <span class="text-gray-700 mr-1">:</span>
-                            <span class="text-gray-900 font-bold" id="receiptNo">—</span>
+                <!-- RECEIPT & DATE META -->
+                <div class="flex justify-between items-center text-xs text-black bg-gray-50 p-3.5 rounded-lg border border-gray-200">
+                    <div>
+                        <span class="font-semibold text-gray-600">Receipt No:</span> 
+                        <span id="receiptNo" class="font-bold text-black ml-1">—</span>
+                    </div>
+                    <div>
+                        <span class="font-semibold text-gray-600">Payment Date:</span> 
+                        <span id="receiptDate" class="font-bold text-black ml-1">—</span>
+                    </div>
+                </div>
+
+                <!-- STUDENT DETAILS SECTION -->
+                <div>
+                    <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 border-b border-gray-200 pb-1">Student Information</h3>
+                    <div class="space-y-2 text-xs py-2">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 font-medium">Student Name</span>
+                            <span id="studentName" class="font-bold text-black">—</span>
                         </div>
-                        <div class="flex">
-                            <span class="w-20 text-gray-700 font-semibold">Date</span>
-                            <span class="text-gray-700 mr-1">:</span>
-                            <span class="text-gray-900 font-bold" id="receiptDate">—</span>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 font-medium">Registration / Student ID</span>
+                            <span id="studentId" class="font-mono font-bold text-black">—</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 font-medium">Course / Class</span>
+                            <span id="courseName" class="font-bold text-black">—</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 font-medium">Batch / Academic Year</span>
+                            <span id="studentBatch" class="font-bold text-black">—</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="border-t border-gray-200"></div>
-
-                <!-- STUDENT DETAILS -->
-                <div class="px-4 py-1.5 bg-orange-50 border-b border-orange-100">
-                    <h3 class="text-[10px] font-bold text-gray-900">Student Details</h3>
-                </div>
-                <div class="px-4 py-2 space-y-1 text-[10.5px]">
-                    <div class="flex flex-wrap">
-                        <span class="w-20 text-gray-600">Name</span>
-                        <span class="text-gray-600 mr-2">:</span>
-                        <span class="text-gray-900 font-semibold" id="studentName">—</span>
-                    </div>
-                    <div class="flex flex-wrap">
-                        <span class="w-20 text-gray-600">Reg. ID</span>
-                        <span class="text-gray-600 mr-2">:</span>
-                        <span class="text-gray-900 font-semibold" id="studentId">—</span>
-                    </div>
-                    <div class="flex flex-wrap">
-                        <span class="w-20 text-gray-600">Course</span>
-                        <span class="text-gray-600 mr-2">:</span>
-                        <span class="text-gray-900 font-semibold" id="courseName">—</span>
-                    </div>
-                    <div class="flex flex-wrap">
-                        <span class="w-20 text-gray-600">Batch</span>
-                        <span class="text-gray-600 mr-2">:</span>
-                        <span class="text-gray-900 font-semibold" id="studentBatch">—</span>
-                    </div>
-                </div>
-
-                <div class="border-t border-gray-200"></div>
-
-                <!-- ============================================================ -->
-                <!-- FEE CATEGORIES BREAKDOWN -->
-                <!-- ============================================================ -->
-                <div class="px-4 py-1.5 bg-orange-50 border-b border-orange-100 flex items-center justify-between">
-                    <h3 class="text-[10px] font-bold text-gray-900">Fee Categories</h3>
-                </div>
-                <div class="px-4 py-2">
-                    <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-[10px]" id="feeCategories">
-                        <div class="flex justify-between border-b border-gray-100 pb-0.5">
-                            <span class="text-gray-600">Tuition Fee</span>
-                            <span class="font-semibold text-gray-900">₹5,000</span>
+                <!-- PAYMENT & TRANSACTION DETAILS SECTION -->
+                <div>
+                    <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 border-b border-gray-200 pb-1">Payment Details</h3>
+                    <div class="space-y-2 text-xs py-2">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 font-medium">Payment Method</span>
+                            <span id="paymentType" class="font-bold text-black">—</span>
                         </div>
-                        <div class="flex justify-between border-b border-gray-100 pb-0.5">
-                            <span class="text-gray-600">Admission Fee</span>
-                            <span class="font-semibold text-gray-900">₹2,500</span>
+                        <div class="flex justify-between" id="txnRow">
+                            <span class="text-gray-600 font-medium">Transaction Reference</span>
+                            <span id="transactionReference" class="font-mono font-bold text-black">—</span>
                         </div>
-                        <div class="flex justify-between border-b border-gray-100 pb-0.5">
-                            <span class="text-gray-600">Exam Fee</span>
-                            <span class="font-semibold text-gray-900">₹1,200</span>
+                        <div class="flex justify-between" id="installmentRow">
+                            <span class="text-gray-600 font-medium">Installment Type</span>
+                            <span id="installmentType" class="font-bold text-black">—</span>
                         </div>
-                        <div class="flex justify-between border-b border-gray-100 pb-0.5">
-                            <span class="text-gray-600">Library Fee</span>
-                            <span class="font-semibold text-gray-900">₹1,500</span>
-                        </div>
-                        <div class="flex justify-between border-b border-gray-100 pb-0.5">
-                            <span class="text-gray-600">Transportation</span>
-                            <span class="font-semibold text-gray-900">₹3,000</span>
-                        </div>
-                        <div class="flex justify-between border-b border-gray-100 pb-0.5">
-                            <span class="text-gray-600">Lab Fee</span>
-                            <span class="font-semibold text-gray-900">₹1,800</span>
+                        <div class="flex justify-between" id="remarksRow">
+                            <span class="text-gray-600 font-medium">Remarks</span>
+                            <span id="paymentDescription" class="font-bold text-black">—</span>
                         </div>
                     </div>
-                    
-                    <!-- NEW: Category Total -->
-                    <div class="mt-2 pt-1.5 border-t border-gray-300 flex justify-between items-center text-[11px]">
-                        <span class="font-bold text-gray-800">Total Category Fees</span>
-                        <span class="font-bold text-orange-600">₹15,000</span>
+                </div>
+
+                <!-- PAID AMOUNT HIGHLIGHT BOX (Clean Black Border) -->
+                <div class="border-2 border-black rounded-lg p-4 flex items-center justify-between bg-gray-50">
+                    <div>
+                        <span class="text-xs font-bold text-black uppercase block">Amount Paid (This Transaction)</span>
+                    </div>
+                    <div class="text-right">
+                        <span id="paymentAmount" class="text-lg font-extrabold text-black">₹0.00</span>
                     </div>
                 </div>
 
-                <div class="border-t border-gray-200"></div>
-
-                <!-- PAYMENT DETAILS -->
-                <div class="px-4 py-1.5 bg-orange-50 border-y border-orange-100">
-                    <h3 class="text-[10px] font-bold text-gray-900">Payment Details</h3>
-                </div>
-                <div class="px-4 py-2 space-y-1 text-[10.5px]">
-                    <div class="flex flex-wrap">
-                        <span class="w-28 text-gray-600">Payment Amount</span>
-                        <span class="text-gray-600 mr-2">:</span>
-                        <span class="text-gray-900 font-semibold" id="paymentAmount">—</span>
+                <!-- SIGNATURE & FOOTER -->
+                <div class="pt-6 border-t border-gray-300 flex items-end justify-between text-xs text-gray-700">
+                    <div>
+                        <p class="font-bold text-black">Thank you for your payment!</p>
+                        <p class="text-[10px] text-gray-500 mt-0.5">This is a system-generated computer receipt.</p>
                     </div>
-                    <div class="flex flex-wrap">
-                        <span class="w-28 text-gray-600">Payment Type</span>
-                        <span class="text-gray-600 mr-2">:</span>
-                        <span class="text-gray-900 font-semibold" id="paymentType">Cash</span>
+                    <div class="text-center">
+                        <div class="w-36 border-t border-black pt-1 mt-6">
+                            <span class="font-bold text-black text-[11px]">Authorized Signatory</span>
+                        </div>
                     </div>
-                    <div class="flex flex-wrap">
-                        <span class="w-28 text-gray-600">Transaction ID</span>
-                        <span class="text-gray-600 mr-2">:</span>
-                        <span class="text-gray-900 font-semibold" id="transactionReference">—</span>
-                    </div>
-                    <div class="flex flex-wrap">
-                        <span class="w-28 text-gray-600">Payment Date</span>
-                        <span class="text-gray-600 mr-2">:</span>
-                        <span class="text-gray-900 font-semibold" id="paymentDate">—</span>
-                    </div>
-                    <div class="flex flex-wrap">
-                        <span class="w-28 text-gray-600">Remarks</span>
-                        <span class="text-gray-600 mr-2">:</span>
-                        <span class="text-gray-900 font-semibold" id="paymentDescription">—</span>
-                    </div>
-                    <div class="flex flex-wrap" id="installmentRow"><span class="w-28 text-gray-600">Installment</span><span class="text-gray-600 mr-2">:</span><span class="text-gray-900 font-semibold" id="installmentType">—</span></div>
                 </div>
 
-                <!-- FOOTER -->
-                <div class="border-t border-gray-200 px-4 py-2.5 text-center">
-                    <p class="text-[10.5px] font-semibold text-orange-500">
-                        Thank you for your payment!
-                    </p>
-                </div>
-
-            </div>
-
-            <!-- ACTION BUTTONS: Print + Download -->
-            <div class="no-print mt-3 flex items-center justify-end gap-2 flex-wrap">
-                <button type="button" id="printBtn"
-                        class="px-3 py-1.5 bg-white border border-gray-300 text-gray-700 font-semibold rounded-md hover:bg-gray-50 transition text-[11px] shadow-sm flex items-center gap-1.5">
-                    <i class="fas fa-print text-[10px]"></i> Print
-                </button>
-                <button type="button" id="downloadBtn"
-                        class="px-3 py-1.5 bg-orange-500 text-white font-semibold rounded-md hover:bg-orange-600 transition text-[11px] shadow-sm flex items-center gap-1.5">
-                    <i class="fas fa-download text-[10px]"></i> Download
-                </button>
             </div>
 
         </div>
     </div>
 
     <!-- SCRIPT -->
+    <script src="url.js"></script>
     <script>
         (function() {
+            const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token') || '';
+            const baseUrl = typeof url !== 'undefined' ? url : 'http://127.0.0.1:8000/api';
+            const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+            const storageBase = cleanBase.replace(/\/api$/, '');
+
+            // 1. Fetch Institute Details (Logo, Name, Address)
+            async function fetchInstituteDetails() {
+                try {
+                    const response = await fetch(`${cleanBase}/institute`, {
+                        headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
+                    });
+                    if (response.ok) {
+                        const result = await response.json();
+                        const inst = result.data?.institute || result.data || result;
+                        
+                        const orgName = inst.org_name || inst.name || 'Softgrowth Infotech';
+                        const address = [inst.address, inst.district].filter(Boolean).join(', ') || 'Datada, Chandrapur';
+                        const phone = inst.phone || inst.mobile || '7447755280';
+
+                        document.getElementById('instituteName').textContent = orgName;
+                        document.getElementById('instituteMeta').textContent = `${address} | Phone: ${phone}`;
+
+                        if (inst.logo) {
+                            const logoUrl = inst.logo.startsWith('http') ? inst.logo : `${storageBase}/storage/${inst.logo}`;
+                            document.getElementById('instituteLogoContainer').innerHTML = `
+                                <img src="${logoUrl}" alt="Institute Logo" class="w-full h-full object-cover" />
+                            `;
+                        }
+                    }
+                } catch (e) {
+                    console.error('Failed to load institute details', e);
+                    document.getElementById('instituteName').textContent = 'Softgrowth Infotech';
+                    document.getElementById('instituteMeta').textContent = 'Datada, Chandrapur | Phone: 7447755280';
+                }
+            }
+
+            // 2. Parse URL Parameters
             const params = new URLSearchParams(window.location.search);
             const get = key => params.get(key) || '';
             const set = (id, value) => { const el = document.getElementById(id); if (el) el.textContent = value || '—'; };
-            const currency = value => '₹' + Number(value || 0).toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
+            const currency = value => '₹' + Number(value || 0).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            
             const formatDate = value => {
                 if (!value) return '—';
-                const parts = value.split('-');
-                return parts.length === 3 ? `${parts[2]}-${parts[1]}-${parts[0]}` : value;
+                const cleanStr = value.split('T')[0];
+                const parts = cleanStr.split('-');
+                if (parts.length === 3) {
+                    if (parts[0].length === 4) return `${parts[2]}-${parts[1]}-${parts[0]}`;
+                    return cleanStr;
+                }
+                return value;
             };
+
             set('receiptNo', get('receipt_no'));
             set('receiptDate', formatDate(get('pay_date')));
-            set('studentName', get('name'));
-            set('studentId', get('reg_id'));
-            set('courseName', get('course'));
-            set('studentBatch', get('batch'));
-            set('paymentAmount', currency(get('pay_amount')));
-            set('paymentType', get('pay_type') || 'Cash');
-            set('transactionReference', get('txn'));
-            set('paymentDate', formatDate(get('pay_date')));
-            set('paymentDescription', get('remarks'));
+            set('studentName', get('name') || get('student_name'));
+            set('courseName', get('course') || get('class_name'));
+            set('paymentAmount', currency(get('pay_amount') || get('amount')));
+            set('paymentType', get('pay_type') || get('payment_method') || 'Cash');
+            set('transactionReference', get('txn') || get('transaction_reference'));
+            set('paymentDescription', get('remarks') || get('description') || 'Fee Payment');
             set('installmentType', get('installment_type'));
-            if (!get('installment_type')) document.getElementById('installmentRow').classList.add('hidden');
 
-            const feeCategories = document.getElementById('feeCategories');
-            let feeItems = [];
-            try { feeItems = JSON.parse(get('fee_items') || '[]'); } catch (_) {}
-            feeCategories.replaceChildren();
-            feeItems.forEach(item => {
-                const row = document.createElement('div');
-                row.className = 'flex justify-between border-b border-gray-100 pb-0.5';
-                const name = document.createElement('span');
-                name.className = 'text-gray-600';
-                name.textContent = item.fee_name || item.name || 'Fee';
-                const amount = document.createElement('span');
-                amount.className = 'font-semibold text-gray-900';
-                amount.textContent = currency(item.amount);
-                row.append(name, amount);
-                feeCategories.appendChild(row);
-            });
-            if (!feeItems.length) feeCategories.classList.add('hidden');
-            const totalLabel = feeCategories.parentElement.querySelector('.mt-2 span:first-child');
-            const totalValue = feeCategories.parentElement.querySelector('.mt-2 span:last-child');
-            if (totalLabel) totalLabel.textContent = 'Gross Fee';
-            if (totalValue) totalValue.textContent = currency(get('gross_fee'));
-            const feeSummary = document.createElement('div');
-            feeSummary.className = 'mt-1 space-y-1 text-[11px]';
-            [['Discount','discount_amount'],['Payable Total','payable_total'],['Paid to Date','completed_payments'],['Remaining Balance','remaining_balance']].forEach(([label,key]) => {
-                const row = document.createElement('div');
-                row.className = 'flex justify-between';
-                const left = document.createElement('span'); left.className = 'font-semibold text-gray-700'; left.textContent = label;
-                const right = document.createElement('span'); right.className = 'font-semibold text-gray-900'; right.textContent = currency(get(key));
-                row.append(left,right); feeSummary.appendChild(row);
-            });
-            feeCategories.parentElement.appendChild(feeSummary);
+            let regId = get('reg_id') || get('student_id') || get('id');
+            let batchVal = get('batch') || get('student_batch');
 
-            // PRINT
-            document.getElementById('printBtn').addEventListener('click', function() {
-                window.print();
-            });
+            set('studentId', regId || '—');
+            set('studentBatch', batchVal || '—');
 
-            // DOWNLOAD
-            document.getElementById('downloadBtn').addEventListener('click', function() {
+            // 3. Robust Student API Integration (Matches Student Records Pattern)
+            async function fetchStudentFromApi() {
+                try {
+                    const studentDbId = get('student_db_id') || regId;
+                    
+                    // If we have a specific student ID or dbId, try direct endpoint first
+                    if (studentDbId && studentDbId !== '—') {
+                        const directRes = await fetch(`${cleanBase}/students/${studentDbId}`, {
+                            headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
+                        });
+                        if (directRes.ok) {
+                            const json = await directRes.json();
+                            const s = json.data?.student || json.data || json;
+                            if (s) {
+                                const resolvedRegId = s.student_id || s.registration_id || s.id;
+                                const resolvedBatch = s.student_batch || s.academic_year || s.batch;
+                                if (resolvedRegId) set('studentId', resolvedRegId);
+                                if (resolvedBatch) set('studentBatch', resolvedBatch);
+                                if (s.student_name && !document.getElementById('studentName').textContent || document.getElementById('studentName').textContent === '—') {
+                                    set('studentName', s.student_name);
+                                }
+                                if (s.course || s.class?.class_name) {
+                                    set('courseName', s.course || s.class?.class_name);
+                                }
+                                return;
+                            }
+                        }
+                    }
+
+                    // Fallback: Fetch all students list and find the match
+                    const listRes = await fetch(`${cleanBase}/students`, {
+                        headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
+                    });
+                    if (listRes.ok) {
+                        const json = await listRes.json();
+                        const rows = Array.isArray(json) ? json : (json.data?.data || json.data || json.students || []);
+                        const studentNameParam = (get('name') || get('student_name')).toLowerCase().trim();
+                        
+                        const matched = rows.find(s => 
+                            String(s.id) === String(regId) || 
+                            String(s.student_id) === String(regId) || 
+                            String(s.registration_id) === String(regId) ||
+                            (s.student_name && s.student_name.toLowerCase().trim() === studentNameParam)
+                        );
+
+                        if (matched) {
+                            const finalRegId = matched.student_id || matched.registration_id || matched.id;
+                            const finalBatch = matched.student_batch || matched.academic_year || matched.batch;
+                            if (finalRegId) set('studentId', finalRegId);
+                            if (finalBatch) set('studentBatch', finalBatch);
+                        }
+                    }
+                } catch (e) {
+                    console.error('Error fetching student record from API:', e);
+                }
+            }
+
+            fetchStudentFromApi();
+
+            if (!get('txn') && !get('transaction_reference')) {
+                document.getElementById('txnRow').classList.add('hidden');
+            }
+            if (!get('installment_type')) {
+                document.getElementById('installmentRow').classList.add('hidden');
+            }
+            if (!get('remarks') && !get('description')) {
+                document.getElementById('remarksRow').classList.add('hidden');
+            }
+
+            // Load Institute details on start
+            fetchInstituteDetails();
+
+            // Print & Download Actions
+            document.getElementById('printBtn').addEventListener('click', () => window.print());
+            document.getElementById('downloadBtn').addEventListener('click', () => {
                 const receiptHTML = document.getElementById('receiptCard').outerHTML;
-
                 const fullHTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -274,19 +311,9 @@
     <title>Payment Receipt - ${document.getElementById('receiptNo').textContent}</title>
     <script src="https://cdn.tailwindcss.com"><\/script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    <style>
-        html { scroll-behavior: smooth; }
-        @media print {
-            body { background: #fff !important; padding: 0 !important; margin: 0 !important; }
-        }
-    </style>
 </head>
-<body class="bg-gray-100 text-gray-800 antialiased min-h-screen w-full overflow-x-hidden">
-    <div class="min-h-screen w-full flex justify-center px-3 sm:px-5 py-4 sm:py-6">
-        <div class="w-full max-w-md my-auto">
-            ${receiptHTML}
-        </div>
-    </div>
+<body class="bg-gray-100 p-8 flex justify-center">
+    <div class="w-full max-w-xl">${receiptHTML}</div>
 </body>
 </html>`;
 
@@ -302,8 +329,6 @@
             });
         })();
     </script>
-
 </body>
 
 </html>
-

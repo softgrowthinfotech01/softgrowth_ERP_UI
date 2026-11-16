@@ -9,20 +9,29 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
-        /* Minimal custom styles – everything else is Tailwind */
         .table-row-hover:hover {
             background-color: #f8fafc;
         }
-        .toolbar-btn {
-            transition: background-color 0.2s, transform 0.1s;
+        .toolbar-btn, .memo-btn {
+            transition: all 0.2s ease;
         }
-        .toolbar-btn:hover {
+        .toolbar-btn:hover, .memo-btn:hover {
             transform: translateY(-1px);
         }
         .page-btn {
             transition: background-color 0.2s;
         }
-        /* responsive table wrapper */
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+        .modal-box {
+            animation: fadeIn 0.25s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.97); }
+            to { opacity: 1; transform: scale(1); }
+        }
         .table-wrap {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
@@ -36,43 +45,10 @@
                 padding: 0.5rem 0.25rem;
             }
         }
-        /* Print styles */
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            #printArea, #printArea * {
-                visibility: visible;
-            }
-            #printArea {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                padding: 20px;
-            }
-            .no-print {
-                display: none !important;
-            }
-            table {
-                width: 100%;
-                border-collapse: collapse;
-            }
-            table th, table td {
-                border: 1px solid #ddd;
-                padding: 8px;
-                text-align: left;
-            }
-            table th {
-                background: #0f766e !important;
-                color: white !important;
-            }
-        }
     </style>
 </head>
-<body class="bg-gray-300 text-gray-800 antialiased">
+<body class="bg-gray-100 text-gray-800 antialiased font-sans">
 
-    <!-- PHP includes (header + sidebar) – keep your existing structure -->
     <?php include 'header.php'; ?>
     <?php include 'sidebar.php'; ?>
 
@@ -82,80 +58,114 @@
         <!-- ===== PAYMENT RECORDS CARD ===== -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden" id="printArea">
 
-            <!-- Heading -->
-            <div class="flex items-center gap-4 p-6 border-b border-gray-100 no-print">
-                <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-400 flex items-center justify-center text-2xl">
-                    <i class="fas fa-credit-card"></i>
+            <!-- Heading & Export Toolbar -->
+            <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between p-6 border-b border-gray-200 bg-white gap-4 no-print">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center text-xl">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-bold text-slate-900">Payment Records</h2>
+                        <p class="text-sm text-gray-500 mt-1">Search, view, and manage all student payment transactions</p>
+                    </div>
                 </div>
-                <div>
-                    <h2 class="text-xl md:text-2xl font-bold text-gray-900">Payment Records</h2>
-                    <p class="text-sm text-gray-500">Manage and track all student payment transactions</p>
+
+                <!-- CSV Export Button Only -->
+                <div class="flex items-center gap-2">
+                    <button onclick="exportCSV()" class="toolbar-btn px-4 py-2.5 bg-sky-500 text-white text-xs font-bold rounded-xl hover:bg-sky-600 shadow-sm flex items-center gap-2">
+                        <i class="fas fa-file-csv text-sm"></i> Export CSV
+                    </button>
                 </div>
             </div>
 
-            <!-- Toolbar -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 border-b border-gray-100 no-print">
-                <div class="flex flex-wrap items-center gap-2">
-                    <button onclick="exportCopy()" class="toolbar-btn px-4 py-2 bg-gray-600 text-white text-sm font-bold rounded-xl hover:bg-gray-700 focus:ring-2 focus:ring-gray-300">
-                        <i class="fas fa-copy mr-1"></i> Copy
-                    </button>
-                    <button onclick="exportCSV()" class="toolbar-btn px-4 py-2 bg-sky-500 text-white text-sm font-bold rounded-xl hover:bg-sky-600 focus:ring-2 focus:ring-sky-300">
-                        <i class="fas fa-file-csv mr-1"></i> CSV
-                    </button>
-                    <button onclick="exportExcel()" class="toolbar-btn px-4 py-2 bg-emerald-500 text-white text-sm font-bold rounded-xl hover:bg-emerald-600 focus:ring-2 focus:ring-emerald-300">
-                        <i class="fas fa-file-excel mr-1"></i> Excel
-                    </button>
-                    <button onclick="exportPDF()" class="toolbar-btn px-4 py-2 bg-red-500 text-white text-sm font-bold rounded-xl hover:bg-red-600 focus:ring-2 focus:ring-red-300">
-                        <i class="fas fa-file-pdf mr-1"></i> PDF
-                    </button>
-                    <button onclick="exportPrint()" class="toolbar-btn px-4 py-2 bg-purple-500 text-white text-sm font-bold rounded-xl hover:bg-purple-600 focus:ring-2 focus:ring-purple-300">
-                        <i class="fas fa-print mr-1"></i> Print
-                    </button>
+            <!-- Unified Search & Filters Bar (Structured like Student Records) -->
+            <div class="p-4 sm:p-6 border-b border-gray-100 bg-gray-50/50 no-print">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-end">
+                    
+                    <!-- Universal Search Bar -->
+                    <div class="lg:col-span-2">
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Universal Search</label>
+                        <div class="relative">
+                            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            <input id="unifiedSearchInput" type="text" placeholder="Search by student name, ID, receipt, or mode..." 
+                                   class="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-xl text-sm focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none bg-white" />
+                        </div>
+                    </div>
+
+                    <!-- Payment Mode Filter -->
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Payment Mode</label>
+                        <select id="paymentModeFilter" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 bg-white py-2 px-3 text-sm outline-none">
+                            <option value="">All Modes</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Online">Online</option>
+                            <option value="UPI">UPI</option>
+                            <option value="Bank Transfer">Bank Transfer</option>
+                            <option value="Cheque">Cheque</option>
+                        </select>
+                    </div>
+
                 </div>
-                <div class="w-full sm:w-64">
-                    <input id="searchInput" type="text" placeholder="Search payment records..." 
-                           class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 bg-white py-2.5 px-4 text-sm" />
+
+                <!-- Action Controls Row & Per Page -->
+                <div class="flex flex-wrap items-center justify-between gap-3 mt-4">
+                    <div class="flex items-center gap-2">
+                        <label for="paymentPerPage" class="text-xs font-bold text-gray-600 uppercase">Show:</label>
+                        <select id="paymentPerPage" class="rounded-xl border border-gray-300 bg-white py-1.5 px-3 text-xs font-semibold text-gray-700 outline-none focus:border-orange-500">
+                            <option value="10" selected>10 entries</option>
+                            <option value="20">20 entries</option>
+                            <option value="50">50 entries</option>
+                            <option value="100">100 entries</option>
+                        </select>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button type="button" id="searchBtn" class="memo-btn bg-orange-500 text-white font-bold py-2 px-6 rounded-xl hover:bg-orange-600 text-sm shadow-sm flex items-center gap-1.5">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                        <button type="button" id="resetBtn" class="memo-btn bg-gray-200 text-gray-700 font-bold py-2 px-6 rounded-xl hover:bg-gray-300 text-sm flex items-center gap-1.5">
+                            <i class="fas fa-redo"></i> Reset
+                        </button>
+                    </div>
                 </div>
-                <input id="paymentStudentFilter" type="number" min="1" placeholder="Student database ID" class="rounded-xl border border-gray-300 bg-white py-2.5 px-4 text-sm" />
-                <select id="paymentStatusFilter" class="rounded-xl border border-gray-300 bg-white py-2.5 px-4 text-sm"><option value="">All statuses</option><option value="Completed">Completed</option><option value="Pending">Pending</option><option value="Failed">Failed</option></select>
-                <select id="paymentPerPage" class="rounded-xl border border-gray-300 bg-white py-2.5 px-4 text-sm" aria-label="Payments per page"><option value="20">20 per page</option><option value="50">50 per page</option><option value="100">100 per page</option></select>
             </div>
 
             <!-- Table -->
             <div class="table-wrap p-4 sm:p-6">
-                <table class="w-full text-sm text-left" id="paymentTable">
+                <table class="w-full text-sm text-left text-gray-600 border-collapse" id="paymentTable">
                     <thead>
-                        <tr class="bg-orange-400 text-white text-xs font-semibold uppercase tracking-wider">
-                            <th class="px-3 py-3 whitespace-nowrap">#</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Student Name</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Student ID</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Fees Paid</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Amount</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Receipt No</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Payment Mode</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Payment Date</th>
-                            <th class="px-3 py-3 whitespace-nowrap text-center no-print">Action</th>
+                        <tr class="bg-orange-500 text-white text-xs font-semibold uppercase tracking-wider">
+                            <th class="px-4 py-3 rounded-l-xl whitespace-nowrap">#</th>
+                            <th class="px-4 py-3 whitespace-nowrap">Student Name</th>
+                            <th class="px-4 py-3 whitespace-nowrap">Student ID</th>
+                            <th class="px-4 py-3 whitespace-nowrap">Fees Paid</th>
+                            <th class="px-4 py-3 whitespace-nowrap">Amount</th>
+                            <th class="px-4 py-3 whitespace-nowrap">Receipt No</th>
+                            <th class="px-4 py-3 whitespace-nowrap">Payment Mode</th>
+                            <th class="px-4 py-3 whitespace-nowrap">Status</th>
+                            <th class="px-4 py-3 whitespace-nowrap">Payment Date</th>
+                            <th class="px-4 py-3 rounded-r-xl whitespace-nowrap text-center no-print">Action</th>
                         </tr>
                     </thead>
                     <tbody id="paymentTableBody" class="divide-y divide-gray-100">
-                        <!-- rows injected by JS -->
                         <tr>
-                            <td colspan="9" class="text-center py-8 text-gray-400">Loading...</td>
+                            <td colspan="10" class="text-center py-10 text-gray-400">Loading payment records...</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <!-- Table Footer -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 border-t border-gray-100 no-print">
+            <!-- Table Footer / Pagination Bar -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 border-t border-gray-100 bg-gray-50/50 no-print">
                 <div class="text-sm text-gray-500 font-semibold">
                     Showing <span id="startEntry">0</span> to <span id="endEntry">0</span> of <span id="totalEntries">0</span> entries
                 </div>
-                <div class="flex gap-2">
-                    <button id="prevPage" class="page-btn px-5 py-2 bg-orange-400 text-white font-bold rounded-xl hover:bg-orange-700 focus:ring-2 focus:ring-orange-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                <div class="flex items-center gap-2">
+                    <button id="prevPage" onclick="changePage(-1)" class="page-btn px-5 py-2 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 focus:ring-2 focus:ring-orange-300 disabled:opacity-50 disabled:cursor-not-allowed">
                         <i class="fas fa-chevron-left mr-1"></i> Previous
                     </button>
-                    <button id="nextPage" class="page-btn px-5 py-2 bg-orange-400 text-white font-bold rounded-xl hover:bg-orange-700 focus:ring-2 focus:ring-orange-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <span id="currentPageDisplay" class="px-4 py-2 bg-orange-100 text-orange-800 font-bold rounded-xl">1</span>
+                    <button id="nextPage" onclick="changePage(1)" class="page-btn px-5 py-2 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 focus:ring-2 focus:ring-orange-300 disabled:opacity-50 disabled:cursor-not-allowed">
                         Next <i class="fas fa-chevron-right ml-1"></i>
                     </button>
                 </div>
@@ -163,334 +173,393 @@
 
         </div>
 
+        <!-- ===== PAYMENT DETAILS MODAL ===== -->
+        <div id="paymentDetailsModal" class="fixed inset-0 modal-overlay hidden justify-center items-center z-[99999] p-4">
+            <div class="modal-box bg-white rounded-2xl w-full max-w-2xl p-6 relative shadow-2xl">
+                <button onclick="closePaymentModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-2xl transition">
+                    <i class="fas fa-times"></i>
+                </button>
+                <h2 class="text-xl font-extrabold text-gray-900 mb-6 flex items-center gap-3">
+                    <span class="w-10 h-10 rounded-xl bg-orange-500 text-white flex items-center justify-center text-sm">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                    </span>
+                    Payment Transaction Details
+                </h2>
+                <div id="paymentDetailsContent" class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                    <!-- populated by JS -->
+                </div>
+                <div class="mt-6 flex justify-end">
+                    <button onclick="closePaymentModal()" class="px-5 py-2 bg-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-300 transition">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+
     </main>
 
-    <!-- PHP footer include -->
     <?php include 'footer.php'; ?>
     <script src="url.js"></script>
 
-    <!-- ============================================================
-    JAVASCRIPT – data, pagination, search, and exports
-    ============================================================ -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        (function() {
+            const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token') || '';
+            const cleanBase = (typeof url !== 'undefined' && url) ? url.replace(/\/$/, '') : 'http://127.0.0.1:8000/api';
 
-            // ----- SAMPLE DATA -----
-            let allPayments = [
-                { id: 1, studentName: 'Rahul Sharma', studentId: 'S101', feesPaid: 'Admission Fee', amount: '₹15,000', receipt: 'RCP-001', mode: 'Cash', date: '2025-01-15' },
-                { id: 2, studentName: 'Priya Patel', studentId: 'S102', feesPaid: 'Tuition Fee', amount: '₹25,000', receipt: 'RCP-002', mode: 'Online', date: '2025-01-16' },
-                { id: 3, studentName: 'Amit Singh', studentId: 'S103', feesPaid: 'Exam Fee', amount: '₹5,000', receipt: 'RCP-003', mode: 'Bank Transfer', date: '2025-01-17' },
-                { id: 4, studentName: 'Sneha Reddy', studentId: 'S104', feesPaid: 'Library Fee', amount: '₹2,000', receipt: 'RCP-004', mode: 'Cash', date: '2025-01-18' },
-                { id: 5, studentName: 'Vikram Kumar', studentId: 'S105', feesPaid: 'Lab Fee', amount: '₹3,500', receipt: 'RCP-005', mode: 'Online', date: '2025-01-19' },
-                { id: 6, studentName: 'Neha Jain', studentId: 'S106', feesPaid: 'Admission Fee', amount: '₹15,000', receipt: 'RCP-006', mode: 'Cash', date: '2025-01-20' },
-                { id: 7, studentName: 'Ravi Desai', studentId: 'S107', feesPaid: 'Tuition Fee', amount: '₹25,000', receipt: 'RCP-007', mode: 'Bank Transfer', date: '2025-01-21' },
-                { id: 8, studentName: 'Meera Iyer', studentId: 'S108', feesPaid: 'Exam Fee', amount: '₹5,000', receipt: 'RCP-008', mode: 'Online', date: '2025-01-22' },
-                { id: 9, studentName: 'Arjun Nair', studentId: 'S109', feesPaid: 'Library Fee', amount: '₹2,000', receipt: 'RCP-009', mode: 'Cash', date: '2025-01-23' },
-                { id: 10, studentName: 'Kavya Menon', studentId: 'S110', feesPaid: 'Lab Fee', amount: '₹3,500', receipt: 'RCP-010', mode: 'Bank Transfer', date: '2025-01-24' },
-                { id: 11, studentName: 'Deepak Gupta', studentId: 'S111', feesPaid: 'Admission Fee', amount: '₹15,000', receipt: 'RCP-011', mode: 'Online', date: '2025-01-25' },
-                { id: 12, studentName: 'Pooja Reddy', studentId: 'S112', feesPaid: 'Tuition Fee', amount: '₹25,000', receipt: 'RCP-012', mode: 'Cash', date: '2025-01-26' }
-            ];
-
-            let filteredData = [...allPayments];
-            let rowsPerPage = 20;
+            let allPayments = [];
+            let filteredPayments = [];
             let currentPage = 1;
-            let apiLastPage = 1;
-            const tbody = document.getElementById('paymentTableBody');
+            let rowsPerPage = 10;
 
-            function renderTable(page) {
-                const start = (page - 1) * rowsPerPage;
-                const end = Math.min(start + rowsPerPage, filteredData.length);
-                const pageItems = filteredData.slice(start, end);
+            document.addEventListener('DOMContentLoaded', () => {
+                if (!token) {
+                    alert('Session expired. Please log in again.');
+                    window.location.href = 'login.php';
+                    return;
+                }
 
-                if (pageItems.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="9" class="text-center py-8 text-gray-400">No records found</td></tr>`;
-                } else {
-                    let html = '';
-                    pageItems.forEach((p, index) => {
-                        const rowNum = start + index + 1;
-                        html += `
-                            <tr class="table-row-hover transition">
-                                <td class="px-3 py-3 whitespace-nowrap">${rowNum}</td>
-                                <td class="px-3 py-3 whitespace-nowrap font-medium text-gray-900">${p.studentName}</td>
-                                <td class="px-3 py-3 whitespace-nowrap">${p.studentId}</td>
-                                <td class="px-3 py-3 whitespace-nowrap">${p.feesPaid}</td>
-                                <td class="px-3 py-3 whitespace-nowrap font-semibold text-orange-700">${p.amount}</td>
-                                <td class="px-3 py-3 whitespace-nowrap">${p.receipt}</td>
-                                <td class="px-3 py-3 whitespace-nowrap">
-                                    <span class="px-2 py-1 rounded-full text-xs font-semibold 
-                                        ${p.mode === 'Cash' ? 'bg-gray-100 text-gray-700' : 
-                                          p.mode === 'Online' ? 'bg-blue-50 text-blue-700' : 
-                                          'bg-purple-50 text-purple-700'}">
-                                        ${p.mode}
-                                    </span>
-                                </td>
-                                <td class="px-3 py-3 whitespace-nowrap">${p.date}</td>
-                                <td class="px-3 py-3 whitespace-nowrap text-center no-print">
-                                    <button class="view-payment-btn text-orange-600 hover:text-orange-800 transition" data-payment-id="${p.id || ''}" title="View Payment">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="payment-receipt-btn ml-2 text-blue-600 hover:text-blue-800" data-payment-id="${p.id || ''}" title="Get Receipt"><i class="fas fa-receipt"></i></button>
-                                </td>
-                            </tr>
-                        `;
+                // Event Listeners for Search & Filters (structured identically to student records)
+                document.getElementById('searchBtn').addEventListener('click', doSearch);
+                document.getElementById('resetBtn').addEventListener('click', resetFilters);
+
+                const unifiedSearch = document.getElementById('unifiedSearchInput');
+                if (unifiedSearch) {
+                    unifiedSearch.addEventListener('input', () => doSearch());
+                    unifiedSearch.addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+                }
+
+                const paymentModeFilter = document.getElementById('paymentModeFilter');
+                if (paymentModeFilter) {
+                    paymentModeFilter.addEventListener('change', () => doSearch());
+                }
+
+                const perPageEl = document.getElementById('paymentPerPage');
+                if (perPageEl) {
+                    perPageEl.addEventListener('change', (e) => {
+                        rowsPerPage = Number(e.target.value) || 10;
+                        currentPage = 1;
+                        renderTable();
                     });
-                    tbody.innerHTML = html;
                 }
 
-                // Update footer info
-                tbody.querySelectorAll('.view-payment-btn').forEach(button => button.addEventListener('click', async () => {
-                    if (!button.dataset.paymentId) return;
-                    const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token') || '';
-                    try {
-                        const response = await fetch(`${url}student-payments/${button.dataset.paymentId}`, {headers:{'Authorization':`Bearer ${token}`,'Accept':'application/json'}});
-                        const body = await response.json().catch(() => ({}));
-                        if (response.status === 401) { alert('Your session has expired. Please log in again.'); window.location.href='login.php'; return; }
-                        if (response.status === 403) throw new Error('You do not have permission to view this payment.');
-                        if (response.status === 404) throw new Error(body.message || 'Payment was not found.');
-                        if (!response.ok) throw new Error(body.message || 'Unable to load payment details.');
-                        const payment = body.data?.payment || body.data || body;
-                        alert([`Student: ${payment.student?.student_name || payment.student_name || '—'}`, `Amount: ₹${payment.amount_paid || payment.amount || 0}`, `Method: ${payment.payment_method || '—'}`, `Date: ${payment.payment_date || '—'}`, `Status: ${payment.payment_status || payment.status || '—'}`, `Reference: ${payment.receipt_number || payment.transaction_reference || '—'}`].join('\n'));
-                    } catch (error) { alert(error.message); }
-                }));
-                tbody.querySelectorAll('.payment-receipt-btn').forEach(button => button.addEventListener('click', async () => {
-                    if (!button.dataset.paymentId) return;
-                    const receiptWindow = window.open('about:blank', '_blank');
-                    const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token') || '';
-                    try {
-                        const response = await fetch(`${url}student-payments/receipt/${button.dataset.paymentId}`, {headers:{'Authorization':`Bearer ${token}`,'Accept':'application/json, application/pdf'}});
-                        if (response.status === 401) { receiptWindow?.close(); alert('Your session has expired. Please log in again.'); window.location.href='login.php'; return; }
-                        if (response.status === 403) throw new Error('You do not have permission to view this receipt.');
-                        if (response.status === 404) throw new Error('Payment receipt was not found.');
-                        if (!response.ok) throw new Error('Unable to load payment receipt.');
-                        if ((response.headers.get('content-type') || '').includes('application/pdf')) {
-                            receiptWindow.location.href = URL.createObjectURL(await response.blob());
-                        } else {
-                            const body = await response.json();
-                            const receipt = body.data?.payment || body.data || body;
-                            const query = new URLSearchParams({receipt_no:receipt.receipt_number || receipt.payment_id || receipt.id || '', name:receipt.student?.student_name || receipt.student_name || '', reg_id:receipt.student?.student_id || receipt.student_id || '', course:receipt.student?.course || receipt.course || '', batch:receipt.student?.student_batch || receipt.student_batch || '', pay_amount:receipt.amount_paid || receipt.amount || 0, pay_type:receipt.payment_method || 'Cash', txn:receipt.transaction_reference || '', pay_date:receipt.payment_date || '', remarks:receipt.description || '', installment_type:receipt.installment_type || '', gross_fee:receipt.gross_fee || 0, discount_amount:receipt.discount_amount || 0, payable_total:receipt.total_fee || receipt.payable_total || 0, completed_payments:receipt.completed_payments || 0, remaining_balance:receipt.remaining_balance || 0, fee_items:JSON.stringify(receipt.fee_items || [])});
-                            receiptWindow.location.href = `payment-receipt.php?${query}`;
-                        }
-                    } catch (error) { receiptWindow?.close(); alert(error.message); }
-                }));
-
-                // Update footer info
-                const total = filteredData.length;
-                document.getElementById('startEntry').textContent = total ? start + 1 : 0;
-                document.getElementById('endEntry').textContent = end;
-                document.getElementById('totalEntries').textContent = total;
-
-                // Update pagination buttons
-                const totalPages = Math.ceil(total / rowsPerPage) || 1;
-                document.getElementById('prevPage').disabled = (page === 1);
-                document.getElementById('nextPage').disabled = (page === totalPages || total === 0);
-            }
-
-            function updatePagination() {
-                const totalPages = Math.ceil(filteredData.length / rowsPerPage) || 1;
-                if (currentPage > totalPages) currentPage = totalPages;
-                renderTable(currentPage);
-            }
-
-            // Pagination event listeners
-            document.getElementById('prevPage').addEventListener('click', function() {
-                if (currentPage > 1) {
-                    loadPayments(currentPage - 1);
-                }
+                loadPayments();
             });
 
-            document.getElementById('nextPage').addEventListener('click', function() {
-                if (currentPage < apiLastPage) {
-                    loadPayments(currentPage + 1);
-                }
-            });
-
-            // ----- SEARCH FUNCTIONALITY -----
-            const searchInput = document.getElementById('searchInput');
-            searchInput.addEventListener('input', function() {
-                const query = this.value.toLowerCase().trim();
-                if (query === '') {
-                    filteredData = [...allPayments];
-                } else {
-                    filteredData = allPayments.filter(p => 
-                        p.studentName.toLowerCase().includes(query) ||
-                        p.studentId.toLowerCase().includes(query) ||
-                        p.feesPaid.toLowerCase().includes(query) ||
-                        p.receipt.toLowerCase().includes(query) ||
-                        p.mode.toLowerCase().includes(query)
-                    );
-                }
-                currentPage = 1;
-                updatePagination();
-            });
-
-            async function loadPayments(page = 1) {
-                const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token') || '';
-                const query = new URLSearchParams({per_page:document.getElementById('paymentPerPage').value, page:String(page)});
-                const search = searchInput.value.trim();
-                const status = document.getElementById('paymentStatusFilter').value;
-                const studentId = document.getElementById('paymentStudentFilter').value.trim();
-                if (search) query.set('search', search);
-                if (status) query.set('payment_status', status);
-                if (studentId) query.set('student_id', studentId);
+            // ==============================
+            // FETCH PAYMENTS FROM API
+            // ==============================
+            async function loadPayments() {
+                const tbody = document.getElementById('paymentTableBody');
                 try {
-                    const response = await fetch(`${url}student-payments?${query}`, {headers:{'Authorization':`Bearer ${token}`,'Accept':'application/json'}});
+                    const response = await fetch(`${cleanBase}/student-payments?per_page=100`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Accept': 'application/json'
+                        }
+                    });
                     const body = await response.json().catch(() => ({}));
-                    if (response.status === 401) { alert('Your session has expired. Please log in again.'); window.location.href='login.php'; return; }
+
+                    if (response.status === 401) {
+                        alert('Your session has expired. Please log in again.');
+                        window.location.href = 'login.php';
+                        return;
+                    }
                     if (response.status === 403) throw new Error('You do not have permission to view payments.');
                     if (response.status === 404) throw new Error(body.message || 'Payment records were not found.');
                     if (!response.ok) throw new Error(body.message || 'Unable to load payment records.');
+
                     const payload = body.data || body;
                     const rows = Array.isArray(payload) ? payload : (payload.data || []);
-                    allPayments = rows.map(p => ({id:p.id || p.payment_id, studentName:p.student?.student_name || p.student_name || '—', studentId:p.student?.student_id || p.student_id || p.abc_id || '—', feesPaid:p.installment_type || p.description || 'Fee payment', amount:'₹' + Number(p.amount_paid || p.amount || 0).toLocaleString('en-IN'), receipt:p.receipt_number || p.transaction_reference || '—', mode:p.payment_method || '—', date:p.payment_date || p.created_at || '', status:p.payment_status || p.status || 'Completed'}));
-                    const pageMeta = body.meta || payload.meta || payload;
-                    rowsPerPage = Number(document.getElementById('paymentPerPage').value);
-                    filteredData = [...allPayments]; currentPage = Number(pageMeta.current_page || page); apiLastPage = Number(pageMeta.last_page || 1);
-                    renderTable(1);
-                    const total = Number(pageMeta.total ?? rows.length);
-                    const pageSize = Number(document.getElementById('paymentPerPage').value);
-                    document.getElementById('startEntry').textContent = total ? ((currentPage - 1) * pageSize + 1) : 0;
-                    document.getElementById('endEntry').textContent = Math.min(currentPage * pageSize, total);
-                    document.getElementById('totalEntries').textContent = total;
-                    document.getElementById('prevPage').disabled = currentPage <= 1;
-                    document.getElementById('nextPage').disabled = currentPage >= apiLastPage;
+
+                    allPayments = rows.map(p => {
+                        const rawAmount = Number(p.amount_paid ?? p.amount ?? 0);
+                        return {
+                            id: p.id || p.payment_id || '',
+                            studentDbId: String(p.student_id || p.student?.id || ''),
+                            studentName: p.student?.student_name || p.student_name || '—',
+                            studentRegId: p.student?.student_id || p.student?.registration_id || p.registration_id || p.abc_id || '—',
+                            feesPaid: p.installment_type || p.description || 'Fee Payment',
+                            rawAmount: rawAmount,
+                            amount: '₹' + rawAmount.toLocaleString('en-IN'),
+                            receipt: p.receipt_number || p.transaction_reference || '—',
+                            mode: p.payment_method || '—',
+                            status: p.payment_status || p.status || 'Completed',
+                            date: p.payment_date || (p.created_at ? p.created_at.split('T')[0] : '—'),
+                            raw: p
+                        };
+                    });
+
+                    populateModeFilter(allPayments);
+
+                    filteredPayments = [...allPayments];
+                    currentPage = 1;
+                    renderTable();
+
                 } catch (error) {
-                    tbody.innerHTML = `<tr><td colspan="9" class="text-center py-8 text-red-500">${error.message}</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="10" class="text-center py-8 text-red-500 font-medium">${error.message}</td></tr>`;
                 }
             }
-            let paymentSearchTimer;
-            searchInput.addEventListener('input', () => { clearTimeout(paymentSearchTimer); paymentSearchTimer=setTimeout(loadPayments,300); });
-            document.getElementById('paymentStudentFilter').addEventListener('input', () => { clearTimeout(paymentSearchTimer); paymentSearchTimer=setTimeout(loadPayments,300); });
-            document.getElementById('paymentStatusFilter').addEventListener('change', loadPayments);
-            document.getElementById('paymentPerPage').addEventListener('change', loadPayments);
-            // Initial load uses protected API records.
-            loadPayments();
 
-            // ============================================================
-            // EXPORT FUNCTIONS
-            // ============================================================
-
-            // Helper: Get current data (filtered + paginated if needed)
-            function getCurrentData() {
-                return filteredData;
+            function populateModeFilter(payments) {
+                const modeSelect = document.getElementById('paymentModeFilter');
+                if (!modeSelect) return;
+                const defaultModes = ['Cash', 'Online', 'UPI', 'Bank Transfer', 'Cheque'];
+                const foundModes = new Set(defaultModes);
+                payments.forEach(p => {
+                    if (p.mode && p.mode !== '—') foundModes.add(p.mode);
+                });
+                const currentVal = modeSelect.value;
+                modeSelect.innerHTML = '<option value="">All Modes</option>' +
+                    Array.from(foundModes).map(m => `<option value="${m}">${m}</option>`).join('');
+                modeSelect.value = currentVal;
             }
 
-            // Helper: Get table headers
+            // ==============================
+            // RENDER TABLE & PAGINATION
+            // ==============================
+            function renderTable() {
+                const tbody = document.getElementById('paymentTableBody');
+                if (!tbody) return;
+
+                const totalEntries = filteredPayments.length;
+                const totalPages = Math.ceil(totalEntries / rowsPerPage) || 1;
+
+                if (currentPage > totalPages) currentPage = totalPages;
+                if (currentPage < 1) currentPage = 1;
+
+                const start = (currentPage - 1) * rowsPerPage;
+                const end = Math.min(start + rowsPerPage, totalEntries);
+                const pageItems = filteredPayments.slice(start, end);
+
+                if (pageItems.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="10" class="text-center py-8 text-gray-400"><i class="fas fa-search mr-1.5 text-orange-400"></i> No matching payment records found.</td></tr>`;
+                } else {
+                    tbody.innerHTML = pageItems.map((p, index) => {
+                        const rowNum = start + index + 1;
+                        const modeClass = p.mode.toLowerCase() === 'cash'
+                            ? 'bg-gray-100 text-gray-700'
+                            : p.mode.toLowerCase() === 'online' || p.mode.toLowerCase() === 'upi'
+                                ? 'bg-blue-50 text-blue-700'
+                                : 'bg-purple-50 text-purple-700';
+
+                        const statusLower = p.status.toLowerCase();
+                        const statusClass = statusLower === 'completed' || statusLower === 'paid' || statusLower === 'success'
+                            ? 'bg-emerald-50 text-emerald-700'
+                            : statusLower === 'pending'
+                                ? 'bg-amber-50 text-amber-700'
+                                : 'bg-red-50 text-red-700';
+
+                        return `
+                            <tr class="table-row-hover transition text-sm">
+                                <td class="px-4 py-3 whitespace-nowrap font-semibold text-gray-600">${rowNum}</td>
+                                <td class="px-4 py-3 whitespace-nowrap font-medium text-gray-900">${p.studentName}</td>
+                                <td class="px-4 py-3 whitespace-nowrap font-mono text-gray-700">${p.studentRegId}</td>
+                                <td class="px-4 py-3 whitespace-nowrap text-gray-600">${p.feesPaid}</td>
+                                <td class="px-4 py-3 whitespace-nowrap font-bold text-orange-600">${p.amount}</td>
+                                <td class="px-4 py-3 whitespace-nowrap font-mono text-gray-700">${p.receipt}</td>
+                                <td class="px-4 py-3 whitespace-nowrap">
+                                    <span class="px-2.5 py-1 rounded-full text-xs font-semibold ${modeClass}">
+                                        ${p.mode}
+                                    </span>
+                                </td>
+                                <td class="px-4 py-3 whitespace-nowrap">
+                                    <span class="px-2.5 py-1 rounded-full text-xs font-semibold ${statusClass}">
+                                        ${p.status}
+                                    </span>
+                                </td>
+                                <td class="px-4 py-3 whitespace-nowrap text-gray-600">${p.date}</td>
+                                <td class="px-4 py-3 whitespace-nowrap text-center no-print">
+                                    <div class="flex items-center justify-center gap-1.5">
+                                        <button onclick="viewPaymentDetails('${p.id}')" class="w-8 h-8 rounded-lg bg-orange-50 text-orange-600 hover:bg-orange-100 flex items-center justify-center transition" title="View Payment Details">
+                                            <i class="fas fa-eye text-xs"></i>
+                                        </button>
+                                        <button onclick="openPaymentReceipt('${p.id}')" class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center transition" title="Get Receipt">
+                                            <i class="fas fa-receipt text-xs"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
+
+                document.getElementById('startEntry').textContent = totalEntries ? start + 1 : 0;
+                document.getElementById('endEntry').textContent = end;
+                document.getElementById('totalEntries').textContent = totalEntries;
+                document.getElementById('currentPageDisplay').textContent = currentPage;
+
+                document.getElementById('prevPage').disabled = (currentPage === 1);
+                document.getElementById('nextPage').disabled = (currentPage === totalPages || totalEntries === 0);
+            }
+
+            function changePage(direction) {
+                const totalPages = Math.ceil(filteredPayments.length / rowsPerPage) || 1;
+                currentPage += direction;
+                if (currentPage < 1) currentPage = 1;
+                if (currentPage > totalPages) currentPage = totalPages;
+                renderTable();
+            }
+
+            // ==============================
+            // UNIFIED SEARCH & FILTER LOGIC (Matched to Student Records Pattern)
+            // ==============================
+            function doSearch() {
+                const searchInput = document.getElementById('unifiedSearchInput');
+                const paymentModeFilter = document.getElementById('paymentModeFilter');
+
+                const query = searchInput ? searchInput.value.toLowerCase().trim().replace(/\s/g, '') : '';
+                const rawQuery = searchInput ? searchInput.value.toLowerCase().trim() : '';
+                const modeVal = paymentModeFilter ? paymentModeFilter.value.toLowerCase().trim() : '';
+
+                filteredPayments = allPayments.filter(p => {
+                    const nameLower = p.studentName.toLowerCase();
+                    const regIdLower = p.studentRegId.toLowerCase().replace(/\s/g, '');
+                    const dbIdLower = p.studentDbId.toLowerCase().replace(/\s/g, '');
+                    const feesLower = p.feesPaid.toLowerCase();
+                    const receiptLower = p.receipt.toLowerCase().replace(/\s/g, '');
+                    const modeLower = p.mode.toLowerCase();
+                    const statusLower = p.status.toLowerCase();
+                    const dateLower = p.date.toLowerCase();
+                    const amountLower = p.amount.toLowerCase();
+
+                    const matchesSearch = !rawQuery || 
+                        nameLower.includes(rawQuery) || 
+                        regIdLower.includes(query) || 
+                        dbIdLower.includes(query) || 
+                        feesLower.includes(rawQuery) || 
+                        receiptLower.includes(query) || 
+                        modeLower.includes(rawQuery) || 
+                        statusLower.includes(rawQuery) || 
+                        dateLower.includes(rawQuery) || 
+                        amountLower.includes(rawQuery);
+
+                    const matchesMode = !modeVal || p.mode.toLowerCase() === modeVal;
+
+                    return matchesSearch && matchesMode;
+                });
+
+                currentPage = 1;
+                renderTable();
+            }
+
+            function resetFilters() {
+                if (document.getElementById('unifiedSearchInput')) document.getElementById('unifiedSearchInput').value = '';
+                if (document.getElementById('paymentModeFilter')) document.getElementById('paymentModeFilter').value = '';
+                filteredPayments = [...allPayments];
+                currentPage = 1;
+                renderTable();
+            }
+
+            // ==============================
+            // VIEW PAYMENT DETAILS MODAL
+            // ==============================
+            window.viewPaymentDetails = async function(paymentId) {
+                if (!paymentId) return;
+                try {
+                    const response = await fetch(`${cleanBase}/student-payments/${encodeURIComponent(paymentId)}`, {
+                        headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
+                    });
+                    const body = await response.json().catch(() => ({}));
+                    if (response.status === 401) { alert('Your session has expired. Please log in again.'); window.location.href = 'login.php'; return; }
+                    if (response.status === 403) throw new Error('You do not have permission to view this payment.');
+                    if (response.status === 404) throw new Error(body.message || 'Payment was not found.');
+                    if (!response.ok) throw new Error(body.message || 'Unable to load payment details.');
+
+                    const payment = body.data?.payment || body.data || body;
+                    document.getElementById('paymentDetailsContent').innerHTML = `
+                        <div class="p-3 bg-gray-50 rounded-xl"><strong>Student Name:</strong> ${payment.student?.student_name || payment.student_name || '—'}</div>
+                        <div class="p-3 bg-gray-50 rounded-xl"><strong>Student ID:</strong> ${payment.student?.student_id || payment.student?.registration_id || payment.student_id || '—'}</div>
+                        <div class="p-3 bg-gray-50 rounded-xl"><strong>Amount Paid:</strong> <span class="text-orange-600 font-bold">₹${Number(payment.amount_paid || payment.amount || 0).toLocaleString('en-IN')}</span></div>
+                        <div class="p-3 bg-gray-50 rounded-xl"><strong>Payment Method:</strong> ${payment.payment_method || '—'}</div>
+                        <div class="p-3 bg-gray-50 rounded-xl"><strong>Payment Date:</strong> ${payment.payment_date || '—'}</div>
+                        <div class="p-3 bg-gray-50 rounded-xl"><strong>Status:</strong> ${payment.payment_status || payment.status || '—'}</div>
+                        <div class="p-3 bg-gray-50 rounded-xl"><strong>Receipt / Reference:</strong> ${payment.receipt_number || payment.transaction_reference || '—'}</div>
+                        <div class="p-3 bg-gray-50 rounded-xl"><strong>Installment / Type:</strong> ${payment.installment_type || '—'}</div>
+                        <div class="sm:col-span-2 p-3 bg-gray-50 rounded-xl"><strong>Remarks:</strong> ${payment.description || '—'}</div>
+                    `;
+                    const modal = document.getElementById('paymentDetailsModal');
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                } catch (error) {
+                    alert(error.message);
+                }
+            };
+
+            window.closePaymentModal = function() {
+                const modal = document.getElementById('paymentDetailsModal');
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            };
+
+            // ==============================
+            // RECEIPT LAUNCHER
+            // ==============================
+            window.openPaymentReceipt = async function(paymentId) {
+                if (!paymentId) return;
+                const receiptWindow = window.open('about:blank', '_blank');
+                try {
+                    const response = await fetch(`${cleanBase}/student-payments/receipt/${encodeURIComponent(paymentId)}`, {
+                        headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json, application/pdf' }
+                    });
+                    if (response.status === 401) {
+                        receiptWindow?.close();
+                        alert('Your session has expired. Please log in again.');
+                        window.location.href = 'login.php';
+                        return;
+                    }
+                    if (response.status === 403) throw new Error('You do not have permission to view this receipt.');
+                    if (response.status === 404) throw new Error('Payment receipt was not found.');
+                    if (!response.ok) throw new Error('Unable to load payment receipt.');
+
+                    if ((response.headers.get('content-type') || '').includes('application/pdf')) {
+                        receiptWindow.location.href = URL.createObjectURL(await response.blob());
+                    } else {
+                        const body = await response.json();
+                        const receipt = body.data?.payment || body.data || body;
+                        const query = new URLSearchParams({
+                            receipt_no: receipt.receipt_number || receipt.payment_id || receipt.id || '',
+                            name: receipt.student?.student_name || receipt.student_name || '',
+                            reg_id: receipt.student?.student_id || receipt.student_id || '',
+                            course: receipt.student?.course || receipt.course || '',
+                            batch: receipt.student?.student_batch || receipt.student_batch || '',
+                            pay_amount: receipt.amount_paid || receipt.amount || 0,
+                            pay_type: receipt.payment_method || 'Cash',
+                            txn: receipt.transaction_reference || '',
+                            pay_date: receipt.payment_date || '',
+                            remarks: receipt.description || '',
+                            installment_type: receipt.installment_type || '',
+                            gross_fee: receipt.gross_fee || 0,
+                            discount_amount: receipt.discount_amount || 0,
+                            payable_total: receipt.total_fee || receipt.payable_total || 0,
+                            completed_payments: receipt.completed_payments || 0,
+                            remaining_balance: receipt.remaining_balance || 0,
+                            fee_items: JSON.stringify(receipt.fee_items || [])
+                        });
+                        receiptWindow.location.href = `payment-receipt.php?${query}`;
+                    }
+                } catch (error) {
+                    receiptWindow?.close();
+                    alert(error.message);
+                }
+            };
+
+            // ==============================
+            // CSV EXPORT FUNCTION ONLY
+            // ==============================
             function getHeaders() {
-                return ['#', 'Student Name', 'Student ID', 'Fees Paid', 'Amount', 'Receipt No', 'Payment Mode', 'Payment Date'];
+                return ['#', 'Student Name', 'Student ID', 'Fees Paid', 'Amount', 'Receipt No', 'Payment Mode', 'Status', 'Payment Date'];
             }
 
-            // 1. COPY to clipboard
-            window.exportCopy = function() {
-                const data = getCurrentData();
-                if (data.length === 0) {
-                    alert('No data to copy.');
-                    return;
-                }
-
-                let text = getHeaders().join('\t') + '\n';
-                data.forEach((p, i) => {
-                    text += `${i + 1}\t${p.studentName}\t${p.studentId}\t${p.feesPaid}\t${p.amount}\t${p.receipt}\t${p.mode}\t${p.date}\n`;
-                });
-
-                navigator.clipboard.writeText(text).then(() => {
-                    showToast('✅ Copied to clipboard!');
-                }).catch(() => {
-                    // Fallback
-                    const textarea = document.createElement('textarea');
-                    textarea.value = text;
-                    document.body.appendChild(textarea);
-                    textarea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(textarea);
-                    showToast('✅ Copied to clipboard!');
-                });
-            };
-
-            // 2. CSV export
             window.exportCSV = function() {
-                const data = getCurrentData();
-                if (data.length === 0) {
-                    alert('No data to export.');
-                    return;
-                }
-
+                if (filteredPayments.length === 0) return alert('No data to export.');
                 let csv = getHeaders().join(',') + '\n';
-                data.forEach((p, i) => {
-                    const row = [
-                        i + 1,
-                        `"${p.studentName}"`,
-                        `"${p.studentId}"`,
-                        `"${p.feesPaid}"`,
-                        `"${p.amount}"`,
-                        `"${p.receipt}"`,
-                        `"${p.mode}"`,
-                        `"${p.date}"`
-                    ];
-                    csv += row.join(',') + '\n';
+                filteredPayments.forEach((p, i) => {
+                    csv += [i + 1, `"${p.studentName}"`, `"${p.studentRegId}"`, `"${p.feesPaid}"`, `"${p.amount}"`, `"${p.receipt}"`, `"${p.mode}"`, `"${p.status}"`, `"${p.date}"`].join(',') + '\n';
                 });
-
                 downloadFile(csv, 'payment_records.csv', 'text/csv');
-                showToast('✅ CSV downloaded!');
+                showToast('✅ CSV downloaded successfully!');
             };
 
-            // 3. Excel export (HTML table as .xls)
-            window.exportExcel = function() {
-                const data = getCurrentData();
-                if (data.length === 0) {
-                    alert('No data to export.');
-                    return;
-                }
-
-                let html = `
-                    <html xmlns:o="urn:schemas-microsoft-com:office:office" 
-                          xmlns:x="urn:schemas-microsoft-com:office:excel" 
-                          xmlns="http://www.w3.org/TR/REC-html40">
-                    <head><meta charset="UTF-8">
-                    <!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>
-                    <x:Name>Payment Records</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>
-                    </x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->
-                    <style>th{background:#0f766e;color:white;font-weight:bold;}td,th{border:1px solid #ddd;padding:8px;}</style>
-                    </head><body>
-                    <h2>Payment Records</h2>
-                    <table>
-                        <thead><tr>${getHeaders().map(h => `<th>${h}</th>`).join('')}</tr></thead>
-                        <tbody>
-                `;
-
-                data.forEach((p, i) => {
-                    html += `<tr>
-                        <td>${i + 1}</td>
-                        <td>${p.studentName}</td>
-                        <td>${p.studentId}</td>
-                        <td>${p.feesPaid}</td>
-                        <td>${p.amount}</td>
-                        <td>${p.receipt}</td>
-                        <td>${p.mode}</td>
-                        <td>${p.date}</td>
-                    </tr>`;
-                });
-
-                html += `</tbody></table></body></html>`;
-
-                downloadFile(html, 'payment_records.xls', 'application/vnd.ms-excel');
-                showToast('✅ Excel downloaded!');
-            };
-
-            // 4. PDF export (using print with PDF printer)
-            window.exportPDF = function() {
-                // Show print dialog with PDF option
-                showToast('🖨️ Select "Save as PDF" in the print dialog.');
-                setTimeout(() => {
-                    window.print();
-                }, 500);
-            };
-
-            // 5. Print
-            window.exportPrint = function() {
-                window.print();
-            };
-
-            // Helper: Download file
             function downloadFile(content, filename, mimeType) {
                 const blob = new Blob([content], { type: mimeType + ';charset=utf-8;' });
                 const link = document.createElement('a');
@@ -502,36 +571,19 @@
                 URL.revokeObjectURL(link.href);
             }
 
-            // Helper: Toast notification
             function showToast(message) {
                 const existing = document.querySelector('.export-toast');
                 if (existing) existing.remove();
-
                 const toast = document.createElement('div');
                 toast.className = 'export-toast fixed top-20 left-1/2 -translate-x-1/2 bg-orange-600 text-white px-6 py-3 rounded-xl shadow-lg z-50 transition-all duration-300';
-                toast.style.animation = 'fadeIn 0.3s ease';
                 toast.textContent = message;
                 document.body.appendChild(toast);
-
                 setTimeout(() => {
                     toast.style.opacity = '0';
                     setTimeout(() => toast.remove(), 300);
                 }, 2500);
             }
-
-            // Add toast animation
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes fadeIn {
-                    from { opacity: 0; transform: translate(-50%, -20px); }
-                    to { opacity: 1; transform: translate(-50%, 0); }
-                }
-            `;
-            document.head.appendChild(style);
-
-        });
+        })();
     </script>
-
 </body>
 </html>
-

@@ -408,14 +408,22 @@
             return cleanBase + cleanPath;
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('institutionForm').classList.add('locked');
-            checkUserRoleAndProfile();
-        });
-
         async function getToken() {
             return localStorage.getItem('auth_token') || localStorage.getItem('token') || localStorage.getItem('accessToken') || sessionStorage.getItem('token');
         }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Mandatory Authentication & Session Check
+            const token = await getToken();
+            if (!token) {
+                alert('Your session has expired or you are not logged in. Please log in again.');
+                window.location.href = 'login.php';
+                return;
+            }
+
+            document.getElementById('institutionForm').classList.add('locked');
+            checkUserRoleAndProfile();
+        });
 
         async function checkUserRoleAndProfile() {
             try {
@@ -430,6 +438,13 @@
                     method: 'GET',
                     headers: headers
                 });
+                
+                if (userResponse.status === 401) {
+                    alert('Session expired. Please log in again.');
+                    window.location.href = 'login.php';
+                    return;
+                }
+
                 const userData = await userResponse.json();
 
                 if (userResponse.ok && userData.data) {
@@ -717,6 +732,12 @@
                 });
 
                 const result = await response.json();
+                if (response.status === 401) {
+                    alert('Session expired. Please log in again.');
+                    window.location.href = 'login.php';
+                    return;
+                }
+
                 if (response.ok) {
                     showToast('Password updated successfully!');
                     closePasswordModal();
@@ -759,6 +780,12 @@
 
             try {
                 const userResponse = await fetch(getApiUrl('user'), { method: 'GET', headers });
+                if (userResponse.status === 401) {
+                    alert('Session expired. Please log in again.');
+                    window.location.href = 'login.php';
+                    return;
+                }
+
                 const userData = await userResponse.json();
                 const isAdmin = userData.data && userData.data.role.toLowerCase() === 'admin';
 

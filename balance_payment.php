@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-   <meta charset="UTF-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Student Balance Details - ERP</title>
     <!-- Tailwind via CDN -->
@@ -11,14 +11,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
     <style>
-        /* Minimal custom styles – everything else is Tailwind */
         .table-row-hover:hover {
             background-color: #f8fafc;
         }
-        .toolbar-btn {
-            transition: background-color 0.2s, transform 0.1s;
+        .toolbar-btn, .memo-btn {
+            transition: all 0.2s ease;
         }
-        .toolbar-btn:hover {
+        .toolbar-btn:hover, .memo-btn:hover {
             transform: translateY(-1px);
         }
         .page-btn {
@@ -28,7 +27,17 @@
             opacity: 0.5;
             cursor: not-allowed;
         }
-        /* responsive table wrapper */
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+        .modal-box {
+            animation: fadeIn 0.25s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.97); }
+            to { opacity: 1; transform: scale(1); }
+        }
         .table-wrap {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
@@ -42,7 +51,6 @@
                 padding: 0.5rem 0.25rem;
             }
         }
-        /* Toast notification */
         .export-toast {
             animation: slideDown 0.4s ease;
         }
@@ -50,7 +58,6 @@
             from { opacity: 0; transform: translate(-50%, -20px) scale(0.95); }
             to { opacity: 1; transform: translate(-50%, 0) scale(1); }
         }
-        /* Print styles */
         @media print {
             body * { visibility: hidden; }
             #printArea, #printArea * { visibility: visible; }
@@ -58,10 +65,9 @@
             .no-print { display: none !important; }
         }
     </style>
-
 </head>
 
-<body class="bg-gray-300 text-gray-800 antialiased">
+<body class="bg-gray-100 text-gray-800 antialiased font-sans">
 
     <?php include 'header.php'; ?>
     <?php include 'sidebar.php'; ?>
@@ -71,75 +77,107 @@
         <!-- ===== BALANCE DETAILS CARD ===== -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden" id="printArea">
 
-            <!-- Heading -->
-            <div class="flex items-center gap-4 p-6 border-b border-gray-100 no-print">
-                <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-400 flex items-center justify-center text-2xl">
-                    <i class="fas fa-balance-scale"></i>
+            <!-- Heading & Export Toolbar -->
+            <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between p-6 border-b border-gray-200 bg-white gap-4 no-print">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center text-xl">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-bold text-slate-900">Student Balance Details</h2>
+                        <p class="text-sm text-gray-500 mt-1">Track pending balance and payment details</p>
+                    </div>
                 </div>
-                <div>
-                    <h2 class="text-xl md:text-2xl font-bold text-gray-900">Student Balance Details</h2>
-                    <p class="text-sm text-gray-500">Track pending balance and payment details</p>
+
+                <!-- CSV Export Button Only -->
+                <div class="flex items-center gap-2">
+                    <button onclick="exportCSV()" class="toolbar-btn px-4 py-2.5 bg-sky-500 text-white text-xs font-bold rounded-xl hover:bg-sky-600 shadow-sm flex items-center gap-2">
+                        <i class="fas fa-file-csv text-sm"></i> Export CSV
+                    </button>
                 </div>
             </div>
 
-            <!-- Toolbar -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 border-b border-gray-100 no-print">
-                <div class="flex flex-wrap items-center gap-2">
-                    <button onclick="exportData('copy')" class="toolbar-btn px-4 py-2 bg-gray-600 text-white text-sm font-bold rounded-xl hover:bg-gray-700 focus:ring-2 focus:ring-gray-300">
-                        <i class="fas fa-copy mr-1"></i> Copy
-                    </button>
-                    <button onclick="exportData('csv')" class="toolbar-btn px-4 py-2 bg-sky-500 text-white text-sm font-bold rounded-xl hover:bg-sky-600 focus:ring-2 focus:ring-sky-300">
-                        <i class="fas fa-file-csv mr-1"></i> CSV
-                    </button>
-                    <button onclick="exportData('excel')" class="toolbar-btn px-4 py-2 bg-emerald-500 text-white text-sm font-bold rounded-xl hover:bg-emerald-600 focus:ring-2 focus:ring-emerald-300">
-                        <i class="fas fa-file-excel mr-1"></i> Excel
-                    </button>
-                    <button onclick="exportData('pdf')" class="toolbar-btn px-4 py-2 bg-red-500 text-white text-sm font-bold rounded-xl hover:bg-red-600 focus:ring-2 focus:ring-red-300">
-                        <i class="fas fa-file-pdf mr-1"></i> PDF
-                    </button>
-                    <button onclick="exportData('print')" class="toolbar-btn px-4 py-2 bg-purple-500 text-white text-sm font-bold rounded-xl hover:bg-purple-600 focus:ring-2 focus:ring-purple-300">
-                        <i class="fas fa-print mr-1"></i> Print
-                    </button>
+            <!-- Unified Search & Filters Bar (Matched to Student Records) -->
+            <div class="p-4 sm:p-6 border-b border-gray-100 bg-gray-50/50 no-print">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-end">
+                    
+                    <!-- Universal Search Bar -->
+                    <div class="lg:col-span-2">
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Universal Search</label>
+                        <div class="relative">
+                            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            <input id="unifiedSearchInput" type="text" placeholder="Search by student name or batch..." 
+                                   class="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-xl text-sm focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none bg-white" />
+                        </div>
+                    </div>
+
+                    <!-- Filter Academic Year -->
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Academic Year</label>
+                        <select id="filterAcademicYear" class="w-full rounded-xl border border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 bg-white py-2 px-3 text-sm outline-none">
+                            <option value="">All Academic Years</option>
+                        </select>
+                    </div>
+
                 </div>
-                <div class="w-full sm:w-64">
-                    <input id="searchInput" type="text" placeholder="Search balance records..." 
-                           class="w-full rounded-xl  border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 bg-white py-2.5 px-4 text-sm" />
+
+                <!-- Action Controls Row & Per Page -->
+                <div class="flex flex-wrap items-center justify-between gap-3 mt-4">
+                    <div class="flex items-center gap-2">
+                        <label for="balancePerPage" class="text-xs font-bold text-gray-600 uppercase">Show:</label>
+                        <select id="balancePerPage" class="rounded-xl border border-gray-300 bg-white py-1.5 px-3 text-xs font-semibold text-gray-700 outline-none focus:border-orange-500">
+                            <option value="10" selected>10 entries</option>
+                            <option value="20">20 entries</option>
+                            <option value="50">50 entries</option>
+                            <option value="100">100 entries</option>
+                        </select>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button type="button" id="searchBtn" class="memo-btn bg-orange-500 text-white font-bold py-2 px-6 rounded-xl hover:bg-orange-600 text-sm shadow-sm flex items-center gap-1.5">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                        <button type="button" id="resetBtn" class="memo-btn bg-gray-200 text-gray-700 font-bold py-2 px-6 rounded-xl hover:bg-gray-300 text-sm flex items-center gap-1.5">
+                            <i class="fas fa-redo"></i> Reset
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <!-- Table -->
             <div class="table-wrap p-4 sm:p-6">
-                <table class="w-full text-sm text-left" id="balanceTable">
+                <table class="w-full text-sm text-left text-gray-600 border-collapse" id="balanceTable">
                     <thead>
-                        <tr class="bg-orange-400 text-white text-xs font-semibold uppercase tracking-wider">
-                            <th class="px-3 py-3 whitespace-nowrap">#</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Student Name</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Batch</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Total Fees</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Paid Fees</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Balance Amount</th>
-                            <th class="px-3 py-3 whitespace-nowrap">Status</th>
-                            <th class="px-3 py-3 whitespace-nowrap text-center no-print">Action</th>
+                        <tr class="bg-orange-500 text-white text-xs font-semibold uppercase tracking-wider">
+                            <th class="px-4 py-3 rounded-l-xl whitespace-nowrap">#</th>
+                            <th class="px-4 py-3 whitespace-nowrap">Student Name</th>
+                            <th class="px-4 py-3 whitespace-nowrap">Batch</th>
+                            <th class="px-4 py-3 whitespace-nowrap">Total Fees</th>
+                            <th class="px-4 py-3 whitespace-nowrap">Paid Fees</th>
+                            <th class="px-4 py-3 whitespace-nowrap">Balance Amount</th>
+                            <th class="px-4 py-3 whitespace-nowrap">Status</th>
+                            <th class="px-4 py-3 rounded-r-xl whitespace-nowrap text-center no-print">Action</th>
                         </tr>
                     </thead>
                     <tbody id="balanceTableBody" class="divide-y divide-gray-100">
                         <tr>
-                            <td colspan="8" class="text-center py-8 text-gray-400">Loading...</td>
+                            <td colspan="8" class="text-center py-10 text-gray-400">Loading balance records...</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <!-- Table Footer -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 border-t border-gray-100 no-print">
+            <!-- Table Footer / Pagination Bar -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 border-t border-gray-100 bg-gray-50/50 no-print">
                 <div class="text-sm text-gray-500 font-semibold">
                     Showing <span id="startEntry">0</span> to <span id="endEntry">0</span> of <span id="totalEntries">0</span> entries
                 </div>
-                <div class="flex gap-2">
-                    <button id="prevPage" class="page-btn px-5 py-2 bg-orange-400 text-white font-bold rounded-xl hover:bg-orange-700 focus:ring-2 focus:ring-teal-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                <div class="flex items-center gap-2">
+                    <button id="prevPage" class="page-btn px-5 py-2 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 focus:ring-2 focus:ring-orange-300 disabled:opacity-50 disabled:cursor-not-allowed">
                         <i class="fas fa-chevron-left mr-1"></i> Previous
                     </button>
-                    <button id="nextPage" class="page-btn px-5 py-2 bg-orange-400 text-white font-bold rounded-xl hover:bg-orange-700 focus:ring-2 focus:ring-teal-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <span id="currentPageDisplay" class="px-4 py-2 bg-orange-100 text-orange-800 font-bold rounded-xl">1</span>
+                    <button id="nextPage" class="page-btn px-5 py-2 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 focus:ring-2 focus:ring-orange-300 disabled:opacity-50 disabled:cursor-not-allowed">
                         Next <i class="fas fa-chevron-right ml-1"></i>
                     </button>
                 </div>
@@ -147,479 +185,356 @@
 
         </div>
 
+        <!-- ===== DETAILS MODAL (Fee Summary Pop-up) ===== -->
+        <div id="detailsModal" class="fixed inset-0 modal-overlay hidden justify-center items-center z-[99999] p-4">
+            <div class="modal-box bg-white rounded-2xl w-full max-w-2xl p-6 relative shadow-2xl max-h-[90vh] overflow-y-auto">
+                <button onclick="closeDetailsModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-2xl transition">
+                    <i class="fas fa-times"></i>
+                </button>
+                <h2 class="text-xl font-extrabold text-gray-900 mb-6 flex items-center gap-3">
+                    <span class="w-10 h-10 rounded-xl bg-orange-500 text-white flex items-center justify-center text-sm">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                    </span>
+                    Student Fee Summary Details
+                </h2>
+                <div id="detailsContent" class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                    <!-- Populated dynamically -->
+                </div>
+                <div class="mt-6 flex justify-end">
+                    <button onclick="closeDetailsModal()" class="px-5 py-2 bg-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-300 transition">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <?php include 'footer.php'; ?>
-
-    <!-- Libraries for export -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
     <script src="url.js"></script>
 
     <script>
-        // ============================================================
-        // API URL (adjust as needed)
-        // ============================================================
-        const API_URL = (typeof url !== 'undefined' ? url : '') + 'student-balance-records';
-        const API_TOKEN = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token') || '';
+        (function() {
+            const API_URL = (typeof url !== 'undefined' && url) ? url.replace(/\/$/, '') + '/student-balance-records' : 'http://127.0.0.1:8000/api/student-balance-records';
+            const cleanBase = (typeof url !== 'undefined' && url) ? url.replace(/\/$/, '') : 'http://127.0.0.1:8000/api';
+            const API_TOKEN = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token') || '';
 
-        // ============================================================
-        // DATA & STATE
-        // ============================================================
-        let allBalanceRecords = [];
-        let currentPage = 1;
-        let rowsPerPage = 10;
-        let balanceLastPage = 1;
-        let filteredData = [];
+            let allBalanceRecords = [];
+            let filteredRecords = [];
+            let currentPage = 1;
+            let rowsPerPage = 10;
 
-        // DOM refs
-        const tbody = document.getElementById('balanceTableBody');
-        const searchInput = document.getElementById('searchInput');
+            document.addEventListener('DOMContentLoaded', function() {
+                if (!API_TOKEN) {
+                    alert('Session expired. Please log in again.');
+                    window.location.href = 'login.php';
+                    return;
+                }
 
-        // ============================================================
-        // LOAD STUDENTS FROM API
-        // ============================================================
-        async function loadStudents(page = 1) {
-            try {
-                const search = document.getElementById('searchInput')?.value || '';
-                const response = await fetch(
-                    `${API_URL}?page=${page}&search=${encodeURIComponent(search)}`,
-                    {
+                fetchAcademicYears();
+
+                // Event Listeners for Search & Filters
+                document.getElementById('searchBtn').addEventListener('click', doSearch);
+                document.getElementById('resetBtn').addEventListener('click', resetFilters);
+
+                const unifiedSearch = document.getElementById('unifiedSearchInput');
+                if (unifiedSearch) {
+                    unifiedSearch.addEventListener('input', () => doSearch());
+                    unifiedSearch.addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+                }
+
+                const filterAcademicYear = document.getElementById('filterAcademicYear');
+                if (filterAcademicYear) {
+                    filterAcademicYear.addEventListener('change', () => doSearch());
+                }
+
+                const balancePerPage = document.getElementById('balancePerPage');
+                if (balancePerPage) {
+                    balancePerPage.addEventListener('change', (e) => {
+                        rowsPerPage = Number(e.target.value) || 10;
+                        currentPage = 1;
+                        renderTable();
+                    });
+                }
+
+                document.getElementById('prevPage').addEventListener('click', () => {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        renderTable();
+                    }
+                });
+
+                document.getElementById('nextPage').addEventListener('click', () => {
+                    const totalPages = Math.ceil(filteredRecords.length / rowsPerPage) || 1;
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        renderTable();
+                    }
+                });
+
+                loadStudents();
+            });
+
+            // ============================================================
+            // FETCH ACADEMIC YEARS DROPDOWN
+            // ============================================================
+            async function fetchAcademicYears() {
+                try {
+                    const res = await fetch(`${cleanBase}/academic-years`, {
+                        headers: { 'Authorization': `Bearer ${API_TOKEN}`, 'Accept': 'application/json' }
+                    });
+                    const result = await res.json();
+                    if (res.ok) {
+                        const yearPayload = result.data?.data || result.data || result;
+                        const years = Array.isArray(yearPayload) ? yearPayload : [];
+                        const yearSelect = document.getElementById('filterAcademicYear');
+                        if (yearSelect) {
+                            yearSelect.innerHTML = '<option value="">All Academic Years</option>' + 
+                                years.map(y => `<option value="${y.academic_year || y.name}">${y.academic_year || y.name}</option>`).join('');
+                        }
+                    }
+                } catch (err) {
+                    console.error('Error loading academic years:', err);
+                }
+            }
+
+            // ============================================================
+            // LOAD STUDENTS FROM API
+            // ============================================================
+            async function loadStudents() {
+                const tbody = document.getElementById('balanceTableBody');
+                try {
+                    const response = await fetch(`${API_URL}?per_page=100`, {
                         headers: {
                             'Authorization': 'Bearer ' + API_TOKEN,
                             'Accept': 'application/json'
                         }
-                    }
-                );
+                    });
 
-                if (response.status === 401) { alert('Your session has expired. Please log in again.'); window.location.href = 'login.php'; return; }
-                if (response.status === 403) throw new Error('You do not have permission to view student balances.');
-                if (response.status === 404) throw new Error('Student balance records were not found.');
-                if (!response.ok) throw new Error('Unable to load student balances.');
-                const result = await response.json();
-                const payload = result.data || result;
-                allBalanceRecords = Array.isArray(payload) ? payload : (payload.data || []);
-                const pageMeta = result.meta || payload.meta || payload;
-                rowsPerPage = Number(pageMeta.per_page || allBalanceRecords.length || rowsPerPage);
-                currentPage = Number(pageMeta.current_page || page);
-                balanceLastPage = Number(pageMeta.last_page || 1);
-                renderTable(allBalanceRecords, 1);
-                updatePaginationInfo(Number(pageMeta.total ?? allBalanceRecords.length), currentPage, balanceLastPage);
+                    if (response.status === 401) { alert('Your session has expired. Please log in again.'); window.location.href = 'login.php'; return; }
+                    if (response.status === 403) throw new Error('You do not have permission to view student balances.');
+                    if (response.status === 404) throw new Error('Student balance records were not found.');
+                    if (!response.ok) throw new Error('Unable to load student balances.');
+                    
+                    const result = await response.json();
+                    const payload = result.data || result;
+                    const rows = Array.isArray(payload) ? payload : (payload.data || []);
 
-            } catch (error) {
-                console.error('Error loading students:', error);
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="8" class="text-center py-8 text-red-500">
-                            <i class="fas fa-exclamation-circle mr-2"></i>
-                            Failed to load records. Please try again.
-                        </td>
-                    </tr>
+                    allBalanceRecords = rows.map(student => ({
+                        id: student.student_id || student.student?.id || student.id || '',
+                        name: student.student_name || student.name || '—',
+                        batch: student.student_batch || student.batch || student.academic_year || '—',
+                        totalFees: Number(student.total_fees || student.gross_fee || 0),
+                        paidFees: Number(student.paid_fees || student.completed_payments || 0),
+                        balanceAmount: Number(student.balance_amount ?? student.remaining_balance ?? 0)
+                    }));
+
+                    filteredRecords = [...allBalanceRecords];
+                    currentPage = 1;
+                    renderTable();
+
+                } catch (error) {
+                    console.error('Error loading students:', error);
+                    tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-red-500 font-medium">${error.message}</td></tr>`;
+                }
+            }
+
+            // ============================================================
+            // RENDER TABLE
+            // ============================================================
+            function renderTable() {
+                const tbody = document.getElementById('balanceTableBody');
+                if (!tbody) return;
+
+                const totalEntries = filteredRecords.length;
+                const totalPages = Math.ceil(totalEntries / rowsPerPage) || 1;
+
+                if (currentPage > totalPages) currentPage = totalPages;
+                if (currentPage < 1) currentPage = 1;
+
+                const start = (currentPage - 1) * rowsPerPage;
+                const end = Math.min(start + rowsPerPage, totalEntries);
+                const pageItems = filteredRecords.slice(start, end);
+
+                if (pageItems.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-gray-400"><i class="fas fa-search mr-1.5 text-orange-400"></i> No matching balance records found.</td></tr>`;
+                } else {
+                    tbody.innerHTML = pageItems.map((student, index) => {
+                        const rowNum = start + index + 1;
+                        const balance = student.balanceAmount;
+                        const status = balance <= 0 ? 
+                            '<span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700">✓ Paid</span>' :
+                            `<span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-red-50 text-red-700">● Pending (₹${balance.toLocaleString('en-IN')})</span>`;
+
+                        return `
+                            <tr class="table-row-hover transition text-sm">
+                                <td class="px-4 py-3 whitespace-nowrap font-semibold text-gray-600">${rowNum}</td>
+                                <td class="px-4 py-3 whitespace-nowrap font-medium text-gray-900">${student.name}</td>
+                                <td class="px-4 py-3 whitespace-nowrap text-gray-600">${student.batch}</td>
+                                <td class="px-4 py-3 whitespace-nowrap font-semibold text-gray-800">₹ ${student.totalFees.toLocaleString('en-IN')}</td>
+                                <td class="px-4 py-3 whitespace-nowrap font-semibold text-orange-600">₹ ${student.paidFees.toLocaleString('en-IN')}</td>
+                                <td class="px-4 py-3 whitespace-nowrap font-bold ${balance > 0 ? 'text-red-600' : 'text-emerald-600'}">
+                                    ₹ ${balance.toLocaleString('en-IN')}
+                                </td>
+                                <td class="px-4 py-3 whitespace-nowrap">${status}</td>
+                                <td class="px-4 py-3 whitespace-nowrap text-center no-print">
+                                    <button class="view-balance-btn w-8 h-8 rounded-lg bg-orange-50 text-orange-600 hover:bg-orange-100 flex items-center justify-center transition mx-auto" data-student-id="${student.id}" title="View Fee Summary">
+                                        <i class="fas fa-eye text-xs"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
+
+                // Attach click events for summary modal pop-up
+                tbody.querySelectorAll('.view-balance-btn').forEach(button => {
+                    button.addEventListener('click', async () => {
+                        const studentId = button.dataset.studentId;
+                        if (!studentId) return;
+                        try {
+                            const response = await fetch(`${cleanBase}/students/${encodeURIComponent(studentId)}/fee-summary`, {
+                                headers: { 'Authorization': 'Bearer ' + API_TOKEN, 'Accept': 'application/json' }
+                            });
+                            const body = await response.json().catch(() => ({}));
+                            if (response.status === 401) { alert('Your session has expired. Please log in again.'); window.location.href = 'login.php'; return; }
+                            if (response.status === 403) throw new Error('You do not have permission to view this fee summary.');
+                            if (response.status === 404) throw new Error(body.message || 'Student fee summary was not found.');
+                            if (!response.ok) throw new Error(body.message || 'Unable to load fee summary.');
+                            const summary = body.data?.data || body.data || body;
+                            
+                            openDetailsModal(summary);
+                        } catch (error) { 
+                            alert(error.message); 
+                        }
+                    });
+                });
+
+                document.getElementById('startEntry').textContent = totalEntries ? start + 1 : 0;
+                document.getElementById('endEntry').textContent = end;
+                document.getElementById('totalEntries').textContent = totalEntries;
+                document.getElementById('currentPageDisplay').textContent = currentPage;
+
+                document.getElementById('prevPage').disabled = (currentPage === 1);
+                document.getElementById('nextPage').disabled = (currentPage === totalPages || totalEntries === 0);
+            }
+
+            // ============================================================
+            // DETAILS MODAL (Fee Breakdown Pop-up)
+            // ============================================================
+            window.openDetailsModal = function(summary) {
+                const modal = document.getElementById("detailsModal");
+                modal.classList.remove("hidden");
+                modal.classList.add("flex");
+
+                const gross = Number(summary.gross_fee ?? summary.full_fees ?? 0);
+                const discount = Number(summary.discount_amount ?? 0);
+                const payable = Number(summary.total_fee ?? summary.payable_total ?? 0);
+                const paid = Number(summary.completed_payments ?? summary.total_paid ?? 0);
+                const remaining = Number(summary.remaining_balance ?? summary.balance_amount ?? 0);
+
+                document.getElementById("detailsContent").innerHTML = `
+                    <div class="p-3 bg-gray-50 rounded-xl"><strong>Gross Fee:</strong> ₹ ${gross.toLocaleString('en-IN')}</div>
+                    <div class="p-3 bg-gray-50 rounded-xl"><strong>Discount Amount:</strong> ₹ ${discount.toLocaleString('en-IN')}</div>
+                    <div class="p-3 bg-gray-50 rounded-xl"><strong>Payable Total:</strong> ₹ ${payable.toLocaleString('en-IN')}</div>
+                    <div class="p-3 bg-gray-50 rounded-xl"><strong>Paid Fees:</strong> <span class="text-emerald-600 font-bold">₹ ${paid.toLocaleString('en-IN')}</span></div>
+                    <div class="sm:col-span-2 p-3 bg-orange-50 border border-orange-200 rounded-xl"><strong>Remaining Balance:</strong> <span class="text-orange-600 font-bold">₹ ${remaining.toLocaleString('en-IN')}</span></div>
                 `;
-                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-red-500">${error.message}</td></tr>`;
-            }
-        }
-
-        // ============================================================
-        // SAMPLE DATA (fallback)
-        // ============================================================
-        function loadSampleData() {
-            allBalanceRecords = [
-                { student_name: 'Rahul Sharma', student_batch: '2024-25', total_fees: 85000, paid_fees: 70000, balance_amount: 15000 },
-                { student_name: 'Priya Patel', student_batch: '2025-26', total_fees: 90000, paid_fees: 90000, balance_amount: 0 },
-                { student_name: 'Amit Singh', student_batch: '2024-25', total_fees: 82000, paid_fees: 50000, balance_amount: 32000 },
-                { student_name: 'Sneha Reddy', student_batch: '2023-24', total_fees: 78000, paid_fees: 60000, balance_amount: 18000 },
-                { student_name: 'Vikram Kumar', student_batch: '2025-26', total_fees: 88000, paid_fees: 88000, balance_amount: 0 },
-            ];
-            renderTable(allBalanceRecords);
-            updatePaginationInfo(allBalanceRecords.length, 1);
-        }
-
-        // ============================================================
-        // RENDER TABLE
-        // ============================================================
-        function renderTable(data, page = 1) {
-            const start = (page - 1) * rowsPerPage;
-            const end = Math.min(start + rowsPerPage, data.length);
-            const pageItems = data.slice(start, end);
-
-            if (pageItems.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-gray-400">No records found</td></tr>`;
-                return;
-            }
-
-            let html = '';
-            pageItems.forEach((student, index) => {
-                const rowNum = start + index + 1;
-                const balance = Number(student.balance_amount) || 0;
-                const status = balance <= 0 ? 
-                    '<span class="px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">✓ Paid</span>' :
-                    `<span class="px-2 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">● Pending (₹${balance.toLocaleString()})</span>`;
-
-                html += `
-                    <tr class="table-row-hover transition">
-                        <td class="px-3 py-3 whitespace-nowrap">${rowNum}</td>
-                        <td class="px-3 py-3 whitespace-nowrap font-medium text-gray-900">${student.student_name || 'N/A'}</td>
-                        <td class="px-3 py-3 whitespace-nowrap">${student.student_batch || 'N/A'}</td>
-                        <td class="px-3 py-3 whitespace-nowrap font-semibold">₹ ${Number(student.total_fees || 0).toLocaleString()}</td>
-                        <td class="px-3 py-3 whitespace-nowrap font-semibold text-orange-400">₹ ${Number(student.paid_fees || 0).toLocaleString()}</td>
-                        <td class="px-3 py-3 whitespace-nowrap font-semibold ${balance > 0 ? 'text-red-600' : 'text-green-600'}">
-                            ₹ ${balance.toLocaleString()}
-                        </td>
-                        <td class="px-3 py-3 whitespace-nowrap">${status}</td>
-                        <td class="px-3 py-3 whitespace-nowrap text-center no-print">
-                            <button class="view-balance-btn text-orange-400 hover:text-teal-800 transition" data-student-id="${student.student_id || student.student?.id || student.id || ''}" title="View Fee Summary">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-            tbody.innerHTML = html;
-            tbody.querySelectorAll('.view-balance-btn').forEach(button => button.addEventListener('click', async () => {
-                if (!button.dataset.studentId) return;
-                try {
-                    const response = await fetch(`${url}students/${encodeURIComponent(button.dataset.studentId)}/fee-summary`, {headers:{'Authorization':`Bearer ${API_TOKEN}`,'Accept':'application/json'}});
-                    const body = await response.json().catch(() => ({}));
-                    if (response.status === 401) { alert('Your session has expired. Please log in again.'); window.location.href='login.php'; return; }
-                    if (response.status === 403) throw new Error('You do not have permission to view this fee summary.');
-                    if (response.status === 404) throw new Error(body.message || 'Student fee summary was not found.');
-                    if (!response.ok) throw new Error(body.message || 'Unable to load fee summary.');
-                    const summary = body.data?.data || body.data || body;
-                    alert([`Gross fee: ₹${summary.gross_fee ?? summary.full_fees ?? 0}`, `Discount: ₹${summary.discount_amount ?? 0}`, `Payable: ₹${summary.total_fee ?? summary.payable_total ?? 0}`, `Paid: ₹${summary.completed_payments ?? summary.total_paid ?? 0}`, `Remaining: ₹${summary.remaining_balance ?? summary.balance_amount ?? 0}`].join('\n'));
-                } catch (error) { alert(error.message); }
-            }));
-        }
-
-        // ============================================================
-        // UPDATE PAGINATION INFO
-        // ============================================================
-        function updatePaginationInfo(total, page, knownPages) {
-            const totalPages = knownPages || Math.ceil(total / rowsPerPage) || 1;
-            const start = (page - 1) * rowsPerPage + 1;
-            const end = Math.min(page * rowsPerPage, total);
-
-            document.getElementById('startEntry').textContent = total ? start : 0;
-            document.getElementById('endEntry').textContent = end;
-            document.getElementById('totalEntries').textContent = total;
-
-            document.getElementById('prevPage').disabled = (page <= 1);
-            document.getElementById('nextPage').disabled = (page >= totalPages);
-        }
-
-        // ============================================================
-        // PAGINATION EVENTS
-        // ============================================================
-        document.getElementById('prevPage').addEventListener('click', function() {
-            if (currentPage > 1) {
-                currentPage--;
-                loadStudents(currentPage);
-            }
-        });
-
-        document.getElementById('nextPage').addEventListener('click', function() {
-            if (currentPage < balanceLastPage) {
-                currentPage++;
-                loadStudents(currentPage);
-            }
-        });
-
-        // ============================================================
-        // SEARCH
-        // ============================================================
-        let balanceSearchTimer;
-        searchInput.addEventListener('input', function() {
-            clearTimeout(balanceSearchTimer);
-            balanceSearchTimer = setTimeout(() => { currentPage = 1; loadStudents(1); }, 300);
-        });
-
-        // ============================================================
-        // GET EXPORT DATA
-        // ============================================================
-        function getExportData() {
-            // Use filtered data if search is active, otherwise use all
-            const data = searchInput.value.trim() !== '' ? filteredData : allBalanceRecords;
-            if (data.length === 0) {
-                showToast('⚠️ No data to export');
-                return null;
-            }
-            return data;
-        }
-
-        // ============================================================
-        // TOAST NOTIFICATION
-        // ============================================================
-        function showToast(message, type = 'success') {
-            const existing = document.querySelector('.export-toast');
-            if (existing) existing.remove();
-
-            const colors = {
-                success: 'bg-orange-400',
-                error: 'bg-red-600',
-                warning: 'bg-amber-500',
-                info: 'bg-blue-500'
             };
 
-            const toast = document.createElement('div');
-            toast.className = `export-toast fixed top-20 left-1/2 -translate-x-1/2 ${colors[type] || colors.success} text-white px-6 py-3 rounded-xl shadow-lg z-50`;
-            toast.textContent = message;
-            document.body.appendChild(toast);
+            window.closeDetailsModal = function() {
+                const modal = document.getElementById("detailsModal");
+                modal.classList.add("hidden");
+                modal.classList.remove("flex");
+            };
 
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transition = 'opacity 0.3s';
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
+            // ============================================================
+            // SEARCH & RESET LOGIC
+            // ============================================================
+            function doSearch() {
+                const searchInput = document.getElementById('unifiedSearchInput');
+                const filterAcademicYear = document.getElementById('filterAcademicYear');
 
-        // ============================================================
-        // EXPORT FUNCTIONS
-        // ============================================================
-        window.exportData = function(type) {
-            const data = getExportData();
-            if (!data) return;
+                const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+                const yearVal = filterAcademicYear ? filterAcademicYear.value.toLowerCase().trim() : '';
 
-            // Build rows: headers + data
-            const headers = ['Student Name', 'Batch', 'Total Fees', 'Paid Fees', 'Balance Amount', 'Status'];
-            const rows = [headers];
+                filteredRecords = allBalanceRecords.filter(student => {
+                    const nameMatch = student.name.toLowerCase().includes(query);
+                    const batchMatch = student.batch.toLowerCase().includes(query);
+                    const totalMatch = student.totalFees.toString().includes(query);
+                    const paidMatch = student.paidFees.toString().includes(query);
+                    const balanceMatch = student.balanceAmount.toString().includes(query);
 
-            data.forEach(student => {
-                const balance = Number(student.balance_amount) || 0;
-                rows.push([
-                    student.student_name || 'N/A',
-                    student.student_batch || 'N/A',
-                    Number(student.total_fees || 0).toLocaleString(),
-                    Number(student.paid_fees || 0).toLocaleString(),
-                    balance.toLocaleString(),
-                    balance <= 0 ? 'Paid' : 'Pending'
-                ]);
-            });
+                    const matchesSearch = !query || nameMatch || batchMatch || totalMatch || paidMatch || balanceMatch;
+                    const matchesYear = !yearVal || student.batch.toLowerCase() === yearVal;
 
-            switch (type) {
-                case 'copy':
-                    exportCopy(rows);
-                    break;
-                case 'csv':
-                    exportCSV(rows);
-                    break;
-                case 'excel':
-                    exportExcel(rows);
-                    break;
-                case 'pdf':
-                    exportPDF(rows);
-                    break;
-                case 'print':
-                    exportPrint(rows);
-                    break;
-                default:
-                    showToast('Unknown export type', 'error');
+                    return matchesSearch && matchesYear;
+                });
+
+                currentPage = 1;
+                renderTable();
             }
-        };
 
-        // ---------- COPY ----------
-        function exportCopy(rows) {
-            try {
-                let text = rows.map(r => r.join('\t')).join('\n');
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(text).then(() => {
-                        showToast('✅ Copied to clipboard!');
-                    }).catch(() => {
-                        fallbackCopy(text);
-                    });
-                } else {
-                    fallbackCopy(text);
-                }
-            } catch (e) {
-                showToast('❌ Copy failed: ' + e.message, 'error');
+            function resetFilters() {
+                const searchInput = document.getElementById('unifiedSearchInput');
+                const filterAcademicYear = document.getElementById('filterAcademicYear');
+                if (searchInput) searchInput.value = '';
+                if (filterAcademicYear) filterAcademicYear.value = '';
+                filteredRecords = [...allBalanceRecords];
+                currentPage = 1;
+                renderTable();
             }
-        }
 
-        function fallbackCopy(text) {
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            textarea.style.position = 'fixed';
-            textarea.style.opacity = '0';
-            document.body.appendChild(textarea);
-            textarea.select();
-            try {
-                document.execCommand('copy');
-                showToast('✅ Copied to clipboard!');
-            } catch (e) {
-                showToast('❌ Copy failed. Please select and copy manually.', 'error');
+            // ============================================================
+            // CSV EXPORT FUNCTION ONLY
+            // ============================================================
+            function getHeaders() {
+                return ['#', 'Student Name', 'Batch', 'Total Fees', 'Paid Fees', 'Balance Amount', 'Status'];
             }
-            document.body.removeChild(textarea);
-        }
 
-        // ---------- CSV ----------
-        function exportCSV(rows) {
-            try {
-                let csv = rows.map(row => 
-                    row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')
-                ).join('\n');
-                
-                const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' }); // BOM for Excel
+            window.exportCSV = function() {
+                if (filteredRecords.length === 0) return alert('No data to export.');
+                let csv = getHeaders().join(',') + '\n';
+                filteredRecords.forEach((student, i) => {
+                    const statusText = student.balanceAmount <= 0 ? 'Paid' : 'Pending';
+                    csv += [
+                        i + 1,
+                        `"${student.name}"`,
+                        `"${student.batch}"`,
+                        `"₹ ${student.totalFees.toLocaleString('en-IN')}"`,
+                        `"₹ ${student.paidFees.toLocaleString('en-IN')}"`,
+                        `"₹ ${student.balanceAmount.toLocaleString('en-IN')}"`,
+                        `"${statusText}"`
+                    ].join(',') + '\n';
+                });
+                downloadFile(csv, 'student_balance_records.csv', 'text/csv');
+                showToast('✅ CSV downloaded successfully!');
+            };
+
+            function downloadFile(content, filename, mimeType) {
+                const blob = new Blob([content], { type: mimeType + ';charset=utf-8;' });
                 const link = document.createElement('a');
                 link.href = URL.createObjectURL(blob);
-                link.download = `Balance_Report_${new Date().toISOString().slice(0,10)}.csv`;
+                link.download = filename;
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
                 URL.revokeObjectURL(link.href);
-                showToast('✅ CSV downloaded!');
-            } catch (e) {
-                showToast('❌ CSV export failed: ' + e.message, 'error');
             }
-        }
 
-        // ---------- EXCEL ----------
-        function exportExcel(rows) {
-            try {
-                if (typeof XLSX === 'undefined') {
-                    showToast('❌ Excel library not loaded. Please refresh and try again.', 'error');
-                    return;
-                }
-                const ws = XLSX.utils.aoa_to_sheet(rows);
-                const wb = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(wb, ws, 'Balance Report');
-                XLSX.writeFile(wb, `Balance_Report_${new Date().toISOString().slice(0,10)}.xlsx`);
-                showToast('✅ Excel downloaded!');
-            } catch (e) {
-                showToast('❌ Excel export failed: ' + e.message, 'error');
+            function showToast(message) {
+                const existing = document.querySelector('.export-toast');
+                if (existing) existing.remove();
+                const toast = document.createElement('div');
+                toast.className = 'export-toast fixed top-20 left-1/2 -translate-x-1/2 bg-orange-600 text-white px-6 py-3 rounded-xl shadow-lg z-50 transition-all duration-300';
+                toast.textContent = message;
+                document.body.appendChild(toast);
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    setTimeout(() => toast.remove(), 300);
+                }, 2500);
             }
-        }
-
-        // ---------- PDF ----------
-        function exportPDF(rows) {
-            try {
-                if (typeof window.jspdf === 'undefined' || typeof window.jspdfAutoTable === 'undefined') {
-                    showToast('⚠️ PDF library loading... Please try again in a moment.', 'warning');
-                    return;
-                }
-
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF('landscape', 'mm', 'a4');
-                
-                // Title
-                doc.setFontSize(16);
-                doc.text('Student Balance Report', 14, 15);
-                doc.setFontSize(10);
-                doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 22);
-                
-                // Table
-                doc.autoTable({
-                    head: [rows[0]],
-                    body: rows.slice(1),
-                    startY: 28,
-                    theme: 'striped',
-                    headStyles: { fillColor: [15, 118, 110], textColor: [255, 255, 255], fontSize: 9 },
-                    bodyStyles: { fontSize: 8 },
-                    columnStyles: {
-                        0: { cellWidth: 30 },
-                        1: { cellWidth: 25 },
-                        2: { cellWidth: 25 },
-                        3: { cellWidth: 25 },
-                        4: { cellWidth: 30 },
-                        5: { cellWidth: 25 }
-                    },
-                    didDrawPage: function(data) {
-                        // Footer
-                        doc.setFontSize(8);
-                        doc.text(`Page ${data.pageNumber}`, 14, doc.internal.pageSize.height - 10);
-                        doc.text(`Total Records: ${rows.length - 1}`, doc.internal.pageSize.width - 40, doc.internal.pageSize.height - 10);
-                    }
-                });
-
-                doc.save(`Balance_Report_${new Date().toISOString().slice(0,10)}.pdf`);
-                showToast('✅ PDF downloaded!');
-            } catch (e) {
-                console.error('PDF export error:', e);
-                showToast('❌ PDF export failed: ' + e.message, 'error');
-            }
-        }
-
-        // ---------- PRINT ----------
-        function exportPrint(rows) {
-            try {
-                const printWindow = window.open('', '_blank', 'width=900,height=600');
-                if (!printWindow) {
-                    showToast('⚠️ Please allow pop-ups for this site.', 'warning');
-                    return;
-                }
-
-                const tableHtml = rows.map(row => 
-                    `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`
-                ).join('');
-
-                printWindow.document.write(`
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <title>Balance Report</title>
-                        <style>
-                            body { font-family: Arial, sans-serif; padding: 30px; }
-                            h2 { text-align: center; color: #0f766e; }
-                            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                            th { background: #0f766e; color: white; padding: 10px; text-align: left; font-size: 12px; }
-                            td { padding: 8px 10px; border: 1px solid #ddd; font-size: 12px; }
-                            tr:nth-child(even) { background: #f8fafc; }
-                            .footer { text-align: center; margin-top: 30px; font-size: 12px; color: #666; }
-                            .status-paid { color: #16a34a; font-weight: bold; }
-                            .status-pending { color: #dc2626; font-weight: bold; }
-                        </style>
-                    </head>
-                    <body>
-                        <h2>📊 Student Balance Report</h2>
-                        <p style="text-align:center;color:#666;font-size:14px;">
-                            Generated: ${new Date().toLocaleString()} &nbsp;|&nbsp; Total Records: ${rows.length - 1}
-                        </p>
-                        <table>
-                            <thead><tr>${rows[0].map(h => `<th>${h}</th>`).join('')}</tr></thead>
-                            <tbody>${tableHtml.slice(tableHtml.indexOf('<tr>', 1))}</tbody>
-                        </table>
-                        <div class="footer">
-                            This report is auto-generated from the ERP System.
-                        </div>
-                        <script>
-                            window.onload = function() { window.print(); }
-                        <\/script>
-                    </body>
-                    </html>
-                `);
-                printWindow.document.close();
-                showToast('🖨️ Print dialog opened');
-            } catch (e) {
-                showToast('❌ Print failed: ' + e.message, 'error');
-            }
-        }
-
-        // ============================================================
-        // INIT
-        // ============================================================
-        document.addEventListener('DOMContentLoaded', function() {
-            // Load data from API
-            loadStudents(1);
-
-            // Also try to load from PHP fallback if needed
-            // You can comment out the API call above and use sample data
-            // loadSampleData();
-        });
-
-        // ============================================================
-        // KEYBOARD SHORTCUT: Cmd/Ctrl + K to focus search
-        // ============================================================
-        document.addEventListener('keydown', function(e) {
-            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-                e.preventDefault();
-                const input = document.getElementById('searchInput');
-                if (input) {
-                    input.focus();
-                    input.select();
-                }
-            }
-        });
+        })();
     </script>
-
 </body>
 </html>
-

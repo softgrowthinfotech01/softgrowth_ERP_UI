@@ -196,7 +196,19 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
+        function getToken() {
+            return localStorage.getItem('auth_token') || localStorage.getItem('token') || localStorage.getItem('accessToken') || sessionStorage.getItem('token');
+        }
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Mandatory Authentication & Session Check
+            const token = getToken();
+            if (!token) {
+                alert('Your session has expired or you are not logged in. Please log in again.');
+                window.location.href = 'login.php';
+                return;
+            }
+
             const createRoleBtn = document.getElementById('createRoleBtn');
             const newRolePopup = document.getElementById('newRolePopup');
             const cancelNewRoleBtn = document.getElementById('cancelNewRoleBtn');
@@ -208,10 +220,6 @@
             const cancelMainBtn = document.getElementById('cancelMainBtn');
             const successPopup = document.getElementById('successPopup');
 
-            function getToken() {
-                return localStorage.getItem('auth_token') || localStorage.getItem('token') || localStorage.getItem('accessToken');
-            }
-
             // Fetch Roles on Page Load
             async function fetchRoles() {
                 try {
@@ -222,6 +230,13 @@
                             'Accept': 'application/json'
                         }
                     });
+                    
+                    if (response.status === 401) {
+                        alert('Session expired. Please log in again.');
+                        window.location.href = 'login.php';
+                        return;
+                    }
+
                     const result = await response.json();
                     if (response.ok) {
                         roleSelect.innerHTML = '<option value="" disabled selected>Select user role</option>';
@@ -283,6 +298,12 @@
                         body: JSON.stringify({ name: newRoleName })
                     });
 
+                    if (response.status === 401) {
+                        alert('Session expired. Please log in again.');
+                        window.location.href = 'login.php';
+                        return;
+                    }
+
                     const result = await response.json();
 
                     if (response.ok) {
@@ -342,6 +363,12 @@
                         body: JSON.stringify(payload)
                     });
 
+                    if (response.status === 401) {
+                        alert('Session expired. Please log in again.');
+                        window.location.href = 'login.php';
+                        return;
+                    }
+
                     const result = await response.json();
 
                     if (response.ok) {
@@ -368,7 +395,7 @@
                 roleSelect.value = '';
                 document.getElementById('username').value = '';
                 document.getElementById('email').value = '';
-                document.getElementById('password').value = 'Abcd@123';
+                document.getElementById('password').value = '';
                 if (!newRolePopup.classList.contains('hidden')) {
                     hidePopup(newRolePopup);
                 }
@@ -393,4 +420,3 @@
 </body>
 
 </html>
-
