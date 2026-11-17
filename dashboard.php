@@ -1,3 +1,8 @@
+<?php
+// ============================================================
+// ERP Dashboard
+// ============================================================
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -157,12 +162,16 @@
     CHARTS INIT & HEADER SYNCHRONIZATION
     ============================================================ -->
     <script>
+        function getToken() {
+            return localStorage.getItem('auth_token') || localStorage.getItem('token') || localStorage.getItem('accessToken') || sessionStorage.getItem('token');
+        }
+
         document.addEventListener('DOMContentLoaded', async function() {
 
-            // ---- AUTHENTICATION CHECK ----
-            const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || sessionStorage.getItem('token') || '';
+            // ---- MANDATORY AUTHENTICATION & SESSION GUARD CHECK ----
+            const token = getToken();
             if (!token) {
-                alert('Session expired or unauthorized. Please log in again.');
+                alert('Your session has expired or you are not logged in. Please log in again.');
                 window.location.href = 'login.php';
                 return;
             }
@@ -176,6 +185,13 @@
                     method: 'GET',
                     headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
                 });
+
+                if (userRes.status === 401) {
+                    alert('Session expired. Please log in again.');
+                    window.location.href = 'login.php';
+                    return;
+                }
+
                 if (userRes.ok) {
                     const userData = await userRes.json();
                     const user = userData.data || userData;
