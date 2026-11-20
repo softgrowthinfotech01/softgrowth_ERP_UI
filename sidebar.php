@@ -343,10 +343,8 @@
 <a href="student_promotion" data-slug="student-promotion" class="sidebar-menu-item sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl border-b border-gray-300 text-gray-700 font-semibold hover:bg-orange-50 hover:text-orange-700 transition-all duration-200">
     <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-orange-400">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3L2 8l10 5 10-5-10-5z" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 10.5v4.5c0 1.657 2.686 3 6 3s6-1.343 6-3v-4.5" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19 21v-5m0 0l-2.5 2.5M19 16l2.5 2.5" />
-        </svg>
+    <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+</svg>
     </span>
     <span>Student Promotion</span>
 </a>
